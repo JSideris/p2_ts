@@ -1,0 +1,52 @@
+{
+  "name": "p2",
+  "version": "0.7.1",
+  "description": "A JavaScript 2D physics engine.",
+  "author": "Stefan Hedman <schteppe@gmail.com> (http://steffe.se)",
+  "keywords": [
+    "p2.js",
+    "p2",
+    "physics",
+    "engine",
+    "2d"
+  ],
+  "main": "./src/p2.ts",
+  "engines": {
+    "node": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JSideris/gearbox2d.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JSideris/gearbox2d/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "devDependencies": {
+    "@types/node": "^14.6.2",
+    "assemblyscript": "^0.14.9",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "~2.0.1",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-watch": "~0.5.0",
+    "grunt-contrib-yuidoc": "^0.10.0",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "@assemblyscript/loader": "^0.14.9",
+    "poly-decomp": "0.2.1"
+  },
+  "scripts": {
+    "asbuild:untouched": "asc assembly/index.ts --target debug",
+    "asbuild:optimized": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+    "test": "node tests"
+  }
+}
