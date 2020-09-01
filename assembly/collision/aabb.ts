@@ -47,7 +47,7 @@ export default class AABB{
 	 * @param {number} [angle=0]
 	 * @param {number} [skinSize=0] Some margin to be added to the AABB.
 	 */
-	setFromPoints(points: Float32Array[], position: Float32Array, angle: f32, skinSize: f32){
+	setFromPoints(points: Float32Array[], position: Float32Array, angle: f32, skinSize: f32 = 0){
 		var l = this.lowerBound,
 			u = this.upperBound;
 

@@ -177,49 +177,49 @@ export default abstract class Shape
 	 * @static
 	 * @property {Number} CIRCLE
 	 */
-	static CIRCLE =      1;
+	static CIRCLE:u16 =      1;
 
 	/**
 	 * @static
 	 * @property {Number} PARTICLE
 	 */
-	static PARTICLE =    2;
+	static PARTICLE:u16 =    2;
 
 	/**
 	 * @static
 	 * @property {Number} PLANE
 	 */
-	static PLANE =       4;
+	static PLANE:u16 =       4;
 
 	/**
 	 * @static
 	 * @property {Number} CONVEX
 	 */
-	static CONVEX =      8;
+	static CONVEX:u16 =      8;
 
 	/**
 	 * @static
 	 * @property {Number} LINE
 	 */
-	static LINE =        16;
+	static LINE:u16 =        16;
 
 	/**
 	 * @static
 	 * @property {Number} BOX
 	 */
-	static BOX =   32;
+	static BOX:u16 =   32;
 
 	/**
 	 * @static
 	 * @property {Number} CAPSULE
 	 */
-	static CAPSULE = 64;
+	static CAPSULE:u16 = 64;
 
 	/**
 	 * @static
 	 * @property {Number} HEIGHTFIELD
 	 */
-	static HEIGHTFIELD = 128;
+	static HEIGHTFIELD:u16 = 128;
 
 	/**
 	 * Should return the moment of inertia around the Z axis of the body. See <a href="http://en.wikipedia.org/wiki/List_of_moments_of_inertia">Wikipedia's list of moments of inertia</a>.
@@ -239,7 +239,7 @@ export default abstract class Shape
 	 * Update the .area property of the shape.
 	 * @method updateArea
 	 */
-	abstract updateArea(): void;
+	abstract updateArea(): f32;
 
 	/**
 	 * Compute the world axis-aligned bounding box (AABB) of this shape.

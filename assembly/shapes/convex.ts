@@ -6,11 +6,30 @@
 
 import Shape from "./Shape";
 import polyk from "../math/polyk";
+import AABB from "../collision/aabb";
+import RaycastResult from "../collision/raycast-result";
+import Ray from "../collision/ray";
 
 
 export default class Convex extends Shape {
 
+	// TODO: this would be more efficient if I didn't use float32array[]s. Just convert to a big float32array with double the size.
+	// Let's get this working first then switch it.
+	
+	/**
+	 * Vertices defined in the local frame.
+	 * @property vertices
+	 * @type {Array}
+	 */
 	public vertices: Float32Array[];
+
+	/**
+	 * Edge normals defined in the local frame, pointing out of the shape.
+	 * @property normals
+	 * @type {Array}
+	 */
+	public normals: Float32Array[];
+
 	public triangles: Float32Array[];
 	public centerOfMass: Float32Array;
 
@@ -33,32 +52,20 @@ export default class Convex extends Shape {
 		vertices?: Float32Array[],
 		type?: u16
 	}){
-		super(options);
-
 		options = options ? shallowClone(options) : {};
 
-		/**
-		 * Vertices defined in the local frame.
-		 * @property vertices
-		 * @type {Array}
-		 */
-		this.vertices = [];
+		super(options);
 
 		// Copy the verts
-		var vertices = options.vertices !== undefined ? options.vertices : [];
-		for(var i=0; i < vertices.length; i++){
-			this.vertices.push(vec2.clone(vertices[i]));
+		this.vertices = [];
+		let newVertices = options?.vertices ?? [];
+		this.vertices = [];
+		this.normals = [];
+		for(let i = 0; i < newVertices.length; i++){
+			this.vertices.push(vec2.clone(newVertices[i]));
+			this.normals.push(vec2.create());
 		}
 
-		/**
-		 * Edge normals defined in the local frame, pointing out of the shape.
-		 * @property normals
-		 * @type {Array}
-		 */
-		var normals = this.normals = [];
-		for(var i=0; i < vertices.length; i++){
-			normals.push(vec2.create());
-		}
 		this.updateNormals();
 
 		/**
@@ -238,7 +245,7 @@ export default class Convex extends Shape {
 
 			// Get mass for the triangle (density=1 in this case)
 			// http://math.stackexchange.com/questions/80198/area-of-triangle-via-vectors
-			var m = triangleArea(a,b,c);
+			var m = Convex.triangleArea(a,b,c);
 			totalArea += m;
 
 			// Add to center of mass
@@ -274,18 +281,20 @@ export default class Convex extends Shape {
 	 * Updates the .boundingRadius property
 	 * @method updateBoundingRadius
 	 */
-	updateBoundingRadius(){
-		var verts = this.vertices,
+	updateBoundingRadius(): f32{
+		let verts = this.vertices,
 			r2 = 0;
 
-		for(var i=0; i!==verts.length; i++){
-			var l2 = vec2.squaredLength(verts[i]);
+		for(let i = 0; i!==verts.length; i++){
+			let l2 = vec2.squaredLength(verts[i]);
 			if(l2 > r2){
 				r2 = l2;
 			}
 		}
 
 		this.boundingRadius = Math.sqrt(r2);
+		
+		return this.boundingRadius;
 	}
 
 	/**
@@ -319,9 +328,11 @@ export default class Convex extends Shape {
 				c = verts[t[2]];
 
 			// Get mass for the triangle (density=1 in this case)
-			var m = triangleArea(a,b,c);
+			var m = Convex.triangleArea(a,b,c);
 			this.area += m;
 		}
+
+		return this.area;
 	}
 
 	/**
@@ -331,7 +342,7 @@ export default class Convex extends Shape {
 	 * @param  {Number} angle
 	 * @todo: approximate with a local AABB?
 	 */
-	computeAABB(out, position, angle){
+	computeAABB(out: AABB, position: Float32Array, angle: f32){
 		out.setFromPoints(this.vertices, position, angle, 0);
 	}
 
@@ -343,7 +354,7 @@ export default class Convex extends Shape {
 	 * @param  {array} position
 	 * @param  {number} angle
 	 */
-	raycast(result, ray, position, angle){
+	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32){
 		var intersectConvex_rayStart = vec2.create();
 		var intersectConvex_rayEnd = vec2.create();
 		var intersectConvex_normal = vec2.create();
