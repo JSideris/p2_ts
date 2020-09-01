@@ -12,6 +12,7 @@ import Ray from "../collision/Ray";
 import AABB from "../collision/AABB";
 import EventEmitter from "../events/EventEmitter");
 import BodyTypes from "./body-types";
+import Shape from "../shapes/Shape";
 
 var _idCounter = 0;
 
@@ -31,7 +32,7 @@ export default class Body{
 	 * @property index
 	 * @type {Number}
 	 */
-	public index: number = -1;
+	public index: i64;
 
 	/**
 	 * The world that this body is added to (read only). This property is set to NULL if the body is not added to any world.
@@ -59,7 +60,7 @@ export default class Body{
 	 *     body.mass = 1;
 	 *     body.updateMassProperties();
 	 */
-	public mass: number = 0;
+	public mass: f32 = 0;
 
 	/**
 	 * The inverse mass of the body.
@@ -68,7 +69,7 @@ export default class Body{
 	 * @property invMass
 	 * @type {number}
 	 */
-	public invMass:number number = 0;
+	public invMass: f32 = 0;
 
 	/**
 	 * The inertia of the body around the Z axis.
@@ -76,7 +77,7 @@ export default class Body{
 	 * @property inertia
 	 * @type {number}
 	 */
-	public inertia: number = 0;
+	public inertia: f32 = 0;
 
 	/**
 	 * The inverse inertia of the body.
@@ -84,10 +85,10 @@ export default class Body{
 	 * @property invInertia
 	 * @type {number}
 	 */
-	public invInertia: number = 0;
+	public invInertia: f32 = 0;
 
-	public invMassSolve: number = 0;
-	public invInertiaSolve: number = 0;
+	public invMassSolve: f32 = 0;
+	public invInertiaSolve: f32 = 0;
 
 	/**
 	 * Set to true if you want to fix the rotation of the body.
@@ -100,7 +101,7 @@ export default class Body{
 	 *     body.fixedRotation = true;
 	 *     body.updateMassProperties();
 	 */
-	public fixedRotation: boolena = true;
+	public fixedRotation: boolean = true;
 
 	/**
 	 * Set to true if you want to fix the body movement along the X axis. The body will still be able to move along Y.
@@ -172,7 +173,7 @@ export default class Body{
 	 * @property wlambda
 	 * @type {Array} // This was array before the port, but hte assignment was always 0.
 	 */
-	public wlambda: Number = 0;
+	public wlambda: f32 = 0;
 
 	/**
 	 * The angle of the body, in radians.
@@ -189,7 +190,7 @@ export default class Body{
 	 *         return angle;
 	 *     }
 	 */
-	public angle: number = 0;
+	public angle: f32 = 0;
 
 	/**
 	 * The previous angle of the body.
@@ -197,7 +198,7 @@ export default class Body{
 	 * @property previousAngle
 	 * @type {Number}
 	 */
-	public previousAngle: number = 0;
+	public previousAngle: f32 = 0;
 
 	/**
 	 * The interpolated angle of the body. Use this for rendering.
@@ -205,14 +206,14 @@ export default class Body{
 	 * @property interpolatedAngle
 	 * @type {Number}
 	 */
-	public interpolatedAngle: number = 0;
+	public interpolatedAngle: f32 = 0;
 
 	/**
 	 * The angular velocity of the body, in radians per second.
 	 * @property angularVelocity
 	 * @type {number}
 	 */
-	public angularVelocity: number = 0;
+	public angularVelocity: f32 = 0;
 
 	/**
 	 * The force acting on the body. Since the body force (and {{#crossLink "Body/angularForce:property"}}{{/crossLink}}) will be zeroed after each step, so you need to set the force before each step.
@@ -240,7 +241,7 @@ export default class Body{
 	 * @property angularForce
 	 * @type {number}
 	 */
-	public angularForce: number = 0;
+	public angularForce: f32 = 0;
 
 	/**
 	 * The linear damping acting on the body in the velocity direction. Should be a value between 0 and 1.
@@ -248,7 +249,7 @@ export default class Body{
 	 * @type {Number}
 	 * @default 0.1
 	 */
-	public damping: number;
+	public damping: f32;
 
 	/**
 	 * The angular force acting on the body. Should be a value between 0 and 1.
@@ -256,7 +257,7 @@ export default class Body{
 	 * @type {Number}
 	 * @default 0.1
 	 */
-	public angularDamping: number = 0.1;
+	public angularDamping: f32 = 0.1;
 
 	/**
 	 * The type of motion this body has. Should be one of: {{#crossLink "Body/STATIC:property"}}Body.STATIC{{/crossLink}}, {{#crossLink "Body/DYNAMIC:property"}}Body.DYNAMIC{{/crossLink}} and {{#crossLink "Body/KINEMATIC:property"}}Body.KINEMATIC{{/crossLink}}.
@@ -287,7 +288,7 @@ export default class Body{
 	 *         type: Body.KINEMATIC // Type can be set via the options object.
 	 *     });
 	 */
-	public type: number = BodyTypes.STATIC;
+	public type: f32 = BodyTypes.STATIC;
 
 	/**
 	 * Bounding circle radius. Update with {{#crossLink "Body/updateBoundingRadius:method"}}{{/crossLink}}.
@@ -295,7 +296,7 @@ export default class Body{
 	 * @property boundingRadius
 	 * @type {Number}
 	 */
-	public boundingRadius: number = 0;
+	public boundingRadius: f32 = 0;
 
 	/**
 	 * Bounding box of this body. Update with {{#crossLink "Body/updateAABB:method"}}{{/crossLink}}.
@@ -337,7 +338,7 @@ export default class Body{
 	 * @type {Number}
 	 * @default Body.AWAKE
 	 */
-	public sleepState: number = BodyTypes.AWAKE;
+	public sleepState: u16 = BodyTypes.AWAKE;
 
 	/**
 	 * If the speed (the norm of the velocity) is smaller than this value, the body is considered sleepy.
@@ -345,7 +346,7 @@ export default class Body{
 	 * @type {Number}
 	 * @default 0.2
 	 */
-	public sleepSpeedLimit: number = 0.2;
+	public sleepSpeedLimit: f32 = 0.2;
 
 	/**
 	 * If the body has been sleepy for this sleepTimeLimit seconds, it is considered sleeping.
@@ -353,7 +354,7 @@ export default class Body{
 	 * @type {Number}
 	 * @default 1
 	 */
-	public sleepTimeLimit: number = 1;
+	public sleepTimeLimit: f32 = 1;
 
 	/**
 	 * Gravity scaling factor. If you want the body to ignore gravity, set this to zero. If you want to reverse gravity, set it to -1.
@@ -373,7 +374,7 @@ export default class Body{
 	 * @readonly
 	 * @property {Number} idleTime
 	 */
-	public idleTime: number = 0;
+	public idleTime: f32 = 0;
 
 	/**
 	 * The last time when the body went to SLEEPY state.
@@ -381,28 +382,28 @@ export default class Body{
 	 * @property {Number} timeLastSleepy
 	 * @private
 	 */
-	public timeLastSleepy: number = 0;
+	public timeLastSleepy: f32 = 0;
 
 	/**
 	 * If the body speed exceeds this threshold, CCD (continuous collision detection) will be enabled. Set it to a negative number to disable CCD completely for this body.
 	 * @property {number} ccdSpeedThreshold
 	 * @default -1
 	 */
-	public ccdSpeedThreshold: number = -1;
+	public ccdSpeedThreshold: f32 = -1;
 
 	/**
 	 * The number of iterations that should be used when searching for the time of impact during CCD. A larger number will assure that there's a small penetration on CCD collision, but a small number will give more performance.
 	 * @property {number} ccdIterations
 	 * @default 10
 	 */
-	public ccdIterations: number = 10;
+	public ccdIterations: f32 = 10;
 
 	/**
 	 * @property {number} islandId
 	 */
-	public islandId: number = -1;
+	public islandId: f32 = -1;
 
-	public concavePath = null; // TODO: what is the type of this?
+	public concavePath: Float32Array[]; // TODO: what is the type of this?
 
 	private _wakeUpAfterNarrowphase: boolean = false;
 
@@ -480,27 +481,27 @@ export default class Body{
 	 *     world.addBody(platformBody);
 	 */
 	constructor(options?: {
-		id?: number,
-		mass?: number,
+		id?: u32,
+		mass?: f32,
 		fixedRotation?: boolean,
 		fixedX?: boolean,
 		fixedY?: boolean,
 		position?: Float32Array,
 		velocity?: Float32Array,
-		angle?: number,
-		angularVelocity?: number,
+		angle?: f32,
+		angularVelocity?: f32,
 		force?: Float32Array,
-		angularForce?: number,
-		damping?: number,
-		angularDamping?: number,
-		sleepTimeLimit?: number,
-		type?: number,
+		angularForce?: f32,
+		damping?: f32,
+		angularDamping?: f32,
+		sleepTimeLimit?: f32,
+		type?: u16,
 		allowSleep?: boolean,
-		sleepSpeedLimit?: number,
-		gravityScale?: number,
+		sleepSpeedLimit?: f32,
+		gravityScale?: f32,
 		collisionResponse?: boolean,
-		ccdSpeedThreshold?: number,
-		ccdIterations?: number,
+		ccdSpeedThreshold?: f32,
+		ccdIterations?: f32,
 	}){
 		options = options || {};
 
@@ -565,7 +566,7 @@ export default class Body{
 	 * @method setDensity
 	 * @param {number} density
 	 */
-	setDensity(density: number) {
+	setDensity(density: f32) {
 		var totalArea = this.getArea();
 		this.mass = totalArea * density;
 		this.updateMassProperties();
@@ -576,7 +577,7 @@ export default class Body{
 	 * @method getArea
 	 * @return {Number}
 	 */
-	getArea(): number {
+	getArea(): f32 {
 		var totalArea = 0;
 		for(var i=0; i<this.shapes.length; i++){
 			totalArea += this.shapes[i].area;
@@ -670,7 +671,7 @@ export default class Body{
 	 *     // Add another shape to the body, positioned 1 unit length from the body center of mass along the local y-axis, and rotated 90 degrees CCW.
 	 *     body.addShape(shape,[0,1],Math.PI/2);
 	 */
-	addShape(shape: Shape, offset: Float32Array, angle: number){
+	addShape(shape: Shape, offset: Float32Array, angle: f32){
 		if(shape.body){
 			throw new Error('A shape can only be added to one body.');
 		}
@@ -713,7 +714,7 @@ export default class Body{
 		if(idx !== -1){
 			this.shapes.splice(idx,1);
 			this.aabbNeedsUpdate = true;
-			shape.body = null;
+			shape.body = undefined;
 			return true;
 		} else {
 			return false;
@@ -732,9 +733,10 @@ export default class Body{
 	updateMassProperties(){
 		if(this.type === BodyTypes.STATIC || this.type === BodyTypes.KINEMATIC){
 
-			this.mass = Number.MAX_VALUE;
+			// Consider making it infinity.
+			this.mass = Infinity;
 			this.invMass = 0;
-			this.inertia = Number.MAX_VALUE;
+			this.inertia = Infinity;
 			this.invInertia = 0;
 
 		} else {
@@ -754,7 +756,7 @@ export default class Body{
 				this.invInertia = I>0 ? 1/I : 0;
 
 			} else {
-				this.inertia = Number.MAX_VALUE;
+				this.inertia = Infinity;
 				this.invInertia = 0;
 			}
 
@@ -782,7 +784,7 @@ export default class Body{
 	 *     console.log(body.force); // [0, 1]
 	 *     console.log(body.angularForce); // 1
 	 */
-	applyForce(force, relativePoint){
+	applyForce(force: Float32Array, relativePoint: Float32Array){
 
 		// Add linear force
 		add(this.force, this.force, force);
@@ -810,10 +812,12 @@ export default class Body{
 	 *     console.log(body.force); // [0, 1]
 	 *     console.log(body.angularForce); // 1
 	 */
-	var Body_applyForce_forceWorld = vec2create();
-	var Body_applyForce_pointWorld = vec2create();
-	var Body_applyForce_pointLocal = vec2create();
-	applyForceLocal(localForce, localPoint){
+	applyForceLocal(localForce: Float32Array, localPoint: Float32Array){
+		// These 3 lines were originally outside of this function. Not sure why.
+		var Body_applyForce_forceWorld = vec2create();
+		var Body_applyForce_pointWorld = vec2create();
+		var Body_applyForce_pointLocal = vec2create();
+
 		localPoint = localPoint || Body_applyForce_pointLocal;
 		var worldForce = Body_applyForce_forceWorld;
 		var worldPoint = Body_applyForce_pointWorld;
@@ -833,8 +837,9 @@ export default class Body{
 	 *     var impulseVector = [0, 1]; // world up
 	 *     body.applyImpulse(impulseVector, relativePoint);
 	 */
-	var Body_applyImpulse_velo = vec2create();
-	applyImpulse(impulseVector, relativePoint){
+	applyImpulse(impulseVector: Float32Array, relativePoint: Float32Array){
+		var Body_applyImpulse_velo = vec2create(); // Was originally outside of this function. 
+
 		if(this.type !== Body.DYNAMIC){
 			return;
 		}
@@ -870,10 +875,12 @@ export default class Body{
 	 *     console.log(body.velocity); // [1, 0]
 	 *     console.log(body.angularVelocity); // 1
 	 */
-	var Body_applyImpulse_impulseWorld = vec2create();
-	var Body_applyImpulse_pointWorld = vec2create();
-	var Body_applyImpulse_pointLocal = vec2create();
-	applyImpulseLocal(localImpulse, localPoint){
+	applyImpulseLocal(localImpulse: Float32Array, localPoint: Float32Array){
+		// Originally outside of this function.
+		var Body_applyImpulse_impulseWorld = vec2create();
+		var Body_applyImpulse_pointWorld = vec2create();
+		var Body_applyImpulse_pointLocal = vec2create();
+
 		localPoint = localPoint || Body_applyImpulse_pointLocal;
 		var worldImpulse = Body_applyImpulse_impulseWorld;
 		var worldPoint = Body_applyImpulse_pointWorld;
@@ -888,7 +895,7 @@ export default class Body{
 	 * @param  {Array} out          The point to store the result in
 	 * @param  {Array} worldPoint   The input world point
 	 */
-	toLocalFrame(out, worldPoint){
+	toLocalFrame(out: Float32Array, worldPoint: Float32Array){
 		vec2.toLocalFrame(out, worldPoint, this.position, this.angle);
 	};
 
@@ -898,7 +905,7 @@ export default class Body{
 	 * @param  {Array} out          The point to store the result in
 	 * @param  {Array} localPoint   The input local point
 	 */
-	toWorldFrame(out, localPoint){
+	toWorldFrame(out: Float32Array, localPoint: Float32Array){
 		vec2.toGlobalFrame(out, localPoint, this.position, this.angle);
 	};
 
@@ -908,7 +915,7 @@ export default class Body{
 	 * @param  {Array} out          The vector to store the result in
 	 * @param  {Array} worldVector  The input world vector
 	 */
-	vectorToLocalFrame(out, worldVector){
+	vectorToLocalFrame(out: Float32Array, worldVector: Float32Array){
 		vec2.vectorToLocalFrame(out, worldVector, this.angle);
 	};
 
@@ -918,8 +925,8 @@ export default class Body{
 	 * @param  {Array} out          The vector to store the result in
 	 * @param  {Array} localVector  The input local vector
 	 */
-	vectorToWorldFrame(out, localVector){
-		vec2.vectorToGlobalFrame(out, localVector, this.angle);
+	vectorToWorldFrame(out: Float32Array, localVector: Float32Array){
+		vec2.rotate(out, localVector, this.angle);
 	};
 
 	/**
@@ -943,9 +950,11 @@ export default class Body{
 	 *     body.fromPolygon(path);
 	 *     console.log(body.shapes); // [Convex, Convex, ...]
 	 */
-	fromPolygon(path,options){
-		options = options || {};
-
+	fromPolygon(path: Float32Array[], options?: {
+		removeCollinearPoints?: Float32Array[],
+		skipSimpleCheck?: boolean,
+		optimalDecomp?: boolean
+	}){
 		// Remove all shapes
 		for(var i=this.shapes.length; i>=0; --i){
 			this.removeShape(this.shapes[i]);
@@ -960,26 +969,26 @@ export default class Body{
 		// Make it counter-clockwise
 		decomp.makeCCW(p);
 
-		if(options.removeCollinearPoints !== undefined){
+		if(options?.removeCollinearPoints){
 			decomp.removeCollinearPoints(p, options.removeCollinearPoints);
 		}
 
 		// Check if any line segment intersects the path itself
-		if(!options.skipSimpleCheck){
+		if(!options?.skipSimpleCheck){
 			if(!decomp.isSimple(p)){
 				return false;
 			}
 		}
 
 		// Save this path for later
-		var concavePath = this.concavePath = [];
+		this.concavePath = [];
 		for(var i=0; i<p.length; i++){
-			concavePath[i] = vec2.clone(p[i]);
+			this.concavePath[i] = vec2.clone(p[i]);
 		}
 
 		// Slow or fast decomp?
 		var convexes;
-		if(options.optimalDecomp){
+		if(options?.optimalDecomp){
 			convexes = decomp.decomp(p);
 		} else {
 			convexes = decomp.quickDecomp(p);
@@ -1350,6 +1359,51 @@ export default class Body{
 		vec2.subtract(result, this.velocity, result);
 		return result;
 	}
+
+	/**
+	 * Dynamic body.
+	 * @property DYNAMIC
+	 * @type {Number}
+	 * @static
+	 */
+	static DYNAMIC: u16 = 1;
+
+	/**
+	 * Static body.
+	 * @property STATIC
+	 * @type {Number}
+	 * @static
+	 */
+	static STATIC: u16 = 2;
+
+	/**
+	 * Kinematic body.
+	 * @property KINEMATIC
+	 * @type {Number}
+	 * @static
+	 */
+	static KINEMATIC: u16 = 4;
+
+	/**
+	 * @property AWAKE
+	 * @type {Number}
+	 * @static
+	 */
+	static AWAKE: u16 = 0;
+
+	/**
+	 * @property SLEEPY
+	 * @type {Number}
+	 * @static
+	 */
+	static SLEEPY: u16 = 1;
+
+	/**
+	 * @property SLEEPING
+	 * @type {Number}
+	 * @static
+	 */
+	static SLEEPING: u16 = 2;
 }
 
 // TODO: fix this.

@@ -80,7 +80,7 @@ class PolyK{
 	}
 	*/
 	
-	GetArea(p: number[]): number
+	GetArea(p: Float32Array): f32
 	{
 		if(p.length <6) return 0;
 		var l = p.length - 2;
@@ -109,7 +109,7 @@ class PolyK{
 	}
 	*/
 
-	Triangulate(p: number[]): number[]
+	Triangulate(p: Array<f32>): Array<f32>
 	{
 		var n = p.length>>1;
 		if(n<3) return [];
@@ -142,14 +142,18 @@ class PolyK{
 			}
 			if(earFound)
 			{
-				tgs.push(i0, i1, i2);
+				tgs.push(i0);
+				tgs.push(i1);
+				tgs.push(i2);
 				avl.splice((i+1)%al, 1);
 				al--;
 				i= 0;
 			}
 			else if(i++ > 3*al) break;      // no convex angles :(
 		}
-		tgs.push(avl[0], avl[1], avl[2]);
+		tgs.push(avl[0]);
+		tgs.push(avl[1]);
+		tgs.push(avl[2]);
 		return tgs;
 	}
 	/*
@@ -376,7 +380,7 @@ class PolyK{
 	}
 	*/
 	
-	_PointInTriangle(px: number, py: number, ax: number, ay: number, bx: number, by: number, cx: number, cy: number): boolean
+	_PointInTriangle(px: f32, py: f32, ax: f32, ay: f32, bx: f32, by: f32, cx: f32, cy: f32): boolean
 	{
 		var v0x = cx-ax;
 		var v0y = cy-ay;
@@ -451,7 +455,7 @@ class PolyK{
 		return false;
 	}
 	*/
-	_convex(ax: number, ay: number, bx: number, by: number, cx: number, cy: number): boolean
+	_convex(ax: f32, ay: f32, bx: f32, by: f32, cx: f32, cy: f32): boolean
 	{
 		return (ay-by)*(cx-bx) + (bx-ax)*(cy-by) >= 0;
 	}

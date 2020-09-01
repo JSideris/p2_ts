@@ -37,7 +37,7 @@ class Vec2
 	 * @param  {Array} b
 	 * @return {Number}
 	 */
-	crossLength(a:Float32Array,b:Float32Array):number{
+	crossLength(a:Float32Array,b:Float32Array):f32{
 		return a[0] * b[1] - a[1] * b[0];
 	};
 
@@ -50,7 +50,7 @@ class Vec2
 	 * @param  {Number} zcomp
 	 * @return {Array}
 	 */
-	crossVZ(out:Float32Array, vec:Float32Array, zcomp:number):Float32Array{
+	crossVZ(out:Float32Array, vec:Float32Array, zcomp:f32):Float32Array{
 		this.rotate(out,vec,-Math.PI/2);// Rotate according to the right hand rule
 		this.scale(out,out,zcomp);      // Scale with z
 		return out;
@@ -65,7 +65,7 @@ class Vec2
 	 * @param  {Array} vec
 	 * @return {Array}
 	 */
-	crossZV(out:Float32Array, zcomp:number, vec:Float32Array):Float32Array{
+	crossZV(out:Float32Array, zcomp:f32, vec:Float32Array):Float32Array{
 		this.rotate(out,vec,Math.PI/2); // Rotate according to the right hand rule
 		this.scale(out,out,zcomp);      // Scale with z
 		return out;
@@ -80,7 +80,7 @@ class Vec2
 	 * @param  {Number} angle
 	 * @return {Array}
 	 */
-	rotate(out:Float32Array,a:Float32Array,angle:number):Float32Array{
+	rotate(out:Float32Array,a:Float32Array,angle:f32):Float32Array{
 		if(angle !== 0){
 			var c = Math.cos(angle),
 				s = Math.sin(angle),
@@ -120,7 +120,7 @@ class Vec2
 	 * @param  {Number} frameAngle
 	 * @return {Array}
 	 */
-	toLocalFrame(out:Float32Array, worldPoint:Float32Array, framePosition:Float32Array, frameAngle:number):Float32Array{
+	toLocalFrame(out:Float32Array, worldPoint:Float32Array, framePosition:Float32Array, frameAngle:f32):Float32Array{
 		var c = Math.cos(-frameAngle),
 			s = Math.sin(-frameAngle),
 			x = worldPoint[0] - framePosition[0],
@@ -138,7 +138,7 @@ class Vec2
 	 * @param  {Array} framePosition
 	 * @param  {Number} frameAngle
 	 */
-	toGlobalFrame(out:Float32Array, localPoint:Float32Array, framePosition:Float32Array, frameAngle:number){
+	toGlobalFrame(out:Float32Array, localPoint:Float32Array, framePosition:Float32Array, frameAngle:f32){
 		var c = Math.cos(frameAngle),
 			s = Math.sin(frameAngle),
 			x = localPoint[0],
@@ -157,7 +157,7 @@ class Vec2
 	 * @param  {Number} frameAngle
 	 * @return {Array}
 	 */
-	vectorToLocalFrame(out:Float32Array, worldVector:Float32Array, frameAngle:number):Float32Array{
+	vectorToLocalFrame(out:Float32Array, worldVector:Float32Array, frameAngle:f32):Float32Array{
 		var c = Math.cos(-frameAngle),
 			s = Math.sin(-frameAngle),
 			x = worldVector[0],
@@ -213,7 +213,7 @@ class Vec2
 	 * @param {Array} a vector to clone
 	 * @return {Array} a new 2D vector
 	 */
-	clone(a:Float32Array):Float32Array {
+	clone(a:Float32Array): Float32Array {
 		var out = new Float32Array(2);
 		out[0] = a[0];
 		out[1] = a[1];
@@ -228,7 +228,7 @@ class Vec2
 	 * @param {Number} y Y component
 	 * @return {Array} a new 2D vector
 	 */
-	fromValues(x:number, y:number):Float32Array {
+	fromValues(x:f32, y:f32):Float32Array {
 		var out = new Float32Array(2);
 		out[0] = x;
 		out[1] = y;
@@ -258,7 +258,7 @@ class Vec2
 	 * @param {Number} y Y component
 	 * @return {Array} out
 	 */
-	set(out:Float32Array, x:number, y:number):Float32Array {
+	set(out:Float32Array, x:f32, y:f32):Float32Array {
 		out[0] = x;
 		out[1] = y;
 		return out;
@@ -333,7 +333,7 @@ class Vec2
 	 * @param {Number} b amount to scale the vector by
 	 * @return {Array} out
 	 */
-	scale(out:Float32Array, a:Float32Array, b:number):Float32Array {
+	scale(out:Float32Array, a:Float32Array, b:f32):Float32Array {
 		out[0] = a[0] * b;
 		out[1] = a[1] * b;
 		return out;
@@ -347,7 +347,7 @@ class Vec2
 	 * @param {Array} b the second operand
 	 * @return {Number} distance between a and b
 	 */
-	distance(a:Float32Array, b:Float32Array):number {
+	distance(a:Float32Array, b:Float32Array):f32 {
 		var x = b[0] - a[0],
 			y = b[1] - a[1];
 		return Math.sqrt(x*x + y*y);
@@ -361,7 +361,7 @@ class Vec2
 	 * @param {Array} b the second operand
 	 * @return {Number} squared distance between a and b
 	 */
-	squaredDistance(a:Float32Array, b:Float32Array):number {
+	squaredDistance(a:Float32Array, b:Float32Array):f32 {
 		var x = b[0] - a[0],
 			y = b[1] - a[1];
 		return x*x + y*y;
@@ -374,7 +374,7 @@ class Vec2
 	 * @param {Array} a vector to calculate length of
 	 * @return {Number} length of a
 	 */
-	length (a:Float32Array):number {
+	length (a:Float32Array):f32 {
 		var x = a[0],
 			y = a[1];
 		return Math.sqrt(x*x + y*y);
@@ -387,7 +387,7 @@ class Vec2
 	 * @param {Array} a vector to calculate squared length of
 	 * @return {Number} squared length of a
 	 */
-	squaredLength (a:Float32Array):number {
+	squaredLength (a:Float32Array):f32 {
 		var x = a[0],
 			y = a[1];
 		return x*x + y*y;
@@ -436,7 +436,7 @@ class Vec2
 	 * @param {Array} b the second operand
 	 * @return {Number} dot product of a and b
 	 */
-	dot (a:Float32Array, b:Float32Array):number {
+	dot (a:Float32Array, b:Float32Array):f32 {
 		return a[0] * b[0] + a[1] * b[1];
 	};
 
@@ -462,7 +462,7 @@ class Vec2
 	 * @param {number} t Lerp factor
 	 * @return {array}
 	 */
-	lerp (out:Float32Array, a:Float32Array, b:Float32Array, t:number):Float32Array {
+	lerp (out:Float32Array, a:Float32Array, b:Float32Array, t:f32):Float32Array {
 		var ax = a[0],
 			ay = a[1];
 		out[0] = ax + t * (b[0] - ax);
@@ -516,7 +516,7 @@ class Vec2
 	 * @param  {Array} p3
 	 * @return {number} A number between 0 and 1 if there was an intersection, otherwise -1.
 	 */
-	getLineSegmentsIntersectionFraction(p0:Float32Array, p1:Float32Array, p2:Float32Array, p3:Float32Array):number {
+	getLineSegmentsIntersectionFraction(p0:Float32Array, p1:Float32Array, p2:Float32Array, p3:Float32Array):f32 {
 		var s1_x = p1[0] - p0[0];
 		var s1_y = p1[1] - p0[1];
 		var s2_x = p3[0] - p2[0];

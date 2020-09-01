@@ -3,8 +3,8 @@ import Ray from "./ray";
 
 export default class AABB{
 
-	private lowerBound: Float32Array;
-	private upperBound: Float32Array;
+	lowerBound: Float32Array;
+	upperBound: Float32Array;
 	private tmp = vec2.create();
 
 	/**
@@ -47,7 +47,7 @@ export default class AABB{
 	 * @param {number} [angle=0]
 	 * @param {number} [skinSize=0] Some margin to be added to the AABB.
 	 */
-	setFromPoints(points: Float32Array[], position: Float32Array, angle: number, skinSize: number){
+	setFromPoints(points: Float32Array[], position: Float32Array, angle: f32, skinSize: f32){
 		var l = this.lowerBound,
 			u = this.upperBound;
 
@@ -183,7 +183,7 @@ export default class AABB{
 	 *     });
 	 *     var fraction = aabb.overlapsRay(ray); // fraction == 0.5
 	 */
-	overlapsRay(ray: Ray): number{
+	overlapsRay(ray: Ray): f32{
 
 		// ray.direction is unit direction vector of ray
 		var dirFracX = 1 / ray.direction[0];
