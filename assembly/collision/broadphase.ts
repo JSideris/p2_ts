@@ -1,7 +1,7 @@
 import vec2 from "../math/vec2";
 import Body from "../objects/Body";
-import BroadphaseType from "./broadphase-type";
 import World from "../world/world";
+import AABB from "./aabb";
 
 export default class Broadphase{
 	public type: u16;
@@ -11,7 +11,7 @@ export default class Broadphase{
 	 * @property result
 	 * @type {Array}
 	 */
-	public result: Array = [];
+	public result: Array<Body> = [];
 
 	/**
 	 * The world to search for collision pairs in. To change it, use .setWorld()
@@ -19,13 +19,13 @@ export default class Broadphase{
 	 * @type {World}
 	 * @readOnly
 	 */
-	public world: World? = null;
+	public world: World;
 	
 	/**
 	 * The bounding volume type to use in the broadphase algorithms. Should be set to Broadphase.AABB or Broadphase.BOUNDING_CIRCLE.
 	 * @property {Number} boundingVolumeType
 	 */
-	public boundingVolumeType: u16 = BroadphaseType.AABB;
+	public boundingVolumeType: u16 = Broadphase.AABB;
 
 	/**
 	 * Base class for broadphase implementations. Don't use this class directly.
@@ -154,7 +154,7 @@ export default class Broadphase{
 	 * @param {array} result An array to store resulting bodies in.
 	 * @return {array}
 	 */
-	aabbQuery(/*world, aabb, result*/){
+	aabbQuery(world: World, aabb: AABB, result: Array<Body>){
 		// To be implemented in subclasses
 	};
 

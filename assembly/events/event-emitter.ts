@@ -14,8 +14,8 @@
 	 */
 export default class EventEmitter{
 
-	private tmpArray: Function[] = [];
 	private _listeners: {[name: string]: Function[]} = {};
+	private _contexts: {[name: string]: object[]} = {};
 
 
 	/**
@@ -29,15 +29,15 @@ export default class EventEmitter{
 	 *         console.log('myEvt was triggered!');
 	 *     });
 	 */
-	// TODO: try to remove this unknown type. Might cause problems with webassembly.
 	on ( type: string, listener: Function, context: object ): EventEmitter {
-		//listener.context = context || this; // Not sure what this does. Maybe nothing.
 		
 		if ( this._listeners[ type ] === undefined ) {
 			this._listeners[ type ] = [];
+			this._contexts[ type ] = [];
 		}
 		if ( this._listeners[ type ].indexOf( listener ) === - 1 ) {
 			this._listeners[ type ].push( listener );
+			this._contexts[ type ].push( context );
 		}
 		return this;
 	}
@@ -59,6 +59,7 @@ export default class EventEmitter{
 		var index = this._listeners[ type ].indexOf( listener );
 		if ( index !== - 1 ) {
 			this._listeners[ type ].splice( index, 1 );
+			this._contexts[ type ].splice( index, 1 );
 		}
 		return this;
 	}
@@ -105,21 +106,24 @@ export default class EventEmitter{
 		if ( this._listeners === undefined ){
 			return this;
 		}
-		var listeners = this._listeners;
-		var listenerArray = listeners[ event.type ];
+		let listenerArray = this._listeners[ event.type ];
+		let contextArray = this._contexts[ event.type ];
 		if ( listenerArray !== undefined ) {
 			event.target = this;
 
 			// Need to copy the listener array, in case some listener was added/removed inside a listener
-			for (var i = 0, l = listenerArray.length; i < l; i++) {
-				this.tmpArray[i] = listenerArray[i];
+			let tmpListenerArray = [];
+			let tmpContextArray = [];
+			for (let i = 0, l = listenerArray.length; i < l; i++) {
+				tmpListenerArray.push(listenerArray[i]);
+				tmpContextArray.push(contextArray[i]);
 			}
-			for (var i = 0, l = tmpArray.length; i < l; i++) {
-				var listener = this.tmpArray[ i ];
-				//listener.call( listener.context, event ); // TODO: had to comment this because context doesn't exist.
-				listener.call( null, event );
+			for (let i = 0, l = listenerArray.length; i < l; i++) {
+				let listener = listenerArray[ i ];
+				let context = contextArray[ i ];
+				listener.call( context, event );
 			}
-			tmpArray.length = 0;
+			
 		}
 		return this;
 	}
