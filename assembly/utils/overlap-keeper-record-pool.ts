@@ -1,31 +1,34 @@
-var OverlapKeeperRecord = require('./OverlapKeeperRecord');
-var Pool = require('./Pool');
+import Pool from "./pool";
+import OverlapKeeperRecord from "./overlap-keeper-record";
 
-module.exports = OverlapKeeperRecordPool;
 
-/**
- * @class
- */
-function OverlapKeeperRecordPool() {
-	Pool.apply(this, arguments);
+export default class OverlapKeeperRecordPool extends Pool{
+
+	/**
+	 * @class
+	 */
+	constructor(options?: {
+		size?: u32
+	}) {
+		super(options);
+	}
+
+	/**
+	 * @method create
+	 * @return {OverlapKeeperRecord}
+	 */
+	create(): OverlapKeeperRecord {
+		return new OverlapKeeperRecord();
+	};
+
+	/**
+	 * @method destroy
+	 * @param {OverlapKeeperRecord} record
+	 * @return {OverlapKeeperRecordPool}
+	 */
+	destroy(record: OverlapKeeperRecord) {
+		record.set(undefined,undefined,undefined,undefined);
+		return this;
+	};
+
 }
-OverlapKeeperRecordPool.prototype = new Pool();
-OverlapKeeperRecordPool.prototype.constructor = OverlapKeeperRecordPool;
-
-/**
- * @method create
- * @return {OverlapKeeperRecord}
- */
-OverlapKeeperRecordPool.prototype.create = function () {
-	return new OverlapKeeperRecord();
-};
-
-/**
- * @method destroy
- * @param {OverlapKeeperRecord} record
- * @return {OverlapKeeperRecordPool}
- */
-OverlapKeeperRecordPool.prototype.destroy = function (record) {
-	record.bodyA = record.bodyB = record.shapeA = record.shapeB = null;
-	return this;
-};

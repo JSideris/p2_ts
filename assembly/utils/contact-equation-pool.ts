@@ -1,31 +1,33 @@
-var ContactEquation = require('../equations/ContactEquation');
-var Pool = require('./Pool');
+import Pool from "./pool";
+import ContactEquation from "../equations/contact-equation";
 
-module.exports = ContactEquationPool;
 
-/**
- * @class
- */
-function ContactEquationPool() {
-	Pool.apply(this, arguments);
+export default class ContactEquationPool extends Pool{
+
+	/**
+	 * @class
+	 */
+	constructor(options?: {
+		size?: u32
+	}) {
+		super(options);
+	}
+
+	/**
+	 * @method create
+	 * @return {ContactEquation}
+	 */
+	create(): ContactEquation {
+		return new ContactEquation();
+	}
+
+	/**
+	 * @method destroy
+	 * @param {ContactEquation} equation
+	 * @return {ContactEquationPool}
+	 */
+	destroy(equation: ContactEquation): ContactEquationPool {
+		equation.bodyA = equation.bodyB = null;
+		return this;
+	}
 }
-ContactEquationPool.prototype = new Pool();
-ContactEquationPool.prototype.constructor = ContactEquationPool;
-
-/**
- * @method create
- * @return {ContactEquation}
- */
-ContactEquationPool.prototype.create = function () {
-	return new ContactEquation();
-};
-
-/**
- * @method destroy
- * @param {ContactEquation} equation
- * @return {ContactEquationPool}
- */
-ContactEquationPool.prototype.destroy = function (equation) {
-	equation.bodyA = equation.bodyB = null;
-	return this;
-};

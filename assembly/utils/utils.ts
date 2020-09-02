@@ -12,13 +12,9 @@ class Utils{
 	 * @param  {Array} a
 	 * @param  {Array} b
 	 */
-	appendArray(a,b){
-		if (b.length < 150000) {
-			a.push.apply(a, b);
-		} else {
-			for (var i = 0, len = b.length; i !== len; ++i) {
-				a.push(b[i]);
-			}
+	appendArray(a:Array<any>,b:Array<any>){
+		for (var i = 0, len = b.length; i !== len; ++i) {
+			a.push(b[i]);
 		}
 	}
 
@@ -30,7 +26,7 @@ class Utils{
 	 * @param  {Number} index
 	 * @param  {Number} howmany
 	 */
-	splice(array,index,howmany){
+	splice(array: Array<any>,index: u32,howmany: u32){
 		howmany = howmany || 1;
 		for (var i=index, len=array.length-howmany; i < len; i++){
 			array[i] = array[i + howmany];
@@ -45,7 +41,7 @@ class Utils{
 	 * @param  {Array} array
 	 * @param  {Number} element
 	 */
-	arrayRemove(array, element){
+	arrayRemove(array: Array<any>, element: any){
 		var idx = array.indexOf(element);
 		if(idx!==-1){
 			this.splice(array, idx, 1);
@@ -59,7 +55,7 @@ class Utils{
 	 * @param  {object} a
 	 * @param  {object} b
 	 */
-	extend(a,b){
+	extend(a: any,b: any){
 		for(var key in b){
 			a[key] = b[key];
 		}
@@ -71,31 +67,31 @@ class Utils{
 	 * @method shallowClone
 	 * @param  {object} obj
 	 */
-	shallowClone(obj){
+	shallowClone(obj: any){ // Might not be used anymore.
 		var newObj = {};
 		this.extend(newObj, obj);
 		return newObj;
 	}
 
-	/**
-	 * Extend an options object with default values.
-	 * @deprecated Not used internally, will be removed.
-	 * @static
-	 * @method defaults
-	 * @param  {object} options The options object. May be falsy: in this case, a new object is created and returned.
-	 * @param  {object} defaults An object containing default values.
-	 * @return {object} The modified options object.
-	 */
-	defaults(options, defaults){
-		console.warn('Utils.defaults is deprecated.');
-		options = options || {};
-		for(var key in defaults){
-			if(!(key in options)){
-				options[key] = defaults[key];
-			}
-		}
-		return options;
-	}
+	// /**
+	//  * Extend an options object with default values.
+	//  * @deprecated Not used internally, will be removed.
+	//  * @static
+	//  * @method defaults
+	//  * @param  {object} options The options object. May be falsy: in this case, a new object is created and returned.
+	//  * @param  {object} defaults An object containing default values.
+	//  * @return {object} The modified options object.
+	//  */
+	// defaults(options, defaults){
+	// 	console.warn('Utils.defaults is deprecated.');
+	// 	options = options || {};
+	// 	for(var key in defaults){
+	// 		if(!(key in options)){
+	// 			options[key] = defaults[key];
+	// 		}
+	// 	}
+	// 	return options;
+	// }
 }
 
 export default new Utils();

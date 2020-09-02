@@ -1,41 +1,50 @@
-module.exports = OverlapKeeperRecord;
+import Shape from "../shapes/shape";
+import Body from "../objects/body";
 
-/**
- * Overlap data container for the OverlapKeeper
- * @class OverlapKeeperRecord
- * @constructor
- * @param {Body} bodyA
- * @param {Shape} shapeA
- * @param {Body} bodyB
- * @param {Shape} shapeB
- */
-function OverlapKeeperRecord(bodyA, shapeA, bodyB, shapeB){
-    /**
-     * @property {Shape} shapeA
-     */
-    this.shapeA = shapeA;
-    /**
-     * @property {Shape} shapeB
-     */
-    this.shapeB = shapeB;
-    /**
-     * @property {Body} bodyA
-     */
-    this.bodyA = bodyA;
-    /**
-     * @property {Body} bodyB
-     */
-    this.bodyB = bodyB;
+
+export default class OverlapKeeperRecord{
+	/**
+	 * @property {Shape} shapeA
+	 */
+	shapeA?: Shape;
+	/**
+	 * @property {Shape} shapeB
+	 */
+	shapeB?: Shape;
+	/**
+	 * @property {Body} bodyA
+	*/
+	bodyA?: Body;
+	/**
+	 * @property {Body} bodyB
+	 */
+	bodyB?: Body;
+
+	/**
+	 * Overlap data container for the OverlapKeeper
+	 * @class OverlapKeeperRecord
+	 * @constructor
+	 * @param {Body} bodyA
+	 * @param {Shape} shapeA
+	 * @param {Body} bodyB
+	 * @param {Shape} shapeB
+	 */
+	constructor(bodyA?: Body, shapeA?: Shape, bodyB?: Body, shapeB?: Shape){
+		this.set(bodyA, shapeA, bodyB, shapeB);
+	}
+
+	/**
+	 * Set the data for the record
+	 * @method set
+	 * @param {Body} bodyA
+	 * @param {Shape} shapeA
+	 * @param {Body} bodyB
+	 * @param {Shape} shapeB
+	 */
+	set(bodyA?: Body, shapeA?: Shape, bodyB?: Body, shapeB?: Shape){
+		this.shapeA = shapeA;
+		this.shapeB = shapeB;
+		this.bodyA = bodyA;
+		this.bodyB = bodyB;
+	};
 }
-
-/**
- * Set the data for the record
- * @method set
- * @param {Body} bodyA
- * @param {Shape} shapeA
- * @param {Body} bodyB
- * @param {Shape} shapeB
- */
-OverlapKeeperRecord.prototype.set = function(bodyA, shapeA, bodyB, shapeB){
-    OverlapKeeperRecord.call(this, bodyA, shapeA, bodyB, shapeB);
-};

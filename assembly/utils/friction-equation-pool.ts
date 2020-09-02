@@ -1,31 +1,33 @@
-var FrictionEquation = require('../equations/FrictionEquation');
-var Pool = require('./Pool');
+import Pool from "./pool";
+import FrictionEquation from "../equations/friction-equation";
 
-module.exports = FrictionEquationPool;
 
-/**
- * @class
- */
-function FrictionEquationPool() {
-	Pool.apply(this, arguments);
+export default class FrictionEquationPool extends Pool{
+
+	/**
+	 * @class
+	 */
+	constructor(options?: {
+		size?: u32
+	}) {
+		super(options);
+	}
+
+	/**
+	 * @method create
+	 * @return {FrictionEquation}
+	 */
+	create(): FrictionEquation {
+		return new FrictionEquation();
+	};
+
+	/**
+	 * @method destroy
+	 * @param {FrictionEquation} equation
+	 * @return {FrictionEquationPool}
+	 */
+	destroy(equation: FrictionEquation): FrictionEquationPool {
+		equation.bodyA = equation.bodyB = null;
+		return this;
+	};
 }
-FrictionEquationPool.prototype = new Pool();
-FrictionEquationPool.prototype.constructor = FrictionEquationPool;
-
-/**
- * @method create
- * @return {FrictionEquation}
- */
-FrictionEquationPool.prototype.create = function () {
-	return new FrictionEquation();
-};
-
-/**
- * @method destroy
- * @param {FrictionEquation} equation
- * @return {FrictionEquationPool}
- */
-FrictionEquationPool.prototype.destroy = function (equation) {
-	equation.bodyA = equation.bodyB = null;
-	return this;
-};
