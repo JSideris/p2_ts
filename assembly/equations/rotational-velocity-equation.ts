@@ -1,31 +1,35 @@
-var Equation = require("./Equation");
+import Equation from "./Equation";
+import Body from "../objects/body";
 
-module.exports = RotationalVelocityEquation;
 
-/**
- * Syncs rotational velocity of two bodies, or sets a relative velocity (motor).
- *
- * @class RotationalVelocityEquation
- * @constructor
- * @extends Equation
- * @param {Body} bodyA
- * @param {Body} bodyB
- */
-function RotationalVelocityEquation(bodyA, bodyB){
-    Equation.call(this, bodyA, bodyB, -Number.MAX_VALUE, Number.MAX_VALUE);
-    this.relativeVelocity = 1;
-    this.ratio = 1;
+export default class RotationalVelocityEquation extends Equation{
+	ratio: number;
+
+	/**
+	 * Syncs rotational velocity of two bodies, or sets a relative velocity (motor).
+	 *
+	 * @class RotationalVelocityEquation
+	 * @constructor
+	 * @extends Equation
+	 * @param {Body} bodyA
+	 * @param {Body} bodyB
+	 */
+	constructor(bodyA: Body, bodyB: Body){
+		super(bodyA, bodyB, -Infinity, Infinity);
+		this.relativeVelocity = 1;
+		this.ratio = 1;
+	}
+	
+	computeB(a: f32,b: f32,h: f32): f32{
+		var G = this.G;
+		G[2] = -1;
+		G[5] = this.ratio;
+
+		var GiMf = this.computeGiMf();
+		var GW = this.computeGW();
+		var B = - GW * b - h*GiMf;
+
+		return B;
+	}
+
 }
-RotationalVelocityEquation.prototype = new Equation();
-RotationalVelocityEquation.prototype.constructor = RotationalVelocityEquation;
-RotationalVelocityEquation.prototype.computeB = function(a,b,h){
-    var G = this.G;
-    G[2] = -1;
-    G[5] = this.ratio;
-
-    var GiMf = this.computeGiMf();
-    var GW = this.computeGW();
-    var B = - GW * b - h*GiMf;
-
-    return B;
-};
