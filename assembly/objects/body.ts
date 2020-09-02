@@ -16,7 +16,7 @@ import Shape from "../shapes/Shape";
 
 var _idCounter = 0;
 
-export default class Body{
+export default class Body extends EventEmitter{
 
 	/**
 	 * The body identifier. Read only!
@@ -503,9 +503,9 @@ export default class Body{
 		ccdSpeedThreshold?: f32,
 		ccdIterations?: f32,
 	}){
+		super(options);
 		options = options || {};
 
-		EventEmitter.call(this);
 
 		this.id = options.id ?? ++_idCounter;
 		this.mass = options.mass || 0;
@@ -1022,10 +1022,6 @@ export default class Body{
 		return true;
 	}
 
-	var adjustCenterOfMass_tmp2 = vec2create(),
-		adjustCenterOfMass_tmp3 = vec2create(),
-		adjustCenterOfMass_tmp4 = vec2create();
-
 	/**
 	 * Moves the shape offsets so their center of mass becomes the body center of mass.
 	 * @method adjustCenterOfMass
@@ -1038,6 +1034,11 @@ export default class Body{
 	 *     console.log(shape.position); // [0, 0]
 	 */
 	adjustCenterOfMass(){
+
+		var adjustCenterOfMass_tmp2 = vec2create(),
+			adjustCenterOfMass_tmp3 = vec2create(),
+			adjustCenterOfMass_tmp4 = vec2create();
+
 		var offset_times_area = adjustCenterOfMass_tmp2,
 			sum =               adjustCenterOfMass_tmp3,
 			cm =                adjustCenterOfMass_tmp4,
@@ -1099,7 +1100,7 @@ export default class Body{
 	 * @method applyDamping
 	 * @param  {number} dt Current time step
 	 */
-	applyDamping(dt){
+	applyDamping(dt: f32){
 		if(this.type === Body.DYNAMIC){ // Only for dynamic bodies
 			var v = this.velocity;
 			vec2.scale(v, v, Math.pow(1 - this.damping,dt));
@@ -1181,15 +1182,16 @@ export default class Body{
 		return this.world.overlapKeeper.bodiesAreOverlapping(this, body);
 	}
 
-	var integrate_fhMinv = vec2create();
-	var integrate_velodt = vec2create();
-
 	/**
 	 * Move the body forward in time given its current velocity.
 	 * @method integrate
 	 * @param  {Number} dt
 	 */
 	integrate(dt){
+
+		var integrate_fhMinv = vec2create();
+		var integrate_velodt = vec2create();
+
 		var minv = this.invMass,
 			f = this.force,
 			pos = this.position,
@@ -1221,17 +1223,18 @@ export default class Body{
 		this.aabbNeedsUpdate = true;
 	}
 
-	var result = new RaycastResult();
-	var ray = new Ray({
-		mode: Ray.CLOSEST,
-		skipBackfaces: true
-	});
-	var direction = vec2create();
-	var end = vec2create();
-	var startToEnd = vec2create();
-	var rememberPosition = vec2create();
-
 	integrateToTimeOfImpact(dt){
+
+		var result = new RaycastResult();
+		var ray = new Ray({
+			mode: Ray.CLOSEST,
+			skipBackfaces: true
+		});
+
+		var direction = vec2create();
+		var end = vec2create();
+		var startToEnd = vec2create();
+		var rememberPosition = vec2create();
 
 		if(this.ccdSpeedThreshold < 0 || vec2.squaredLength(this.velocity) < Math.pow(this.ccdSpeedThreshold, 2)){
 			return false;
@@ -1405,12 +1408,6 @@ export default class Body{
 	 */
 	static SLEEPING: u16 = 2;
 }
-
-// TODO: fix this.
-//Body.prototype = new EventEmitter();
-//Body.prototype.constructor = Body;
-
-
 
 /**
  * @event sleepy

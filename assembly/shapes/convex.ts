@@ -9,6 +9,7 @@ import polyk from "../math/polyk";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
+import Material from "../material/Material";
 
 
 export default class Convex extends Shape {
@@ -30,7 +31,18 @@ export default class Convex extends Shape {
 	 */
 	public normals: Float32Array[];
 
+	/**
+	 * Triangulated version of this convex. The structure is Array of 3-Arrays, and each subarray contains 3 integers, referencing the vertices.
+	 * @property triangles
+	 * @type {Array}
+	 */
 	public triangles: Float32Array[];
+
+	/**
+	 * The center of mass of the Convex
+	 * @property centerOfMass
+	 * @type {Array}
+	 */
 	public centerOfMass: Float32Array;
 
 	/**
@@ -48,17 +60,21 @@ export default class Convex extends Shape {
 	 *     });
 	 *     body.addShape(convexShape);
 	 */
-	constructor(options?: {
-		vertices?: Float32Array[],
-		type?: u16
+	constructor(type?: u16, vertices?: Float32Array[], options?: {
+		position?: Float32Array
+		angle?: f32,
+		id?: u32,
+		collisionGroup?: i16,
+		collisionResponse?: boolean,
+		collisionMask?: i16,
+		material?: Material,
+		sensor?: boolean,
 	}){
-		options = options ? shallowClone(options) : {};
-
-		super(options);
+		super(type ?? Shape.CONVEX, options); 
 
 		// Copy the verts
 		this.vertices = [];
-		let newVertices = options?.vertices ?? [];
+		let newVertices = vertices ?? [];
 		this.vertices = [];
 		this.normals = [];
 		for(let i = 0; i < newVertices.length; i++){
@@ -68,18 +84,8 @@ export default class Convex extends Shape {
 
 		this.updateNormals();
 
-		/**
-		 * The center of mass of the Convex
-		 * @property centerOfMass
-		 * @type {Array}
-		 */
 		this.centerOfMass = vec2.create();
 
-		/**
-		 * Triangulated version of this convex. The structure is Array of 3-Arrays, and each subarray contains 3 integers, referencing the vertices.
-		 * @property triangles
-		 * @type {Array}
-		 */
 		this.triangles = [];
 
 		if(this.vertices.length){
@@ -93,9 +99,6 @@ export default class Convex extends Shape {
 		 * @type {Number}
 		 */
 		this.boundingRadius = 0;
-
-		if(options) options.type = options.type || Shape.CONVEX;
-		Shape.call(this, options);
 
 		this.updateBoundingRadius();
 		this.updateArea();

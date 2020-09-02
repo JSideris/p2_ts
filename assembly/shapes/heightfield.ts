@@ -6,6 +6,7 @@ import Shape from "./Shape";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
+import Material from "../material/Material";
 
 export default class Heightfield extends Shape{
 
@@ -63,23 +64,36 @@ export default class Heightfield extends Shape{
 	 *
 	 * @todo Should use a scale property with X and Y direction instead of just elementWidth
 	 */
-	constructor(options){
-		super(options);
-		options = options ? shallowClone(options) : {};
+	constructor(options?: {
+		position?: Float32Array
+		angle?: f32,
+		id?: u32,
+		collisionGroup?: i16,
+		collisionResponse?: boolean,
+		collisionMask?: i16,
+		material?: Material,
+		sensor?: boolean,
 
-		this.heights = options.heights ? options.heights.slice(0) : [];
+		height: f32,
+		heights: Array<f32>, // TODO: you know what to do.
+		maxValue: f32, // Why should this even take a min ard max? Just always calculate.
+		minValue: f32,
+		elementWidth: f32,
+	}){
 
-		this.maxValue = options.maxValue || null;
+		super(Shape.HEIGHTFIELD, options); 
 
-		this.minValue = options.minValue || null;
+		this.heights = options?.heights ? options.heights.slice(0) : [];
 
-		this.elementWidth = options.elementWidth !== undefined ? options.elementWidth : 0.1;
-
-		if(options.maxValue === undefined || options.minValue === undefined){
-			this.updateMaxMinValues();
+		
+		this.elementWidth = options?.elementWidth ?? 0.1;
+		
+		if(options?.maxValue && options?.minValue){
+			this.maxValue = options?.maxValue;
+			this.minValue = options?.minValue;
 		}
+		else this.updateMaxMinValues();
 
-		options.type = Shape.HEIGHTFIELD;
 	}
 
 	/**

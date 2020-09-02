@@ -6,6 +6,7 @@ import Shape from "./Shape";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
+import Material from "../material/Material";
 
 export default class Circle extends Shape{
 	radius: number;
@@ -26,13 +27,18 @@ export default class Circle extends Shape{
 	 *     body.addShape(circleShape);
 	 */
 	constructor(options?: {
-		radius?: f32,
-		vertices?: Float32Array[], // Don't use this.
-		type?: u16 // Don't use this.
+		position?: Float32Array
+		angle?: f32,
+		id?: u32,
+		collisionGroup?: i16,
+		collisionResponse?: boolean,
+		collisionMask?: i16,
+		material?: Material,
+		sensor?: boolean,
+
+		radius?: f32
 	}){
-		options = shallowClone(options ?? {});
-		options.type = Shape.CIRCLE;
-		super(options);
+		super(Shape.CIRCLE, options); // Just make sure this has the radius in it (if required).
 
 		/**
 		 * The radius of the circle.

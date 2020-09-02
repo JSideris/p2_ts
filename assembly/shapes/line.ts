@@ -6,6 +6,7 @@ import Shape from "./Shape";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 import AABB from "../collision/aabb";
+import Material from "../material/Material";
 
 export default class Line extends Shape{
 	/**
@@ -29,14 +30,21 @@ export default class Line extends Shape{
 	 *     });
 	 *     body.addShape(lineShape);
 	 */
-	constructor(options){
-		super(options);
-		options = options ? shallowClone(options) : {};
+	constructor(options?: {
+		position?: Float32Array
+		angle?: f32,
+		id?: u32,
+		collisionGroup?: i16,
+		collisionResponse?: boolean,
+		collisionMask?: i16,
+		material?: Material,
+		sensor?: boolean,
 
-		this.length = options.length !== undefined ? options.length : 1;
+		length?: f32
+	}){
+		super(Shape.LINE, options);
 
-		options.type = Shape.LINE;
-		Shape.call(this, options);
+		this.length = options?.length ?? 1;
 	}
 
 	computeMomentOfInertia(): f32{

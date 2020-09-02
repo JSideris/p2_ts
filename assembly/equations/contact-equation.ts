@@ -1,136 +1,140 @@
-var Equation = require("./Equation"),
-    vec2 = require('../math/vec2');
-
-module.exports = ContactEquation;
-
-/**
- * Non-penetration constraint equation. Tries to make the contactPointA and contactPointB vectors coincide, while keeping the applied force repulsive.
- *
- * @class ContactEquation
- * @constructor
- * @extends Equation
- * @param {Body} bodyA
- * @param {Body} bodyB
- */
-function ContactEquation(bodyA, bodyB){
-    Equation.call(this, bodyA, bodyB, 0, Number.MAX_VALUE);
-
-    /**
-     * Vector from body i center of mass to the contact point.
-     * @property contactPointA
-     * @type {Array}
-     */
-    this.contactPointA = vec2.create();
-    this.penetrationVec = vec2.create();
-
-    /**
-     * World-oriented vector from body A center of mass to the contact point.
-     * @property contactPointB
-     * @type {Array}
-     */
-    this.contactPointB = vec2.create();
-
-    /**
-     * The normal vector, pointing out of body i
-     * @property normalA
-     * @type {Array}
-     */
-    this.normalA = vec2.create();
-
-    /**
-     * The restitution to use (0=no bounciness, 1=max bounciness).
-     * @property restitution
-     * @type {Number}
-     */
-    this.restitution = 0;
-
-    /**
-     * This property is set to true if this is the first impact between the bodies (not persistant contact).
-     * @property firstImpact
-     * @type {Boolean}
-     * @readOnly
-     */
-    this.firstImpact = false;
-
-    /**
-     * The shape in body i that triggered this contact.
-     * @property shapeA
-     * @type {Shape}
-     */
-    this.shapeA = null;
-
-    /**
-     * The shape in body j that triggered this contact.
-     * @property shapeB
-     * @type {Shape}
-     */
-    this.shapeB = null;
-}
-ContactEquation.prototype = new Equation();
-ContactEquation.prototype.constructor = ContactEquation;
-ContactEquation.prototype.computeB = function(a,b,h){
-    var bi = this.bodyA,
-        bj = this.bodyB,
-        ri = this.contactPointA,
-        rj = this.contactPointB,
-        xi = bi.position,
-        xj = bj.position;
-
-    var n = this.normalA,
-        G = this.G;
-
-    // Caluclate cross products
-    var rixn = vec2.crossLength(ri,n),
-        rjxn = vec2.crossLength(rj,n);
-
-    // G = [-n -rixn n rjxn]
-    G[0] = -n[0];
-    G[1] = -n[1];
-    G[2] = -rixn;
-    G[3] = n[0];
-    G[4] = n[1];
-    G[5] = rjxn;
+import Body from "../objects/body";
+import Equation from "./Equation";
+import Shape from "../shapes/shape";
+import vec2 from "../math/vec2";
 
 
-    // Compute iteration
-    var GW, Gq;
-    if(this.firstImpact && this.restitution !== 0){
-        Gq = 0;
-        GW = (1/b)*(1+this.restitution) * this.computeGW();
-    } else {
-        // Calculate q = xj+rj -(xi+ri) i.e. the penetration vector
-        var penetrationVec = this.penetrationVec;
-        addSubSub(penetrationVec,xj,rj,xi,ri);
-        Gq = vec2.dot(n,penetrationVec) + this.offset;
-        GW = this.computeGW();
-    }
 
-    var GiMf = this.computeGiMf();
-    var B = - Gq * a - GW * b - h*GiMf;
-
-    return B;
-};
-
-function addSubSub(out, a, b, c, d){
-    out[0] = a[0] + b[0] - c[0] - d[0];
-    out[1] = a[1] + b[1] - c[1] - d[1];
+function addSubSub(out:Float32Array, a:Float32Array, b:Float32Array, c:Float32Array, d:Float32Array){
+	out[0] = a[0] + b[0] - c[0] - d[0];
+	out[1] = a[1] + b[1] - c[1] - d[1];
 }
 
-var vi = vec2.create();
-var vj = vec2.create();
-var relVel = vec2.create();
+export default class ContactEquation extends Equation{
 
-/**
- * Get the relative velocity along the normal vector.
- * @method getVelocityAlongNormal
- * @return {number}
- */
-ContactEquation.prototype.getVelocityAlongNormal = function(){
+		/**
+		 * Vector from body i center of mass to the contact point.
+		 * @property contactPointA
+		 * @type {Array}
+		 */
+		contactPointA: Float32Array = vec2.create();
+		penetrationVec: Float32Array = vec2.create();
 
-    this.bodyA.getVelocityAtPoint(vi, this.contactPointA);
-    this.bodyB.getVelocityAtPoint(vj, this.contactPointB);
+		/**
+		 * World-oriented vector from body A center of mass to the contact point.
+		 * @property contactPointB
+		 * @type {Array}
+		 */
+		contactPointB: Float32Array = vec2.create();
 
-    vec2.subtract(relVel, vi, vj);
+		/**
+		 * The normal vector, pointing out of body i
+		 * @property normalA
+		 * @type {Array}
+		 */
+		normalA: Float32Array = vec2.create();
 
-    return vec2.dot(this.normalA, relVel);
-};
+		/**
+		 * The restitution to use (0=no bounciness, 1=max bounciness).
+		 * @property restitution
+		 * @type {Number}
+		 */
+		restitution: f32 = 0;
+
+		/**
+		 * This property is set to true if this is the first impact between the bodies (not persistant contact).
+		 * @property firstImpact
+		 * @type {Boolean}
+		 * @readOnly
+		 */
+		firstImpact: boolean = false;
+
+		/**
+		 * The shape in body i that triggered this contact.
+		 * @property shapeA
+		 * @type {Shape}
+		 */
+		shapeA: Shape;
+
+		/**
+		 * The shape in body j that triggered this contact.
+		 * @property shapeB
+		 * @type {Shape}
+		 */
+		shapeB: Shape;
+
+	/**
+	 * Non-penetration constraint equation. Tries to make the contactPointA and contactPointB vectors coincide, while keeping the applied force repulsive.
+	 *
+	 * @class ContactEquation
+	 * @constructor
+	 * @extends Equation
+	 * @param {Body} bodyA
+	 * @param {Body} bodyB
+	 */
+	constructor(bodyA: Body, bodyB: Body){
+		super(bodyA, bodyB, 0, Infinity);
+	}
+
+	computeB(a: f32, b: f32, h: f32){
+		let bi = this.bodyA,
+			bj = this.bodyB,
+			ri = this.contactPointA,
+			rj = this.contactPointB,
+			xi = bi.position,
+			xj = bj.position;
+
+		let n = this.normalA,
+			G = this.G;
+
+		// Caluclate cross products
+		let rixn = vec2.crossLength(ri,n),
+			rjxn = vec2.crossLength(rj,n);
+
+		// G = [-n -rixn n rjxn]
+		G[0] = -n[0];
+		G[1] = -n[1];
+		G[2] = -rixn;
+		G[3] = n[0];
+		G[4] = n[1];
+		G[5] = rjxn;
+
+
+		// Compute iteration
+		let GW, Gq;
+		if(this.firstImpact && this.restitution !== 0){
+			Gq = 0;
+			GW = (1/b)*(1+this.restitution) * this.computeGW();
+		} else {
+			// Calculate q = xj+rj -(xi+ri) i.e. the penetration vector
+			let penetrationVec = this.penetrationVec;
+			addSubSub(penetrationVec,xj,rj,xi,ri);
+			Gq = vec2.dot(n,penetrationVec) + this.offset;
+			GW = this.computeGW();
+		}
+
+		let GiMf = this.computeGiMf();
+		let B = - Gq * a - GW * b - h*GiMf;
+
+		return B;
+	};
+
+	/**
+	 * Get the relative velocity along the normal vector.
+	 * @method getVelocityAlongNormal
+	 * @return {number}
+	 */
+	getVelocityAlongNormal(): f32{
+
+		let vi = vec2.create();
+		let vj = vec2.create();
+		let relVel = vec2.create();
+
+		this.bodyA.getVelocityAtPoint(vi, this.contactPointA);
+		this.bodyB.getVelocityAtPoint(vj, this.contactPointB);
+
+		vec2.subtract(relVel, vi, vj);
+
+		return vec2.dot(this.normalA, relVel);
+	};
+}

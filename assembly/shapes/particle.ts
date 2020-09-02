@@ -6,6 +6,7 @@ import Shape from "./Shape";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
+import Material from "../material/Material";
 
 export default class Particle extends Shape{
 
@@ -20,10 +21,17 @@ export default class Particle extends Shape{
 	 *     var shape = new Particle();
 	 *     body.addShape(shape);
 	 */
-	constructor(options){
-		options = options ? shallowClone(options) : {};
-		options.type = Shape.PARTICLE;
-		super(options);
+	constructor(options?: {
+		position?: Float32Array
+		angle?: f32,
+		id?: u32,
+		collisionGroup?: i16,
+		collisionResponse?: boolean,
+		collisionMask?: i16,
+		material?: Material,
+		sensor?: boolean,
+	}){
+		super(Shape.PARTICLE, options);
 	}
 
 	computeMomentOfInertia(){

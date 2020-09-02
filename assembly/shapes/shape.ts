@@ -142,23 +142,25 @@ export default abstract class Shape
 	 * @param {boolean} [options.sensor=false]
 	 * @param {object} [options.type=0]
 	 */
-	constructor(options?: {
-		position?: Float32Array
-		angle?: f32,
-		type?: u16
-		id?: u32,
-		collisionGroup?: i16,
-		collisionResponse?: boolean,
-		collisionMask?: i16,
-		material?: Material,
-		sensor?: boolean,
-	}){
+	constructor(
+		type: u16,
+		options?: {
+			position?: Float32Array
+			angle?: f32,
+			id?: u32,
+			collisionGroup?: i16,
+			collisionResponse?: boolean,
+			collisionMask?: i16,
+			material?: Material,
+			sensor?: boolean,
+		}
+	){
 		if(options?.position){
 			vec2.copy(this.position, options.position);
 		}
 
 		this.angle = options?.angle ?? 0;
-		this.type = options?.type ?? 0;
+		this.type = type;
 		this.id = options?.id ?? ++Shape.idCounter;
 		this.collisionGroup = options?.collisionGroup ?? 1;
 		this.collisionResponse = options?.collisionResponse ?? true;

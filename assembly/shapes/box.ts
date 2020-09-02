@@ -5,6 +5,8 @@
 
 import Convex from "./Convex";
 import AABB from "../collision/aabb";
+import Shape from "./shape";
+import Material from "../material/Material";
 
 export default class Box extends Convex{
 	/**
@@ -38,12 +40,19 @@ export default class Box extends Convex{
 	 *     body.addShape(boxShape);
 	 */
 	constructor(options?: {
+		position?: Float32Array
+		angle?: f32,
+		id?: u32,
+		collisionGroup?: i16,
+		collisionResponse?: boolean,
+		collisionMask?: i16,
+		material?: Material,
+		sensor?: boolean,
+
 		width?: f32,
 		height?: f32,
-		vertices?: Float32Array[], // Don't use this.
-		type?: u16 // Don't use this.
 	}){
-		
+
 		let width:f32 = options?.width ?? 1;
 		let height:f32 = options?.height ?? 1;
 
@@ -57,10 +66,7 @@ export default class Box extends Convex{
 			vec2.fromValues(-hw,  hh)
 		];
 
-		options = shallowClone(options ?? {});
-		options.vertices = verts;
-		options.type = Shape.BOX;
-		super(options);
+		super(Shape.BOX, verts, options);
 
 		this.height = height;		
 		this.width = width;		
