@@ -85,17 +85,17 @@ export default class Ray{
 	 * @param {number} [options.mode=Ray.ANY]
 	 * @param {Function} [options.callback]
 	 */
-	constructor(options: {
-			from: Float32Array,
-			to: Float32Array,
-			checkCollisionResponse: boolean,
-			skipBackfaces: boolean,
-			collisionMask: i16,
-			collisionGroup: i16,
-			mode: u16,
-			callback: Function
+	constructor(options?: {
+			from?: Float32Array,
+			to?: Float32Array,
+			checkCollisionResponse?: boolean,
+			skipBackfaces?: boolean,
+			collisionMask?: i16,
+			collisionGroup?: i16,
+			mode?: u16,
+			callback?: Function
 		}){
-		options = options || {};
+		options = options ?? {};
 
 		this.from = options.from ? vec2.clone(options.from) : vec2.create();
 

@@ -4,15 +4,16 @@ import vec2 from "../math/vec2";
 const add = vec2.add, sub = vec2.subtract, vec2create = vec2.create;
 
 import World from "../world/world";
-
-import decomp from "poly-decomp";
+import Shape from "../shapes/shape";
+import AABB from "../collision/aabb";
+import decomp from "../math/poly-decomp";
 import Convex from "../shapes/Convex";
-import RaycastResult from "../collision/RaycastResult";
-import Ray from "../collision/Ray";
-import AABB from "../collision/AABB";
-import EventEmitter from "../events/EventEmitter");
-import BodyTypes from "./body-types";
-import Shape from "../shapes/Shape";
+import Ray from "../collision/ray";
+import RaycastResult from "../collision/raycast-result";
+//decomp = require('poly-decomp')
+
+var integrate_fhMinv = vec2create();
+var integrate_velodt = vec2create();
 
 var _idCounter = 0;
 
@@ -40,7 +41,7 @@ export default class Body extends EventEmitter{
 	 * @property world
 	 * @type {World}
 	 */
-	public world: World = null;
+	public world: World;
 
 	/**
 	 * The shapes of the body.
@@ -288,7 +289,7 @@ export default class Body extends EventEmitter{
 	 *         type: Body.KINEMATIC // Type can be set via the options object.
 	 *     });
 	 */
-	public type: f32 = BodyTypes.STATIC;
+	public type: f32 = Body.STATIC;
 
 	/**
 	 * Bounding circle radius. Update with {{#crossLink "Body/updateBoundingRadius:method"}}{{/crossLink}}.
@@ -338,7 +339,7 @@ export default class Body extends EventEmitter{
 	 * @type {Number}
 	 * @default Body.AWAKE
 	 */
-	public sleepState: u16 = BodyTypes.AWAKE;
+	public sleepState: u16 = Body.AWAKE;
 
 	/**
 	 * If the speed (the norm of the velocity) is smaller than this value, the body is considered sleepy.
@@ -504,45 +505,44 @@ export default class Body extends EventEmitter{
 		ccdIterations?: f32,
 	}){
 		super(options);
-		options = options || {};
 
 
-		this.id = options.id ?? ++_idCounter;
-		this.mass = options.mass || 0;
-		this.fixedRotation = !!options.fixedRotation;
-		this.fixedX = !!options.fixedX;
-		this.fixedY = !!options.fixedY;
+		this.id = options?.id ?? ++_idCounter;
+		this.mass = options?.mass ?? 0;
+		this.fixedRotation = options?.fixedRotation ?? false;
+		this.fixedX = options?.fixedX ?? false;
+		this.fixedY = options?.fixedY ?? false;
 		this.massMultiplier = vec2create();
-		this.position = options.position ? vec2.clone(options.position) : vec2create();
+		this.position = options?.position ? vec2.clone(options.position) : vec2create();
 		this.interpolatedPosition = vec2.clone(this.position);
 		this.previousPosition = vec2.clone(this.position);
-		this.velocity = options.velocity ? vec2.clone(options.velocity) : vec2create();
+		this.velocity = options?.velocity ? vec2.clone(options.velocity) : vec2create();
 		this.vlambda = vec2create();
-		this.angle = options.angle || 0;
+		this.angle = options?.angle ?? 0;
 		this.previousAngle = this.angle;
 		this.interpolatedAngle = this.angle;
-		this.angularVelocity = options.angularVelocity || 0;
-		this.force = options.force ? vec2.clone(options.force) : vec2create();
-		this.angularForce = options.angularForce || 0;
-		this.damping = options.damping !== undefined ? options.damping : 0.1;
-		this.angularDamping = options.angularDamping !== undefined ? options.angularDamping : 0.1;
-		this.sleepTimeLimit = options.sleepTimeLimit !== undefined ? options.sleepTimeLimit : 1;
+		this.angularVelocity = options?.angularVelocity ?? 0;
+		this.force = options?.force ? vec2.clone(options.force) : vec2create();
+		this.angularForce = options?.angularForce ?? 0;
+		this.damping = options?.damping ?? 0.1;
+		this.angularDamping = options?.angularDamping ?? 0.1;
+		this.sleepTimeLimit = options?.sleepTimeLimit ?? 1;
 
-		if(options.type !== undefined){
+		if(options?.type !== undefined){
 			this.type = options.type;
-		} else if(!options.mass){
-			this.type = BodyTypes.STATIC;
+		} else if(!(options?.mass)){
+			this.type = Body.STATIC;
 		} else {
-			this.type = BodyTypes.DYNAMIC;
+			this.type = Body.DYNAMIC;
 		}
 
 		this.aabb = new AABB();
-		this.allowSleep = options.allowSleep !== undefined ? options.allowSleep : true;
-		this.sleepSpeedLimit = options.sleepSpeedLimit !== undefined ? options.sleepSpeedLimit : 0.2;
-		this.gravityScale = options.gravityScale !== undefined ? options.gravityScale : 1;
-		this.collisionResponse = options.collisionResponse !== undefined ? options.collisionResponse : true;
-		this.ccdSpeedThreshold = options.ccdSpeedThreshold !== undefined ? options.ccdSpeedThreshold : -1;
-		this.ccdIterations = options.ccdIterations !== undefined ? options.ccdIterations : 10;
+		this.allowSleep = options?.allowSleep ?? true;
+		this.sleepSpeedLimit = options?.sleepSpeedLimit ?? 0.2;
+		this.gravityScale = options?.gravityScale ?? 1;
+		this.collisionResponse = options?.collisionResponse ?? true;
+		this.ccdSpeedThreshold = options?.ccdSpeedThreshold ?? -1;
+		this.ccdIterations = options?.ccdIterations ?? 10;
 
 		this.updateMassProperties();
 	}
@@ -552,7 +552,7 @@ export default class Body extends EventEmitter{
 	 * @method updateSolveMassProperties
 	 */
 	updateSolveMassProperties(){
-		if(this.sleepState === BodyTypes.SLEEPING || this.type === BodyTypes.KINEMATIC){
+		if(this.sleepState === Body.SLEEPING || this.type === Body.KINEMATIC){
 			this.invMassSolve = 0;
 			this.invInertiaSolve = 0;
 		} else {
@@ -671,7 +671,7 @@ export default class Body extends EventEmitter{
 	 *     // Add another shape to the body, positioned 1 unit length from the body center of mass along the local y-axis, and rotated 90 degrees CCW.
 	 *     body.addShape(shape,[0,1],Math.PI/2);
 	 */
-	addShape(shape: Shape, offset: Float32Array, angle: f32){
+	addShape(shape: Shape, offset: Float32Array, angle: f32 = 0){
 		if(shape.body){
 			throw new Error('A shape can only be added to one body.');
 		}
@@ -731,7 +731,7 @@ export default class Body extends EventEmitter{
 	 *     body.updateMassProperties();
 	 */
 	updateMassProperties(){
-		if(this.type === BodyTypes.STATIC || this.type === BodyTypes.KINEMATIC){
+		if(this.type === Body.STATIC || this.type === Body.KINEMATIC){
 
 			// Consider making it infinity.
 			this.mass = Infinity;
@@ -936,7 +936,7 @@ export default class Body extends EventEmitter{
 	 * @param {Object} [options]
 	 * @param {Boolean} [options.optimalDecomp=false]   Set to true if you need optimal decomposition. Warning: very slow for polygons with more than 10 vertices.
 	 * @param {Boolean} [options.skipSimpleCheck=false] Set to true if you already know that the path is not intersecting itself.
-	 * @param {Boolean|Number} [options.removeCollinearPoints=false] Set to a number (angle threshold value) to remove collinear points, or false to keep all points.
+	 * @param {Number} [options.removeCollinearPoints=0] Set to a number (angle threshold value) to remove collinear points, or 0 to keep all points.
 	 * @return {Boolean} True on success, else false.
 	 * @example
 	 *     var body = new Body();
@@ -951,7 +951,7 @@ export default class Body extends EventEmitter{
 	 *     console.log(body.shapes); // [Convex, Convex, ...]
 	 */
 	fromPolygon(path: Float32Array[], options?: {
-		removeCollinearPoints?: Float32Array[],
+		removeCollinearPoints?: f32,
 		skipSimpleCheck?: boolean,
 		optimalDecomp?: boolean
 	}){
@@ -969,8 +969,8 @@ export default class Body extends EventEmitter{
 		// Make it counter-clockwise
 		decomp.makeCCW(p);
 
-		if(options?.removeCollinearPoints){
-			decomp.removeCollinearPoints(p, options.removeCollinearPoints);
+		if(options?.removeCollinearPoints != 0){
+			decomp.removeCollinearPoints(p, options?.removeCollinearPoints ?? 0);
 		}
 
 		// Check if any line segment intersects the path itself
@@ -987,11 +987,11 @@ export default class Body extends EventEmitter{
 		}
 
 		// Slow or fast decomp?
-		var convexes;
+		let convexes: Array<Array<Float32Array>>;
 		if(options?.optimalDecomp){
-			convexes = decomp.decomp(p);
+			convexes = decomp.decomp(p) ?? new Array<Array<Float32Array>>();
 		} else {
-			convexes = decomp.quickDecomp(p);
+			convexes = decomp.quickDecomp(p) ?? new Array<Array<Float32Array>>();
 		}
 
 		var cm = vec2create();
@@ -999,7 +999,7 @@ export default class Body extends EventEmitter{
 		// Add convexes
 		for(var i=0; i!==convexes.length; i++){
 			// Create convex
-			var c = new Convex({ vertices: convexes[i] });
+			var c = new Convex(undefined, convexes[i] );
 
 			// Move all vertices so its center of mass is in the local center of the convex
 			for(var j=0; j!==c.vertices.length; j++){
@@ -1009,7 +1009,7 @@ export default class Body extends EventEmitter{
 
 			vec2.copy(cm,c.centerOfMass);
 
-			c = new Convex({ vertices: c.vertices });
+			c = new Convex(undefined, c.vertices );
 
 			// Add the shape
 			this.addShape(c,cm);
@@ -1118,7 +1118,7 @@ export default class Body extends EventEmitter{
 		this.sleepState = Body.AWAKE;
 		this.idleTime = 0;
 		if(s !== Body.AWAKE){
-			this.emit(wakeUpEvent);
+			super.emit(wakeUpEvent);
 		}
 	}
 
@@ -1131,7 +1131,7 @@ export default class Body extends EventEmitter{
 		this.angularVelocity = this.angularForce = 0;
 		vec2.set(this.velocity,0,0);
 		vec2.set(this.force,0,0);
-		this.emit(sleepEvent);
+		super.emit(sleepEvent);
 	}
 
 	/**
@@ -1141,7 +1141,7 @@ export default class Body extends EventEmitter{
 	 * @param {boolean} dontSleep
 	 * @param {number} dt
 	 */
-	sleepTick(time, dontSleep, dt){
+	sleepTick(time: f32, dontSleep: boolean, dt: f32){
 		if(!this.allowSleep || this.type === Body.SLEEPING){
 			return;
 		}
@@ -1159,7 +1159,7 @@ export default class Body extends EventEmitter{
 			this.idleTime += dt;
 			if(this.sleepState !== Body.SLEEPY){
 				this.sleepState = Body.SLEEPY;
-				this.emit(sleepyEvent);
+				super.emit(sleepyEvent);
 			}
 		}
 
@@ -1178,7 +1178,7 @@ export default class Body extends EventEmitter{
 	 * @param  {Body} body
 	 * @return {boolean}
 	 */
-	overlaps(body){
+	overlaps(body: Body): boolean{
 		return this.world.overlapKeeper.bodiesAreOverlapping(this, body);
 	}
 
@@ -1187,12 +1187,9 @@ export default class Body extends EventEmitter{
 	 * @method integrate
 	 * @param  {Number} dt
 	 */
-	integrate(dt){
+	integrate(dt: f32){
 
-		var integrate_fhMinv = vec2create();
-		var integrate_velodt = vec2create();
-
-		var minv = this.invMass,
+		let minv = this.invMass,
 			f = this.force,
 			pos = this.position,
 			velo = this.velocity;
@@ -1223,18 +1220,18 @@ export default class Body extends EventEmitter{
 		this.aabbNeedsUpdate = true;
 	}
 
-	integrateToTimeOfImpact(dt){
+	integrateToTimeOfImpact(dt: f32): boolean{
 
-		var result = new RaycastResult();
-		var ray = new Ray({
+		let result = new RaycastResult();
+		let ray = new Ray({
 			mode: Ray.CLOSEST,
 			skipBackfaces: true
 		});
 
-		var direction = vec2create();
-		var end = vec2create();
-		var startToEnd = vec2create();
-		var rememberPosition = vec2create();
+		let direction = vec2create();
+		let end = vec2create();
+		let startToEnd = vec2create();
+		let rememberPosition = vec2create();
 
 		if(this.ccdSpeedThreshold < 0 || vec2.squaredLength(this.velocity) < Math.pow(this.ccdSpeedThreshold, 2)){
 			return false;
@@ -1242,11 +1239,11 @@ export default class Body extends EventEmitter{
 
 		// Ignore all the ignored body pairs
 		// This should probably be done somewhere else for optimization
-		var ignoreBodies = [];
-		var disabledPairs = this.world.disabledBodyCollisionPairs;
-		for(var i=0; i<disabledPairs.length; i+=2){
-			var bodyA = disabledPairs[i];
-			var bodyB = disabledPairs[i+1];
+		let ignoreBodies = [];
+		let disabledPairs = this.world.disabledBodyCollisionPairs;
+		for(let i=0; i<disabledPairs.length; i+=2){
+			let bodyA = disabledPairs[i];
+			let bodyB = disabledPairs[i+1];
 			if(bodyA === this){
 				ignoreBodies.push(bodyB);
 			} else if(bodyB === this){
@@ -1260,17 +1257,17 @@ export default class Body extends EventEmitter{
 		add(end, end, this.position);
 
 		sub(startToEnd, end, this.position);
-		var startToEndAngle = this.angularVelocity * dt;
-		var len = vec2.length(startToEnd);
+		let startToEndAngle = this.angularVelocity * dt;
+		let len = vec2.length(startToEnd);
 
-		var timeOfImpact = 1;
+		let timeOfImpact = 1;
 
-		var hitBody;
+		let hitBody;
 		vec2.copy(ray.from, this.position);
 		vec2.copy(ray.to, end);
 		ray.update();
-		for(var i=0; i<this.shapes.length; i++){
-			var shape = this.shapes[i];
+		for(let i=0; i<this.shapes.length; i++){
+			let shape = this.shapes[i];
 			result.reset();
 			ray.collisionGroup = shape.collisionGroup;
 			ray.collisionMask = shape.collisionMask;
@@ -1293,14 +1290,14 @@ export default class Body extends EventEmitter{
 		sub(startToEnd, end, this.position);
 		timeOfImpact = vec2.distance(end, this.position) / len; // guess
 
-		var rememberAngle = this.angle;
+		let rememberAngle = this.angle;
 		vec2.copy(rememberPosition, this.position);
 
 		// Got a start and end point. Approximate time of impact using binary search
-		var iter = 0;
-		var tmin = 0;
-		var tmid = timeOfImpact;
-		var tmax = 1;
+		let iter = 0;
+		let tmin = 0;
+		let tmid = timeOfImpact;
+		let tmax = 1;
 		while (tmax >= tmin && iter < this.ccdIterations) {
 			iter++;
 
@@ -1314,7 +1311,7 @@ export default class Body extends EventEmitter{
 			this.updateAABB();
 
 			// check overlap
-			var overlaps = this.aabb.overlaps(hitBody.aabb) && this.world.narrowphase.bodiesOverlap(this, hitBody, true);
+			let overlaps = this.aabb.overlaps(hitBody.aabb) && this.world.narrowphase.bodiesOverlap(this, hitBody, true);
 
 			if (overlaps) {
 				// change max to search lower interval
@@ -1357,7 +1354,7 @@ export default class Body extends EventEmitter{
 	 *     body.getVelocityAtPoint(result, point);
 	 *     console.log(result); // [1, 1]
 	 */
-	getVelocityAtPoint(result, relativePoint){
+	getVelocityAtPoint(result: Float32Array, relativePoint: Float32Array): Float32Array{
 		vec2.crossVZ(result, relativePoint, this.angularVelocity);
 		vec2.subtract(result, this.velocity, result);
 		return result;
