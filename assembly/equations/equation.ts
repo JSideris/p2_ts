@@ -115,7 +115,7 @@ export default class Equation{
 	 * @param {number} minForce Minimum force to apply. Default: -Infinity
 	 * @param {number} maxForce Maximum force to apply. Default: Infinity
 	 */
-	constructor(bodyA: Body, bodyB: Body, minForce: f32, maxForce: f32){
+	constructor(bodyA: Body, bodyB: Body, minForce?: f32, maxForce?: f32){
 
 		this.minForce = minForce ?? -Infinity;
 		this.maxForce = maxForce ?? Infinity;
@@ -293,6 +293,8 @@ export default class Equation{
 				G[4] * G[4] * invMassj * bj.massMultiplier[1] +
 				G[5] * G[5] *    invIj;
 	}
+
+	updateJacobian(){};
 
 	/**
 	 * Add constraint velocity to the bodies.
