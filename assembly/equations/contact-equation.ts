@@ -77,7 +77,7 @@ export default class ContactEquation extends Equation{
 	 * @param {Body} bodyA
 	 * @param {Body} bodyB
 	 */
-	constructor(bodyA: Body, bodyB: Body){
+	constructor(bodyA?: Body, bodyB?: Body){
 		super(bodyA, bodyB, 0, Infinity);
 	}
 
@@ -86,8 +86,8 @@ export default class ContactEquation extends Equation{
 			bj = this.bodyB,
 			ri = this.contactPointA,
 			rj = this.contactPointB,
-			xi = bi.position,
-			xj = bj.position;
+			xi = bi?.position ?? new Float32Array(2),
+			xj = bj?.position ?? new Float32Array(2);
 
 		let n = this.normalA,
 			G = this.G;
@@ -132,8 +132,8 @@ export default class ContactEquation extends Equation{
 	getVelocityAlongNormal(): f32{
 
 
-		this.bodyA.getVelocityAtPoint(vi, this.contactPointA);
-		this.bodyB.getVelocityAtPoint(vj, this.contactPointB);
+		this.bodyA && this.bodyA.getVelocityAtPoint(vi, this.contactPointA);
+		this.bodyB && this.bodyB.getVelocityAtPoint(vj, this.contactPointB);
 
 		vec2.subtract(relVel, vi, vj);
 

@@ -27,7 +27,7 @@ export default class ContactEquationPool extends Pool{
 	 * @return {ContactEquationPool}
 	 */
 	destroy(equation: ContactEquation): ContactEquationPool {
-		equation.bodyA = equation.bodyB = null;
+		equation.bodyA = equation.bodyB = undefined;
 		return this;
 	}
 }

@@ -36,14 +36,14 @@ export default class Equation{
 	 * @property bodyA
 	 * @type {Body}
 	 */
-	public bodyA: Body;
+	public bodyA?: Body;
 
 	/**
 	 * Second body participating in the constraint
 	 * @property bodyB
 	 * @type {Body}
 	 */
-	public bodyB: Body;
+	public bodyB?: Body;
 
 	/**
 	 * The stiffness of this equation. Typically chosen to a large number (~1e7), but can be chosen somewhat freely to get a stable simulation.
@@ -99,11 +99,11 @@ export default class Equation{
 	public enabled: boolean = true;
 
 	// Temp stuff
-	private maxForceDt: f32 = 0;
-	private minForceDt: f32 = 0;
-	private invC: f32 = 0;
-	private B: f32 = 0;
-	private lambda: f32 = 0;
+	maxForceDt: f32 = 0;
+	minForceDt: f32 = 0;
+	invC: f32 = 0;
+	B: f32 = 0;
+	lambda: f32 = 0;
 	index: i64 = -1;
 
 	/**
@@ -115,7 +115,7 @@ export default class Equation{
 	 * @param {number} minForce Minimum force to apply. Default: -Infinity
 	 * @param {number} maxForce Maximum force to apply. Default: Infinity
 	 */
-	constructor(bodyA: Body, bodyB: Body, minForce?: f32, maxForce?: f32){
+	constructor(bodyA?: Body, bodyB?: Body, minForce?: f32, maxForce?: f32){
 
 		this.minForce = minForce ?? -Infinity;
 		this.maxForce = maxForce ?? Infinity;

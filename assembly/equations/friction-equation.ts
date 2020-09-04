@@ -3,6 +3,7 @@ import Equation from "./Equation";
 import Body from "../objects/body";
 import ContactEquationPool from "../utils/contact-equation-pool";
 import Shape from "../shapes/shape";
+import ContactEquation from "./contact-equation";
 
 export default class FrictionEquation extends Equation{
 
@@ -32,7 +33,7 @@ export default class FrictionEquation extends Equation{
 	 * @property contactEquations
 	 * @type {ContactEquation[]}
 	 */
-	contactEquations: Array<ContactEquationPool> = [];
+	contactEquations: Array<ContactEquation> = [];
 
 	/**
 	 * The shape in body i that triggered this friction.
