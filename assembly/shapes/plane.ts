@@ -5,6 +5,9 @@ import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 
+var intersectPlane_planePointToFrom = vec2.create();
+var intersectPlane_normal = vec2.create();
+var intersectPlane_len = vec2.create();
 
 export default class Plane extends Shape{
 
@@ -102,9 +105,6 @@ export default class Plane extends Shape{
 	 * @param  {number} angle
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32){
-		var intersectPlane_planePointToFrom = vec2.create();
-		var intersectPlane_normal = vec2.create();
-		var intersectPlane_len = vec2.create();
 
 		var from = ray.from;
 		var to = ray.to;

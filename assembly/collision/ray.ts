@@ -6,6 +6,9 @@ import AABB from "./aabb";
 
 var intersectBody_worldPosition = vec2.create();
 
+var  v0 = vec2.create(),
+	intersect = vec2.create();
+
 export default class Ray{
 	/**
 	 * Ray start point.
@@ -320,8 +323,6 @@ export default class Ray{
 }
 
 function distanceFromIntersectionSquared(from: Float32Array, direction: Float32Array, position: Float32Array) {
-	let v0 = vec2.create(),
-		intersect = vec2.create();
 
 	// v0 is vector from from to position
 	vec2.subtract(v0, position, from);

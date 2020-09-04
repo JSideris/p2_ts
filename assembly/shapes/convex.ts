@@ -11,6 +11,25 @@ import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 import Material from "../material/Material";
 
+var dot = vec2.dot;
+
+var updateCenterOfMass_centroid = vec2.create(),
+	updateCenterOfMass_centroid_times_mass = vec2.create(),
+	updateCenterOfMass_a = vec2.create(),
+	updateCenterOfMass_b = vec2.create(),
+	updateCenterOfMass_c = vec2.create();
+
+var tmpVec1 = vec2.create();
+
+var intersectConvex_rayStart = vec2.create();
+var intersectConvex_rayEnd = vec2.create();
+var intersectConvex_normal = vec2.create();
+
+var pic_r0 = vec2.create();
+var pic_r1 = vec2.create();
+
+var tmpVec2 = vec2.create();
+var worldAxis = tmpVec2;
 
 export default class Convex extends Shape {
 
@@ -134,7 +153,6 @@ export default class Convex extends Shape {
 	 * @param  {Array} result
 	 */
 	projectOntoLocalAxis(localAxis: Float32Array, result: Float32Array){
-		var tmpVec1 = vec2.create(); // Moved from outer scope.
 
 		var max=null,
 			min=null,
@@ -164,8 +182,6 @@ export default class Convex extends Shape {
 	}
 
 	ConvexprojectOntoWorldAxis(localAxis: Float32Array, shapeOffset: Float32Array, shapeAngle: f32, result: Float32Array){
-		var tmpVec2 = vec2.create();
-		var worldAxis = tmpVec2; // Moved from outer scope.
 
 		this.projectOntoLocalAxis(localAxis, result);
 
@@ -220,20 +236,16 @@ export default class Convex extends Shape {
 	 * @method updateCenterOfMass
 	 */
 	updateCenterOfMass(){
-	var updateCenterOfMass_centroid = vec2.create(),
-		updateCenterOfMass_centroid_times_mass = vec2.create(),
-		updateCenterOfMass_a = vec2.create(),
-		updateCenterOfMass_b = vec2.create(),
-		updateCenterOfMass_c = vec2.create();
 
-	var triangles = this.triangles,
-			verts = this.vertices,
-			cm = this.centerOfMass,
-			centroid = updateCenterOfMass_centroid,
-			a = updateCenterOfMass_a,
-			b = updateCenterOfMass_b,
-			c = updateCenterOfMass_c,
-			centroid_times_mass = updateCenterOfMass_centroid_times_mass;
+
+		var triangles = this.triangles,
+				verts = this.vertices,
+				cm = this.centerOfMass,
+				centroid = updateCenterOfMass_centroid,
+				a = updateCenterOfMass_a,
+				b = updateCenterOfMass_b,
+				c = updateCenterOfMass_c,
+				centroid_times_mass = updateCenterOfMass_centroid_times_mass;
 
 		vec2.set(cm,0,0);
 		var totalArea = 0;
@@ -358,9 +370,6 @@ export default class Convex extends Shape {
 	 * @param  {number} angle
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32){
-		var intersectConvex_rayStart = vec2.create();
-		var intersectConvex_rayEnd = vec2.create();
-		var intersectConvex_normal = vec2.create();
 		var rayStart = intersectConvex_rayStart;
 		var rayEnd = intersectConvex_rayEnd;
 		var normal = intersectConvex_normal;
@@ -387,8 +396,6 @@ export default class Convex extends Shape {
 	}
 
 	pointTest(localPoint: Float32Array): boolean{
-		var pic_r0 = vec2.create();
-		var pic_r1 = vec2.create();
 
 		var r0 = pic_r0,
 			r1 = pic_r1,

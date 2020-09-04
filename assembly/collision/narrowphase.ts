@@ -46,6 +46,56 @@ var tmp1 = createVec2()
 ,   tmpArray: Array<Float32Array> = [];
 
 
+var findMaxSeparation_n = vec2.create();
+var findMaxSeparation_v1 = vec2.create();
+var findMaxSeparation_tmp = vec2.create();
+var findMaxSeparation_tmp2 = vec2.create();
+
+var findIncidentEdge_normal1 = vec2.create();
+
+var collidePolygons_tempVec = vec2.create();
+var collidePolygons_tmpVec = vec2.create();
+var collidePolygons_localTangent = vec2.create();
+var collidePolygons_localNormal = vec2.create();
+var collidePolygons_planePoint = vec2.create();
+var collidePolygons_tangent = vec2.create();
+var collidePolygons_normal = vec2.create();
+var collidePolygons_negativeTangent = vec2.create();
+var collidePolygons_v11 = vec2.create();
+var collidePolygons_v12 = vec2.create();
+var collidePolygons_dist = vec2.create();
+var collidePolygons_clipPoints1 = [vec2.create(), vec2.create()];
+var collidePolygons_clipPoints2 = [vec2.create(), vec2.create()];
+var collidePolygons_incidentEdge = [vec2.create(), vec2.create()];
+
+var pic_localPoint = createVec2(),
+	pic_r0 = createVec2(),
+	pic_r1 = createVec2();
+
+var bodiesOverlap_shapePositionA = createVec2(),
+	bodiesOverlap_shapePositionB = createVec2();
+
+var capsuleCapsule_tempVec1 = createVec2(),
+	capsuleCapsule_tempVec2 = createVec2();
+
+var convexCapsule_tempVec = createVec2();
+
+var planeCapsule_tmp1 = createVec2(), 
+	planeCapsule_tmp2 = createVec2();
+
+var circleHeightfield_candidate = createVec2(),
+	circleHeightfield_dist = createVec2(),
+	circleHeightfield_v0 = createVec2(),
+	circleHeightfield_v1 = createVec2(),
+	circleHeightfield_minCandidate = createVec2(),
+	circleHeightfield_worldNormal = createVec2(),
+	circleHeightfield_minCandidateNormal = createVec2();
+
+var convexHeightfield_v0 = createVec2(),
+	convexHeightfield_v1 = createVec2(),
+	convexHeightfield_tilePos = createVec2(),
+	convexHeightfield_tempConvexShape = new Convex(undefined, [createVec2(),createVec2(),createVec2(),createVec2()] );
+
 function setConvexToCapsuleShapeMiddle(convexShape: Box, capsuleShape: Capsule){
 	let capsuleRadius = capsuleShape.radius;
 	let halfCapsuleLength = capsuleShape.length * 0.5;
@@ -61,9 +111,7 @@ function setConvexToCapsuleShapeMiddle(convexShape: Box, capsuleShape: Capsule){
 */
 function pointInConvex(worldPoint: Float32Array, convexShape: Convex, convexOffset: Float32Array, convexAngle: f32): boolean{
 
-	let pic_localPoint = createVec2(),
-		pic_r0 = createVec2(),
-		pic_r1 = createVec2();
+
 
 	let localPoint = pic_localPoint,
 		r0 = pic_r0,
@@ -135,10 +183,6 @@ function addSub(out: Float32Array, a: Float32Array, b: Float32Array, c: Float32A
 function findMaxSeparation(maxSeparationOut: Float32Array, poly1: Convex, position1: Float32Array, angle1: f32, poly2: Convex, position2: Float32Array, angle2: f32): u32
 {
 	// Find the max separation between poly1 and poly2 using edge normals from poly1.
-	let findMaxSeparation_n = vec2.create();
-	let findMaxSeparation_v1 = vec2.create();
-	let findMaxSeparation_tmp = vec2.create();
-	let findMaxSeparation_tmp2 = vec2.create();
 
 	let count1 = poly1.vertices.length;
 	let count2 = poly2.vertices.length;
@@ -191,7 +235,6 @@ function findMaxSeparation(maxSeparationOut: Float32Array, poly1: Convex, positi
 
 function findIncidentEdge(clipVerticesOut: Float32Array[], poly1: Convex, position1: Float32Array, angle1: f32, edge1: u32, poly2: Convex, position2: Float32Array, angle2: f32): void
 {
-	let findIncidentEdge_normal1 = vec2.create();
 	
 	let normals1 = poly1.normals;
 	let count2 = poly2.vertices.length;
@@ -349,9 +392,6 @@ export default class Narrowphase{
 	 * @return {Boolean}
 	 */
 	bodiesOverlap(bodyA: Body, bodyB: Body, checkCollisionMasks: boolean = false): boolean{
-
-		let bodiesOverlap_shapePositionA = createVec2();
-		let bodiesOverlap_shapePositionB = createVec2();
 
 		let shapePositionA = bodiesOverlap_shapePositionA;
 		let shapePositionB = bodiesOverlap_shapePositionB;
@@ -808,8 +848,7 @@ export default class Narrowphase{
 		justTest: boolean
 	){
 
-		let convexCapsule_tempRect = new Box({ width: 1, height: 1 }),
-			convexCapsule_tempVec = createVec2();
+		let convexCapsule_tempRect = new Box({ width: 1, height: 1 });
 
 		// Check the circles
 		// Add offsets!
@@ -881,9 +920,6 @@ export default class Narrowphase{
 	 */
 	//Narrowphase.prototype[Shape.CAPSULE] =
 	capsuleCapsule(bi: Body, si: Capsule, xi: Float32Array, ai: f32, bj: Body, sj: Capsule, xj: Float32Array, aj: f32, justTest: boolean){
-
-		let capsuleCapsule_tempVec1 = createVec2();
-		let capsuleCapsule_tempVec2 = createVec2();
 		let capsuleCapsule_tempRect1 = new Box({ width: 1, height: 1 });
 
 		let enableFrictionBefore: boolean = false;
@@ -1917,9 +1953,7 @@ export default class Narrowphase{
 		justTest: boolean
 	): u16{
 
-		let planeCapsule_tmpCircle = new Circle({ radius: 1 }),
-			planeCapsule_tmp1 = createVec2(),
-			planeCapsule_tmp2 = createVec2();
+		let planeCapsule_tmpCircle = new Circle({ radius: 1 });
 
 		let end1 = planeCapsule_tmp1,
 			end2 = planeCapsule_tmp2,
@@ -2079,21 +2113,6 @@ export default class Narrowphase{
 		angleB: f32,
 		justTest: boolean
 	): u16{
-
-		let collidePolygons_tempVec = vec2.create();
-		let collidePolygons_tmpVec = vec2.create();
-		let collidePolygons_localTangent = vec2.create();
-		let collidePolygons_localNormal = vec2.create();
-		let collidePolygons_planePoint = vec2.create();
-		let collidePolygons_tangent = vec2.create();
-		let collidePolygons_normal = vec2.create();
-		let collidePolygons_negativeTangent = vec2.create();
-		let collidePolygons_v11 = vec2.create();
-		let collidePolygons_v12 = vec2.create();
-		let collidePolygons_dist = vec2.create();
-		let collidePolygons_clipPoints1 = [vec2.create(), vec2.create()];
-		let collidePolygons_clipPoints2 = [vec2.create(), vec2.create()];
-		let collidePolygons_incidentEdge = [vec2.create(), vec2.create()];
 		let maxManifoldPoints = 2;
 
 		let totalRadius = 0;
@@ -2255,13 +2274,6 @@ export default class Narrowphase{
 	//Narrowphase.prototype[Shape.CIRCLE | Shape.HEIGHTFIELD] =
 	circleHeightfield( circleBody: Body,circleShape: Circle,circlePos: Float32Array,
 						hfBody: Body,hfShape: Heightfield,hfPos: Float32Array, justTest: boolean, radius: f32 ): u16{
-		let circleHeightfield_candidate = createVec2(),
-			circleHeightfield_dist = createVec2(),
-			circleHeightfield_v0 = createVec2(),
-			circleHeightfield_v1 = createVec2(),
-			circleHeightfield_minCandidate = createVec2(),
-			circleHeightfield_worldNormal = createVec2(),
-			circleHeightfield_minCandidateNormal = createVec2();
 
 		let data = hfShape.heights,
 			w = hfShape.elementWidth,
@@ -2428,10 +2440,6 @@ export default class Narrowphase{
 	//Narrowphase.prototype[Shape.CONVEX | Shape.HEIGHTFIELD] =
 	convexHeightfield( convexBody: Body, convexShape: Convex, convexPos: Float32Array, convexAngle: f32,
 						hfBody: Body, hfShape: Heightfield, hfPos: Float32Array, justTest: boolean ){
-		let convexHeightfield_v0 = createVec2(),
-			convexHeightfield_v1 = createVec2(),
-			convexHeightfield_tilePos = createVec2(),
-			convexHeightfield_tempConvexShape = new Convex(undefined, [createVec2(),createVec2(),createVec2(),createVec2()] );
 			
 		let data = hfShape.heights,
 			w = hfShape.elementWidth,

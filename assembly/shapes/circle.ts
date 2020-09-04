@@ -8,6 +8,9 @@ import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 import Material from "../material/Material";
 
+var Ray_intersectSphere_intersectionPoint = vec2.create();
+var Ray_intersectSphere_normal = vec2.create();
+
 export default class Circle extends Shape{
 	radius: number;
 
@@ -101,8 +104,6 @@ export default class Circle extends Shape{
 	 * @param  {number} angle
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array/*, angle: f32*/): void{
-		var Ray_intersectSphere_intersectionPoint = vec2.create();
-		var Ray_intersectSphere_normal = vec2.create();
 		var from = ray.from,
 			to = ray.to,
 			r = this.radius;

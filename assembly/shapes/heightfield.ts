@@ -8,6 +8,12 @@ import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 import Material from "../material/Material";
 
+var intersectHeightfield_worldNormal = vec2.create();
+var intersectHeightfield_l0 = vec2.create();
+var intersectHeightfield_l1 = vec2.create();
+var intersectHeightfield_localFrom = vec2.create();
+var intersectHeightfield_localTo = vec2.create();
+
 export default class Heightfield extends Shape{
 
 	/**
@@ -195,12 +201,6 @@ export default class Heightfield extends Shape{
 	 * @param  {number} angle
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32){
-
-		var intersectHeightfield_worldNormal = vec2.create();
-		var intersectHeightfield_l0 = vec2.create();
-		var intersectHeightfield_l1 = vec2.create();
-		var intersectHeightfield_localFrom = vec2.create();
-		var intersectHeightfield_localTo = vec2.create();
 
 		var from = ray.from;
 		var to = ray.to;

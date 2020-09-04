@@ -2,6 +2,10 @@ import Equation from "./Equation";
 import vec2 from "../math/vec2";
 import Body from "../objects/body";
 
+var worldVectorA = vec2.create(),
+	worldVectorB = vec2.create(),
+	xAxis = vec2.fromValues(1,0),
+	yAxis = vec2.fromValues(0,1);
 
 export default class RotationalLockEquation extends Equation{
 	/**
@@ -33,10 +37,6 @@ export default class RotationalLockEquation extends Equation{
 	}
 
 	computeGq(){
-		var worldVectorA = vec2.create(),
-			worldVectorB = vec2.create(),
-			xAxis = vec2.fromValues(1,0),
-			yAxis = vec2.fromValues(0,1);
 
 		vec2.rotate(worldVectorA,xAxis,this.bodyA.angle+this.angle);
 		vec2.rotate(worldVectorB,yAxis,this.bodyB.angle);

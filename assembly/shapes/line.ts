@@ -8,6 +8,11 @@ import Ray from "../collision/ray";
 import AABB from "../collision/aabb";
 import Material from "../material/Material";
 
+var raycast_normal = vec2.create();
+var raycast_l0 = vec2.create();
+var raycast_l1 = vec2.create();
+var raycast_unit_y = vec2.fromValues(0,1);
+
 export default class Line extends Shape{
 	/**
 	 * Length of this line
@@ -82,11 +87,6 @@ export default class Line extends Shape{
 	 * @param  {array} position
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32){
-
-		var raycast_normal = vec2.create();
-		var raycast_l0 = vec2.create();
-		var raycast_l1 = vec2.create();
-		var raycast_unit_y = vec2.fromValues(0,1);
 
 		var from = ray.from;
 		var to = ray.to;

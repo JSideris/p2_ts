@@ -10,6 +10,11 @@ function addSubSub(out:Float32Array, a:Float32Array, b:Float32Array, c:Float32Ar
 	out[1] = a[1] + b[1] - c[1] - d[1];
 }
 
+
+var vi = vec2.create();
+var vj = vec2.create();
+var relVel = vec2.create();
+
 export default class ContactEquation extends Equation{
 
 		/**
@@ -126,9 +131,6 @@ export default class ContactEquation extends Equation{
 	 */
 	getVelocityAlongNormal(): f32{
 
-		let vi = vec2.create();
-		let vj = vec2.create();
-		let relVel = vec2.create();
 
 		this.bodyA.getVelocityAtPoint(vi, this.contactPointA);
 		this.bodyB.getVelocityAtPoint(vj, this.contactPointB);

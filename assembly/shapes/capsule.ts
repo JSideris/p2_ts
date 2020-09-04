@@ -33,6 +33,12 @@ function capsuleI(l: f32, r: f32) {
 	return boxI(l, 2 * r) + 2 * (semiI(r) + semiA(r) * Math.pow(d, 2));
 }
 
+var intersectCapsule_hitPointWorld = vec2.create();
+var intersectCapsule_normal = vec2.create();
+var intersectCapsule_l0 = vec2.create();
+var intersectCapsule_l1 = vec2.create();
+var intersectCapsule_unit_y = vec2.fromValues(0,1);
+
 export default class Capsule extends Shape{
 	/**
 	 * The distance between the end points.
@@ -147,11 +153,6 @@ export default class Capsule extends Shape{
 	 * @param  {number} angle
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32){
-		var intersectCapsule_hitPointWorld = vec2.create();
-		var intersectCapsule_normal = vec2.create();
-		var intersectCapsule_l0 = vec2.create();
-		var intersectCapsule_l1 = vec2.create();
-		var intersectCapsule_unit_y = vec2.fromValues(0,1);
 
 		var from = ray.from;
 		var to = ray.to;
