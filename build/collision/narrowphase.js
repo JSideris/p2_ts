@@ -278,162 +278,7 @@ var Narrowphase = /** @class */ (function () {
                 }
                 bodyA.toWorldFrame(shapePositionA, shapeA.position);
                 bodyB.toWorldFrame(shapePositionB, shapeB.position);
-                var result = 0;
-                if (shapeA.type > shapeB.type) {
-                    var bTmp = bodyB;
-                    bodyB = bodyA;
-                    bodyA = bTmp;
-                    var sTmp = shapeB;
-                    shapeB = shapeA;
-                    shapeA = sTmp;
-                    var pTmp = shapePositionB;
-                    shapePositionB = shapePositionA;
-                    shapePositionA = pTmp;
-                }
-                switch (shapeA.type | shapeB.type) {
-                    case 1: { // Circle/circle
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.circleCircle(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, true, sa.radius, sb.radius);
-                        break;
-                    }
-                    case 3: { // Particle/circle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.circleParticle(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, true);
-                        break;
-                    }
-                    case 5: { // Plane/circle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.circlePlane(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 33: // Box/circle.
-                    case 9: { // Convex/circle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.circleConvex(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true, sa.radius);
-                        break;
-                    }
-                    case 17: { // Line/circle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.circleLine(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true, 0, sa.radius);
-                        break;
-                    }
-                    case 65: { // Capsule/circle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.circleCapsule(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 129: { // Heightfield/circle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.circleHeightfield(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, true, sa.radius);
-                        break;
-                    }
-                    case 6: { // Plane/particle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.particlePlane(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 34: // Box/particle.
-                    case 10: { // Convex/particle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.particleConvex(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 10: { // Capsule/particle.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.particleCapsule(bodyA, sa, shapePositionA, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 36: // Box/plane.
-                    case 12: { // Convex/plane.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.planeConvex(bodyA, sa, shapePositionA, bodyA.angle + sa.angle, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 20: { // Line/plane.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.planeLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 68: { // Capsule/plane.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.planeCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 40: // Box/convex.
-                    case 8: { // Convex/convex.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.convexConvex(bodyA, sa, shapePositionA, bodyA.angle + sa.angle, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 24: { // Line/convex.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        // NOT SUPPORTED!
-                        // result = this.convexLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-                        // 	bodyB, sb, shapePositionB, bodyB.angle + sb.angle, 
-                        // 	true);
-                        break;
-                    }
-                    case 72: { // Capsule/convex.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.convexCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                    case 136: { // Heightfield/convex.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.convexHeightfield(bodyA, sa, shapePositionA, bodyA.angle + sa.angle, bodyB, sb, shapePositionB, true);
-                        break;
-                    }
-                    case 16: { // Line/line.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        // NOT SUPPORTED!
-                        // result = this.lineLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-                        // 	bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-                        // 	true);
-                        break;
-                    }
-                    case 48: { // Box/line.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        // NOT SUPPORTED!
-                        // result = this.lineBox(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-                        // 	bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-                        // 	true);
-                        break;
-                    }
-                    case 80: { // Capsule/line.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        // NOT SUPPORTED!
-                        // result = this.lineCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-                        // 	bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-                        // 	true);
-                        break;
-                    }
-                    case 64: { // Capsule/capsule.
-                        var sa = shapeA;
-                        var sb = shapeB;
-                        result = this.capsuleCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle, bodyB, sb, shapePositionB, bodyB.angle + sb.angle, true);
-                        break;
-                    }
-                }
+                var result = this.testContact(bodyA, shapeA, shapePositionA, bodyB, shapeB, shapePositionB, true);
                 if (result)
                     return true;
             }
@@ -570,6 +415,170 @@ var Narrowphase = /** @class */ (function () {
         return eq;
     };
     ;
+    Narrowphase.prototype.testContact = function (bodyA, shapeA, offsetA, bodyB, shapeB, offsetB, justTest
+    // meta?: {
+    // 	radiusA?: f32,
+    // 	radiusB?: f32
+    // }
+    ) {
+        var result = 0;
+        if (shapeA.type > shapeB.type) {
+            var bTmp = bodyB;
+            bodyB = bodyA;
+            bodyA = bTmp;
+            var sTmp = shapeB;
+            shapeB = shapeA;
+            shapeA = sTmp;
+            var pTmp = offsetB;
+            offsetB = offsetA;
+            offsetA = pTmp;
+        }
+        switch (shapeA.type | shapeB.type) {
+            case 1: { // Circle/circle
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.circleCircle(bodyA, sa, offsetA, bodyB, sb, offsetB, justTest, sa.radius, sb.radius);
+                break;
+            }
+            case 3: { // Particle/circle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.circleParticle(bodyA, sa, offsetA, bodyB, sb, offsetB, justTest);
+                break;
+            }
+            case 5: { // Plane/circle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.circlePlane(bodyA, sa, offsetA, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 33: // Box/circle.
+            case 9: { // Convex/circle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.circleConvex(bodyA, sa, offsetA, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest, sa.radius);
+                break;
+            }
+            case 17: { // Line/circle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.circleLine(bodyA, sa, offsetA, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest, 0, sa.radius);
+                break;
+            }
+            case 65: { // Capsule/circle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.circleCapsule(bodyA, sa, offsetA, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 129: { // Heightfield/circle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.circleHeightfield(bodyA, sa, offsetA, bodyB, sb, offsetB, justTest, sa.radius);
+                break;
+            }
+            case 6: { // Plane/particle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.particlePlane(bodyA, sa, offsetA, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 34: // Box/particle.
+            case 10: { // Convex/particle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.particleConvex(bodyA, sa, offsetA, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 10: { // Capsule/particle.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.particleCapsule(bodyA, sa, offsetA, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 36: // Box/plane.
+            case 12: { // Convex/plane.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.planeConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 20: { // Line/plane.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.planeLine(bodyA, sa, offsetA, bodyA.angle + sa.angle, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 68: { // Capsule/plane.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.planeCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 40: // Box/convex.
+            case 8: { // Convex/convex.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.convexConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 24: { // Line/convex.
+                var sa = shapeA;
+                var sb = shapeB;
+                // NOT SUPPORTED!
+                // result = this.convexLine(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+                // 	bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+                // 	justTest);
+                break;
+            }
+            case 72: { // Capsule/convex.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.convexCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+            case 136: { // Heightfield/convex.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.convexHeightfield(bodyA, sa, offsetA, bodyA.angle + sa.angle, bodyB, sb, offsetB, justTest);
+                break;
+            }
+            case 16: { // Line/line.
+                var sa = shapeA;
+                var sb = shapeB;
+                // NOT SUPPORTED!
+                // result = this.lineLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
+                // 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
+                // 	justTest);
+                break;
+            }
+            case 48: { // Box/line.
+                var sa = shapeA;
+                var sb = shapeB;
+                // NOT SUPPORTED!
+                // result = this.lineBox(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
+                // 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
+                // 	justTest);
+                break;
+            }
+            case 80: { // Capsule/line.
+                var sa = shapeA;
+                var sb = shapeB;
+                // NOT SUPPORTED!
+                // result = this.lineCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
+                // 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
+                // 	justTest);
+                break;
+            }
+            case 64: { // Capsule/capsule.
+                var sa = shapeA;
+                var sb = shapeB;
+                result = this.capsuleCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
+                break;
+            }
+        }
+        return result;
+    };
     /**
      * Convex/line narrowphase
      * @method convexLine

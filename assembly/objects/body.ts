@@ -36,7 +36,7 @@ export default class Body extends EventEmitter{
 	 * @property index
 	 * @type {Number}
 	 */
-	public index: i64;
+	public index: i64 = 0;
 
 	/**
 	 * The world that this body is added to (read only). This property is set to NULL if the body is not added to any world.
@@ -44,7 +44,7 @@ export default class Body extends EventEmitter{
 	 * @property world
 	 * @type {World}
 	 */
-	public world: World|null;
+	public world: World|null = null;
 
 	/**
 	 * The shapes of the body.
@@ -407,7 +407,7 @@ export default class Body extends EventEmitter{
 	 */
 	public islandId: f32 = -1;
 
-	public concavePath: Float32Array[]; // TODO: what is the type of this?
+	public concavePath: Float32Array[] = [];
 
 	// Should be private, but used by world.
 	_wakeUpAfterNarrowphase: boolean = false;
@@ -485,27 +485,27 @@ export default class Body extends EventEmitter{
 	 *     world.addBody(platformBody);
 	 */
 	constructor(options?: {
-		id: u32|null,
-		mass: f32|null,
-		fixedRotation: boolean|null,
-		fixedX: boolean|null,
-		fixedY: boolean|null,
-		position: Float32Array|null,
-		velocity: Float32Array|null,
-		angle: f32|null,
-		angularVelocity: f32|null,
-		force: Float32Array|null,
-		angularForce: f32|null,
-		damping: f32|null,
-		angularDamping: f32|null,
-		sleepTimeLimit: f32|null,
-		type: u16|null,
-		allowSleep: boolean|null,
-		sleepSpeedLimit: f32|null,
-		gravityScale: f32|null,
-		collisionResponse: boolean|null,
-		ccdSpeedThreshold: f32|null,
-		ccdIterations: f32|null
+		id?: u32,
+		mass?: f32,
+		fixedRotation?: boolean,
+		fixedX?: boolean,
+		fixedY?: boolean,
+		position?: Float32Array,
+		velocity?: Float32Array,
+		angle?: f32,
+		angularVelocity?: f32,
+		force?: Float32Array,
+		angularForce?: f32,
+		damping?: f32,
+		angularDamping?: f32,
+		sleepTimeLimit?: f32,
+		type?: u16,
+		allowSleep?: boolean,
+		sleepSpeedLimit?: f32,
+		gravityScale?: f32,
+		collisionResponse?: boolean,
+		ccdSpeedThreshold?: f32,
+		ccdIterations?: f32
 	}){
 		super();
 
@@ -531,7 +531,7 @@ export default class Body extends EventEmitter{
 		this.sleepTimeLimit = options?.sleepTimeLimit ?? 1;
 
 		if(options?.type !== undefined){
-			this.type = options.type;
+			this.type = options.type!;
 		} else if(!(options?.mass)){
 			this.type = Body.STATIC;
 		} else {
@@ -1267,7 +1267,7 @@ export default class Body extends EventEmitter{
 
 		let timeOfImpact = 1;
 
-		let hitBody;
+		let hitBody: Body|null = null;
 		vec2.copy(ray.from, this.position);
 		vec2.copy(ray.to, end);
 		ray.update();
@@ -1277,7 +1277,8 @@ export default class Body extends EventEmitter{
 			ray.collisionGroup = shape.collisionGroup;
 			ray.collisionMask = shape.collisionMask;
 			this.world.raycast(result, ray);
-			hitBody = result.body;
+			hitBody = result.body ?? null;
+			if(!hitBody) continue;
 
 			if(hitBody === this || ignoreBodies.indexOf(hitBody) !== -1){
 				hitBody = null;

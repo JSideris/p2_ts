@@ -31,6 +31,7 @@ var FrictionEquation = /** @class */ (function (_super) {
      * @extends Equation
      */
     function FrictionEquation(bodyA, bodyB, slipForce) {
+        if (slipForce === void 0) { slipForce = Infinity; }
         var _this = _super.call(this, bodyA, bodyB, -slipForce, slipForce) || this;
         /**
          * Relative vector from center of body A to the contact point, world oriented.
@@ -56,6 +57,20 @@ var FrictionEquation = /** @class */ (function (_super) {
          * @type {ContactEquation[]}
          */
         _this.contactEquations = [];
+        /**
+         * The shape in body i that triggered this friction.
+         * @property shapeA
+         * @type {Shape}
+         * @todo Needed? The shape can be looked up via contactEquation.shapeA...
+         */
+        _this.shapeA = null;
+        /**
+         * The shape in body j that triggered this friction.
+         * @property shapeB
+         * @type {Shape}
+         * @todo Needed? The shape can be looked up via contactEquation.shapeB...
+         */
+        _this.shapeB = null;
         /**
          * The friction coefficient to use.
          * @property frictionCoefficient

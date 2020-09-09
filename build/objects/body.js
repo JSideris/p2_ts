@@ -112,6 +112,20 @@ var Body = /** @class */ (function (_super) {
         */
         _this.id = -1;
         /**
+         * Index of the body in the World .bodies array. Is set to -1 if the body isn't added to a World.
+         * @readonly
+         * @property index
+         * @type {Number}
+         */
+        _this.index = 0;
+        /**
+         * The world that this body is added to (read only). This property is set to NULL if the body is not added to any world.
+         * @readonly
+         * @property world
+         * @type {World}
+         */
+        _this.world = null;
+        /**
          * The shapes of the body.
          *
          * @property shapes
@@ -362,6 +376,7 @@ var Body = /** @class */ (function (_super) {
          * @property {number} islandId
          */
         _this.islandId = -1;
+        _this.concavePath = [];
         // Should be private, but used by world.
         _this._wakeUpAfterNarrowphase = false;
         _this._shapeAABB = new aabb_1.default();
@@ -985,6 +1000,7 @@ var Body = /** @class */ (function (_super) {
         this.aabbNeedsUpdate = true;
     };
     Body.prototype.integrateToTimeOfImpact = function (dt) {
+        var _a;
         if (!this.world)
             return false;
         var result = new raycast_result_1.default();
@@ -1020,7 +1036,7 @@ var Body = /** @class */ (function (_super) {
         var startToEndAngle = this.angularVelocity * dt;
         var len = vec2_1.default.length(startToEnd);
         var timeOfImpact = 1;
-        var hitBody;
+        var hitBody = null;
         vec2_1.default.copy(ray.from, this.position);
         vec2_1.default.copy(ray.to, end);
         ray.update();
@@ -1030,7 +1046,9 @@ var Body = /** @class */ (function (_super) {
             ray.collisionGroup = shape.collisionGroup;
             ray.collisionMask = shape.collisionMask;
             this.world.raycast(result, ray);
-            hitBody = result.body;
+            hitBody = (_a = result.body) !== null && _a !== void 0 ? _a : null;
+            if (!hitBody)
+                continue;
             if (hitBody === this || ignoreBodies.indexOf(hitBody) !== -1) {
                 hitBody = null;
             }

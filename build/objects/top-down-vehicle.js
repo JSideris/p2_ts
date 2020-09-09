@@ -19,6 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var vec2_1 = __importDefault(require("../math/vec2"));
 var body_1 = __importDefault(require("./body"));
 var constraint_1 = __importDefault(require("../constraints/constraint"));
+var friction_equation_1 = __importDefault(require("../equations/friction-equation"));
 var worldVelocity = vec2_1.default.create();
 var relativePoint = vec2_1.default.create();
 var tmpVec = vec2_1.default.create();
@@ -82,7 +83,7 @@ var TopDownVehicle = /** @class */ (function () {
     TopDownVehicle.prototype.addToWorld = function (world) {
         this.world = world;
         world.addBody(this.groundBody);
-        world.on("preStep", this.preStepCallback);
+        world.on("preStep", this.preStepCallback, this);
         for (var i = 0; i < this.wheels.length; i++) {
             var wheel = this.wheels[i];
             world.addConstraint(wheel);
@@ -152,8 +153,8 @@ var WheelConstraint = /** @class */ (function (_super) {
          */
         _this.engineForce = 0;
         _this.vehicle = vehicle;
-        _this.forwardEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody);
-        _this.sideEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody);
+        _this.forwardEquation = new friction_equation_1.default(vehicle.chassisBody, vehicle.groundBody);
+        _this.sideEquation = new friction_equation_1.default(vehicle.chassisBody, vehicle.groundBody);
         _this.setSideFriction((_a = options === null || options === void 0 ? void 0 : options.sideFriction) !== null && _a !== void 0 ? _a : 5);
         /**
          * @property {Array} localForwardVector

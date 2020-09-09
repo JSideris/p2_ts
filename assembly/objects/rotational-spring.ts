@@ -50,11 +50,11 @@ export default class RotationalSpring extends Spring{
 	 * @method applyForce
 	 */
 	applyForce(){
-		var k = super.stiffness,
-			d = super.damping,
+		var k = this.stiffness,
+			d = this.damping,
 			l = this.restAngle,
-			bodyA = super.bodyA,
-			bodyB = super.bodyB,
+			bodyA = this.bodyA,
+			bodyB = this.bodyB,
 			x = bodyB.angle - bodyA.angle,
 			u = bodyB.angularVelocity - bodyA.angularVelocity;
 

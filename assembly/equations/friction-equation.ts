@@ -43,7 +43,7 @@ export default class FrictionEquation extends Equation{
 	 * @type {Shape}
 	 * @todo Needed? The shape can be looked up via contactEquation.shapeA...
 	 */
-	shapeA: Shape;
+	shapeA: Shape|null = null;
 
 	/**
 	 * The shape in body j that triggered this friction.
@@ -51,7 +51,7 @@ export default class FrictionEquation extends Equation{
 	 * @type {Shape}
 	 * @todo Needed? The shape can be looked up via contactEquation.shapeB...
 	 */
-	shapeB: Shape;
+	shapeB: Shape|null = null;
 
 	/**
 	 * The friction coefficient to use.
@@ -70,7 +70,7 @@ export default class FrictionEquation extends Equation{
 	 * @param {Number} slipForce
 	 * @extends Equation
 	 */
-	constructor(bodyA: Body, bodyB: Body, slipForce: f32){
+	constructor(bodyA: Body, bodyB: Body, slipForce: f32 = Infinity){
 		super(bodyA, bodyB, -slipForce, slipForce);
 	}
 

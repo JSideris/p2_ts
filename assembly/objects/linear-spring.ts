@@ -98,7 +98,7 @@ export default class LinearSpring extends Spring{
 	 * @param {Array} worldAnchorA
 	 */
 	setWorldAnchorA(worldAnchorA: Float32Array){
-		super.bodyA.toLocalFrame(this.localAnchorA, worldAnchorA);
+		this.bodyA.toLocalFrame(this.localAnchorA, worldAnchorA);
 	}
 
 	/**
@@ -107,7 +107,7 @@ export default class LinearSpring extends Spring{
 	 * @param {Array} worldAnchorB
 	 */
 	setWorldAnchorB(worldAnchorB: Float32Array){
-		super.bodyB.toLocalFrame(this.localAnchorB, worldAnchorB);
+		this.bodyB.toLocalFrame(this.localAnchorB, worldAnchorB);
 	}
 
 	/**
@@ -116,7 +116,7 @@ export default class LinearSpring extends Spring{
 	 * @param {Array} result The vector to store the result in.
 	 */
 	getWorldAnchorA(result: Float32Array){
-		super.bodyA.toWorldFrame(result, this.localAnchorA);
+		this.bodyA.toWorldFrame(result, this.localAnchorA);
 	}
 
 	/**
@@ -125,7 +125,7 @@ export default class LinearSpring extends Spring{
 	 * @param {Array} result The vector to store the result in.
 	 */
 	getWorldAnchorB(result: Float32Array){
-		super.bodyB.toWorldFrame(result, this.localAnchorB);
+		this.bodyB.toWorldFrame(result, this.localAnchorB);
 	}
 
 	/**
@@ -134,11 +134,11 @@ export default class LinearSpring extends Spring{
 	 * @method applyForce
 	 */
 	applyForce(){
-		var k = super.stiffness,
-			d = super.damping,
+		var k = this.stiffness,
+			d = this.damping,
 			l = this.restLength,
-			bodyA = super.bodyA,
-			bodyB = super.bodyB,
+			bodyA = this.bodyA,
+			bodyB = this.bodyB,
 			r = applyForce_r,
 			r_unit = applyForce_r_unit,
 			u = applyForce_u,

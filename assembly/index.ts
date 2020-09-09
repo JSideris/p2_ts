@@ -37,7 +37,7 @@ import Shape from                         "./shapes/shape";
 import Solver from                        "./solver/solver";
 import Spring from                        "./objects/spring";
 import TopDownVehicle from                "./objects/top-down-vehicle";
-import LinearSpring from                  "./objects/linearSpring";
+import LinearSpring from                  "./objects/linear-spring";
 import RotationalSpring from              "./objects/rotational-spring";
 import Utils from                         "./utils/utils";
 import World from                         "./world/world";

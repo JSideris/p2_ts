@@ -185,13 +185,14 @@ function polygonMakeCCW(polygon: Array<Float32Array>): boolean{
  * Reverse the vertices in the polygon
  * @method reverse
  */
-function polygonReverse(polygon: Array<Float32Array>): void{
-    var tmp = [];
-    var N = polygon.length;
-    for(var i=0; i!==N; i++){
-        tmp.push(polygon.pop());
+function polygonReverse(polygon: Float32Array[]): void{
+    let tmp:Array<Float32Array> = [];
+    let N = polygon.length;
+    for(let i=0; i!==N; i++){
+		let p = polygon.pop();
+        tmp.push(p as Float32Array);
     }
-    for(var i=0; i!==N; i++){
+    for(let i=0; i!==N; i++){
 		polygon[i] = tmp[i];
     }
 }

@@ -28,6 +28,7 @@ import Heightfield from "../shapes/heightfield";
 import ContactEquationPool from "../utils/contact-equation-pool";
 import FrictionEquationPool from "../utils/friction-equation-pool";
 import TupleDictionary from "../utils/tuple-dictionary";
+import FrictionEquation from "../equations/friction-equation";
 
 var yAxis = vec2.fromValues(0,1);
 var tmp1 = createVec2()
@@ -312,7 +313,7 @@ export default class Narrowphase{
 	 * @property frictionEquations
 	 * @type {Array}
 	 */
-	frictionEquations: Array<Equation> = [];
+	frictionEquations: Array<FrictionEquation> = [];
 
 	/**
 	 * Whether to make friction equations in the upcoming contacts.
@@ -414,200 +415,7 @@ export default class Narrowphase{
 				bodyA.toWorldFrame(shapePositionA, shapeA.position);
 				bodyB.toWorldFrame(shapePositionB, shapeB.position);
 
-				let result = 0;
-				if(shapeA.type > shapeB.type)
-				{
-					let bTmp = bodyB;
-					bodyB = bodyA;
-					bodyA = bTmp;
-
-					let sTmp = shapeB;
-					shapeB = shapeA;
-					shapeA = sTmp;
-
-					let pTmp = shapePositionB;
-					shapePositionB = shapePositionA;
-					shapePositionA = pTmp;
-				}
-
-				switch(shapeA.type | shapeB.type){
-					case 0b1:{ // Circle/circle
-						let sa = shapeA as Circle;
-						let sb = shapeB as Circle;
-						result = this.circleCircle(bodyA, sa, shapePositionA, 
-							bodyB, sb, shapePositionB, 
-							true, sa.radius, sb.radius);
-						break;
-					}
-					case 0b11:{ // Particle/circle.
-						let sa = shapeA as Circle;
-						let sb = shapeB as Particle;
-						result = this.circleParticle(bodyA, sa, shapePositionA, 
-							bodyB, sb, shapePositionB, 
-							true);
-						break;
-					}
-					case 0b101:{ // Plane/circle.
-						let sa = shapeA as Circle;
-						let sb = shapeB as Plane;
-						result = this.circlePlane(bodyA, sa, shapePositionA, 
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-							true);
-						break;
-					}
-					case 0b100001: // Box/circle.
-					case 0b1001:{ // Convex/circle.
-						let sa = shapeA as Circle;
-						let sb = shapeB as Convex;
-						result = this.circleConvex(bodyA, sa, shapePositionA, 
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-							true, sa.radius);
-						break;
-					}
-					case 0b10001:{ // Line/circle.
-						let sa = shapeA as Circle;
-						let sb = shapeB as Line;
-						result = this.circleLine(bodyA, sa, shapePositionA, 
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-							true, 0, sa.radius);
-						break;
-					}
-					case 0b1000001:{ // Capsule/circle.
-						let sa = shapeA as Circle;
-						let sb = shapeB as Capsule;
-						result = this.circleCapsule(bodyA, sa, shapePositionA,
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-							true);
-						break;
-					}
-					case 0b10000001:{ // Heightfield/circle.
-						let sa = shapeA as Circle;
-						let sb = shapeB as Heightfield;
-						result = this.circleHeightfield(bodyA, sa, shapePositionA,
-							bodyB, sb, shapePositionB, 
-							true, sa.radius);
-						break;
-					}
-					case 0b110:{ // Plane/particle.
-						let sa = shapeA as Particle;
-						let sb = shapeB as Plane;
-						result = this.particlePlane(bodyA, sa, shapePositionA, 
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle, 
-							true);
-						break;
-					}
-					case 0b100010: // Box/particle.
-					case 0b1010:{ // Convex/particle.
-						let sa = shapeA as Particle;
-						let sb = shapeB as Convex;
-						result = this.particleConvex(bodyA, sa, shapePositionA, 
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle, 
-							true);
-						break;
-					}
-					case 0b1010:{ // Capsule/particle.
-						let sa = shapeA as Particle;
-						let sb = shapeB as Capsule;
-						result = this.particleCapsule(bodyA, sa, shapePositionA, 
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle, 
-							true);
-						break;
-					}
-					case 0b100100: // Box/plane.
-					case 0b1100:{ // Convex/plane.
-						let sa = shapeA as Plane;
-						let sb = shapeB as Convex;
-						result = this.planeConvex(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-							true);
-						break;
-					}
-					case 0b10100:{ // Line/plane.
-						let sa = shapeA as Plane;
-						let sb = shapeB as Line;
-						result = this.planeLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-							true);
-						break;
-					}
-					case 0b1000100:{ // Capsule/plane.
-						let sa = shapeA as Plane;
-						let sb = shapeB as Capsule;
-						result = this.planeCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-							true);
-						break;
-					}
-					case 0b101000: // Box/convex.
-					case 0b1000:{ // Convex/convex.
-						let sa = shapeA as Convex;
-						let sb = shapeB as Convex;
-						result = this.convexConvex(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle, 
-							true);
-						break;
-					}
-					case 0b11000:{ // Line/convex.
-						let sa = shapeA as Convex;
-						let sb = shapeB as Line;
-						// NOT SUPPORTED!
-						// result = this.convexLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-						// 	bodyB, sb, shapePositionB, bodyB.angle + sb.angle, 
-						// 	true);
-						break;
-					}
-					case 0b1001000:{ // Capsule/convex.
-						let sa = shapeA as Convex;
-						let sb = shapeB as Capsule;
-						result = this.convexCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle, 
-							true);
-						break;
-					}
-					case 0b10001000:{ // Heightfield/convex.
-						let sa = shapeA as Convex;
-						let sb = shapeB as Heightfield;
-						result = this.convexHeightfield(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-							bodyB, sb, shapePositionB,
-							true);
-						break;
-					}
-					case 0b10000:{ // Line/line.
-						let sa = shapeA as Line;
-						let sb = shapeB as Line;
-						// NOT SUPPORTED!
-						// result = this.lineLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-						// 	bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-						// 	true);
-						break;
-					}
-					case 0b110000:{ // Box/line.
-						let sa = shapeA as Line;
-						let sb = shapeB as Box;
-						// NOT SUPPORTED!
-						// result = this.lineBox(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-						// 	bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-						// 	true);
-						break;
-					}
-					case 0b1010000:{ // Capsule/line.
-						let sa = shapeA as Line;
-						let sb = shapeB as Capsule;
-						// NOT SUPPORTED!
-						// result = this.lineCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-						// 	bodyB, sb, shapePositionB, bodyB.angle + sb.angle,
-						// 	true);
-						break;
-					}
-					case 0b1000000:{ // Capsule/capsule.
-						let sa = shapeA as Capsule;
-						let sb = shapeB as Capsule;
-						result = this.capsuleCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
-							bodyB, sb, shapePositionB, bodyB.angle + sb.angle, 
-							true);
-						break;
-					}
-				}
+				let result = this.testContact(bodyA, shapeA, shapePositionA, bodyB, shapeB, shapePositionB, true);
 
 				if(result) return true;
 			}
@@ -667,7 +475,7 @@ export default class Narrowphase{
 	 */
 	createContactEquation(bodyA: Body, bodyB: Body, shapeA: Shape, shapeB: Shape): ContactEquation{
 		let c = this.contactEquationPool.get();
-		let currentContactMaterial = this.currentContactMaterial;
+		let currentContactMaterial = this.currentContactMaterial!;
 		c.bodyA = bodyA;
 		c.bodyB = bodyB;
 		c.shapeA = shapeA;
@@ -694,7 +502,7 @@ export default class Narrowphase{
 	 */
 	createFrictionEquation(bodyA: Body, bodyB: Body, shapeA: Shape, shapeB: Shape){
 		let c = this.frictionEquationPool.get();
-		let currentContactMaterial = this.currentContactMaterial;
+		let currentContactMaterial = this.currentContactMaterial!;
 		c.bodyA = bodyA;
 		c.bodyB = bodyB;
 		c.shapeA = shapeA;
@@ -756,6 +564,218 @@ export default class Narrowphase{
 		vec2.rotate90cw(eq.t, eq.t);
 		return eq;
 	};
+
+	testContact(
+		bodyA: Body,
+		shapeA: Shape,
+		offsetA: Float32Array,
+		bodyB: Body,
+		shapeB: Shape,
+		offsetB: Float32Array,
+		justTest: boolean
+		// meta?: {
+		// 	radiusA?: f32,
+		// 	radiusB?: f32
+		// }
+	): u16{
+		let result = 0;
+
+		if(shapeA.type > shapeB.type)
+		{
+			let bTmp = bodyB;
+			bodyB = bodyA;
+			bodyA = bTmp;
+
+			let sTmp = shapeB;
+			shapeB = shapeA;
+			shapeA = sTmp;
+
+			let pTmp = offsetB;
+			offsetB = offsetA;
+			offsetA = pTmp;
+		}
+
+		switch(shapeA.type | shapeB.type){
+			case 0b1:{ // Circle/circle
+				let sa = shapeA as Circle;
+				let sb = shapeB as Circle;
+				result = this.circleCircle(bodyA, sa, offsetA, 
+					bodyB, sb, offsetB, 
+					justTest, sa.radius, sb.radius);
+				break;
+			}
+			case 0b11:{ // Particle/circle.
+				let sa = shapeA as Circle;
+				let sb = shapeB as Particle;
+				result = this.circleParticle(bodyA, sa, offsetA, 
+					bodyB, sb, offsetB, 
+					justTest);
+				break;
+			}
+			case 0b101:{ // Plane/circle.
+				let sa = shapeA as Circle;
+				let sb = shapeB as Plane;
+				result = this.circlePlane(bodyA, sa, offsetA, 
+					bodyB, sb, offsetB, bodyB.angle + sb.angle,
+					justTest);
+				break;
+			}
+			case 0b100001: // Box/circle.
+			case 0b1001:{ // Convex/circle.
+				let sa = shapeA as Circle;
+				let sb = shapeB as Convex;
+				result = this.circleConvex(bodyA, sa, offsetA, 
+					bodyB, sb, offsetB, bodyB.angle + sb.angle,
+					justTest, sa.radius);
+				break;
+			}
+			case 0b10001:{ // Line/circle.
+				let sa = shapeA as Circle;
+				let sb = shapeB as Line;
+				result = this.circleLine(bodyA, sa, offsetA, 
+					bodyB, sb, offsetB, bodyB.angle + sb.angle,
+					justTest, 0, sa.radius);
+				break;
+			}
+			case 0b1000001:{ // Capsule/circle.
+				let sa = shapeA as Circle;
+				let sb = shapeB as Capsule;
+				result = this.circleCapsule(bodyA, sa, offsetA,
+					bodyB, sb, offsetB, bodyB.angle + sb.angle,
+					justTest);
+				break;
+			}
+			case 0b10000001:{ // Heightfield/circle.
+				let sa = shapeA as Circle;
+				let sb = shapeB as Heightfield;
+				result = this.circleHeightfield(bodyA, sa, offsetA,
+					bodyB, sb, offsetB, 
+					justTest, sa.radius);
+				break;
+			}
+			case 0b110:{ // Plane/particle.
+				let sa = shapeA as Particle;
+				let sb = shapeB as Plane;
+				result = this.particlePlane(bodyA, sa, offsetA, 
+					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+					justTest);
+				break;
+			}
+			case 0b100010: // Box/particle.
+			case 0b1010:{ // Convex/particle.
+				let sa = shapeA as Particle;
+				let sb = shapeB as Convex;
+				result = this.particleConvex(bodyA, sa, offsetA, 
+					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+					justTest);
+				break;
+			}
+			case 0b1010:{ // Capsule/particle.
+				let sa = shapeA as Particle;
+				let sb = shapeB as Capsule;
+				result = this.particleCapsule(bodyA, sa, offsetA, 
+					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+					justTest);
+				break;
+			}
+			case 0b100100: // Box/plane.
+			case 0b1100:{ // Convex/plane.
+				let sa = shapeA as Plane;
+				let sb = shapeB as Convex;
+				result = this.planeConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+					bodyB, sb, offsetB, bodyB.angle + sb.angle,
+					justTest);
+				break;
+			}
+			case 0b10100:{ // Line/plane.
+				let sa = shapeA as Plane;
+				let sb = shapeB as Line;
+				result = this.planeLine(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+					bodyB, sb, offsetB, bodyB.angle + sb.angle,
+					justTest);
+				break;
+			}
+			case 0b1000100:{ // Capsule/plane.
+				let sa = shapeA as Plane;
+				let sb = shapeB as Capsule;
+				result = this.planeCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+					bodyB, sb, offsetB, bodyB.angle + sb.angle,
+					justTest);
+				break;
+			}
+			case 0b101000: // Box/convex.
+			case 0b1000:{ // Convex/convex.
+				let sa = shapeA as Convex;
+				let sb = shapeB as Convex;
+				result = this.convexConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+					justTest);
+				break;
+			}
+			case 0b11000:{ // Line/convex.
+				let sa = shapeA as Convex;
+				let sb = shapeB as Line;
+				// NOT SUPPORTED!
+				// result = this.convexLine(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+				// 	bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+				// 	justTest);
+				break;
+			}
+			case 0b1001000:{ // Capsule/convex.
+				let sa = shapeA as Convex;
+				let sb = shapeB as Capsule;
+				result = this.convexCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+					justTest);
+				break;
+			}
+			case 0b10001000:{ // Heightfield/convex.
+				let sa = shapeA as Convex;
+				let sb = shapeB as Heightfield;
+				result = this.convexHeightfield(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+					bodyB, sb, offsetB,
+					justTest);
+				break;
+			}
+			case 0b10000:{ // Line/line.
+				let sa = shapeA as Line;
+				let sb = shapeB as Line;
+				// NOT SUPPORTED!
+				// result = this.lineLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
+				// 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
+				// 	justTest);
+				break;
+			}
+			case 0b110000:{ // Box/line.
+				let sa = shapeA as Line;
+				let sb = shapeB as Box;
+				// NOT SUPPORTED!
+				// result = this.lineBox(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
+				// 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
+				// 	justTest);
+				break;
+			}
+			case 0b1010000:{ // Capsule/line.
+				let sa = shapeA as Line;
+				let sb = shapeB as Capsule;
+				// NOT SUPPORTED!
+				// result = this.lineCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
+				// 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
+				// 	justTest);
+				break;
+			}
+			case 0b1000000:{ // Capsule/capsule.
+				let sa = shapeA as Capsule;
+				let sb = shapeB as Capsule;
+				result = this.capsuleCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+					justTest);
+				break;
+			}
+		}
+
+		return result;
+	}
 
 	/**
 	 * Convex/line narrowphase

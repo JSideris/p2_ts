@@ -92,6 +92,7 @@ var ImpactEvent = /** @class */ (function () {
         this.bodyB = null;
         this.shapeA = null;
         this.shapeB = null;
+        this.contactEquation = null;
     }
     return ImpactEvent;
 }());
@@ -210,63 +211,55 @@ function runNarrowphase(world, np, bi, si, xi, ai, bj, sj, xj, aj, cm, glen) {
     np.slipForce = cm.friction * glen * reducedMass;
     np.currentContactMaterial = cm;
     np.enabledEquations = bi.collisionResponse && bj.collisionResponse && si.collisionResponse && sj.collisionResponse;
-    var resolver = np[si.type | sj.type], numContacts = 0;
-    if (resolver) {
-        var sensor = si.sensor || sj.sensor;
-        var numFrictionBefore = np.frictionEquations.length;
-        if (si.type < sj.type) {
-            numContacts = resolver.call(np, bi, si, xiw, aiw, bj, sj, xjw, ajw, sensor);
+    var sensor = si.sensor || sj.sensor;
+    var numFrictionBefore = np.frictionEquations.length;
+    var numContacts = np.testContact(bi, si, xiw, bj, sj, xjw, sensor);
+    var numFrictionEquations = np.frictionEquations.length - numFrictionBefore;
+    if (numContacts) {
+        if (bi.allowSleep &&
+            bi.type === body_1.default.DYNAMIC &&
+            bi.sleepState === body_1.default.SLEEPING &&
+            bj.sleepState === body_1.default.AWAKE &&
+            bj.type !== body_1.default.STATIC) {
+            var speedSquaredB = vec2_1.default.squaredLength(bj.velocity) + Math.pow(bj.angularVelocity, 2);
+            var speedLimitSquaredB = Math.pow(bj.sleepSpeedLimit, 2);
+            if (speedSquaredB >= speedLimitSquaredB * 2) {
+                bi._wakeUpAfterNarrowphase = true;
+            }
         }
-        else {
-            numContacts = resolver.call(np, bj, sj, xjw, ajw, bi, si, xiw, aiw, sensor);
+        if (bj.allowSleep &&
+            bj.type === body_1.default.DYNAMIC &&
+            bj.sleepState === body_1.default.SLEEPING &&
+            bi.sleepState === body_1.default.AWAKE &&
+            bi.type !== body_1.default.STATIC) {
+            var speedSquaredA = vec2_1.default.squaredLength(bi.velocity) + Math.pow(bi.angularVelocity, 2);
+            var speedLimitSquaredA = Math.pow(bi.sleepSpeedLimit, 2);
+            if (speedSquaredA >= speedLimitSquaredA * 2) {
+                bj._wakeUpAfterNarrowphase = true;
+            }
         }
-        var numFrictionEquations = np.frictionEquations.length - numFrictionBefore;
-        if (numContacts) {
-            if (bi.allowSleep &&
-                bi.type === body_1.default.DYNAMIC &&
-                bi.sleepState === body_1.default.SLEEPING &&
-                bj.sleepState === body_1.default.AWAKE &&
-                bj.type !== body_1.default.STATIC) {
-                var speedSquaredB = vec2_1.default.squaredLength(bj.velocity) + Math.pow(bj.angularVelocity, 2);
-                var speedLimitSquaredB = Math.pow(bj.sleepSpeedLimit, 2);
-                if (speedSquaredB >= speedLimitSquaredB * 2) {
-                    bi._wakeUpAfterNarrowphase = true;
+        world.overlapKeeper.setOverlapping(bi, si, bj, sj);
+        if (world.has('beginContact') && world.overlapKeeper.isNewOverlap(si, sj)) {
+            // Report new shape overlap
+            var e = beginContactEvent;
+            e.shapeA = si;
+            e.shapeB = sj;
+            e.bodyA = bi;
+            e.bodyB = bj;
+            // Reset contact equations
+            e.contactEquations.length = 0;
+            if (!sensor) {
+                for (var i = np.contactEquations.length - numContacts; i < np.contactEquations.length; i++) {
+                    e.contactEquations.push(np.contactEquations[i]);
                 }
             }
-            if (bj.allowSleep &&
-                bj.type === body_1.default.DYNAMIC &&
-                bj.sleepState === body_1.default.SLEEPING &&
-                bi.sleepState === body_1.default.AWAKE &&
-                bi.type !== body_1.default.STATIC) {
-                var speedSquaredA = vec2_1.default.squaredLength(bi.velocity) + Math.pow(bi.angularVelocity, 2);
-                var speedLimitSquaredA = Math.pow(bi.sleepSpeedLimit, 2);
-                if (speedSquaredA >= speedLimitSquaredA * 2) {
-                    bj._wakeUpAfterNarrowphase = true;
-                }
-            }
-            world.overlapKeeper.setOverlapping(bi, si, bj, sj);
-            if (world.has('beginContact') && world.overlapKeeper.isNewOverlap(si, sj)) {
-                // Report new shape overlap
-                var e = beginContactEvent;
-                e.shapeA = si;
-                e.shapeB = sj;
-                e.bodyA = bi;
-                e.bodyB = bj;
-                // Reset contact equations
-                e.contactEquations.length = 0;
-                if (!sensor) {
-                    for (var i = np.contactEquations.length - numContacts; i < np.contactEquations.length; i++) {
-                        e.contactEquations.push(np.contactEquations[i]);
-                    }
-                }
-                world.emit(e);
-            }
-            // divide the max friction force by the number of contacts
-            if (!sensor && numFrictionEquations > 1) { // Why divide by 1?
-                for (var i = np.frictionEquations.length - numFrictionEquations; i < np.frictionEquations.length; i++) {
-                    var f = np.frictionEquations[i];
-                    f.setSlipForce(f.getSlipForce() / numFrictionEquations);
-                }
+            world.emit(e);
+        }
+        // divide the max friction force by the number of contacts
+        if (!sensor && numFrictionEquations > 1) { // Why divide by 1?
+            for (var i = np.frictionEquations.length - numFrictionEquations; i < np.frictionEquations.length; i++) {
+                var f = np.frictionEquations[i];
+                f.setSlipForce(f.getSlipForce() / numFrictionEquations);
             }
         }
     }

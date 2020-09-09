@@ -57,7 +57,7 @@ var RotationalSpring = /** @class */ (function (_super) {
      * @method applyForce
      */
     RotationalSpring.prototype.applyForce = function () {
-        var k = _super.prototype.stiffness, d = _super.prototype.damping, l = this.restAngle, bodyA = _super.prototype.bodyA, bodyB = _super.prototype.bodyB, x = bodyB.angle - bodyA.angle, u = bodyB.angularVelocity - bodyA.angularVelocity;
+        var k = this.stiffness, d = this.damping, l = this.restAngle, bodyA = this.bodyA, bodyB = this.bodyB, x = bodyB.angle - bodyA.angle, u = bodyB.angularVelocity - bodyA.angularVelocity;
         var torque = -k * (x - l) - d * u;
         bodyA.angularForce -= torque;
         bodyB.angularForce += torque;

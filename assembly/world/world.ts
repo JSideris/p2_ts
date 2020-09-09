@@ -82,7 +82,7 @@ class ImpactEvent{
 	bodyB: Body|null = null;
 	shapeA: Shape|null = null;
 	shapeB: Shape|null = null;
-	contactEquation: ContactEquation|null;
+	contactEquation: ContactEquation|null = null;
 }
 var impactEvent = new ImpactEvent();
 
@@ -206,74 +206,68 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 	np.currentContactMaterial = cm;
 	np.enabledEquations = bi.collisionResponse && bj.collisionResponse && si.collisionResponse && sj.collisionResponse;
 
-	var resolver = np[si.type | sj.type],
-		numContacts = 0;
-	if (resolver) {
-		var sensor = si.sensor || sj.sensor;
-		var numFrictionBefore = np.frictionEquations.length;
-		if (si.type < sj.type) {
-			numContacts = resolver.call(np, bi,si,xiw,aiw, bj,sj,xjw,ajw, sensor);
-		} else {
-			numContacts = resolver.call(np, bj,sj,xjw,ajw, bi,si,xiw,aiw, sensor);
+	let sensor = si.sensor || sj.sensor;
+	let numFrictionBefore = np.frictionEquations.length;
+
+	let numContacts = np.testContact(bi, si, xiw, bj, sj, xjw, sensor);
+	
+	var numFrictionEquations = np.frictionEquations.length - numFrictionBefore;
+
+	if(numContacts){
+
+		if( bi.allowSleep &&
+			bi.type === Body.DYNAMIC &&
+			bi.sleepState  === Body.SLEEPING &&
+			bj.sleepState  === Body.AWAKE &&
+			bj.type !== Body.STATIC
+		){
+			var speedSquaredB = vec2.squaredLength(bj.velocity) + Math.pow(bj.angularVelocity,2);
+			var speedLimitSquaredB = Math.pow(bj.sleepSpeedLimit,2);
+			if(speedSquaredB >= speedLimitSquaredB*2){
+				bi._wakeUpAfterNarrowphase = true;
+			}
 		}
-		var numFrictionEquations = np.frictionEquations.length - numFrictionBefore;
 
-		if(numContacts){
+		if( bj.allowSleep &&
+			bj.type === Body.DYNAMIC &&
+			bj.sleepState  === Body.SLEEPING &&
+			bi.sleepState  === Body.AWAKE &&
+			bi.type !== Body.STATIC
+		){
+			var speedSquaredA = vec2.squaredLength(bi.velocity) + Math.pow(bi.angularVelocity,2);
+			var speedLimitSquaredA = Math.pow(bi.sleepSpeedLimit,2);
+			if(speedSquaredA >= speedLimitSquaredA*2){
+				bj._wakeUpAfterNarrowphase = true;
+			}
+		}
 
-			if( bi.allowSleep &&
-				bi.type === Body.DYNAMIC &&
-				bi.sleepState  === Body.SLEEPING &&
-				bj.sleepState  === Body.AWAKE &&
-				bj.type !== Body.STATIC
-			){
-				var speedSquaredB = vec2.squaredLength(bj.velocity) + Math.pow(bj.angularVelocity,2);
-				var speedLimitSquaredB = Math.pow(bj.sleepSpeedLimit,2);
-				if(speedSquaredB >= speedLimitSquaredB*2){
-					bi._wakeUpAfterNarrowphase = true;
+		world.overlapKeeper.setOverlapping(bi, si, bj, sj);
+		if(world.has('beginContact') && world.overlapKeeper.isNewOverlap(si, sj)){
+
+			// Report new shape overlap
+			var e = beginContactEvent;
+			e.shapeA = si;
+			e.shapeB = sj;
+			e.bodyA = bi;
+			e.bodyB = bj;
+
+			// Reset contact equations
+			e.contactEquations.length = 0;
+
+			if(!sensor){
+				for(var i=np.contactEquations.length-numContacts; i<np.contactEquations.length; i++){
+					e.contactEquations.push(np.contactEquations[i]);
 				}
 			}
 
-			if( bj.allowSleep &&
-				bj.type === Body.DYNAMIC &&
-				bj.sleepState  === Body.SLEEPING &&
-				bi.sleepState  === Body.AWAKE &&
-				bi.type !== Body.STATIC
-			){
-				var speedSquaredA = vec2.squaredLength(bi.velocity) + Math.pow(bi.angularVelocity,2);
-				var speedLimitSquaredA = Math.pow(bi.sleepSpeedLimit,2);
-				if(speedSquaredA >= speedLimitSquaredA*2){
-					bj._wakeUpAfterNarrowphase = true;
-				}
-			}
+			world.emit(e);
+		}
 
-			world.overlapKeeper.setOverlapping(bi, si, bj, sj);
-			if(world.has('beginContact') && world.overlapKeeper.isNewOverlap(si, sj)){
-
-				// Report new shape overlap
-				var e = beginContactEvent;
-				e.shapeA = si;
-				e.shapeB = sj;
-				e.bodyA = bi;
-				e.bodyB = bj;
-
-				// Reset contact equations
-				e.contactEquations.length = 0;
-
-				if(!sensor){
-					for(var i=np.contactEquations.length-numContacts; i<np.contactEquations.length; i++){
-						e.contactEquations.push(np.contactEquations[i]);
-					}
-				}
-
-				world.emit(e);
-			}
-
-			// divide the max friction force by the number of contacts
-			if(!sensor && numFrictionEquations > 1){ // Why divide by 1?
-				for(var i=np.frictionEquations.length-numFrictionEquations; i<np.frictionEquations.length; i++){
-					var f = np.frictionEquations[i];
-					f.setSlipForce(f.getSlipForce() / numFrictionEquations);
-				}
+		// divide the max friction force by the number of contacts
+		if(!sensor && numFrictionEquations > 1){ // Why divide by 1?
+			for(var i=np.frictionEquations.length-numFrictionEquations; i<np.frictionEquations.length; i++){
+				var f = np.frictionEquations[i];
+				f.setSlipForce(f.getSlipForce() / numFrictionEquations);
 			}
 		}
 	}

@@ -20,13 +20,13 @@ export default abstract class Spring{
 	 * @property bodyA
 	 * @type {Body}
 	 */
-	public bodyA: Body;
+	bodyA: Body;
 	/**
 	 * Second connected body.
 	 * @property bodyB
 	 * @type {Body}
 	 */
-	public bodyB: Body;
+	bodyB: Body;
 
 	/**
 	 * Base class for {{#crossLink "LinearSpring"}}{{/crossLink}} and {{#crossLink "RotationalSpring"}}{{/crossLink}}. Not supposed to be used directly.

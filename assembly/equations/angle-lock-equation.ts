@@ -39,7 +39,7 @@ export default class AngleLockEquation extends Equation{
 	}
 
 	computeGq(): f32{
-		return this.ratio * this.bodyA.angle - this.bodyB.angle + this.angle;
+		return this.ratio * this.bodyA!.angle - this.bodyB!.angle + this.angle;
 	}
 
 	/**

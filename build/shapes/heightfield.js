@@ -61,6 +61,26 @@ var Heightfield = /** @class */ (function (_super) {
     function Heightfield(options) {
         var _a;
         var _this = _super.call(this, Shape_1.default.HEIGHTFIELD, options) || this;
+        /**
+         * An array of numbers, or height values, that are spread out along the x axis.
+         * @property {array} heights
+         */
+        _this.heights = [];
+        /**
+         * Max value of the heights
+         * @property {number} maxValue
+         */
+        _this.maxValue = 0;
+        /**
+         * Max value of the heights
+         * @property {number} minValue
+         */
+        _this.minValue = 0;
+        /**
+         * The width of each element
+         * @property {number} elementWidth
+         */
+        _this.elementWidth = 0;
         _this.heights = (options === null || options === void 0 ? void 0 : options.heights) ? options.heights.slice(0) : [];
         _this.elementWidth = (_a = options === null || options === void 0 ? void 0 : options.elementWidth) !== null && _a !== void 0 ? _a : 0.1;
         if ((options === null || options === void 0 ? void 0 : options.maxValue) && (options === null || options === void 0 ? void 0 : options.minValue)) {

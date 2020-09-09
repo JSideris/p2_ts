@@ -4,6 +4,7 @@ import vec2 from "../math/vec2";
 import Body from "./body";
 import World from "../world/world";
 import Constraint from "../constraints/constraint";
+import FrictionEquation from "../equations/friction-equation";
 
 var worldVelocity = vec2.create();
 var relativePoint = vec2.create();
@@ -76,7 +77,7 @@ export default class TopDownVehicle{
 	addToWorld(world: World){
 		this.world = world;
 		world.addBody(this.groundBody);
-		world.on("preStep", this.preStepCallback);
+		world.on("preStep", this.preStepCallback, this);
 		for (var i = 0; i < this.wheels.length; i++) {
 			var wheel = this.wheels[i];
 			world.addConstraint(wheel);

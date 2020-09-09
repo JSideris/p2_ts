@@ -161,7 +161,8 @@ function polygonReverse(polygon) {
     var tmp = [];
     var N = polygon.length;
     for (var i = 0; i !== N; i++) {
-        tmp.push(polygon.pop());
+        var p = polygon.pop();
+        tmp.push(p);
     }
     for (var i = 0; i !== N; i++) {
         polygon[i] = tmp[i];

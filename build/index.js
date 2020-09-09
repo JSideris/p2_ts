@@ -41,7 +41,7 @@ var shape_1 = __importDefault(require("./shapes/shape"));
 var solver_1 = __importDefault(require("./solver/solver"));
 var spring_1 = __importDefault(require("./objects/spring"));
 var top_down_vehicle_1 = __importDefault(require("./objects/top-down-vehicle"));
-var linearSpring_1 = __importDefault(require("./objects/linearSpring"));
+var linear_spring_1 = __importDefault(require("./objects/linear-spring"));
 var rotational_spring_1 = __importDefault(require("./objects/rotational-spring"));
 var utils_1 = __importDefault(require("./utils/utils"));
 var world_1 = __importDefault(require("./world/world"));
@@ -85,7 +85,7 @@ exports.default = {
     Solver: solver_1.default,
     Spring: spring_1.default,
     TopDownVehicle: top_down_vehicle_1.default,
-    LinearSpring: linearSpring_1.default,
+    LinearSpring: linear_spring_1.default,
     RotationalSpring: rotational_spring_1.default,
     Utils: utils_1.default,
     World: world_1.default,

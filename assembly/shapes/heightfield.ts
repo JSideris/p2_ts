@@ -23,25 +23,25 @@ export default class Heightfield extends Shape{
 	 * An array of numbers, or height values, that are spread out along the x axis.
 	 * @property {array} heights
 	 */
-	heights: Array<f32>;
+	heights: Array<f32> = [];
 
 	/**
 	 * Max value of the heights
 	 * @property {number} maxValue
 	 */
-	maxValue: f32;
+	maxValue: f32 = 0;
 
 	/**
 	 * Max value of the heights
 	 * @property {number} minValue
 	 */
-	minValue: f32;
+	minValue: f32 = 0;
 
 	/**
 	 * The width of each element
 	 * @property {number} elementWidth
 	 */
-	elementWidth: f32;
+	elementWidth: f32 = 0;
 
 	/**
 	 * Heightfield shape class. Height data is given as an array. These data points are spread out evenly with a distance "elementWidth".
