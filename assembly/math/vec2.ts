@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 /* Copyright (c) 2013, Brandon Jones, Colin MacKenzie IV. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -24,8 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
  * The vec2 object from glMatrix, with some extensions and some removed methods. See http://glmatrix.net.
  * @class vec2
  */
-
-import Utils from "../utils/Utils";
 
 class Vec2
 {
@@ -138,7 +138,7 @@ class Vec2
 	 * @param  {Array} framePosition
 	 * @param  {Number} frameAngle
 	 */
-	toGlobalFrame(out:Float32Array, localPoint:Float32Array, framePosition:Float32Array, frameAngle:f32){
+	toGlobalFrame(out:Float32Array, localPoint:Float32Array, framePosition:Float32Array, frameAngle:f32): void{
 		var c = Math.cos(frameAngle),
 			s = Math.sin(frameAngle),
 			x = localPoint[0],
@@ -478,7 +478,7 @@ class Vec2
 	 * @param {Array} vector
 	 * @param {Array} normal
 	 */
-	reflect(out:Float32Array, vector:Float32Array, normal:Float32Array){
+	reflect(out:Float32Array, vector:Float32Array, normal:Float32Array): void{
 		var dot = vector[0] * normal[0] + vector[1] * normal[1];
 		out[0] = vector[0] - 2 * normal[0] * dot;
 		out[1] = vector[1] - 2 * normal[1] * dot;
@@ -522,7 +522,7 @@ class Vec2
 		var s2_x = p3[0] - p2[0];
 		var s2_y = p3[1] - p2[1];
 
-		var s, t;
+		var s: f32, t: f32;
 		s = (-s1_y * (p0[0] - p2[0]) + s1_x * (p0[1] - p2[1])) / (-s2_x * s1_y + s1_x * s2_y);
 		t = ( s2_x * (p0[1] - p2[1]) - s2_y * (p0[0] - p2[0])) / (-s2_x * s1_y + s1_x * s2_y);
 		if (s >= 0 && s <= 1 && t >= 0 && t <= 1) { // Collision detected
@@ -533,4 +533,6 @@ class Vec2
 
 }
 
-export default new Vec2();
+const vec2 = new Vec2();
+
+export default vec2

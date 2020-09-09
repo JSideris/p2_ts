@@ -1,8 +1,4 @@
-// var Shape = require('./Shape')
-// ,   vec2 = require('../math/vec2')
-// ,   dot = vec2.dot
-// ,   polyk = require('../math/polyk')
-// ,   shallowClone = require('../utils/Utils').shallowClone;
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
 import Shape from "./Shape";
 import polyk from "../math/polyk";
@@ -10,6 +6,7 @@ import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 import Material from "../material/Material";
+import vec2 from "../math/vec2";
 
 var dot = vec2.dot;
 
@@ -79,7 +76,7 @@ export default class Convex extends Shape {
 	 *     });
 	 *     body.addShape(convexShape);
 	 */
-	constructor(type?: u16, vertices?: Float32Array[], options?: {
+	constructor(type?: u16, vertices?: Array<Float32Array>, options?: {
 		position?: Float32Array
 		angle?: f32,
 		id?: u32,
@@ -87,7 +84,7 @@ export default class Convex extends Shape {
 		collisionResponse?: boolean,
 		collisionMask?: i16,
 		material?: Material,
-		sensor?: boolean,
+		sensor?: boolean
 	}){
 		super(type ?? Shape.CONVEX, options); 
 
@@ -127,7 +124,7 @@ export default class Convex extends Shape {
 	}
 
 	
-	updateNormals(){
+	updateNormals(): void{
 		var vertices = this.vertices;
 		var normals = this.normals;
 
@@ -152,22 +149,22 @@ export default class Convex extends Shape {
 	 * @param  {Array} localAxis
 	 * @param  {Array} result
 	 */
-	projectOntoLocalAxis(localAxis: Float32Array, result: Float32Array){
+	projectOntoLocalAxis(localAxis: Float32Array, result: Float32Array): void{
 
-		var max=null,
-			min=null,
-			v,
-			value,
+		var max: f32 = -Infinity,
+			min: f32 = Infinity,
+			v: Float32Array|null,
+			value: f32|null,
 			localAxis = tmpVec1;
 
 		// Get projected position of all vertices
 		for(var i=0; i<this.vertices.length; i++){
 			v = this.vertices[i];
 			value = dot(v, localAxis);
-			if(max === null || value > max){
+			if(value > max){
 				max = value;
 			}
-			if(min === null || value < min){
+			if(value < min){
 				min = value;
 			}
 		}

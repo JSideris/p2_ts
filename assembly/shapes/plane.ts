@@ -1,9 +1,12 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 
 import Shape from "./shape";
 import Material from "../material/Material";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
+import vec2 from "../math/vec2";
 
 var intersectPlane_planePointToFrom = vec2.create();
 var intersectPlane_normal = vec2.create();

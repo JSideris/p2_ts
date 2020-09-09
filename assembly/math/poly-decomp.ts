@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import FrictionEquationPool from "../utils/friction-equation-pool";
 import polyk from "./polyk";
 
@@ -13,7 +15,7 @@ import polyk from "./polyk";
  */
 function lineInt(l1: Array<Float32Array>,l2: Array<Float32Array>,precision: f32 = 0): Float32Array{
     var i = new Float32Array(2); // point
-    var a1, b1, c1, a2, b2, c2, det; // scalars
+    var a1: f32, b1: f32, c1: f32, a2: f32, b2: f32, c2: f32, det: f32; // scalars
     a1 = l1[1][1] - l1[0][1];
     b1 = l1[0][0] - l1[1][0];
     c1 = a1 * l1[0][0] + b1 * l1[0][1];
@@ -127,7 +129,7 @@ function sqdist(a: Float32Array,b: Float32Array): f32{
  * @param  {Number} i
  * @return {Array}
  */
-function polygonAt(polygon: Array<Float32Array>, i: u32){
+function polygonAt(polygon: Array<Float32Array>, i: u32): Float32Array{
     var s = polygon.length;
     return polygon[i < 0 ? i % s + s : i % s];
 }
@@ -137,7 +139,7 @@ function polygonAt(polygon: Array<Float32Array>, i: u32){
  * @method clear
  * @return {Array}
  */
-function polygonClear(polygon: Array<Float32Array>){
+function polygonClear(polygon: Array<Float32Array>): void{
     polygon.length = 0;
 }
 
@@ -149,7 +151,7 @@ function polygonClear(polygon: Array<Float32Array>){
  * @param {Number}  to The end vertex index in "poly". Note that this vertex is NOT included when appending.
  * @return {Array}
  */
-function polygonAppend(polygon: Array<Float32Array>, poly: Array<Float32Array>, from: u32, to: u32){
+function polygonAppend(polygon: Array<Float32Array>, poly: Array<Float32Array>, from: u32, to: u32): void{
     for(var i=from; i<to; i++){
         polygon.push(poly[i]);
     }
@@ -183,7 +185,7 @@ function polygonMakeCCW(polygon: Array<Float32Array>): boolean{
  * Reverse the vertices in the polygon
  * @method reverse
  */
-function polygonReverse(polygon: Array<Float32Array>){
+function polygonReverse(polygon: Array<Float32Array>): void{
     var tmp = [];
     var N = polygon.length;
     for(var i=0; i!==N; i++){
@@ -214,7 +216,7 @@ var tmpLine1: Array<Float32Array>=[],
  * @param  {Number} b Vertex index 2
  * @return {Boolean}
  */
-function polygonCanSee(polygon: Array<Float32Array>, a: u32,b: u32) {
+function polygonCanSee(polygon: Array<Float32Array>, a: u32,b: u32): boolean {
     var p, dist, l1=tmpLine1, l2=tmpLine2;
 
     if (isLeftOn(polygonAt(polygon, a + 1), polygonAt(polygon, a), polygonAt(polygon, b)) && isRightOn(polygonAt(polygon, a - 1), polygonAt(polygon, a), polygonAt(polygon, b))) {
@@ -334,7 +336,7 @@ function polygonGetCutEdges(polygon: Array<Float32Array>): Array<Array<Float32Ar
  * @method decomp
  * @return {Array} An array or Polygon objects.
  */
-function polygonDecomp(polygon: Array<Float32Array>){
+function polygonDecomp(polygon: Array<Float32Array>): Array<Array<Float32Array>>{
     var edges = polygonGetCutEdges(polygon);
     if(edges.length > 0){
         return polygonSlice(polygon, edges);
@@ -350,7 +352,7 @@ function polygonDecomp(polygon: Array<Float32Array>){
  * @param {Array} cutEdges A list of edges, as returned by .getCutEdges()
  * @return {Array}
  */
-function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float32Array>>): Array<Array<Float32Array>> | null{
+function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float32Array>>): Array<Array<Float32Array>>{
     if(cutEdges.length === 0){
 		return [polygon];
     }
@@ -386,7 +388,7 @@ function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float3
             return [polygonCopy(polygon, i,j),
                     polygonCopy(polygon, j,i)];
         } else {
-            return null;
+            return new Array<Array<Float32Array>>();
         }
     }
 }

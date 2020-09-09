@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 // var vec2 = require('../math/vec2')
 // ,   Shape = require('./Shape')
 // ,   shallowClone = require('../utils/Utils').shallowClone
@@ -7,6 +9,7 @@ import Convex from "./Convex";
 import AABB from "../collision/aabb";
 import Shape from "./shape";
 import Material from "../material/Material";
+import vec2 from "../math/vec2";
 
 export default class Box extends Convex{
 	/**
@@ -59,14 +62,12 @@ export default class Box extends Convex{
 		let hw = width/2;
 		let hh = height/2;
 
-		var verts = [
+		super(Shape.BOX, [
 			vec2.fromValues(-hw, -hh),
 			vec2.fromValues( hw, -hh),
 			vec2.fromValues( hw,  hh),
 			vec2.fromValues(-hw,  hh)
-		];
-
-		super(Shape.BOX, verts, options);
+		], options);
 
 		this.height = height;		
 		this.width = width;		

@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import Pool from "./pool";
 import FrictionEquation from "../equations/friction-equation";
 
@@ -18,7 +20,8 @@ export default class FrictionEquationPool extends Pool{
 	 * @return {FrictionEquation}
 	 */
 	create(): FrictionEquation {
-		return new FrictionEquation();
+		throw "FrictionEquationPool.create() is deprecated. Instead use FrictionEquation's constructor.";
+		//return new FrictionEquation();
 	};
 
 	/**

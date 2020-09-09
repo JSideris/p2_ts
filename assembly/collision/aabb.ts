@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import vec2 from "../math/vec2";
 import Ray from "./ray";
 
@@ -70,9 +72,9 @@ export default class AABB{
 			if(angle !== 0){
 				var x = p[0],
 					y = p[1];
-				tmp[0] = cosAngle * x -sinAngle * y;
-				tmp[1] = sinAngle * x +cosAngle * y;
-				p = tmp;
+				this.tmp[0] = cosAngle * x -sinAngle * y;
+				this.tmp[1] = sinAngle * x +cosAngle * y;
+				p = this.tmp;
 			}
 
 			for(var j=0; j<2; j++){

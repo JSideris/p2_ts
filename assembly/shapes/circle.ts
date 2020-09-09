@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 // var Shape = require('./Shape')
 // ,    vec2 = require('../math/vec2')
 // ,    shallowClone = require('../utils/Utils').shallowClone;
@@ -7,6 +9,7 @@ import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 import Material from "../material/Material";
+import vec2 from "../math/vec2";
 
 var Ray_intersectSphere_intersectionPoint = vec2.create();
 var Ray_intersectSphere_normal = vec2.create();

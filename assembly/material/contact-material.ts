@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import Material from "./Material";
 import Equation from "../equations/Equation";
 
@@ -107,7 +109,7 @@ export default class ContactMaterial{
 	 *     });
 	 *     world.addContactMaterial(iceWoodContactMaterial);
 	 */
-	constructor(materialA: Material, materialB: Material, options: {
+	constructor(materialA: Material, materialB: Material, options?: {
 		friction: f32,
 		restitution: f32,
 		stiffness: f32,
@@ -123,13 +125,13 @@ export default class ContactMaterial{
 		this.id = ++ContactMaterial.idCounter;
 		this.materialA = materialA;
 		this.materialB = materialB;
-		this.friction = options.friction ?? 0.3;
-		this.restitution = options.restitution ?? 0;
-		this.stiffness = options.stiffness ?? Equation.DEFAULT_STIFFNESS;
-		this.relaxation = options.relaxation ?? Equation.DEFAULT_RELAXATION;
-		this.frictionStiffness = options.frictionStiffness ?? Equation.DEFAULT_STIFFNESS;
-		this.frictionRelaxation = options.frictionRelaxation ?? Equation.DEFAULT_RELAXATION;
-		this.surfaceVelocity = options.surfaceVelocity ?? 0;
+		this.friction = options?.friction ?? 0.3;
+		this.restitution = options?.restitution ?? 0;
+		this.stiffness = options?.stiffness ?? Equation.DEFAULT_STIFFNESS;
+		this.relaxation = options?.relaxation ?? Equation.DEFAULT_RELAXATION;
+		this.frictionStiffness = options?.frictionStiffness ?? Equation.DEFAULT_STIFFNESS;
+		this.frictionRelaxation = options?.frictionRelaxation ?? Equation.DEFAULT_RELAXATION;
+		this.surfaceVelocity = options?.surfaceVelocity ?? 0;
 		this.contactSkinSize = 0.005;
 	}
 

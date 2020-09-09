@@ -1,6 +1,9 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
 import Broadphase from "./broadphase";
 import World from "../world/world";
+import Body from "../objects/body";
+import AABB from "./aabb";
 
 
 export default class NaiveBroadphase extends Broadphase{
@@ -23,7 +26,7 @@ export default class NaiveBroadphase extends Broadphase{
 	 * @param  {World} world
 	 * @return {Array}
 	 */
-	getCollisionPairs(world: World): Float32Array{
+	getCollisionPairs(world: World): Body[]{
 		var bodies = world.bodies,
 			result = this.result;
 
@@ -36,7 +39,8 @@ export default class NaiveBroadphase extends Broadphase{
 				var bj = bodies[j];
 
 				if(Broadphase.canCollide(bi,bj) && this.boundingVolumeCheck(bi,bj)){
-					result.push(bi,bj);
+					result.push(bi);
+					result.push(bj);
 				}
 			}
 		}
@@ -52,7 +56,7 @@ export default class NaiveBroadphase extends Broadphase{
 	 * @param {array} result An array to store resulting bodies in.
 	 * @return {array}
 	 */
-	aabbQuery(world: World, aabb: AABB, result: Array): Array{
+	aabbQuery(world: World, aabb: AABB, result: Array<Body>): Array<Body>{
 		result = result || [];
 
 		var bodies = world.bodies;

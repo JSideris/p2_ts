@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 // var Shape = require('./Shape')
 // ,   shallowClone = require('../utils/Utils').shallowClone
 // ,   copy = require('../math/vec2').copy;
@@ -7,6 +9,9 @@ import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 import Material from "../material/Material";
+import vec2 from "../math/vec2";
+
+const copy = vec2.copy;
 
 export default class Particle extends Shape{
 

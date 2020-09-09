@@ -1,8 +1,11 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import vec2 from "../math/vec2";
 import Body from "../objects/Body";
 import World from "../world/world";
 import AABB from "./aabb";
 
+// TODO: I think this is supposed to be abstract.
 export default class Broadphase{
 	public type: u16;
 
@@ -19,7 +22,7 @@ export default class Broadphase{
 	 * @type {World}
 	 * @readOnly
 	 */
-	public world: World;
+	public world: World|null = null;
 	
 	/**
 	 * The bounding volume type to use in the broadphase algorithms. Should be set to Broadphase.AABB or Broadphase.BOUNDING_CIRCLE.
@@ -54,7 +57,12 @@ export default class Broadphase{
 	 * @param  {World} world The world to search in.
 	 * @return {Array} An array of the bodies, ordered in pairs. Example: A result of [a,b,c,d] means that the potential pairs are: (a,b), (c,d).
 	 */
-	//getCollisionPairs(/*world*/){};
+	getCollisionPairs(world: World):Body[]{
+		// I guess this should be overridden?
+		// TODO: possible abstract method.
+		return [];
+
+	};
 
 	/**
 	 * Check whether the bounding radius of two bodies overlap.

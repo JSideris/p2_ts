@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import vec2 from "../math/vec2";
 
 var sub = vec2.subtract
@@ -10,9 +12,6 @@ var sub = vec2.subtract
 ,   squaredLength = vec2.squaredLength
 ,   createVec2 = vec2.create;
 
-import ContactEquationPool from "../utils/ContactEquationPool";
-import FrictionEquationPool from "../utils/FrictionEquationPool";
-import TupleDictionary from "../utils/TupleDictionary";
 import Circle from "../shapes/Circle";
 import Convex from "../shapes/Convex";
 import Shape from "../shapes/Shape";
@@ -26,6 +25,9 @@ import Plane from "../shapes/plane";
 import Line from "../shapes/line";
 import Particle from "../shapes/particle";
 import Heightfield from "../shapes/heightfield";
+import ContactEquationPool from "../utils/contact-equation-pool";
+import FrictionEquationPool from "../utils/friction-equation-pool";
+import TupleDictionary from "../utils/tuple-dictionary";
 
 var yAxis = vec2.fromValues(0,1);
 var tmp1 = createVec2()
@@ -373,7 +375,7 @@ export default class Narrowphase{
 	 * @property currentContactMaterial
 	 * @type {ContactMaterial}
 	 */
-	currentContactMaterial: ContactMaterial;
+	currentContactMaterial: ContactMaterial|null = null;
 
 
 	/**
@@ -638,9 +640,9 @@ export default class Narrowphase{
 		let l = eqs.length;
 		while(l--){
 			let eq = eqs[l],
-				id1 = eq.bodyA.id,
-				id2 = eq.bodyB.id;
-			this.collidingBodiesLastStep.set(id1, id2, true);
+				id1 = eq.bodyA!.id,
+				id2 = eq.bodyB!.id;
+			this.collidingBodiesLastStep.set(id1, id2, 1);
 		}
 
 		let ce = this.contactEquations,
@@ -717,7 +719,7 @@ export default class Narrowphase{
 	 * @return {FrictionEquation}
 	 */
 	createFrictionFromContact(c: ContactEquation){
-		let eq = this.createFrictionEquation(c.bodyA, c.bodyB, c.shapeA, c.shapeB);
+		let eq = this.createFrictionEquation(c.bodyA!, c.bodyB!, c.shapeA!, c.shapeB!);
 		copy(eq.contactPointA, c.contactPointA);
 		copy(eq.contactPointB, c.contactPointB);
 		vec2.rotate90cw(eq.t, c.normalA);
@@ -728,7 +730,7 @@ export default class Narrowphase{
 	// Take the average N latest contact point on the plane.
 	createFrictionFromAverage(numContacts: i16){
 		let c = this.contactEquations[this.contactEquations.length - 1];
-		let eq = this.createFrictionEquation(c.bodyA, c.bodyB, c.shapeA, c.shapeB);
+		let eq = this.createFrictionEquation(c.bodyA!, c.bodyB!, c.shapeA!, c.shapeB!);
 		let bodyA = c.bodyA;
 		vec2.set(eq.contactPointA, 0, 0);
 		vec2.set(eq.contactPointB, 0, 0);
@@ -919,94 +921,98 @@ export default class Narrowphase{
 	 * @param  {Number}     aj
 	 */
 	//Narrowphase.prototype[Shape.CAPSULE] =
-	capsuleCapsule(bi: Body, si: Capsule, xi: Float32Array, ai: f32, bj: Body, sj: Capsule, xj: Float32Array, aj: f32, justTest: boolean){
-		let capsuleCapsule_tempRect1 = new Box({ width: 1, height: 1 });
+	capsuleCapsule(bi: Body, si: Capsule, xi: Float32Array, ai: f32, bj: Body, sj: Capsule, xj: Float32Array, aj: f32, justTest: boolean): u16{
+		throw "Capsule-capsule collisions are not currently supported.";
+		return 0;
 
-		let enableFrictionBefore: boolean = false;
 
-		// Check the circles
-		// Add offsets!
-		let circlePosi = capsuleCapsule_tempVec1,
-			circlePosj = capsuleCapsule_tempVec2;
+		// let capsuleCapsule_tempRect1 = new Box({ width: 1, height: 1 });
 
-		let numContacts = 0;
+		// let enableFrictionBefore: boolean = false;
 
-		// Need 4 circle checks, between all
-		for(let i=0; i<2; i++){
+		// // Check the circles
+		// // Add offsets!
+		// let circlePosi = capsuleCapsule_tempVec1,
+		// 	circlePosj = capsuleCapsule_tempVec2;
 
-			vec2.set(circlePosi,(i===0?-1:1)*si.length/2,0);
-			vec2.toGlobalFrame(circlePosi, circlePosi, xi, ai);
+		// let numContacts = 0;
 
-			for(let j=0; j<2; j++){
+		// // Need 4 circle checks, between all
+		// for(let i=0; i<2; i++){
 
-				vec2.set(circlePosj,(j===0?-1:1)*sj.length/2, 0);
-				vec2.toGlobalFrame(circlePosj, circlePosj, xj, aj);
+		// 	vec2.set(circlePosi,(i===0?-1:1)*si.length/2,0);
+		// 	vec2.toGlobalFrame(circlePosi, circlePosi, xi, ai);
 
-				// Temporarily turn off friction
-				if(this.enableFrictionReduction){
-					enableFrictionBefore = this.enableFriction;
-					this.enableFriction = false;
-				}
+		// 	for(let j=0; j<2; j++){
 
-				let result = this.circleCircle(bi,si,circlePosi,ai, bj,sj,circlePosj,aj, justTest, si.radius, sj.radius);
+		// 		vec2.set(circlePosj,(j===0?-1:1)*sj.length/2, 0);
+		// 		vec2.toGlobalFrame(circlePosj, circlePosj, xj, aj);
 
-				if(this.enableFrictionReduction){
-					this.enableFriction = enableFrictionBefore;
-				}
+		// 		// Temporarily turn off friction
+		// 		if(this.enableFrictionReduction){
+		// 			enableFrictionBefore = this.enableFriction;
+		// 			this.enableFriction = false;
+		// 		}
 
-				if(justTest && result !== 0){
-					return 1;
-				}
+		// 		let result = this.circleCircle(bi,si,circlePosi, bj,sj,circlePosj, justTest, si.radius, sj.radius);
 
-				numContacts += result;
-			}
-		}
+		// 		if(this.enableFrictionReduction){
+		// 			this.enableFriction = enableFrictionBefore;
+		// 		}
 
-		if(this.enableFrictionReduction){
-			// Temporarily turn off friction
-			enableFrictionBefore = this.enableFriction;
-			this.enableFriction = false;
-		}
+		// 		if(justTest && result !== 0){
+		// 			return 1;
+		// 		}
 
-		// Check circles against the center boxs
-		let rect = capsuleCapsule_tempRect1;
-		setConvexToCapsuleShapeMiddle(rect,si);
-		let result1 = this.convexCapsule(bi,rect,xi,ai, bj,sj,xj,aj, justTest);
+		// 		numContacts += result;
+		// 	}
+		// }
 
-		if(this.enableFrictionReduction){
-			this.enableFriction = enableFrictionBefore;
-		}
+		// if(this.enableFrictionReduction){
+		// 	// Temporarily turn off friction
+		// 	enableFrictionBefore = this.enableFriction;
+		// 	this.enableFriction = false;
+		// }
 
-		if(justTest && result1 !== 0){
-			return 1;
-		}
-		numContacts += result1;
+		// // Check circles against the center boxs
+		// let rect = capsuleCapsule_tempRect1;
+		// setConvexToCapsuleShapeMiddle(rect,si);
+		// let result1 = this.convexCapsule(bi,rect,xi,ai, bj,sj,xj,aj, justTest);
 
-		if(this.enableFrictionReduction){
-			// Temporarily turn off friction
-			let enableFrictionBefore = this.enableFriction;
-			this.enableFriction = false;
-		}
+		// if(this.enableFrictionReduction){
+		// 	this.enableFriction = enableFrictionBefore;
+		// }
 
-		setConvexToCapsuleShapeMiddle(rect,sj);
-		let result2 = this.convexCapsule(bj,rect,xj,aj, bi,si,xi,ai, justTest);
+		// if(justTest && result1 !== 0){
+		// 	return 1;
+		// }
+		// numContacts += result1;
 
-		if(this.enableFrictionReduction){
-			this.enableFriction = enableFrictionBefore;
-		}
+		// if(this.enableFrictionReduction){
+		// 	// Temporarily turn off friction
+		// 	let enableFrictionBefore = this.enableFriction;
+		// 	this.enableFriction = false;
+		// }
 
-		if(justTest && result2 !== 0){
-			return 1;
-		}
-		numContacts += result2;
+		// setConvexToCapsuleShapeMiddle(rect,sj);
+		// let result2 = this.convexCapsule(bj,rect,xj,aj, bi,si,xi,ai, justTest);
 
-		if(this.enableFrictionReduction){
-			if(numContacts && this.enableFriction){
-				this.frictionEquations.push(this.createFrictionFromAverage(numContacts));
-			}
-		}
+		// if(this.enableFrictionReduction){
+		// 	this.enableFriction = enableFrictionBefore;
+		// }
 
-		return numContacts;
+		// if(justTest && result2 !== 0){
+		// 	return 1;
+		// }
+		// numContacts += result2;
+
+		// if(this.enableFrictionReduction){
+		// 	if(numContacts && this.enableFriction){
+		// 		this.frictionEquations.push(this.createFrictionFromAverage(numContacts));
+		// 	}
+		// }
+
+		// return numContacts;
 	};
 
 	/**

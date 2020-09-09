@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import Body from "../objects/body";
 import vec2 from "../math/vec2";
 import Utils from "../utils/utils";
@@ -36,14 +38,14 @@ export default class Equation{
 	 * @property bodyA
 	 * @type {Body}
 	 */
-	public bodyA?: Body;
+	public bodyA: Body|null;
 
 	/**
 	 * Second body participating in the constraint
 	 * @property bodyB
 	 * @type {Body}
 	 */
-	public bodyB?: Body;
+	public bodyB: Body|null;
 
 	/**
 	 * The stiffness of this equation. Typically chosen to a large number (~1e7), but can be chosen somewhat freely to get a stable simulation.
@@ -120,8 +122,8 @@ export default class Equation{
 		this.minForce = minForce ?? -Infinity;
 		this.maxForce = maxForce ?? Infinity;
 		this.maxBias = Infinity;
-		this.bodyA = bodyA;
-		this.bodyB = bodyB;
+		this.bodyA = bodyA??null;
+		this.bodyB = bodyB??null;
 		this.stiffness = Equation.DEFAULT_STIFFNESS;
 		this.relaxation = Equation.DEFAULT_RELAXATION;
 		this.G = new Float32Array(6);
@@ -151,7 +153,7 @@ export default class Equation{
 	 * Compute SPOOK parameters .a, .b and .epsilon according to the current parameters. See equations 9, 10 and 11 in the <a href="http://www8.cs.umu.se/kurser/5DV058/VT09/lectures/spooknotes.pdf">SPOOK notes</a>.
 	 * @method update
 	 */
-	update(){
+	update(): void{
 		var k = this.stiffness,
 			d = this.relaxation,
 			h = this.timeStep;
@@ -202,8 +204,9 @@ export default class Equation{
 	computeGq(): f32{
 		var G = this.G,
 			bi = this.bodyA,
-			bj = this.bodyB,
-			ai = bi.angle,
+			bj = this.bodyB;
+		if(!bi || ! bj) return 0;
+		var ai = bi.angle,
 			aj = bj.angle;
 
 		var qi = createVec2(),
@@ -219,8 +222,9 @@ export default class Equation{
 	computeGW(): f32{
 		var G = this.G,
 			bi = this.bodyA,
-			bj = this.bodyB,
-			vi = bi.velocity,
+			bj = this.bodyB;
+		if(!bi || ! bj) return 0;
+		var vi = bi.velocity,
 			vj = bj.velocity,
 			wi = bi.angularVelocity,
 			wj = bj.angularVelocity;
@@ -235,8 +239,9 @@ export default class Equation{
 	computeGWlambda(): f32{
 		var G = this.G,
 			bi = this.bodyA,
-			bj = this.bodyB,
-			vi = bi.vlambda,
+			bj = this.bodyB;
+		if(!bi || ! bj) return 0;
+		var vi = bi.vlambda,
 			vj = bj.vlambda,
 			wi = bi.wlambda,
 			wj = bj.wlambda;
@@ -250,8 +255,9 @@ export default class Equation{
 	 */
 	computeGiMf(): f32{
 		var bi = this.bodyA,
-			bj = this.bodyB,
-			fi = bi.force,
+			bj = this.bodyB;
+		if(!bi || ! bj) return 0;
+		var fi = bi.force,
 			ti = bi.angularForce,
 			fj = bj.force,
 			tj = bj.angularForce,
@@ -277,10 +283,11 @@ export default class Equation{
 	 * @method computeGiMGt
 	 * @return {Number}
 	 */
-	computeGiMGt(){
+	computeGiMGt(): f32{
 		var bi = this.bodyA,
-			bj = this.bodyB,
-			invMassi = bi.invMassSolve,
+			bj = this.bodyB;
+		if(!bi || ! bj) return 0;
+		var invMassi = bi.invMassSolve,
 			invMassj = bj.invMassSolve,
 			invIi = bi.invInertiaSolve,
 			invIj = bj.invInertiaSolve,
@@ -294,17 +301,18 @@ export default class Equation{
 				G[5] * G[5] *    invIj;
 	}
 
-	updateJacobian(){};
+	updateJacobian(): void{};
 
 	/**
 	 * Add constraint velocity to the bodies.
 	 * @method addToWlambda
 	 * @param {Number} deltalambda
 	 */
-	addToWlambda(deltalambda: f32){
+	addToWlambda(deltalambda: f32): void{
 		var bi = this.bodyA,
-			bj = this.bodyB,
-			invMassi = bi.invMassSolve,
+			bj = this.bodyB;
+		if(!bi || ! bj) return;
+		var invMassi = bi.invMassSolve,
 			invMassj = bj.invMassSolve,
 			invIi = bi.invInertiaSolve,
 			invIj = bj.invInertiaSolve,
@@ -325,14 +333,14 @@ export default class Equation{
 	 * @param  {Number} eps
 	 * @return {Number}
 	 */
-	computeInvC(eps: f32){
+	computeInvC(eps: f32): f32{
 		var invC = 1 / (this.computeGiMGt() + eps);
 		return invC;
 	}
 
 }
 
-function addToVLambda(vlambda: Float32Array, Gx: f32, Gy: f32, invMass: f32, deltalambda: f32, massMultiplier: Float32Array){
+function addToVLambda(vlambda: Float32Array, Gx: f32, Gy: f32, invMass: f32, deltalambda: f32, massMultiplier: Float32Array): void{
 	vlambda[0] += Gx * invMass * deltalambda * massMultiplier[0];
 	vlambda[1] += Gy * invMass * deltalambda * massMultiplier[1];
 }

@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import GSSolver from  "../solver/gs-solver";
 import vec2 from  "../math/vec2";
 import Shape from  "../shapes/shape";
@@ -13,6 +15,18 @@ import Utils from  "../utils/utils";
 import OverlapKeeper from  "../utils/overlap-keeper";
 import UnionFind from  "./union-find";
 import Equation from "../equations/Equation";
+import Solver from "../solver/solver";
+import Spring from "../objects/spring";
+import Broadphase from "../collision/broadphase";
+import Constraint from "../constraints/constraint";
+import FrictionEquation from "../equations/friction-equation";
+import ContactEquation from "../equations/contact-equation";
+import RaycastResult from "../collision/raycast-result";
+import Ray from "../collision/ray";
+
+//import f32 from "f32";
+
+const arrayRemove = Utils.arrayRemove;
 
 /**
  * Fired after the step().
@@ -27,30 +41,33 @@ var postStepEvent = {
  * @event addBody
  * @param {Body} body
  */
-var addBodyEvent = {
-	type : "addBody",
-	body : null
-};
+class AddBodyEvent{
+	type: String = "addBody";
+	body: Body|null = null;
+}
+ var addBodyEvent = new AddBodyEvent();
 
 /**
  * Fired when a body is removed from the world.
  * @event removeBody
  * @param {Body} body
  */
-var removeBodyEvent = {
-	type : "removeBody",
-	body : null
-};
+class RemoveBodyEvent{
+	type: String = "removeBody";
+	body : Body|null = null;
+}
+var removeBodyEvent = new RemoveBodyEvent();
 
 /**
  * Fired when a spring is added to the world.
  * @event addSpring
  * @param {Spring} spring
  */
-var addSpringEvent = {
-	type : "addSpring",
-	spring : null
-};
+class AddSpringEvent{
+	type: String = "addSpring";
+	spring: Spring|null = null;
+}
+var addSpringEvent = new AddSpringEvent();
 
 /**
  * Fired when a first contact is created between two bodies. This event is fired after the step has been done.
@@ -59,14 +76,16 @@ var addSpringEvent = {
  * @param {Body} bodyB
  * @deprecated Impact event will be removed. Use beginContact instead.
  */
-var impactEvent = {
-	type: "impact",
-	bodyA : null,
-	bodyB : null,
-	shapeA : null,
-	shapeB : null,
-	contactEquation : null
-};
+class ImpactEvent{
+	type: String = "impact";
+	bodyA: Body|null = null;
+	bodyB: Body|null = null;
+	shapeA: Shape|null = null;
+	shapeB: Shape|null = null;
+	contactEquation: ContactEquation|null;
+}
+var impactEvent = new ImpactEvent();
+
 
 /**
  * Fired after the Broadphase has collected collision pairs in the world.
@@ -75,11 +94,21 @@ var impactEvent = {
  * @event postBroadphase
  * @param {Array} pairs An array of collision pairs. If this array is [body1,body2,body3,body4], then the body pairs 1,2 and 3,4 would advance to narrowphase.
  */
-var postBroadphaseEvent = {
-	type: "postBroadphase",
-	pairs: null
-};
+class PostBroadphaseEvent{
+	type: String = "postBroadphase";
+	pairs: Body[]|null = null;
+}
+var postBroadphaseEvent = new PostBroadphaseEvent;
 
+
+class BeginContactEvent{
+	type: String = "beginContact";
+	shapeA: Shape|null = null;
+	shapeB: Shape|null = null;
+	bodyA: Body|null = null;
+	bodyB: Body|null = null;
+	contactEquations: Equation[] = [];
+}
 /**
  * Fired when two shapes starts start to overlap. Fired in the narrowphase, during step.
  * @event beginContact
@@ -89,14 +118,7 @@ var postBroadphaseEvent = {
  * @param {Body}  bodyB
  * @param {Array} contactEquations
  */
-var beginContactEvent = {
-	type: "beginContact",
-	shapeA: null,
-	shapeB: null,
-	bodyA: null,
-	bodyB: null,
-	contactEquations: []
-};
+var beginContactEvent = new BeginContactEvent();
 
 /**
  * Fired when two shapes stop overlapping, after the narrowphase (during step).
@@ -114,23 +136,28 @@ var endContactEvent = {
 	bodyB: null
 };
 
+var hitTest_tmp1 = vec2.create(),
+	hitTest_tmp2 = vec2.create();
+
 /**
  * Fired just before equations are added to the solver to be solved. Can be used to control what equations goes into the solver.
  * @event preSolve
  * @param {Array} contactEquations  An array of contacts to be solved.
  * @param {Array} frictionEquations An array of friction equations to be solved.
  */
-var preSolveEvent = {
-	type: "preSolve",
-	contactEquations: null,
-	frictionEquations: null
-};
+class PreSolveEvent{
+	type: String = "preSolve";
+	contactEquations: ContactEquation[]|null = null;
+	frictionEquations: FrictionEquation[]|null = null;
+}
+var preSolveEvent = new PreSolveEvent();
 
-function sortBodiesByIsland(a,b){
+function sortBodiesByIsland(a: Body,b: Body){
 	return a.islandId - b.islandId;
 }
 
-function sortEquationsByIsland(equationA: Equation, equationB: Equation){
+function sortEquationsByIsland(equationA: Equation, equationB: Equation): i32{
+	if(!equationA?.bodyA || !equationA?.bodyB || !equationB?.bodyA || !equationB?.bodyB) return 0;
 
 	var islandA = equationA.bodyA.islandId > 0 ? equationA.bodyA.islandId : equationA.bodyB.islandId;
 	var islandB = equationB.bodyA.islandId > 0 ? equationB.bodyA.islandId : equationB.bodyB.islandId;
@@ -272,6 +299,197 @@ function setGlobalEquationParams(world: World, params?: {
 export default class World extends EventEmitter{
 
 	/**
+	 * All springs in the world. To add a spring to the world, use {{#crossLink "World/addSpring:method"}}{{/crossLink}}.
+	 *
+	 * @property springs
+	 * @type {Array}
+	 */
+	springs: Spring[] = [];
+
+	/**
+	 * All bodies in the world. To add a body to the world, use {{#crossLink "World/addBody:method"}}{{/crossLink}}.
+	 * @property {Array} bodies
+	 */
+	bodies: Body[] = [];
+
+	/**
+	 * Disabled body collision pairs. See {{#crossLink "World/disableBodyCollision:method"}}.
+	 * @private
+	 * @property {Array} disabledBodyCollisionPairs
+	 */
+	disabledBodyCollisionPairs: Array<Body> = [];
+
+	/**
+	 * The solver used to satisfy constraints and contacts. Default is {{#crossLink "GSSolver"}}{{/crossLink}}.
+	 * @property {Solver} solver
+	 */
+	solver: Solver;
+
+	/**
+	 * The narrowphase to use to generate contacts.
+	 *
+	 * @property narrowphase
+	 * @type {Narrowphase}
+	 */
+	narrowphase: Narrowphase = new Narrowphase();
+
+	/**
+	 * Gravity in the world. This is applied on all bodies in the beginning of each step().
+	 *
+	 * @property gravity
+	 * @type {Array}
+	 */
+	gravity: Float32Array = vec2.fromValues(0, -9.78);
+
+	/**
+	 * Gravity to use when approximating the friction max force (mu*mass*gravity).
+	 * @property {Number} frictionGravity
+	 */
+	frictionGravity: f32 = 10;
+
+	/**
+	 * Set to true if you want .frictionGravity to be automatically set to the length of .gravity.
+	 * @property {Boolean} useWorldGravityAsFrictionGravity
+	 * @default true
+	 */
+	useWorldGravityAsFrictionGravity = true;
+
+	/**
+	 * If the length of .gravity is zero, and .useWorldGravityAsFrictionGravity=true, then switch to using .frictionGravity for friction instead. This fallback is useful for gravityless games.
+	 * @property {Boolean} useFrictionGravityOnZeroGravity
+	 * @default true
+	 */
+	useFrictionGravityOnZeroGravity = true;
+
+	/**
+	 * The broadphase algorithm to use.
+	 *
+	 * @property broadphase
+	 * @type {Broadphase}
+	 */
+	broadphase: Broadphase;
+
+	/**
+	 * User-added constraints.
+	 *
+	 * @property constraints
+	 * @type {Array}
+	 */
+	constraints: Constraint[] = [];
+
+	/**
+	 * Dummy default material in the world, used in .defaultContactMaterial
+	 * @property {Material} defaultMaterial
+	 */
+	defaultMaterial: Material = new Material();
+
+	/**
+	 * The default contact material to use, if no contact material was set for the colliding materials.
+	 * @property {ContactMaterial} defaultContactMaterial
+	 */
+	defaultContactMaterial: ContactMaterial;
+
+	/**
+	 * For keeping track of what time step size we used last step
+	 * @property lastTimeStep
+	 * @type {Number}
+	 */
+	lastTimeStep: f32 = 1/60;
+
+	/**
+	 * Enable to automatically apply spring forces each step.
+	 * @property applySpringForces
+	 * @type {Boolean}
+	 * @default true
+	 */
+	applySpringForces: boolean = true;
+
+	/**
+	 * Enable to automatically apply body damping each step.
+	 * @property applyDamping
+	 * @type {Boolean}
+	 * @default true
+	 */
+	applyDamping: boolean = true;
+
+	/**
+	 * Enable to automatically apply gravity each step.
+	 * @property applyGravity
+	 * @type {Boolean}
+	 * @default true
+	 */
+	applyGravity: boolean = true;
+
+	/**
+	 * Enable/disable constraint solving in each step.
+	 * @property solveConstraints
+	 * @type {Boolean}
+	 * @default true
+	 */
+	solveConstraints: boolean = true;
+
+	/**
+	 * The ContactMaterials added to the World.
+	 * @property contactMaterials
+	 * @type {Array}
+	 */
+	contactMaterials: Array<ContactMaterial> = [];
+
+	/**
+	 * World time.
+	 * @property time
+	 * @type {Number}
+	 */
+	time: f32 = 0.0;
+
+	accumulator: f32 = 0;
+
+	/**
+	 * Is true during step().
+	 * @property {Boolean} stepping
+	 */
+	stepping: boolean = false;
+
+	/**
+	 * Whether to enable island splitting. Island splitting can be an advantage for both precision and performance.
+	 * @property {Boolean} islandSplit
+	 * @default false
+	 */
+	islandSplit: boolean = true;
+
+	/**
+	 * Set to true if you want to the world to emit the "impact" event. Turning this off could improve performance.
+	 * @property emitImpactEvent
+	 * @type {Boolean}
+	 * @default true
+	 * @deprecated Impact event will be removed. Use beginContact instead.
+	 */
+	emitImpactEvent: boolean = true;
+
+	/**
+	 * How to deactivate bodies during simulation. Possible modes are: {{#crossLink "World/NO_SLEEPING:property"}}World.NO_SLEEPING{{/crossLink}}, {{#crossLink "World/BODY_SLEEPING:property"}}World.BODY_SLEEPING{{/crossLink}} and {{#crossLink "World/ISLAND_SLEEPING:property"}}World.ISLAND_SLEEPING{{/crossLink}}.
+	 * If sleeping is enabled, you might need to {{#crossLink "Body/wakeUp:method"}}wake up{{/crossLink}} the bodies if they fall asleep when they shouldn't. If you want to enable sleeping in the world, but want to disable it for a particular body, see {{#crossLink "Body/allowSleep:property"}}Body.allowSleep{{/crossLink}}.
+	 * @property sleepMode
+	 * @type {number}
+	 * @default World.NO_SLEEPING
+	 */
+	sleepMode: u16 = World.NO_SLEEPING;
+
+	/**
+	 * @property {UnionFind} unionFind
+	 */
+	unionFind: UnionFind = new UnionFind(1);
+
+	// Id counters
+	private _constraintIdCounter = 0;
+	private _bodyIdCounter = 0;
+
+	/**
+	 * @property {OverlapKeeper} overlapKeeper
+	 */
+	overlapKeeper: OverlapKeeper = new OverlapKeeper();
+
+	/**
 	 * The dynamics world, where all bodies and constraints live.
 	 *
 	 * @class World
@@ -290,205 +508,25 @@ export default class World extends EventEmitter{
 	 *     });
 	 *     world.addBody(new Body());
 	 */
-	constructor(options){
-		super(options);
-		EventEmitter.apply(this);
+	constructor(options?: {
+		solver?: Solver,
+		gravity?: Float32Array,
+		broadphase?: Broadphase,
+		islandSplit?: boolean
+	}){
+		super();
+	
+		this.solver = options?.solver ?? new GSSolver();
 
-		options = options || {};
-	
-		/**
-		 * All springs in the world. To add a spring to the world, use {{#crossLink "World/addSpring:method"}}{{/crossLink}}.
-		 *
-		 * @property springs
-		 * @type {Array}
-		 */
-		this.springs = [];
-	
-		/**
-		 * All bodies in the world. To add a body to the world, use {{#crossLink "World/addBody:method"}}{{/crossLink}}.
-		 * @property {Array} bodies
-		 */
-		this.bodies = [];
-	
-		/**
-		 * Disabled body collision pairs. See {{#crossLink "World/disableBodyCollision:method"}}.
-		 * @private
-		 * @property {Array} disabledBodyCollisionPairs
-		 */
-		this.disabledBodyCollisionPairs = [];
-	
-		/**
-		 * The solver used to satisfy constraints and contacts. Default is {{#crossLink "GSSolver"}}{{/crossLink}}.
-		 * @property {Solver} solver
-		 */
-		this.solver = options.solver || new GSSolver();
-	
-		/**
-		 * The narrowphase to use to generate contacts.
-		 *
-		 * @property narrowphase
-		 * @type {Narrowphase}
-		 */
-		this.narrowphase = new Narrowphase();
-	
-		/**
-		 * Gravity in the world. This is applied on all bodies in the beginning of each step().
-		 *
-		 * @property gravity
-		 * @type {Array}
-		 */
-		this.gravity = vec2.fromValues(0, -9.78);
-		if(options.gravity){
+		if(options?.gravity){
 			vec2.copy(this.gravity, options.gravity);
 		}
 	
-		/**
-		 * Gravity to use when approximating the friction max force (mu*mass*gravity).
-		 * @property {Number} frictionGravity
-		 */
-		this.frictionGravity = vec2.length(this.gravity) || 10;
-	
-		/**
-		 * Set to true if you want .frictionGravity to be automatically set to the length of .gravity.
-		 * @property {Boolean} useWorldGravityAsFrictionGravity
-		 * @default true
-		 */
-		this.useWorldGravityAsFrictionGravity = true;
-	
-		/**
-		 * If the length of .gravity is zero, and .useWorldGravityAsFrictionGravity=true, then switch to using .frictionGravity for friction instead. This fallback is useful for gravityless games.
-		 * @property {Boolean} useFrictionGravityOnZeroGravity
-		 * @default true
-		 */
-		this.useFrictionGravityOnZeroGravity = true;
-	
-		/**
-		 * The broadphase algorithm to use.
-		 *
-		 * @property broadphase
-		 * @type {Broadphase}
-		 */
-		this.broadphase = options.broadphase || new SAPBroadphase();
+		this.frictionGravity = vec2.length(this.gravity) ?? 10;
+		this.broadphase = options?.broadphase ?? new SAPBroadphase();
 		this.broadphase.setWorld(this);
-	
-		/**
-		 * User-added constraints.
-		 *
-		 * @property constraints
-		 * @type {Array}
-		 */
-		this.constraints = [];
-	
-		/**
-		 * Dummy default material in the world, used in .defaultContactMaterial
-		 * @property {Material} defaultMaterial
-		 */
-		this.defaultMaterial = new Material();
-	
-		/**
-		 * The default contact material to use, if no contact material was set for the colliding materials.
-		 * @property {ContactMaterial} defaultContactMaterial
-		 */
 		this.defaultContactMaterial = new ContactMaterial(this.defaultMaterial,this.defaultMaterial);
-	
-		/**
-		 * For keeping track of what time step size we used last step
-		 * @property lastTimeStep
-		 * @type {Number}
-		 */
-		this.lastTimeStep = 1/60;
-	
-		/**
-		 * Enable to automatically apply spring forces each step.
-		 * @property applySpringForces
-		 * @type {Boolean}
-		 * @default true
-		 */
-		this.applySpringForces = true;
-	
-		/**
-		 * Enable to automatically apply body damping each step.
-		 * @property applyDamping
-		 * @type {Boolean}
-		 * @default true
-		 */
-		this.applyDamping = true;
-	
-		/**
-		 * Enable to automatically apply gravity each step.
-		 * @property applyGravity
-		 * @type {Boolean}
-		 * @default true
-		 */
-		this.applyGravity = true;
-	
-		/**
-		 * Enable/disable constraint solving in each step.
-		 * @property solveConstraints
-		 * @type {Boolean}
-		 * @default true
-		 */
-		this.solveConstraints = true;
-	
-		/**
-		 * The ContactMaterials added to the World.
-		 * @property contactMaterials
-		 * @type {Array}
-		 */
-		this.contactMaterials = [];
-	
-		/**
-		 * World time.
-		 * @property time
-		 * @type {Number}
-		 */
-		this.time = 0.0;
-		this.accumulator = 0;
-	
-		/**
-		 * Is true during step().
-		 * @property {Boolean} stepping
-		 */
-		this.stepping = false;
-	
-		/**
-		 * Whether to enable island splitting. Island splitting can be an advantage for both precision and performance.
-		 * @property {Boolean} islandSplit
-		 * @default false
-		 */
-		this.islandSplit = options.islandSplit !== undefined ? !!options.islandSplit : true;
-	
-		/**
-		 * Set to true if you want to the world to emit the "impact" event. Turning this off could improve performance.
-		 * @property emitImpactEvent
-		 * @type {Boolean}
-		 * @default true
-		 * @deprecated Impact event will be removed. Use beginContact instead.
-		 */
-		this.emitImpactEvent = true;
-	
-		/**
-		 * How to deactivate bodies during simulation. Possible modes are: {{#crossLink "World/NO_SLEEPING:property"}}World.NO_SLEEPING{{/crossLink}}, {{#crossLink "World/BODY_SLEEPING:property"}}World.BODY_SLEEPING{{/crossLink}} and {{#crossLink "World/ISLAND_SLEEPING:property"}}World.ISLAND_SLEEPING{{/crossLink}}.
-		 * If sleeping is enabled, you might need to {{#crossLink "Body/wakeUp:method"}}wake up{{/crossLink}} the bodies if they fall asleep when they shouldn't. If you want to enable sleeping in the world, but want to disable it for a particular body, see {{#crossLink "Body/allowSleep:property"}}Body.allowSleep{{/crossLink}}.
-		 * @property sleepMode
-		 * @type {number}
-		 * @default World.NO_SLEEPING
-		 */
-		this.sleepMode = World.NO_SLEEPING;
-	
-		/**
-		 * @property {UnionFind} unionFind
-		 */
-		this.unionFind = new UnionFind(1);
-	
-		// Id counters
-		this._constraintIdCounter = 0;
-		this._bodyIdCounter = 0;
-	
-		/**
-		 * @property {OverlapKeeper} overlapKeeper
-		 */
-		this.overlapKeeper = new OverlapKeeper();
+		this.islandSplit = options?.islandSplit ?? true;
 	}
 
 	/**
@@ -521,7 +559,7 @@ export default class World extends EventEmitter{
 	 *     var constraint = new LockConstraint(bodyA, bodyB);
 	 *     world.addConstraint(constraint);
 	 */
-	addConstraint(constraint: Constraint){
+	addConstraint(constraint: Constraint): void{
 		if(this.stepping){
 			throw new Error('Constraints cannot be added during step.');
 		}
@@ -535,16 +573,16 @@ export default class World extends EventEmitter{
 		}
 
 		this.constraints.push(constraint);
-	};
+	}
 
 	/**
 	 * Add a ContactMaterial to the simulation.
 	 * @method addContactMaterial
 	 * @param {ContactMaterial} contactMaterial
 	 */
-	addContactMaterial(contactMaterial){
+	addContactMaterial(contactMaterial: ContactMaterial): void{
 		this.contactMaterials.push(contactMaterial);
-	};
+	}
 
 	/**
 	 * Removes a contact material
@@ -552,9 +590,9 @@ export default class World extends EventEmitter{
 	 * @method removeContactMaterial
 	 * @param {ContactMaterial} cm
 	 */
-	removeContactMaterial(cm){
+	removeContactMaterial(cm: ContactMaterial): void{
 		arrayRemove(this.contactMaterials, cm);
-	};
+	}
 
 	/**
 	 * Get a contact material given two materials
@@ -564,16 +602,16 @@ export default class World extends EventEmitter{
 	 * @return {ContactMaterial} The matching ContactMaterial, or false on fail.
 	 * @todo Use faster hash map to lookup from material id's
 	 */
-	getContactMaterial(materialA,materialB){
-		var cmats = this.contactMaterials;
-		for(var i=0, N=cmats.length; i!==N; i++){
-			var cm = cmats[i];
+	getContactMaterial(materialA: Material,materialB: Material): ContactMaterial | null{
+		let cmats = this.contactMaterials;
+		for(let i=0, N=cmats.length; i!==N; i++){
+			let cm = cmats[i];
 			if((cm.materialA === materialA && cm.materialB === materialB) || (cm.materialA === materialB && cm.materialB === materialA)){
 				return cm;
 			}
 		}
-		return false;
-	};
+		return null;
+	}
 
 	/**
 	 * Removes a constraint. Note that you can't run this method during step.
@@ -581,12 +619,12 @@ export default class World extends EventEmitter{
 	 * @method removeConstraint
 	 * @param {Constraint} constraint
 	 */
-	removeConstraint(constraint){
+	removeConstraint(constraint: Constraint): void{
 		if(this.stepping){
 			throw new Error('Constraints cannot be removed during step.');
 		}
 		arrayRemove(this.constraints, constraint);
-	};
+	}
 
 	/**
 	 * Step the physics world forward in time.
@@ -638,7 +676,7 @@ export default class World extends EventEmitter{
 	 *
 	 * @see http://bulletphysics.org/mediawiki-1.5.8/index.php/Stepping_The_World
 	 */
-	step(dt,timeSinceLastCalled,maxSubSteps){
+	step(dt: f32,timeSinceLastCalled: f32,maxSubSteps: u16){
 		maxSubSteps = maxSubSteps || 10;
 		timeSinceLastCalled = timeSinceLastCalled || 0;
 
@@ -676,11 +714,11 @@ export default class World extends EventEmitter{
 	 * @param  {number} dt
 	 * @private
 	 */
-	internalStep(dt: f32){
+	internalStep(dt: f32): void{
 
 		let step_mg = vec2.create();
 
-		let endOverlaps = [];
+		let endOverlaps: any[] = [];
 
 		this.stepping = true;
 
@@ -740,7 +778,7 @@ export default class World extends EventEmitter{
 		}
 
 		// Broadphase
-		var result = broadphase.getCollisionPairs(this);
+		var result: Body[] = broadphase.getCollisionPairs(this);
 
 		// Remove ignored collision pairs
 		var ignoredPairs = this.disabledBodyCollisionPairs;
@@ -792,12 +830,12 @@ export default class World extends EventEmitter{
 						xj = sj.position,
 						aj = sj.angle;
 
-					var contactMaterial = null;
+					var contactMaterial: ContactMaterial | null = null;
 					if(si.material && sj.material){
 						contactMaterial = this.getContactMaterial(si.material,sj.material);
 					}
 
-					runNarrowphase(this,np,bi,si,xi,ai,bj,sj,xj,aj,contactMaterial || defaultContactMaterial, frictionGravity);
+					runNarrowphase(this,np,bi,si,xi,ai,bj,sj,xj,aj,contactMaterial ?? defaultContactMaterial, frictionGravity);
 				}
 			}
 		}
@@ -812,7 +850,7 @@ export default class World extends EventEmitter{
 		}
 
 		// Emit end overlap events
-		if(this.has('endContact')){
+		if(super.has("endContact")){
 			this.overlapKeeper.getEndOverlaps(endOverlaps);
 			var e = endContactEvent;
 			var l = endOverlaps.length;
@@ -841,7 +879,7 @@ export default class World extends EventEmitter{
 		if(np.contactEquations.length || np.frictionEquations.length || Nconstraints){
 
 			// Get all equations
-			var equations = [];
+			var equations: Equation[] = [];
 			Utils.appendArray(equations, np.contactEquations);
 			Utils.appendArray(equations, np.frictionEquations);
 			for(i=0; i!==Nconstraints; i++){
@@ -863,6 +901,7 @@ export default class World extends EventEmitter{
 				for(var i=0; i<equations.length; i++){
 					var bodyA = equations[i].bodyA;
 					var bodyB = equations[i].bodyB;
+					if(!bodyA || !bodyB) continue;
 					if(bodyA.type === Body.DYNAMIC && bodyB.type === Body.DYNAMIC){
 						unionFind.union(bodyA.index, bodyB.index);
 					}
@@ -881,11 +920,13 @@ export default class World extends EventEmitter{
 				while(equationIndex < equations.length){
 					var equation = equations[equationIndex++];
 					solver.addEquation(equation);
-
+					if(!equation.bodyA || !equation.bodyB) continue;
 					var currentIslandId = equation.bodyA.islandId > 0 ? equation.bodyA.islandId : equation.bodyB.islandId;
 					var nextIslandId = -1;
-					if(equations[equationIndex]){
-						nextIslandId = equations[equationIndex].bodyA.islandId > 0 ? equations[equationIndex].bodyA.islandId : equations[equationIndex].bodyB.islandId;
+					let ei = equations[equationIndex];
+					if(ei){
+						if(ei.bodyA && ei.bodyB) continue;
+						nextIslandId = (ei.bodyA?.islandId ?? 0) > 0 ? ei.bodyA?.islandId ?? 0 : ei.bodyB?.islandId ?? 0;
 					}
 
 					if(nextIslandId !== currentIslandId || equationIndex === equations.length){
@@ -928,8 +969,8 @@ export default class World extends EventEmitter{
 			for(var i=0; i!==np.contactEquations.length; i++){
 				var eq = np.contactEquations[i];
 				if(eq.firstImpact){
-					ev.bodyA = eq.bodyA;
-					ev.bodyB = eq.bodyB;
+					ev.bodyA = eq.bodyA ?? null;
+					ev.bodyB = eq.bodyB ?? null;
 					ev.shapeA = eq.shapeA;
 					ev.shapeB = eq.shapeB;
 					ev.contactEquation = eq;
@@ -986,7 +1027,7 @@ export default class World extends EventEmitter{
 		this.stepping = false;
 
 		super.emit(postStepEvent);
-	};
+	}
 
 	/**
 	 * Add a spring to the simulation. Note that this operation can't be done during step.
@@ -994,7 +1035,7 @@ export default class World extends EventEmitter{
 	 * @method addSpring
 	 * @param {Spring} spring
 	 */
-	addSpring(spring: Spring){
+	addSpring(spring: Spring): void{
 		if(this.stepping){
 			throw new Error('Springs cannot be added during step.');
 		}
@@ -1002,7 +1043,7 @@ export default class World extends EventEmitter{
 		addSpringEvent.spring = spring;
 		this.emit(addSpringEvent);
 		addSpringEvent.spring = null;
-	};
+	}
 
 	/**
 	 * Remove a spring. Note that this operation can't be done during step.
@@ -1010,12 +1051,12 @@ export default class World extends EventEmitter{
 	 * @method removeSpring
 	 * @param {Spring} spring
 	 */
-	removeSpring(spring){
+	removeSpring(spring: Spring): void{
 		if(this.stepping){
 			throw new Error('Springs cannot be removed during step.');
 		}
 		arrayRemove(this.springs, spring);
-	};
+	}
 
 	/**
 	 * Add a body to the simulation. Note that you can't add a body during step: you have to wait until after the step (see the postStep event).
@@ -1029,7 +1070,7 @@ export default class World extends EventEmitter{
 	 *         body = new Body();
 	 *     world.addBody(body);
 	 */
-	addBody(body){
+	addBody(body: Body): void{
 		if(this.stepping){
 			throw new Error('Bodies cannot be added during step.');
 		}
@@ -1046,7 +1087,7 @@ export default class World extends EventEmitter{
 		addBodyEvent.body = body;
 		this.emit(addBodyEvent);
 		addBodyEvent.body = null;
-	};
+	}
 
 	/**
 	 * Remove a body from the simulation. Note that bodies cannot be removed during step (for example, inside the beginContact event). In that case you need to wait until the step is done (see the postStep event).
@@ -1071,7 +1112,7 @@ export default class World extends EventEmitter{
 	 *         }
 	 *     });
 	 */
-	removeBody(body){
+	removeBody(body: Body): void{
 		if(this.stepping){
 			throw new Error('Bodies cannot be removed during step.');
 		}
@@ -1080,7 +1121,7 @@ export default class World extends EventEmitter{
 		var constraints = this.constraints;
 		var l = constraints.length;
 		while (l--) {
-			if(constraints[l].bodyA === this || constraints[l].bodyB === this){
+			if(constraints[l].bodyA === body || constraints[l].bodyB === body){
 				throw new Error('Cannot remove Body from World: it still has constraints connected to it.');
 			}
 		}
@@ -1110,7 +1151,7 @@ export default class World extends EventEmitter{
 				i += 2;
 			}
 		}
-	};
+	}
 
 	/**
 	 * Get a body by its id.
@@ -1118,7 +1159,7 @@ export default class World extends EventEmitter{
 	 * @param {number} id
 	 * @return {Body} The body, or false if it was not found.
 	 */
-	getBodyById(id){
+	getBodyById(id: u32): Body|null{
 		var bodies = this.bodies;
 		for(var i=0; i<bodies.length; i++){
 			var b = bodies[i];
@@ -1126,8 +1167,8 @@ export default class World extends EventEmitter{
 				return b;
 			}
 		}
-		return false;
-	};
+		return null;
+	}
 
 	/**
 	 * Disable collision between two bodies
@@ -1135,9 +1176,10 @@ export default class World extends EventEmitter{
 	 * @param {Body} bodyA
 	 * @param {Body} bodyB
 	 */
-	disableBodyCollision(bodyA,bodyB){
-		this.disabledBodyCollisionPairs.push(bodyA,bodyB);
-	};
+	disableBodyCollision(bodyA: Body, bodyB: Body): void{
+		this.disabledBodyCollisionPairs.push(bodyA);
+		this.disabledBodyCollisionPairs.push(bodyB);
+	}
 
 	/**
 	 * Enable collisions between the given two bodies, if they were previously disabled using .disableBodyCollision().
@@ -1145,7 +1187,7 @@ export default class World extends EventEmitter{
 	 * @param {Body} bodyA
 	 * @param {Body} bodyB
 	 */
-	enableBodyCollision(bodyA,bodyB){
+	enableBodyCollision(bodyA: Body,bodyB: Body): void{
 		var pairs = this.disabledBodyCollisionPairs;
 		for(var i=0; i<pairs.length; i+=2){
 			if((pairs[i] === bodyA && pairs[i+1] === bodyB) || (pairs[i+1] === bodyA && pairs[i] === bodyB)){
@@ -1153,13 +1195,13 @@ export default class World extends EventEmitter{
 				return;
 			}
 		}
-	};
+	}
 
 	/**
 	 * Removes all bodies, constraints, springs, and contact materials from the world.
 	 * @method clear
 	 */
-	clear(){
+	clear(): void{
 
 		// Remove all solver equations
 		this.solver.removeAllEquations();
@@ -1191,7 +1233,7 @@ export default class World extends EventEmitter{
 		while(i--){
 			this.removeContactMaterial(cms[i]);
 		}
-	};
+	}
 
 
 	/**
@@ -1206,9 +1248,7 @@ export default class World extends EventEmitter{
 	 * @todo Should use the broadphase
 	 * @todo Returning the hit shape would be fine - it carries a reference to the body now
 	 */
-	hitTest(worldPoint, bodies, precision){
-		var hitTest_tmp1 = vec2.create(),
-			hitTest_tmp2 = vec2.create();
+	hitTest(worldPoint: Float32Array, bodies: Body[], precision: f32): Body[]{
 
 		precision = precision || 0;
 
@@ -1244,14 +1284,14 @@ export default class World extends EventEmitter{
 		}
 
 		return result;
-	};
+	}
 
 	/**
 	 * Set the stiffness for all equations and contact materials.
 	 * @method setGlobalStiffness
 	 * @param {Number} stiffness
 	 */
-	setGlobalStiffness(stiffness){
+	setGlobalStiffness(stiffness: f32): void{
 		setGlobalEquationParams(this, { stiffness: stiffness });
 
 		// Set for all contact materials
@@ -1264,14 +1304,14 @@ export default class World extends EventEmitter{
 		// Set for default contact material
 		var c = this.defaultContactMaterial;
 		c.stiffness = c.frictionStiffness = stiffness;
-	};
+	}
 
 	/**
 	 * Set the relaxation for all equations and contact materials.
 	 * @method setGlobalRelaxation
 	 * @param {Number} relaxation
 	 */
-	setGlobalRelaxation(relaxation){
+	setGlobalRelaxation(relaxation: f32): void{
 		setGlobalEquationParams(this, { relaxation: relaxation });
 
 		// Set for all contact materials
@@ -1283,7 +1323,7 @@ export default class World extends EventEmitter{
 		// Set for default contact material
 		var c = this.defaultContactMaterial;
 		c.relaxation = c.frictionRelaxation = relaxation;
-	};
+	}
 
 	/**
 	 * Ray cast against all bodies in the world.
@@ -1328,10 +1368,10 @@ export default class World extends EventEmitter{
 	 *     var result = new RaycastResult();
 	 *     world.raycast(result, ray);
 	 */
-	raycast(result, ray){
+	raycast(result: RaycastResult, ray: Ray): boolean{
 
-		var tmpAABB = new AABB();
-		var tmpArray = [];
+		let tmpAABB = new AABB();
+		var tmpArray: Body[] = [];
 
 		// Get all bodies within the ray AABB
 		ray.getAABB(tmpAABB);
@@ -1340,5 +1380,5 @@ export default class World extends EventEmitter{
 		tmpArray.length = 0;
 
 		return result.hasHit();
-	};
+	}
 }

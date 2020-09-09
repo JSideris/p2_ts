@@ -1,7 +1,10 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import Broadphase from "./broadphase";
 import World from "../world/world";
 import Body from "../objects/body";
 import AABB from "./aabb";
+import Utils from "../utils/utils";
 
 // TODO: this appears to be a bubble sort. We could probably do better.
 function sortAxisList(a: Array<Body>, axisIndex: u32){

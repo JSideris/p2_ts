@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import vec2 from "../math/vec2";
 import Equation from "./Equation";
 import Body from "../objects/body";

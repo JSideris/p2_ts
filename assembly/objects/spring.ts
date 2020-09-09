@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import Body from "./body";
 
 export default abstract class Spring{
@@ -18,13 +20,13 @@ export default abstract class Spring{
 	 * @property bodyA
 	 * @type {Body}
 	 */
-	bodyA: Body;
+	public bodyA: Body;
 	/**
 	 * Second connected body.
 	 * @property bodyB
 	 * @type {Body}
 	 */
-	bodyB: Body;
+	public bodyB: Body;
 
 	/**
 	 * Base class for {{#crossLink "LinearSpring"}}{{/crossLink}} and {{#crossLink "RotationalSpring"}}{{/crossLink}}. Not supposed to be used directly.

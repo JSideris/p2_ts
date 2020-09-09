@@ -1,3 +1,4 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
 import vec2 from "../math/vec2";
 
@@ -10,10 +11,12 @@ import decomp from "../math/poly-decomp";
 import Convex from "../shapes/Convex";
 import Ray from "../collision/ray";
 import RaycastResult from "../collision/raycast-result";
+import EventEmitter from "../events/event-emitter";
 //decomp = require('poly-decomp')
 
 var integrate_fhMinv = vec2create();
 var integrate_velodt = vec2create();
+var _tmp = vec2create();
 
 var _idCounter = 0;
 
@@ -41,7 +44,7 @@ export default class Body extends EventEmitter{
 	 * @property world
 	 * @type {World}
 	 */
-	public world: World;
+	public world: World|null;
 
 	/**
 	 * The shapes of the body.
@@ -406,10 +409,10 @@ export default class Body extends EventEmitter{
 
 	public concavePath: Float32Array[]; // TODO: what is the type of this?
 
-	private _wakeUpAfterNarrowphase: boolean = false;
+	// Should be private, but used by world.
+	_wakeUpAfterNarrowphase: boolean = false;
 
-	private _shapeAABB = new AABB();
-	private _tmp = vec2create();
+	private _shapeAABB: AABB = new AABB();
 
 	/**
 	 * A rigid body. Has got a center of mass, position, velocity and a number of
@@ -482,30 +485,29 @@ export default class Body extends EventEmitter{
 	 *     world.addBody(platformBody);
 	 */
 	constructor(options?: {
-		id?: u32,
-		mass?: f32,
-		fixedRotation?: boolean,
-		fixedX?: boolean,
-		fixedY?: boolean,
-		position?: Float32Array,
-		velocity?: Float32Array,
-		angle?: f32,
-		angularVelocity?: f32,
-		force?: Float32Array,
-		angularForce?: f32,
-		damping?: f32,
-		angularDamping?: f32,
-		sleepTimeLimit?: f32,
-		type?: u16,
-		allowSleep?: boolean,
-		sleepSpeedLimit?: f32,
-		gravityScale?: f32,
-		collisionResponse?: boolean,
-		ccdSpeedThreshold?: f32,
-		ccdIterations?: f32,
+		id: u32|null,
+		mass: f32|null,
+		fixedRotation: boolean|null,
+		fixedX: boolean|null,
+		fixedY: boolean|null,
+		position: Float32Array|null,
+		velocity: Float32Array|null,
+		angle: f32|null,
+		angularVelocity: f32|null,
+		force: Float32Array|null,
+		angularForce: f32|null,
+		damping: f32|null,
+		angularDamping: f32|null,
+		sleepTimeLimit: f32|null,
+		type: u16|null,
+		allowSleep: boolean|null,
+		sleepSpeedLimit: f32|null,
+		gravityScale: f32|null,
+		collisionResponse: boolean|null,
+		ccdSpeedThreshold: f32|null,
+		ccdIterations: f32|null
 	}){
-		super(options);
-
+		super();
 
 		this.id = options?.id ?? ++_idCounter;
 		this.mass = options?.mass ?? 0;
@@ -604,7 +606,7 @@ export default class Body extends EventEmitter{
 	updateAABB() {
 		var shapes = this.shapes,
 			N = shapes.length,
-			offset = tmp,
+			offset = _tmp,
 			bodyAngle = this.angle;
 
 		for(var i=0; i!==N; i++){
@@ -1179,6 +1181,7 @@ export default class Body extends EventEmitter{
 	 * @return {boolean}
 	 */
 	overlaps(body: Body): boolean{
+		if(!this.world) return false;
 		return this.world.overlapKeeper.bodiesAreOverlapping(this, body);
 	}
 
@@ -1221,6 +1224,8 @@ export default class Body extends EventEmitter{
 	}
 
 	integrateToTimeOfImpact(dt: f32): boolean{
+
+		if(!this.world) return false;
 
 		let result = new RaycastResult();
 		let ray = new Ray({

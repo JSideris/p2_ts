@@ -1,9 +1,12 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import Body from "../objects/body";
 import AngleLockEquation from "../equations/angle-lock-equation";
 import Utils from "../utils/Utils";
+import Constraint from "./constraint";
 
 
-export default class GearConstraint{
+export default class GearConstraint extends Constraint{
 	ratio: number;
 	angle: any;
 	equations: any[];
@@ -35,11 +38,14 @@ export default class GearConstraint{
 	constructor(bodyA: Body, bodyB: Body, options?:{
 		ratio?: f32,
 		angle?: f32,
-		maxTorque?: f32
+		maxTorque?: f32,
+
+		collideConnected?: boolean,
+		wakeUpBodies?: boolean
 	}){
 		options = options || {};
 
-		Constraint.call(this, bodyA, bodyB, Constraint.GEAR, options);
+		super(bodyA, bodyB, Constraint.GEAR, options);
 
 		/**
 		 * The gear ratio.

@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import Equation from "./Equation";
 import vec2 from "../math/vec2";
 import Body from "../objects/body";
@@ -38,8 +40,8 @@ export default class RotationalLockEquation extends Equation{
 
 	computeGq(){
 
-		vec2.rotate(worldVectorA,xAxis,this.bodyA.angle+this.angle);
-		vec2.rotate(worldVectorB,yAxis,this.bodyB.angle);
+		vec2.rotate(worldVectorA,xAxis,this.bodyA!.angle+this.angle);
+		vec2.rotate(worldVectorB,yAxis,this.bodyB!.angle);
 		return vec2.dot(worldVectorA,worldVectorB);
 	};
 }

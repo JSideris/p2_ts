@@ -10,7 +10,7 @@
     "engine",
     "2d"
   ],
-  "main": "./src/p2.ts",
+  "main": "./src/index.ts",
   "engines": {
     "node": "*"
   },
@@ -46,7 +46,8 @@
   "scripts": {
     "asbuild:untouched": "asc assembly/index.ts --target debug",
     "asbuild:optimized": "asc assembly/index.ts --target release",
-    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+	"asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+	"jsbuild": "npx tsc",
     "test": "node tests"
   }
 }

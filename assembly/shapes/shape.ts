@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 import vec2 from "../math/vec2";
 import Body from "../objects/body";
 import AABB from "../collision/aabb";
@@ -276,16 +278,14 @@ export default abstract class Shape
 	 * @param {array} out
 	 * @param {array} worldPoint
 	 */
-	// TODO: NEED CLARITY ON HOW THIS IS BEING USED!
-	// worldPointToLocal: (function () {
-	// 	var shapeWorldPosition = vec2.create();
-	// 	return function (out, worldPoint) {
-	// 		var body = this.body;
+	worldPointToLocal(out: Float32Array, worldPoint: Float32Array): void{
+		var shapeWorldPosition = vec2.create();
+		var body = this.body;
+		if(!body) return;
 
-	// 		vec2.rotate(shapeWorldPosition, this.position, body.angle);
-	// 		vec2.add(shapeWorldPosition, shapeWorldPosition, body.position);
+		vec2.rotate(shapeWorldPosition, this.position, body.angle);
+		vec2.add(shapeWorldPosition, shapeWorldPosition, body.position);
 
-	// 		vec2.toLocalFrame(out, worldPoint, shapeWorldPosition, this.body.angle + this.angle);
-	// 	};
-	// })()
+		vec2.toLocalFrame(out, worldPoint, shapeWorldPosition, body.angle + this.angle);
+	}
 }

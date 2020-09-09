@@ -1,3 +1,5 @@
+type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+
 
 	/**
 	 * Base class for objects that dispatches events.
@@ -71,7 +73,7 @@ export default class EventEmitter{
 	 * @param  {Function} listener
 	 * @return {Boolean}
 	 */
-	has ( type: string, listener: Function): boolean {
+	has ( type: string, listener?: Function): boolean {
 		if ( this._listeners === undefined ){
 			return false;
 		}
