@@ -57,7 +57,7 @@ export default class PrismaticConstraint extends Constraint{
 	 * @param {Array} [options.localAnchorA] Body A's anchor point, defined in its own local frame.
 	 * @param {Array} [options.localAnchorB] Body B's anchor point, defined in its own local frame.
 	 * @param {Array} [options.localAxisA] An axis, defined in body A frame, that body B's anchor point may slide along.
-	 * @param {Boolean} [options.disableRotationalLock] If set to true, bodyB will be free to rotate around its anchor point.
+	 * @param {boolean} [options.disableRotationalLock] If set to true, bodyB will be free to rotate around its anchor point.
 	 * @param {Number} [options.upperLimit]
 	 * @param {Number} [options.lowerLimit]
 	 * @todo Ability to create using only a point and a worldAxis
@@ -166,14 +166,14 @@ export default class PrismaticConstraint extends Constraint{
 		/**
 		 * Set to true to enable lower limit.
 		 * @property lowerLimitEnabled
-		 * @type {Boolean}
+		 * @type {boolean}
 		 */
 		this.lowerLimitEnabled = options?.lowerLimit !== undefined ? true : false;
 
 		/**
 		 * Set to true to enable upper limit.
 		 * @property upperLimitEnabled
-		 * @type {Boolean}
+		 * @type {boolean}
 		 */
 		this.upperLimitEnabled = options?.upperLimit !== undefined ? true : false;
 
@@ -209,7 +209,7 @@ export default class PrismaticConstraint extends Constraint{
 		/**
 		 * The current motor state. Enable or disable the motor using .enableMotor
 		 * @property motorEnabled
-		 * @type {Boolean}
+		 * @type {boolean}
 		 */
 		this.motorEnabled = false;
 

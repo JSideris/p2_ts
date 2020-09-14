@@ -36,7 +36,7 @@ export default class Constraint{
 	/**
 	 * Set to true if you want the connected bodies to collide.
 	 * @property collideConnected
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @default true
 	 */
 	collideConnected: boolean;

@@ -42,7 +42,7 @@ export default class RaycastResult{
 	/**
 	 * If the ray should stop traversing.
 	 * @readonly
-	 * @property {Boolean} isStopped
+	 * @property {boolean} isStopped
 	 */
 	isStopped:boolean = false;
 

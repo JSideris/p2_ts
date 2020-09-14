@@ -51,7 +51,7 @@ export default class ContactEquation extends Equation{
 		/**
 		 * This property is set to true if this is the first impact between the bodies (not persistant contact).
 		 * @property firstImpact
-		 * @type {Boolean}
+		 * @type {boolean}
 		 * @readOnly
 		 */
 		firstImpact: boolean = false;

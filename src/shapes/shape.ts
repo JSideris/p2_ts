@@ -98,7 +98,7 @@ export default abstract class Shape
 
 	/**
 	 * Whether to produce contact forces when in contact with other bodies. Note that contacts will be generated, but they will be disabled. That means that this shape will move through other body shapes, but it will still trigger contact events, etc.
-	 * @property {Boolean} collisionResponse
+	 * @property {boolean} collisionResponse
 	 */
 	public collisionResponse: boolean;
 
@@ -125,7 +125,7 @@ export default abstract class Shape
 
 	/**
 	 * Set to true if you want this shape to be a sensor. A sensor does not generate contacts, but it still reports contact events. This is good if you want to know if a shape is overlapping another shape, without them generating contacts.
-	 * @property {Boolean} sensor
+	 * @property {boolean} sensor
 	 */
 	public sensor: boolean;
 
@@ -224,6 +224,12 @@ export default abstract class Shape
 	 * @property {Number} HEIGHTFIELD
 	 */
 	static HEIGHTFIELD:u16 = 128;
+
+	/**
+	 * @static
+	 * @property {Number} HEIGHTFIELD
+	 */
+	static AXISALIGNEDBOX:u16 = 256;
 
 	/**
 	 * Should return the moment of inertia around the Z axis of the body. See <a href="http://en.wikipedia.org/wiki/List_of_moments_of_inertia">Wikipedia's list of moments of inertia</a>.

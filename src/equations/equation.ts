@@ -77,7 +77,7 @@ export default class Equation{
 
 	/**
 	 * Indicates if stiffness or relaxation was changed.
-	 * @property {Boolean} needsUpdate
+	 * @property {boolean} needsUpdate
 	 */
 	public needsUpdate: boolean = true;
 
@@ -96,7 +96,7 @@ export default class Equation{
 
 	/**
 	 * Whether this equation is enabled or not. If true, it will be added to the solver.
-	 * @property {Boolean} enabled
+	 * @property {boolean} enabled
 	 */
 	public enabled: boolean = true;
 

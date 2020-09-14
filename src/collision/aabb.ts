@@ -141,7 +141,7 @@ export default class AABB{
 	 * Returns true if the given AABB overlaps this AABB.
 	 * @method overlaps
 	 * @param  {AABB} aabb
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	overlaps(aabb: AABB): boolean{
 		var l1 = this.lowerBound,

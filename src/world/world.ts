@@ -341,14 +341,14 @@ export default class World extends EventEmitter{
 
 	/**
 	 * Set to true if you want .frictionGravity to be automatically set to the length of .gravity.
-	 * @property {Boolean} useWorldGravityAsFrictionGravity
+	 * @property {boolean} useWorldGravityAsFrictionGravity
 	 * @default true
 	 */
 	useWorldGravityAsFrictionGravity = true;
 
 	/**
 	 * If the length of .gravity is zero, and .useWorldGravityAsFrictionGravity=true, then switch to using .frictionGravity for friction instead. This fallback is useful for gravityless games.
-	 * @property {Boolean} useFrictionGravityOnZeroGravity
+	 * @property {boolean} useFrictionGravityOnZeroGravity
 	 * @default true
 	 */
 	useFrictionGravityOnZeroGravity = true;
@@ -391,7 +391,7 @@ export default class World extends EventEmitter{
 	/**
 	 * Enable to automatically apply spring forces each step.
 	 * @property applySpringForces
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @default true
 	 */
 	applySpringForces: boolean = true;
@@ -399,7 +399,7 @@ export default class World extends EventEmitter{
 	/**
 	 * Enable to automatically apply body damping each step.
 	 * @property applyDamping
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @default true
 	 */
 	applyDamping: boolean = true;
@@ -407,7 +407,7 @@ export default class World extends EventEmitter{
 	/**
 	 * Enable to automatically apply gravity each step.
 	 * @property applyGravity
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @default true
 	 */
 	applyGravity: boolean = true;
@@ -415,7 +415,7 @@ export default class World extends EventEmitter{
 	/**
 	 * Enable/disable constraint solving in each step.
 	 * @property solveConstraints
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @default true
 	 */
 	solveConstraints: boolean = true;
@@ -438,13 +438,13 @@ export default class World extends EventEmitter{
 
 	/**
 	 * Is true during step().
-	 * @property {Boolean} stepping
+	 * @property {boolean} stepping
 	 */
 	stepping: boolean = false;
 
 	/**
 	 * Whether to enable island splitting. Island splitting can be an advantage for both precision and performance.
-	 * @property {Boolean} islandSplit
+	 * @property {boolean} islandSplit
 	 * @default false
 	 */
 	islandSplit: boolean = true;
@@ -452,7 +452,7 @@ export default class World extends EventEmitter{
 	/**
 	 * Set to true if you want to the world to emit the "impact" event. Turning this off could improve performance.
 	 * @property emitImpactEvent
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @default true
 	 * @deprecated Impact event will be removed. Use beginContact instead.
 	 */
@@ -490,7 +490,7 @@ export default class World extends EventEmitter{
 	 * @param {Solver} [options.solver] Defaults to GSSolver.
 	 * @param {Array} [options.gravity] Defaults to y=-9.78.
 	 * @param {Broadphase} [options.broadphase] Defaults to SAPBroadphase
-	 * @param {Boolean} [options.islandSplit=true]
+	 * @param {boolean} [options.islandSplit=true]
 	 * @extends EventEmitter
 	 *
 	 * @example

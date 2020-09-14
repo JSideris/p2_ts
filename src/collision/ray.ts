@@ -26,13 +26,13 @@ export default class Ray{
 
 	/**
 	 * Set to true if you want the Ray to take .collisionResponse flags into account on bodies and shapes.
-	 * @property {Boolean} checkCollisionResponse
+	 * @property {boolean} checkCollisionResponse
 	 */
 	public checkCollisionResponse: boolean;
 
 	/**
 	 * If set to true, the ray skips any hits with normal.dot(rayDirection) < 0.
-	 * @property {Boolean} skipBackfaces
+	 * @property {boolean} skipBackfaces
 	 */
 	public skipBackfaces: boolean;
 

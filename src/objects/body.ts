@@ -98,7 +98,7 @@ export default class Body extends EventEmitter{
 	 * Set to true if you want to fix the rotation of the body.
 	 *
 	 * @property fixedRotation
-	 * @type {Boolean}
+	 * @type {boolean}
 	 *
 	 * @example
 	 *     // Fix rotation during runtime
@@ -109,7 +109,7 @@ export default class Body extends EventEmitter{
 
 	/**
 	 * Set to true if you want to fix the body movement along the X axis. The body will still be able to move along Y.
-	 * @property {Boolean} fixedX
+	 * @property {boolean} fixedX
 	 *
 	 * @example
 	 *     // Fix X movement on body creation
@@ -124,7 +124,7 @@ export default class Body extends EventEmitter{
 
 	/**
 	 * Set to true if you want to fix the body movement along the Y axis. The body will still be able to move along X. See .fixedX
-	 * @property {Boolean} fixedY
+	 * @property {boolean} fixedY
 	 */
 	public fixedY: boolean = false;
 
@@ -312,7 +312,7 @@ export default class Body extends EventEmitter{
 	/**
 	 * Indicates if the AABB needs update. Update it with {{#crossLink "Body/updateAABB:method"}}{{/crossLink}}.
 	 * @property aabbNeedsUpdate
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @see updateAABB
 	 *
 	 * @example
@@ -326,7 +326,7 @@ export default class Body extends EventEmitter{
 	/**
 	 * If true, the body will automatically fall to sleep. Note that you need to enable sleeping in the {{#crossLink "World"}}{{/crossLink}} before anything will happen.
 	 * @property allowSleep
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @default true
 	 */
 	public allowSleep: boolean = true;
@@ -369,7 +369,7 @@ export default class Body extends EventEmitter{
 
 	/**
 	 * Whether to produce contact forces when in contact with other bodies. Note that contacts will be generated, but they will be disabled. That means that this body will move through other bodies, but it will still trigger contact events, etc.
-	 * @property {Boolean} collisionResponse
+	 * @property {boolean} collisionResponse
 	 */
 	public collisionResponse: boolean = true;
 
@@ -422,18 +422,18 @@ export default class Body extends EventEmitter{
 	 * @constructor
 	 * @extends EventEmitter
 	 * @param {Object} [options]
-	 * @param {Boolean} [options.allowSleep=true]
+	 * @param {boolean} [options.allowSleep=true]
 	 * @param {Number} [options.angle=0]
 	 * @param {Number} [options.angularDamping=0.1]
 	 * @param {Number} [options.angularForce=0]
 	 * @param {Number} [options.angularVelocity=0]
 	 * @param {Number} [options.ccdIterations=10]
 	 * @param {Number} [options.ccdSpeedThreshold=-1]
-	 * @param {Boolean} [options.collisionResponse]
+	 * @param {boolean} [options.collisionResponse]
 	 * @param {Number} [options.damping=0.1]
-	 * @param {Boolean} [options.fixedRotation=false]
-	 * @param {Boolean} [options.fixedX=false]
-	 * @param {Boolean} [options.fixedY=false]
+	 * @param {boolean} [options.fixedRotation=false]
+	 * @param {boolean} [options.fixedX=false]
+	 * @param {boolean} [options.fixedY=false]
 	 * @param {Array} [options.force]
 	 * @param {Number} [options.gravityScale=1]
 	 * @param {Number} [options.mass=0] A number >= 0. If zero, the .type will be set to Body.STATIC.
@@ -704,7 +704,7 @@ export default class Body extends EventEmitter{
 	 * Remove a shape.
 	 * @method removeShape
 	 * @param  {Shape} shape
-	 * @return {Boolean} True if the shape was found and removed, else false.
+	 * @return {boolean} True if the shape was found and removed, else false.
 	 */
 	removeShape(shape: Shape): boolean{
 		var world = this.world;
@@ -937,10 +937,10 @@ export default class Body extends EventEmitter{
 	 * @method fromPolygon
 	 * @param {Array} path An array of 2d vectors, e.g. [[0,0],[0,1],...] that resembles a concave or convex polygon. The shape must be simple and without holes.
 	 * @param {Object} [options]
-	 * @param {Boolean} [options.optimalDecomp=false]   Set to true if you need optimal decomposition. Warning: very slow for polygons with more than 10 vertices.
-	 * @param {Boolean} [options.skipSimpleCheck=false] Set to true if you already know that the path is not intersecting itself.
+	 * @param {boolean} [options.optimalDecomp=false]   Set to true if you need optimal decomposition. Warning: very slow for polygons with more than 10 vertices.
+	 * @param {boolean} [options.skipSimpleCheck=false] Set to true if you already know that the path is not intersecting itself.
 	 * @param {Number} [options.removeCollinearPoints=0] Set to a number (angle threshold value) to remove collinear points, or 0 to keep all points.
-	 * @return {Boolean} True on success, else false.
+	 * @return {boolean} True on success, else false.
 	 * @example
 	 *     var body = new Body();
 	 *     var path = [

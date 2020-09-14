@@ -587,14 +587,14 @@
                         {
                             "name": "checkCollisionResponse",
                             "description": "",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true,
                             "optdefault": "true"
                         },
                         {
                             "name": "skipBackfaces",
                             "description": "",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true,
                             "optdefault": "false"
                         },
@@ -939,7 +939,7 @@
                         {
                             "name": "disableRotationalLock",
                             "description": "If set to true, bodyB will be free to rotate around its anchor point.",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true
                         },
                         {
@@ -1393,13 +1393,13 @@
                         {
                             "name": "allowSleep",
                             "description": "",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true
                         },
                         {
                             "name": "collisionResponse",
                             "description": "",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true
                         },
                         {
@@ -2091,14 +2091,14 @@
                         {
                             "name": "sensor",
                             "description": "",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true,
                             "optdefault": "false"
                         },
                         {
                             "name": "collisionResponse",
                             "description": "",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true,
                             "optdefault": "true"
                         },
@@ -2348,7 +2348,7 @@
                         {
                             "name": "islandSplit",
                             "description": "",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true,
                             "optdefault": "true"
                         }
@@ -2455,7 +2455,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "AABB"
         },
@@ -2473,7 +2473,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "AABB"
         },
@@ -2598,7 +2598,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Broadphase"
         },
@@ -2622,7 +2622,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Broadphase"
         },
@@ -2646,7 +2646,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Broadphase"
         },
@@ -2670,7 +2670,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Broadphase"
         },
@@ -2744,7 +2744,7 @@
             "description": "Whether to make friction equations in the upcoming contacts.",
             "itemtype": "property",
             "name": "enableFriction",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "Narrowphase"
         },
         {
@@ -2753,7 +2753,7 @@
             "description": "Whether to make equations enabled in upcoming contacts.",
             "itemtype": "property",
             "name": "enabledEquations",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "Narrowphase"
         },
         {
@@ -2855,7 +2855,7 @@
             "description": "Enable reduction of friction equations. If disabled, a box on a plane will generate 2 contact equations and 2 friction equations. If enabled, there will be only one friction equation. Same kind of simplifications are made  for all collision types.",
             "itemtype": "property",
             "name": "enableFrictionReduction",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "deprecated": true,
             "deprecationMessage": "This flag will be removed when the feature is stable enough.",
             "default": "true",
@@ -2901,7 +2901,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "todo": [
                 "shape world transforms are wrong"
@@ -2928,7 +2928,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Narrowphase"
         },
@@ -3057,7 +3057,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 }
             ],
             "todo": [
@@ -3115,7 +3115,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 }
             ],
             "todo": [
@@ -3429,7 +3429,7 @@
                 {
                     "name": "justTest",
                     "description": "If set to true, this function will return the result (intersection or not) without adding equations.",
-                    "type": "Boolean"
+                    "type": "boolean"
                 },
                 {
                     "name": "lineRadius",
@@ -3544,7 +3544,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 },
                 {
                     "name": "circleRadius",
@@ -3604,7 +3604,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 }
             ],
             "todo": [
@@ -3664,7 +3664,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 },
                 {
                     "name": "radiusA",
@@ -3731,7 +3731,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 }
             ],
             "class": "Narrowphase"
@@ -3786,7 +3786,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 }
             ],
             "class": "Narrowphase"
@@ -3841,7 +3841,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 }
             ],
             "class": "Narrowphase"
@@ -3895,7 +3895,7 @@
                 {
                     "name": "justTest",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 }
             ],
             "class": "Narrowphase"
@@ -4077,7 +4077,7 @@
             ],
             "return": {
                 "description": "Whether the axis could be found.",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Narrowphase"
         },
@@ -4107,7 +4107,7 @@
                 {
                     "name": "flip",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 }
             ],
             "return": {
@@ -4228,7 +4228,7 @@
             "description": "Set to true if you want the Ray to take .collisionResponse flags into account on bodies and shapes.",
             "itemtype": "property",
             "name": "checkCollisionResponse",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Ray"
         },
         {
@@ -4237,7 +4237,7 @@
             "description": "If set to true, the ray skips any hits with normal.dot(rayDirection) < 0.",
             "itemtype": "property",
             "name": "skipBackfaces",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Ray"
         },
         {
@@ -4438,7 +4438,7 @@
             ],
             "return": {
                 "description": "True if the intersections should continue",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Ray"
         },
@@ -4496,7 +4496,7 @@
             "readonly": "",
             "itemtype": "property",
             "name": "isStopped",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "RaycastResult"
         },
         {
@@ -4574,7 +4574,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "RaycastResult"
         },
@@ -4756,7 +4756,7 @@
             "description": "Set to true if you want the connected bodies to collide.",
             "itemtype": "property",
             "name": "collideConnected",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "default": "true",
             "class": "Constraint"
         },
@@ -4885,7 +4885,7 @@
             "description": "If the upper limit is enabled or not.",
             "itemtype": "property",
             "name": "upperLimitEnabled",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "DistanceConstraint"
         },
         {
@@ -4903,7 +4903,7 @@
             "description": "If the lower limit is enabled or not.",
             "itemtype": "property",
             "name": "lowerLimitEnabled",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "DistanceConstraint"
         },
         {
@@ -5088,7 +5088,7 @@
             "description": "Set to true to enable lower limit.",
             "itemtype": "property",
             "name": "lowerLimitEnabled",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "PrismaticConstraint"
         },
         {
@@ -5097,7 +5097,7 @@
             "description": "Set to true to enable upper limit.",
             "itemtype": "property",
             "name": "upperLimitEnabled",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "PrismaticConstraint"
         },
         {
@@ -5133,7 +5133,7 @@
             "description": "The current motor state. Enable or disable the motor using .enableMotor",
             "itemtype": "property",
             "name": "motorEnabled",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "PrismaticConstraint"
         },
         {
@@ -5211,7 +5211,7 @@
             "description": "Indicates whether the motor is enabled. Use .enableMotor() to enable the constraint motor.",
             "itemtype": "property",
             "name": "motorEnabled",
-            "type": "Boolean",
+            "type": "boolean",
             "readonly": "",
             "class": "RevoluteConstraint"
         },
@@ -5231,7 +5231,7 @@
             "description": "Set to true to enable lower limit",
             "itemtype": "property",
             "name": "lowerLimitEnabled",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "RevoluteConstraint"
         },
         {
@@ -5240,7 +5240,7 @@
             "description": "Set to true to enable upper limit",
             "itemtype": "property",
             "name": "upperLimitEnabled",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "RevoluteConstraint"
         },
         {
@@ -5249,7 +5249,7 @@
             "description": "The lower limit on the constraint angle.",
             "itemtype": "property",
             "name": "lowerLimit",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "RevoluteConstraint"
         },
         {
@@ -5258,7 +5258,7 @@
             "description": "The upper limit on the constraint angle.",
             "itemtype": "property",
             "name": "upperLimit",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "RevoluteConstraint"
         },
         {
@@ -5307,7 +5307,7 @@
             "deprecationMessage": "use property motorEnabled instead.",
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "RevoluteConstraint"
         },
@@ -5424,7 +5424,7 @@
             "description": "This property is set to true if this is the first impact between the bodies (not persistant contact).",
             "itemtype": "property",
             "name": "firstImpact",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "readonly": "",
             "class": "ContactEquation"
         },
@@ -5525,7 +5525,7 @@
             "description": "Indicates if stiffness or relaxation was changed.",
             "itemtype": "property",
             "name": "needsUpdate",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Equation"
         },
         {
@@ -5552,7 +5552,7 @@
             "description": "Whether this equation is enabled or not. If true, it will be added to the solver.",
             "itemtype": "property",
             "name": "enabled",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Equation"
         },
         {
@@ -5851,7 +5851,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "EventEmitter"
         },
@@ -6902,7 +6902,7 @@
             ],
             "return": {
                 "description": "True if there was an intersection, otherwise false.",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "vec2"
         },
@@ -7010,7 +7010,7 @@
             "description": "Set to true if you want to fix the rotation of the body.",
             "itemtype": "property",
             "name": "fixedRotation",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "Body"
         },
         {
@@ -7019,7 +7019,7 @@
             "description": "Set to true if you want to fix the body movement along the X axis. The body will still be able to move along Y.",
             "itemtype": "property",
             "name": "fixedX",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Body"
         },
         {
@@ -7028,7 +7028,7 @@
             "description": "Set to true if you want to fix the body movement along the Y axis. The body will still be able to move along X.",
             "itemtype": "property",
             "name": "fixedY",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Body"
         },
         {
@@ -7214,7 +7214,7 @@
             "description": "Indicates if the AABB needs update. Update it with {{#crossLink \"Body/updateAABB:method\"}}.updateAABB(){{/crossLink}}.",
             "itemtype": "property",
             "name": "aabbNeedsUpdate",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "see": [
                 "updateAABB"
             ],
@@ -7229,7 +7229,7 @@
             "description": "If true, the body will automatically fall to sleep. Note that you need to enable sleeping in the {{#crossLink \"World\"}}{{/crossLink}} before anything will happen.",
             "itemtype": "property",
             "name": "allowSleep",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "default": "true",
             "class": "Body"
         },
@@ -7279,7 +7279,7 @@
             "description": "Whether to produce contact forces when in contact with other bodies. Note that contacts will be generated, but they will be disabled. That means that this body will move through other bodies, but it will still trigger contact events, etc.",
             "itemtype": "property",
             "name": "collisionResponse",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Body"
         },
         {
@@ -7431,7 +7431,7 @@
             ],
             "return": {
                 "description": "True if the shape was found and removed, else false.",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Body"
         },
@@ -7631,21 +7631,21 @@
                         {
                             "name": "optimalDecomp",
                             "description": "Set to true if you need optimal decomposition. Warning: very slow for polygons with more than 10 vertices.",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true,
                             "optdefault": "false"
                         },
                         {
                             "name": "skipSimpleCheck",
                             "description": "Set to true if you already know that the path is not intersecting itself.",
-                            "type": "Boolean",
+                            "type": "boolean",
                             "optional": true,
                             "optdefault": "false"
                         },
                         {
                             "name": "removeCollinearPoints",
                             "description": "Set to a number (angle threshold value) to remove collinear points, or false to keep all points.",
-                            "type": "Boolean|Number",
+                            "type": "boolean|Number",
                             "optional": true,
                             "optdefault": "false"
                         }
@@ -7654,7 +7654,7 @@
             ],
             "return": {
                 "description": "True on success, else false.",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Body"
         },
@@ -7720,7 +7720,7 @@
                 {
                     "name": "dontSleep",
                     "description": "",
-                    "type": "Boolean"
+                    "type": "boolean"
                 },
                 {
                     "name": "dt",
@@ -7745,7 +7745,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Body"
         },
@@ -9007,7 +9007,7 @@
             "description": "Whether to produce contact forces when in contact with other bodies. Note that contacts will be generated, but they will be disabled. That means that this shape will move through other body shapes, but it will still trigger contact events, etc.",
             "itemtype": "property",
             "name": "collisionResponse",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Shape"
         },
         {
@@ -9043,7 +9043,7 @@
             "description": "Set to true if you want this shape to be a sensor. A sensor does not generate contacts, but it still reports contact events. This is good if you want to know if a shape is overlapping another shape, without them generating contacts.",
             "itemtype": "property",
             "name": "sensor",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "Shape"
         },
         {
@@ -9237,7 +9237,7 @@
             "description": "Set to true to set all right hand side terms to zero when solving. Can be handy for a few applications.",
             "itemtype": "property",
             "name": "useZeroRHS",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "todo": [
                 "Remove",
                 "not used"
@@ -9575,7 +9575,7 @@
             ],
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "OverlapKeeper"
         },
@@ -10010,7 +10010,7 @@
             "name": "wantsToSleep",
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "class": "Island"
         },
@@ -10198,7 +10198,7 @@
             "description": "If this node was visiting during the graph traversal.",
             "itemtype": "property",
             "name": "visited",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "class": "IslandNode"
         },
         {
@@ -10289,7 +10289,7 @@
             "description": "Set to true if you want .frictionGravity to be automatically set to the length of .gravity.",
             "itemtype": "property",
             "name": "useWorldGravityAsFrictionGravity",
-            "type": "Boolean",
+            "type": "boolean",
             "default": "true",
             "class": "World"
         },
@@ -10299,7 +10299,7 @@
             "description": "If the length of .gravity is zero, and .useWorldGravityAsFrictionGravity=true, then switch to using .frictionGravity for friction instead. This fallback is useful for gravityless games.",
             "itemtype": "property",
             "name": "useFrictionGravityOnZeroGravity",
-            "type": "Boolean",
+            "type": "boolean",
             "default": "true",
             "class": "World"
         },
@@ -10354,7 +10354,7 @@
             "description": "Enable to automatically apply spring forces each step.",
             "itemtype": "property",
             "name": "applySpringForces",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "default": "true",
             "class": "World"
         },
@@ -10364,7 +10364,7 @@
             "description": "Enable to automatically apply body damping each step.",
             "itemtype": "property",
             "name": "applyDamping",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "default": "true",
             "class": "World"
         },
@@ -10374,7 +10374,7 @@
             "description": "Enable to automatically apply gravity each step.",
             "itemtype": "property",
             "name": "applyGravity",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "default": "true",
             "class": "World"
         },
@@ -10384,7 +10384,7 @@
             "description": "Enable/disable constraint solving in each step.",
             "itemtype": "property",
             "name": "solveConstraints",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "default": "true",
             "class": "World"
         },
@@ -10412,7 +10412,7 @@
             "description": "Is true during step().",
             "itemtype": "property",
             "name": "stepping",
-            "type": "Boolean",
+            "type": "boolean",
             "class": "World"
         },
         {
@@ -10432,7 +10432,7 @@
             "description": "Whether to enable island splitting. Island splitting can be an advantage for both precision and performance. See {{#crossLink \"IslandManager\"}}{{/crossLink}}.",
             "itemtype": "property",
             "name": "islandSplit",
-            "type": "Boolean",
+            "type": "boolean",
             "default": "true",
             "class": "World"
         },
@@ -10442,7 +10442,7 @@
             "description": "Set to true if you want to the world to emit the \"impact\" event. Turning this off could improve performance.",
             "itemtype": "property",
             "name": "emitImpactEvent",
-            "type": "{Boolean}",
+            "type": "{boolean}",
             "default": "true",
             "class": "World"
         },
@@ -11087,7 +11087,7 @@
             ],
             "return": {
                 "description": "True if any body was hit.",
-                "type": "Boolean"
+                "type": "boolean"
             },
             "example": [
                 "\n    var ray = new Ray({\n        mode: Ray.CLOSEST, // or ANY\n        from: [0, 0],\n        to: [10, 0],\n    });\n    var result = new RaycastResult();\n    world.raycast(result, ray);\n\n    // Get the hit point\n    var hitPoint = vec2.create();\n    result.getHitPoint(hitPoint, ray);\n    console.log('Hit point: ', hitPoint[0], hitPoint[1], ' at distance ' + result.getHitDistance(ray));",

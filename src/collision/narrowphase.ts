@@ -318,14 +318,14 @@ export default class Narrowphase{
 	/**
 	 * Whether to make friction equations in the upcoming contacts.
 	 * @property enableFriction
-	 * @type {Boolean}
+	 * @type {boolean}
 	 */
 	enableFriction: boolean = true;
 
 	/**
 	 * Whether to make equations enabled in upcoming contacts.
 	 * @property enabledEquations
-	 * @type {Boolean}
+	 * @type {boolean}
 	 */
 	enabledEquations: boolean = true;
 
@@ -358,7 +358,7 @@ export default class Narrowphase{
 	/**
 	 * Enable reduction of friction equations. If disabled, a box on a plane will generate 2 contact equations and 2 friction equations. If enabled, there will be only one friction equation. Same kind of simplifications are made  for all collision types.
 	 * @property enableFrictionReduction
-	 * @type {Boolean}
+	 * @type {boolean}
 	 * @deprecated This flag will be removed when the feature is stable enough.
 	 * @default true
 	 */
@@ -392,7 +392,7 @@ export default class Narrowphase{
 	 * @param  {Body} bodyA
 	 * @param  {Body} bodyB
 	 * @param  {boolean} [checkCollisionMasks=false]
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	bodiesOverlap(bodyA: Body, bodyB: Body, checkCollisionMasks: boolean = false): boolean{
 
@@ -429,7 +429,7 @@ export default class Narrowphase{
 	 * @method collidedLastStep
 	 * @param  {Body} bodyA
 	 * @param  {Body} bodyB
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	collidedLastStep(bodyA: Body, bodyB: Body): boolean{
 		let id1 = bodyA.id|0,
@@ -822,7 +822,7 @@ export default class Narrowphase{
 	 * @param  {Box}  boxShape
 	 * @param  {Array}      boxOffset
 	 * @param  {Number}     boxAngle
-	 * @param  {Boolean}    justTest
+	 * @param  {boolean}    justTest
 	 * @return {number}
 	 * @todo Implement me!
 	 */
@@ -1194,7 +1194,7 @@ export default class Narrowphase{
 	 * @param  {Line} lineShape
 	 * @param  {Array} lineOffset
 	 * @param  {Number} lineAngle
-	 * @param {Boolean} justTest If set to true, this function will return the result (intersection or not) without adding equations.
+	 * @param {boolean} justTest If set to true, this function will return the result (intersection or not) without adding equations.
 	 * @param {Number} lineRadius Radius to add to the line. Can be used to test Capsules.
 	 * @param {Number} circleRadius If set, this value overrides the circle shape radius.
 	 * @return {number}
@@ -1378,7 +1378,7 @@ export default class Narrowphase{
 	 * @param  {Convex} convexShape
 	 * @param  {Array} convexOffset
 	 * @param  {Number} convexAngle
-	 * @param  {Boolean} justTest
+	 * @param  {boolean} justTest
 	 * @param  {Number} circleRadius
 	 * @return {number}
 	 * @todo Should probably do a separating axis test like https://github.com/erincatto/Box2D/blob/master/Box2D/Box2D/Collision/b2CollideCircle.cpp#L62
@@ -1570,7 +1570,7 @@ export default class Narrowphase{
 	 * @param  {Convex} convexShape
 	 * @param  {Array} convexOffset
 	 * @param  {Number} convexAngle
-	 * @param {Boolean} justTest
+	 * @param {boolean} justTest
 	 * @return {number}
 	 * @todo use pointInConvex and code more similar to circleConvex
 	 * @todo don't transform each vertex, but transform the particle position to convex-local instead
@@ -1686,7 +1686,7 @@ export default class Narrowphase{
 	 * @param  {Body} bodyB
 	 * @param  {Circle} shapeB
 	 * @param  {Array} offsetB
-	 * @param {Boolean} justTest
+	 * @param {boolean} justTest
 	 * @param {Number} [radiusA] Optional radius to use for shapeA
 	 * @param {Number} [radiusB] Optional radius to use for shapeB
 	 * @return {number}
@@ -1749,7 +1749,7 @@ export default class Narrowphase{
 	 * @param  {Convex} convexShape
 	 * @param  {Array} convexOffset
 	 * @param  {Number} convexAngle
-	 * @param {Boolean} justTest
+	 * @param {boolean} justTest
 	 * @return {number}
 	 * @todo only use the deepest contact point + the contact point furthest away from it
 	 */
@@ -1844,7 +1844,7 @@ export default class Narrowphase{
 	 * @param  {Plane}      planeShape
 	 * @param  {Array}      planeOffset
 	 * @param  {Number}     planeAngle
-	 * @param {Boolean}     justTest
+	 * @param {boolean}     justTest
 	 * @return {number}
 	 */
 	//Narrowphase.prototype[Shape.PARTICLE | Shape.PLANE] =
@@ -1905,7 +1905,7 @@ export default class Narrowphase{
 	 * @param  {Body} particleBody
 	 * @param  {Particle} particleShape
 	 * @param  {Array} particleOffset
-	 * @param  {Boolean} justTest
+	 * @param  {boolean} justTest
 	 * @return {number}
 	 */
 	//Narrowphase.prototype[Shape.CIRCLE | Shape.PARTICLE] =
@@ -1964,7 +1964,7 @@ export default class Narrowphase{
 	 * @param  {Particle} capsuleShape
 	 * @param  {Array} capsuleOffset
 	 * @param  {Number} capsuleAngle
-	 * @param {Boolean} justTest
+	 * @param {boolean} justTest
 	 * @return {number}
 	 */
 	//Narrowphase.prototype[Shape.PLANE | Shape.CAPSULE] =
@@ -2033,7 +2033,7 @@ export default class Narrowphase{
 	 * @param  {Plane}   planeShape
 	 * @param  {Array}   planeOffset
 	 * @param  {Number}  planeAngle
-	 * @param  {Boolean} justTest
+	 * @param  {boolean} justTest
 	 * @return {number}
 	 */
 	//Narrowphase.prototype[Shape.CIRCLE | Shape.PLANE] =
@@ -2123,7 +2123,7 @@ export default class Narrowphase{
 	 * @param  {Convex} sj
 	 * @param  {Array} xj
 	 * @param  {Number} aj
-	 * @param  {Boolean} justTest
+	 * @param  {boolean} justTest
 	 * @return {number}
 	 */
 	//Narrowphase.prototype[Shape.CONVEX] =

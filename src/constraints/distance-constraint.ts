@@ -35,7 +35,7 @@ export default class DistanceConstraint extends Constraint{
 	maxForce: f32 = Infinity;
 	/**
 	 * If the upper limit is enabled or not.
-	 * @property {Boolean} upperLimitEnabled
+	 * @property {boolean} upperLimitEnabled
 	 */
 	upperLimitEnabled: boolean = false;
 	/**
@@ -45,7 +45,7 @@ export default class DistanceConstraint extends Constraint{
 	upperLimit: f32 = 1;
 	/**
 	 * If the lower limit is enabled or not.
-	 * @property {Boolean} lowerLimitEnabled
+	 * @property {boolean} lowerLimitEnabled
 	 */
 	lowerLimitEnabled: boolean = false;
 	/**

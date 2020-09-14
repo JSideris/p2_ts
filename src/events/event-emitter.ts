@@ -71,7 +71,7 @@ export default class EventEmitter{
 	 * @method has
 	 * @param  {String} type
 	 * @param  {Function} listener
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	has ( type: string, listener?: Function): boolean {
 		if ( this._listeners === undefined ){

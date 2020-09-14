@@ -43,25 +43,25 @@ export default class RevoluteConstraint extends Constraint{
 	/**
 	 * Set to true to enable lower limit
 	 * @property lowerLimitEnabled
-	 * @type {Boolean}
+	 * @type {boolean}
 	 */
 	lowerLimitEnabled: boolean;
 	/**
 	 * Set to true to enable upper limit
 	 * @property upperLimitEnabled
-	 * @type {Boolean}
+	 * @type {boolean}
 	 */
 	upperLimitEnabled: boolean;
 	/**
 	 * The lower limit on the constraint angle.
 	 * @property lowerLimit
-	 * @type {Boolean}
+	 * @type {boolean}
 	 */
 	lowerLimit: number;
 	/**
 	 * The upper limit on the constraint angle.
 	 * @property upperLimit
-	 * @type {Boolean}
+	 * @type {boolean}
 	 */
 	upperLimit: number;
 

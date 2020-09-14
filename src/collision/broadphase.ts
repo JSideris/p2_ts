@@ -69,7 +69,7 @@ export default class Broadphase{
 	 * @method  boundingRadiusCheck
 	 * @param  {Body} bodyA
 	 * @param  {Body} bodyB
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	static boundingRadiusCheck (bodyA: Body, bodyB: Body){
 		var d2 = vec2.squaredDistance(bodyA.position, bodyB.position),
@@ -82,7 +82,7 @@ export default class Broadphase{
 	 * @method  aabbCheck
 	 * @param  {Body} bodyA
 	 * @param  {Body} bodyB
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	static aabbCheck(bodyA: Body, bodyB: Body){
 		return bodyA.getAABB().overlaps(bodyB.getAABB());
@@ -93,7 +93,7 @@ export default class Broadphase{
 	 * @method  boundingVolumeCheck
 	 * @param  {Body} bodyA
 	 * @param  {Body} bodyB
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	boundingVolumeCheck(bodyA: Body, bodyB: Body){
 		var result;
@@ -116,7 +116,7 @@ export default class Broadphase{
 	 * @method  canCollide
 	 * @param  {Body} bodyA
 	 * @param  {Body} bodyB
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	static canCollide(bodyA: Body, bodyB: Body){
 		var KINEMATIC = Body.KINEMATIC;

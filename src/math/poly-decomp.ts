@@ -37,7 +37,7 @@ function lineInt(l1: Array<Float32Array>,l2: Array<Float32Array>,precision: f32 
  * @param {Array} p2 The end vertex of the first line segment.
  * @param {Array} q1 The start vertex of the second line segment.
  * @param {Array} q2 The end vertex of the second line segment.
- * @return {Boolean} True if the two line segments intersect
+ * @return {boolean} True if the two line segments intersect
  */
 function lineSegmentsIntersect(p1: Float32Array, p2: Float32Array, q1: Float32Array, q2: Float32Array): boolean{
 	var dx = p2[0] - p1[0];
@@ -95,7 +95,7 @@ var tmpPoint1 = new Float32Array(2),
  * @param  {Array} b
  * @param  {Array} c
  * @param  {Number} [thresholdAngle=0] Threshold angle to use when comparing the vectors. The function will return true if the angle between the resulting vectors is less than this value. Use zero for max precision.
- * @return {Boolean}
+ * @return {boolean}
  */
 function collinear(a: Float32Array,b: Float32Array,c: Float32Array, thresholdAngle: f32): boolean {
     if(!thresholdAngle){
@@ -201,7 +201,7 @@ function polygonReverse(polygon: Float32Array[]): void{
  * Check if a point in the polygon is a reflex point
  * @method isReflex
  * @param  {Number}  i
- * @return {Boolean}
+ * @return {boolean}
  */
 function polygonIsReflex(polygon: Array<Float32Array>, i: u32): boolean{
     return isRight(polygonAt(polygon, i - 1), polygonAt(polygon, i), polygonAt(polygon, i + 1));
@@ -215,7 +215,7 @@ var tmpLine1: Array<Float32Array>=[],
  * @method canSee
  * @param  {Number} a Vertex index 1
  * @param  {Number} b Vertex index 2
- * @return {Boolean}
+ * @return {boolean}
  */
 function polygonCanSee(polygon: Array<Float32Array>, a: u32,b: u32): boolean {
     var p, dist, l1=tmpLine1, l2=tmpLine2;
@@ -248,7 +248,7 @@ function polygonCanSee(polygon: Array<Float32Array>, a: u32,b: u32): boolean {
  * @method canSee2
  * @param  {Number} a Vertex index 1
  * @param  {Number} b Vertex index 2
- * @return {Boolean}
+ * @return {boolean}
  */
 function polygonCanSee2(polygon: Array<Float32Array>, a: u32,b:u32):boolean {
     // for each edge
@@ -398,7 +398,7 @@ function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float3
  * Checks that the line segments of this polygon do not intersect each other.
  * @method isSimple
  * @param  {Array} path An array of vertices e.g. [[0,0],[0,1],...]
- * @return {Boolean}
+ * @return {boolean}
  * @todo Should it check all segments with all others?
  */
 function polygonIsSimple(polygon: Array<Float32Array>): boolean{
@@ -649,7 +649,7 @@ function polygonRemoveDuplicatePoints(polygon: Array<Float32Array>, precision: f
  * @param  {Number} a
  * @param  {Number} b
  * @param  {Number} [precision]
- * @return {Boolean}
+ * @return {boolean}
  */
 function scalar_eq(a: f32,b: f32,precision: f32): boolean{
     precision = precision || 0;
@@ -663,7 +663,7 @@ function scalar_eq(a: f32,b: f32,precision: f32): boolean{
  * @param  {Array} a
  * @param  {Array} b
  * @param  {Number} [precision]
- * @return {Boolean}
+ * @return {boolean}
  */
 function points_eq(a: Float32Array,b: Float32Array,precision: f32): boolean{
     return scalar_eq(a[0],b[0],precision) && scalar_eq(a[1],b[1],precision);
