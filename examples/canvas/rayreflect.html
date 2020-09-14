@@ -106,7 +106,7 @@
             var vertex = [size*0.5*Math.cos(a), size*0.5*Math.sin(a)]; // Note: vertices are added counter-clockwise
             vertices.push(vertex);
         }
-        convexShape = new p2.Convex({ vertices: vertices });
+        convexShape = new p2.Convex(null, vertices);
         convexBody = new p2.Body({
           mass: 1,
           position: [1,0],

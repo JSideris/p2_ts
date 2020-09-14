@@ -1,4 +1,6 @@
 
+const version = "0.0.1";
+
 import AABB from                          "./collision/aabb";
 import AngleLockEquation from             "./equations/angle-lock-equation";
 import Body from                          "./objects/body";
@@ -42,8 +44,6 @@ import RotationalSpring from              "./objects/rotational-spring";
 import Utils from                         "./utils/utils";
 import World from                         "./world/world";
 import vec2 from                          "./math/vec2";
-
-var version = "0.0.1";
 
 export {
     AABB as                          AABB,

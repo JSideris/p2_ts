@@ -96,6 +96,8 @@ export default class Heightfield extends Shape{
 
 		
 		this.elementWidth = options?.elementWidth ?? 0.1;
+
+		this.updateArea();
 		
 		if(options?.maxValue && options?.minValue){
 			this.maxValue = options?.maxValue;
@@ -142,6 +144,7 @@ export default class Heightfield extends Shape{
 	updateArea(): f32{
 		var data = this.heights,
 			area = 0;
+		if(!data) return 0;
 		for(var i=0; i<data.length-1; i++){
 			area += (data[i]+data[i+1]) / 2 * this.elementWidth;
 		}

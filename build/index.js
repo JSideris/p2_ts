@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = exports.vec2 = exports.World = exports.Utils = exports.RotationalSpring = exports.LinearSpring = exports.TopDownVehicle = exports.Spring = exports.Solver = exports.Shape = exports.SAPBroadphase = exports.RotationalVelocityEquation = exports.Box = exports.RaycastResult = exports.Ray = exports.PrismaticConstraint = exports.RevoluteConstraint = exports.Pool = exports.Plane = exports.Particle = exports.NaiveBroadphase = exports.Narrowphase = exports.Material = exports.LockConstraint = exports.Line = exports.Heightfield = exports.GSSolver = exports.GearConstraint = exports.FrictionEquationPool = exports.FrictionEquation = exports.EventEmitter = exports.Equation = exports.DistanceConstraint = exports.Convex = exports.ContactMaterial = exports.ContactEquationPool = exports.ContactEquation = exports.Constraint = exports.Circle = exports.Capsule = exports.Broadphase = exports.Body = exports.AngleLockEquation = exports.AABB = void 0;
+var version = "0.0.1";
+exports.version = version;
 var aabb_1 = __importDefault(require("./collision/aabb"));
 exports.AABB = aabb_1.default;
 var angle_lock_equation_1 = __importDefault(require("./equations/angle-lock-equation"));
@@ -90,5 +92,3 @@ var world_1 = __importDefault(require("./world/world"));
 exports.World = world_1.default;
 var vec2_1 = __importDefault(require("./math/vec2"));
 exports.vec2 = vec2_1.default;
-var version = "0.0.1";
-exports.version = version;

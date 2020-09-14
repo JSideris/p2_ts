@@ -479,7 +479,8 @@ var Body = /** @class */ (function (_super) {
         for (var i = 0; i !== N; i++) {
             var shape = shapes[i], angle = shape.angle + bodyAngle;
             // Get shape world offset
-            vec2_1.default.toGlobalFrame(offset, shape.position, this.position, bodyAngle);
+            vec2_1.default.rotate(offset, shape.position, bodyAngle);
+            vec2_1.default.add(offset, offset, this.position);
             // Get shape AABB
             shape.computeAABB(this._shapeAABB, offset, angle);
             if (i === 0) {

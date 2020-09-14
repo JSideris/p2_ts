@@ -83,6 +83,7 @@ var Heightfield = /** @class */ (function (_super) {
         _this.elementWidth = 0;
         _this.heights = (options === null || options === void 0 ? void 0 : options.heights) ? options.heights.slice(0) : [];
         _this.elementWidth = (_a = options === null || options === void 0 ? void 0 : options.elementWidth) !== null && _a !== void 0 ? _a : 0.1;
+        _this.updateArea();
         if ((options === null || options === void 0 ? void 0 : options.maxValue) && (options === null || options === void 0 ? void 0 : options.minValue)) {
             _this.maxValue = options === null || options === void 0 ? void 0 : options.maxValue;
             _this.minValue = options === null || options === void 0 ? void 0 : options.minValue;
@@ -124,6 +125,8 @@ var Heightfield = /** @class */ (function (_super) {
     };
     Heightfield.prototype.updateArea = function () {
         var data = this.heights, area = 0;
+        if (!data)
+            return 0;
         for (var i = 0; i < data.length - 1; i++) {
             area += (data[i] + data[i + 1]) / 2 * this.elementWidth;
         }

@@ -614,7 +614,8 @@ export default class Body extends EventEmitter{
 				angle = shape.angle + bodyAngle;
 
 			// Get shape world offset
-			vec2.toGlobalFrame(offset, shape.position, this.position, bodyAngle);
+			vec2.rotate(offset, shape.position, bodyAngle);
+			vec2.add(offset, offset, this.position);
 
 			// Get shape AABB
 			shape.computeAABB(this._shapeAABB, offset, angle);

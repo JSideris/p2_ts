@@ -38,21 +38,21 @@ export default class Convex extends Shape {
 	 * @property vertices
 	 * @type {Array}
 	 */
-	public vertices: Float32Array[];
+	public vertices: Float32Array[] = [];
 
 	/**
 	 * Edge normals defined in the local frame, pointing out of the shape.
 	 * @property normals
 	 * @type {Array}
 	 */
-	public normals: Float32Array[];
+	public normals: Float32Array[] = [];
 
 	/**
 	 * Triangulated version of this convex. The structure is Array of 3-Arrays, and each subarray contains 3 integers, referencing the vertices.
 	 * @property triangles
 	 * @type {Array}
 	 */
-	public triangles: Float32Array[];
+	public triangles: Float32Array[] = [];
 
 	/**
 	 * The center of mass of the Convex
@@ -89,7 +89,6 @@ export default class Convex extends Shape {
 		super(type ?? Shape.CONVEX, options); 
 
 		// Copy the verts
-		this.vertices = [];
 		let newVertices = vertices ?? [];
 		this.vertices = [];
 		this.normals = [];
@@ -97,6 +96,10 @@ export default class Convex extends Shape {
 			this.vertices.push(vec2.clone(newVertices[i]));
 			this.normals.push(vec2.create());
 		}
+
+		// These are called in the shape constructor, but need to call again here because verts weren't set up yet!
+		this.updateBoundingRadius();
+		this.updateArea();
 
 		this.updateNormals();
 
@@ -296,7 +299,7 @@ export default class Convex extends Shape {
 	updateBoundingRadius(): f32{
 		let verts = this.vertices,
 			r2 = 0;
-		if(!verts) return 0;
+		if(!verts || verts.length == 0) return 0;
 		for(let i = 0; i!==verts.length; i++){
 			let l2 = vec2.squaredLength(verts[i]);
 			if(l2 > r2){

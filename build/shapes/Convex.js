@@ -48,8 +48,27 @@ var Convex = /** @class */ (function (_super) {
      */
     function Convex(type, vertices, options) {
         var _this = _super.call(this, type !== null && type !== void 0 ? type : Shape_1.default.CONVEX, options) || this;
-        // Copy the verts
+        // TODO: this would be more efficient if I didn't use float32array[]s. Just convert to a big float32array with double the size.
+        // Let's get this working first then switch it.
+        /**
+         * Vertices defined in the local frame.
+         * @property vertices
+         * @type {Array}
+         */
         _this.vertices = [];
+        /**
+         * Edge normals defined in the local frame, pointing out of the shape.
+         * @property normals
+         * @type {Array}
+         */
+        _this.normals = [];
+        /**
+         * Triangulated version of this convex. The structure is Array of 3-Arrays, and each subarray contains 3 integers, referencing the vertices.
+         * @property triangles
+         * @type {Array}
+         */
+        _this.triangles = [];
+        // Copy the verts
         var newVertices = vertices !== null && vertices !== void 0 ? vertices : [];
         _this.vertices = [];
         _this.normals = [];
@@ -57,6 +76,9 @@ var Convex = /** @class */ (function (_super) {
             _this.vertices.push(vec2_1.default.clone(newVertices[i]));
             _this.normals.push(vec2_1.default.create());
         }
+        // These are called in the shape constructor, but need to call again here because verts weren't set up yet!
+        _this.updateBoundingRadius();
+        _this.updateArea();
         _this.updateNormals();
         _this.centerOfMass = vec2_1.default.create();
         _this.triangles = [];
@@ -201,7 +223,7 @@ var Convex = /** @class */ (function (_super) {
      */
     Convex.prototype.updateBoundingRadius = function () {
         var verts = this.vertices, r2 = 0;
-        if (!verts)
+        if (!verts || verts.length == 0)
             return 0;
         for (var i = 0; i !== verts.length; i++) {
             var l2 = vec2_1.default.squaredLength(verts[i]);
