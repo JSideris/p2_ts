@@ -376,7 +376,7 @@ var Body = /** @class */ (function (_super) {
          * @property {number} islandId
          */
         _this.islandId = -1;
-        _this.concavePath = [];
+        _this.concavePath = null;
         // Should be private, but used by world.
         _this._wakeUpAfterNarrowphase = false;
         _this._shapeAABB = new aabb_1.default();

@@ -16699,7 +16699,7 @@ Renderer.prototype.handleMouseMove = function(physicsPosition){
 
     case Renderer.DRAWINGPOLYGON:
         // drawing a polygon - add new point
-        var sqdist = p2.vec2.dist(physicsPosition,this.drawPoints[this.drawPoints.length-1]);
+        var sqdist = p2.vec2.distance(physicsPosition,this.drawPoints[this.drawPoints.length-1]);
         if(sqdist > sampling*sampling){
             var copy = [0,0];
             p2.vec2.copy(copy,physicsPosition);
@@ -16764,8 +16764,8 @@ Renderer.prototype.handleMouseUp = function(physicsPosition){
 
     case Renderer.DRAWINGCIRCLE:
         // End this drawing state
-        this.setState(Renderer.DRAWCIRCLE);
-        var R = p2.vec2.dist(this.drawCircleCenter,this.drawCirclePoint);
+		this.setState(Renderer.DRAWCIRCLE);
+        var R = p2.vec2.distance(this.drawCircleCenter,this.drawCirclePoint);
         if(R > 0){
             // Create circle
             b = new p2.Body({ mass : 1, position : this.drawCircleCenter });
@@ -17023,7 +17023,7 @@ function WebGLRenderer(scenes, options){
         var g = that.drawShapeGraphics;
         g.clear();
         var center = that.drawCircleCenter;
-        var R = p2.vec2.dist(center, that.drawCirclePoint);
+        var R = p2.vec2.distance(center, that.drawCirclePoint);
         that.drawCircle(g,center[0], center[1], 0, R,false, that.lineWidth);
     });
 
@@ -17125,7 +17125,7 @@ WebGLRenderer.prototype.init = function(){
             p2.vec2.set(stagePos, pos.x, pos.y);
             that.stagePositionToPhysics(physicsPosB, stagePos);
 
-            initPinchLength = p2.vec2.dist(physicsPosA, physicsPosB);
+            initPinchLength = p2.vec2.distance(physicsPosA, physicsPosB);
 
             var initScaleX = stage.scale.x;
             var initScaleY = stage.scale.y;
@@ -17172,7 +17172,7 @@ WebGLRenderer.prototype.init = function(){
             p2.vec2.set(stagePos, pos.x, pos.y);
             that.stagePositionToPhysics(physicsPosB, stagePos);
 
-            var pinchLength = p2.vec2.dist(physicsPosA, physicsPosB);
+            var pinchLength = p2.vec2.distance(physicsPosA, physicsPosB);
 
             // Get center
             p2.vec2.add(physicsPosA, physicsPosA, physicsPosB);
@@ -17697,6 +17697,7 @@ function randomPastelHex(){
 }
 
 WebGLRenderer.prototype.drawRenderable = function(obj, graphics, color, lineColor){
+	console.log("DRAWING Renderable!");
     var lw = this.lineWidth;
 
     var zero = [0,0];

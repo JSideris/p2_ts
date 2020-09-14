@@ -407,7 +407,7 @@ export default class Body extends EventEmitter{
 	 */
 	public islandId: f32 = -1;
 
-	public concavePath: Float32Array[] = [];
+	public concavePath: Float32Array[]|null = null;
 
 	// Should be private, but used by world.
 	_wakeUpAfterNarrowphase: boolean = false;

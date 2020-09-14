@@ -104,18 +104,20 @@
                 var mouseDelta = p2.vec2.create();
                 world.on('postStep', postStepHandler = function(){
 
-                    // turn the control body
-                    p2.vec2.subtract(mouseDelta, app.mousePosition, characterBody.position);
-                    controlBody.angularVelocity = 10 * shortestArc(characterBody.angle, Math.atan2(mouseDelta[1], mouseDelta[0]));
+					// turn the control body
+					if(app.mousePosition){
+						p2.vec2.subtract(mouseDelta, app.mousePosition, characterBody.position);
+						controlBody.angularVelocity = 10 * shortestArc(characterBody.angle, Math.atan2(mouseDelta[1], mouseDelta[0]));
 
-                    // drive towards the mouse
-                    if(p2.vec2.distance(app.mousePosition, characterBody.position) < 0.5){
-                        p2.vec2.set(controlBody.velocity, 0, 0);
-                    } else {
-                        p2.vec2.copy(controlBody.velocity, mouseDelta);
-                        p2.vec2.normalize(controlBody.velocity, controlBody.velocity);
-                        p2.vec2.scale(controlBody.velocity, controlBody.velocity, 3);
-                    }
+						// drive towards the mouse
+						if(p2.vec2.distance(app.mousePosition, characterBody.position) < 0.5){
+							p2.vec2.set(controlBody.velocity, 0, 0);
+						} else {
+							p2.vec2.copy(controlBody.velocity, mouseDelta);
+							p2.vec2.normalize(controlBody.velocity, controlBody.velocity);
+							p2.vec2.scale(controlBody.velocity, controlBody.velocity, 3);
+						}
+					}
                 });
 
                 this.frame(0, 0, 7, 7);
