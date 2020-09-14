@@ -1,6 +1,6 @@
 type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
-import Utils from "../utils/utils";
+import Utils from "./utils";
 
 export default class TupleDictionary{
 	data: {[key: number]: any};

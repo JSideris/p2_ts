@@ -13,7 +13,7 @@
 		// "sourceMap": true,                     /* Generates corresponding '.map' file. */
 		//"outFile": "build/p2.js",                       /* Concatenate and emit output to single file. */
 		"outDir": "build",                        /* Redirect output structure to the directory. */
-		"rootDir": "assembly",                    /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+		"rootDir": "src",                    /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
 		// "composite": true,                     /* Enable project compilation */
 		// "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
 		// "removeComments": true,                /* Do not emit comments to output. */
@@ -63,6 +63,6 @@
 		/* Advanced Options */
 		//"resolveJsonModule": true                 /* Include modules imported with '.json' extension */
 	},
-	"exclude": ["./assembly/wasm-types"],
-	"files": ["./assembly/index.ts"]
+	"exclude": ["./src/wasm-types"],
+	"files": ["./src/index.ts"]
 }
