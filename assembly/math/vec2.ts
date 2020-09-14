@@ -535,4 +535,4 @@ class Vec2
 
 const vec2 = new Vec2();
 
-export default vec2
+export default vec2;

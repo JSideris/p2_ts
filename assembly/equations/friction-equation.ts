@@ -70,7 +70,7 @@ export default class FrictionEquation extends Equation{
 	 * @param {Number} slipForce
 	 * @extends Equation
 	 */
-	constructor(bodyA: Body, bodyB: Body, slipForce: f32 = Infinity){
+	constructor(bodyA?: Body, bodyB?: Body, slipForce: f32 = Infinity){
 		super(bodyA, bodyB, -slipForce, slipForce);
 	}
 

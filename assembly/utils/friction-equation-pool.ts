@@ -20,8 +20,7 @@ export default class FrictionEquationPool extends Pool{
 	 * @return {FrictionEquation}
 	 */
 	create(): FrictionEquation {
-		throw "FrictionEquationPool.create() is deprecated. Instead use FrictionEquation's constructor.";
-		//return new FrictionEquation();
+		return new FrictionEquation();
 	};
 
 	/**

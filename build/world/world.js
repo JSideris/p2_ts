@@ -31,7 +31,6 @@ var utils_1 = __importDefault(require("../utils/utils"));
 var overlap_keeper_1 = __importDefault(require("../utils/overlap-keeper"));
 var union_find_1 = __importDefault(require("./union-find"));
 //import f32 from "f32";
-var arrayRemove = utils_1.default.arrayRemove;
 /**
  * Fired after the step().
  * @event postStep
@@ -496,7 +495,7 @@ var World = /** @class */ (function (_super) {
      * @param {ContactMaterial} cm
      */
     World.prototype.removeContactMaterial = function (cm) {
-        arrayRemove(this.contactMaterials, cm);
+        utils_1.default.arrayRemove(this.contactMaterials, cm);
     };
     /**
      * Get a contact material given two materials
@@ -526,7 +525,7 @@ var World = /** @class */ (function (_super) {
         if (this.stepping) {
             throw new Error('Constraints cannot be removed during step.');
         }
-        arrayRemove(this.constraints, constraint);
+        utils_1.default.arrayRemove(this.constraints, constraint);
     };
     /**
      * Step the physics world forward in time.
@@ -890,7 +889,7 @@ var World = /** @class */ (function (_super) {
         if (this.stepping) {
             throw new Error('Springs cannot be removed during step.');
         }
-        arrayRemove(this.springs, spring);
+        utils_1.default.arrayRemove(this.springs, spring);
     };
     /**
      * Add a body to the simulation. Note that you can't add a body during step: you have to wait until after the step (see the postStep event).
@@ -956,7 +955,7 @@ var World = /** @class */ (function (_super) {
         }
         body.world = null;
         var bodies = this.bodies;
-        arrayRemove(bodies, body);
+        utils_1.default.arrayRemove(bodies, body);
         body.index = -1;
         var l = bodies.length;
         while (l--) {

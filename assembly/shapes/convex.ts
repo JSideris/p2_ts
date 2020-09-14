@@ -296,7 +296,7 @@ export default class Convex extends Shape {
 	updateBoundingRadius(): f32{
 		let verts = this.vertices,
 			r2 = 0;
-
+		if(!verts) return 0;
 		for(let i = 0; i!==verts.length; i++){
 			let l2 = vec2.squaredLength(verts[i]);
 			if(l2 > r2){
@@ -327,7 +327,8 @@ export default class Convex extends Shape {
 	 * Update the .area
 	 * @method updateArea
 	 */
-	updateArea(){
+	updateArea(): f32{
+		if(!this.vertices) return 0;
 		this.updateTriangles();
 		this.area = 0;
 

@@ -201,6 +201,8 @@ var Convex = /** @class */ (function (_super) {
      */
     Convex.prototype.updateBoundingRadius = function () {
         var verts = this.vertices, r2 = 0;
+        if (!verts)
+            return 0;
         for (var i = 0; i !== verts.length; i++) {
             var l2 = vec2_1.default.squaredLength(verts[i]);
             if (l2 > r2) {
@@ -228,6 +230,8 @@ var Convex = /** @class */ (function (_super) {
      * @method updateArea
      */
     Convex.prototype.updateArea = function () {
+        if (!this.vertices)
+            return 0;
         this.updateTriangles();
         this.area = 0;
         var triangles = this.triangles, verts = this.vertices;

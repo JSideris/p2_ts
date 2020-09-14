@@ -17,6 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var pool_1 = __importDefault(require("./pool"));
+var friction_equation_1 = __importDefault(require("../equations/friction-equation"));
 var FrictionEquationPool = /** @class */ (function (_super) {
     __extends(FrictionEquationPool, _super);
     /**
@@ -30,8 +31,7 @@ var FrictionEquationPool = /** @class */ (function (_super) {
      * @return {FrictionEquation}
      */
     FrictionEquationPool.prototype.create = function () {
-        throw "FrictionEquationPool.create() is deprecated. Instead use FrictionEquation's constructor.";
-        //return new FrictionEquation();
+        return new friction_equation_1.default();
     };
     ;
     /**

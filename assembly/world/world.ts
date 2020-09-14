@@ -26,8 +26,6 @@ import Ray from "../collision/ray";
 
 //import f32 from "f32";
 
-const arrayRemove = Utils.arrayRemove;
-
 /**
  * Fired after the step().
  * @event postStep
@@ -585,7 +583,7 @@ export default class World extends EventEmitter{
 	 * @param {ContactMaterial} cm
 	 */
 	removeContactMaterial(cm: ContactMaterial): void{
-		arrayRemove(this.contactMaterials, cm);
+		Utils.arrayRemove(this.contactMaterials, cm);
 	}
 
 	/**
@@ -617,7 +615,7 @@ export default class World extends EventEmitter{
 		if(this.stepping){
 			throw new Error('Constraints cannot be removed during step.');
 		}
-		arrayRemove(this.constraints, constraint);
+		Utils.arrayRemove(this.constraints, constraint);
 	}
 
 	/**
@@ -1049,7 +1047,7 @@ export default class World extends EventEmitter{
 		if(this.stepping){
 			throw new Error('Springs cannot be removed during step.');
 		}
-		arrayRemove(this.springs, spring);
+		Utils.arrayRemove(this.springs, spring);
 	}
 
 	/**
@@ -1122,7 +1120,7 @@ export default class World extends EventEmitter{
 
 		body.world = null;
 		var bodies = this.bodies;
-		arrayRemove(bodies, body);
+		Utils.arrayRemove(bodies, body);
 		body.index = -1;
 		var l = bodies.length;
 		while (l--) {
