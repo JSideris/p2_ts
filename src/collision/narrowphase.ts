@@ -703,6 +703,7 @@ export default class Narrowphase{
 					justTest);
 				break;
 			}
+			case 0b100000: // Box/box.
 			case 0b101000: // Box/convex.
 			case 0b1000:{ // Convex/convex.
 				let sa = shapeA as Convex;

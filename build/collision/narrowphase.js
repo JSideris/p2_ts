@@ -515,6 +515,7 @@ var Narrowphase = /** @class */ (function () {
                 result = this.planeCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle, bodyB, sb, offsetB, bodyB.angle + sb.angle, justTest);
                 break;
             }
+            case 32: // Box/box.
             case 40: // Box/convex.
             case 8: { // Convex/convex.
                 var sa = shapeA;
