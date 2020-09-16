@@ -1,6 +1,7 @@
-type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+//type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
 import Shape from "./Shape";
+import { ShapeOptions } from "./Shape";
 import polyk from "../math/polyk";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
@@ -27,6 +28,8 @@ var pic_r1 = vec2.create();
 
 var tmpVec2 = vec2.create();
 var worldAxis = tmpVec2;
+
+export class ConvexOptions extends ShapeOptions{}
 
 export default class Convex extends Shape {
 
@@ -76,20 +79,11 @@ export default class Convex extends Shape {
 	 *     });
 	 *     body.addShape(convexShape);
 	 */
-	constructor(type?: u16, vertices?: Array<Float32Array>, options?: {
-		position?: Float32Array,
-		angle?: f32,
-		id?: u32,
-		collisionGroup?: i16,
-		collisionResponse?: boolean,
-		collisionMask?: i16,
-		material?: Material,
-		sensor?: boolean
-	}){
-		super(type ?? Shape.CONVEX, options); 
+	constructor(type: u16, vertices: Array<Float32Array>|null, options: ShapeOptions|null){
+		super(type || Shape.CONVEX, options); 
 
 		// Copy the verts
-		let newVertices = vertices ?? [];
+		let newVertices = vertices || [];
 		this.vertices = [];
 		this.normals = [];
 		for(let i = 0; i < newVertices.length; i++){
@@ -181,7 +175,7 @@ export default class Convex extends Shape {
 		vec2.set(result, min, max);
 	}
 
-	ConvexprojectOntoWorldAxis(localAxis: Float32Array, shapeOffset: Float32Array, shapeAngle: f32, result: Float32Array){
+	ConvexprojectOntoWorldAxis(localAxis: Float32Array, shapeOffset: Float32Array, shapeAngle: f32, result: Float32Array): void{
 
 		this.projectOntoLocalAxis(localAxis, result);
 
@@ -201,7 +195,7 @@ export default class Convex extends Shape {
 	 * Update the .triangles property
 	 * @method updateTriangles
 	 */
-	updateTriangles(){
+	updateTriangles(): void{
 
 		this.triangles.length = 0;
 
@@ -235,7 +229,7 @@ export default class Convex extends Shape {
 	 * Update the .centerOfMass property.
 	 * @method updateCenterOfMass
 	 */
-	updateCenterOfMass(){
+	updateCenterOfMass(): void{
 
 
 		var triangles = this.triangles,
@@ -322,7 +316,7 @@ export default class Convex extends Shape {
 	 * @return {Number}
 	 * @deprecated
 	 */
-	static triangleArea(a: Float32Array, b: Float32Array, c: Float32Array){
+	static triangleArea(a: Float32Array, b: Float32Array, c: Float32Array): f32{
 		return (((b[0] - a[0])*(c[1] - a[1]))-((c[0] - a[0])*(b[1] - a[1]))) * 0.5;
 	}
 
@@ -358,7 +352,7 @@ export default class Convex extends Shape {
 	 * @param  {Number} angle
 	 * @todo: approximate with a local AABB?
 	 */
-	computeAABB(out: AABB, position: Float32Array, angle: f32){
+	computeAABB(out: AABB, position: Float32Array, angle: f32): void{
 		out.setFromPoints(this.vertices, position, angle, 0);
 	}
 
@@ -370,7 +364,7 @@ export default class Convex extends Shape {
 	 * @param  {array} position
 	 * @param  {number} angle
 	 */
-	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32){
+	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32): void{
 		var rayStart = intersectConvex_rayStart;
 		var rayEnd = intersectConvex_rayEnd;
 		var normal = intersectConvex_normal;

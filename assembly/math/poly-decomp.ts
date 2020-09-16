@@ -1,4 +1,4 @@
-type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+//type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
 import FrictionEquationPool from "../utils/friction-equation-pool";
 import polyk from "./polyk";
@@ -275,8 +275,8 @@ function polygonCanSee2(polygon: Array<Float32Array>, a: u32,b:u32):boolean {
  * @param  {Polygon} [targetPoly]   Optional target polygon to save in.
  * @return {Polygon}                The resulting copy.
  */
-function polygonCopy(polygon: Array<Float32Array>, i: u32,j:u32,targetPoly?: Array<Float32Array>): Array<Float32Array>{
-    var p: Array<Float32Array> = targetPoly ?? [];
+function polygonCopy(polygon: Array<Float32Array>, i: u32,j:u32,targetPoly: Float32Array[]|null): Array<Float32Array>{
+    var p: Array<Float32Array> = targetPoly || [];
     polygonClear(p);
     if (i < j) {
         // Insert all vertices from i to j
@@ -389,8 +389,8 @@ function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float3
         var j = polygon.indexOf(cutEdge[0][1]);
 
         if(i !== -1 && j !== -1){
-            return [polygonCopy(polygon, i,j),
-                    polygonCopy(polygon, j,i)];
+            return [polygonCopy(polygon, i,j,null),
+                    polygonCopy(polygon, j,i,null)];
         } else {
             return new Array<Array<Float32Array>>();
         }
@@ -672,7 +672,7 @@ function points_eq(a: Float32Array,b: Float32Array,precision: f32): boolean{
     return scalar_eq(a[0],b[0],precision) && scalar_eq(a[1],b[1],precision);
 }
 
-export default {
+const exp = {
     decomp: polygonDecomp,
     quickDecomp: polygonQuickDecomp,
     isSimple: polygonIsSimple,
@@ -680,3 +680,5 @@ export default {
     removeDuplicatePoints: polygonRemoveDuplicatePoints,
     makeCCW: polygonMakeCCW
 };
+
+export default exp;

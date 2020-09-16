@@ -1,4 +1,4 @@
-type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
+//type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
 import Body from "../objects/body";
 import vec2 from "../math/vec2";
@@ -117,13 +117,13 @@ export default class Equation{
 	 * @param {number} minForce Minimum force to apply. Default: -Infinity
 	 * @param {number} maxForce Maximum force to apply. Default: Infinity
 	 */
-	constructor(bodyA?: Body, bodyB?: Body, minForce?: f32, maxForce?: f32){
+	constructor(bodyA: Body|null, bodyB: Body|null, minForce: f32|null, maxForce: f32|null){
 
-		this.minForce = minForce ?? -Infinity;
-		this.maxForce = maxForce ?? Infinity;
+		this.minForce = minForce == null ? -Infinity : minForce;
+		this.maxForce = maxForce == null ? Infinity : maxForce;
 		this.maxBias = Infinity;
-		this.bodyA = bodyA??null;
-		this.bodyB = bodyB??null;
+		this.bodyA = bodyA || null;
+		this.bodyB = bodyB || null;
 		this.stiffness = Equation.DEFAULT_STIFFNESS;
 		this.relaxation = Equation.DEFAULT_RELAXATION;
 		this.G = new Float32Array(6);
@@ -138,7 +138,7 @@ export default class Equation{
 	 * @property {Number} DEFAULT_STIFFNESS
 	 * @default 1e6
 	 */
-	static DEFAULT_STIFFNESS: f32 = 1e6;
+	static DEFAULT_STIFFNESS:f32 = 1e6;
 
 	/**
 	 * The default relaxation when creating a new Equation.
@@ -146,7 +146,7 @@ export default class Equation{
 	 * @property {Number} DEFAULT_RELAXATION
 	 * @default 4
 	 */
-	static DEFAULT_RELAXATION: f32 = 4;
+	static DEFAULT_RELAXATION:f32 = 4;
 
 
 	/**

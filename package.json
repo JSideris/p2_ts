@@ -28,7 +28,7 @@
   ],
   "devDependencies": {
     "@types/node": "^14.6.2",
-    "assemblyscript": "^0.14.9",
+    "assemblyscript": "^0.14.10",
     "grunt": "^0.4.5",
     "grunt-browserify": "~2.0.1",
     "grunt-contrib-concat": "^0.4.0",
@@ -40,16 +40,16 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
-    "@assemblyscript/loader": "^0.14.9",
+    "@assemblyscript/loader": "^0.14.10",
     "poly-decomp": "0.2.1"
   },
   "scripts": {
-    "asbuild:untouched": "asc src/index.ts --target debug",
-    "asbuild:optimized": "asc src/index.ts --target release",
-	"asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
-	"onlyjsbuild": "npx tsc",
-	"onlybrowserbuild": "browserify ./build/index.js > ./build/p2.js",
-	"jsbuild": "npx tsc && browserify ./build/index.js -s p2 -d > ./build/p2.js",
+    "asbuild:untouched": "asc assembly/index.ts --target debug",
+    "asbuild:optimized": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+    "onlyjsbuild": "npx tsc",
+    "onlybrowserbuild": "browserify ./build/index.js > ./build/p2.js",
+    "jsbuild": "npx tsc && browserify ./build/index.js -s p2 -d > ./build/p2.js",
     "test": "node tests"
   }
 }
