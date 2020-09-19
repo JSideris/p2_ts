@@ -6,7 +6,7 @@ import World from "../world/world";
 import AABB from "./aabb";
 
 // TODO: I think this is supposed to be abstract.
-export default class Broadphase{
+export default class Broadphase extends Object{
 	public type: u16;
 
 	/**
@@ -36,6 +36,7 @@ export default class Broadphase{
 	 * @constructor
 	 */
 	constructor(type: u16){
+		super();
 		this.type = type || 1;
 	}
 

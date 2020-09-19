@@ -14,7 +14,7 @@ class _Utils{
 	 * @param  {Array} a
 	 * @param  {Array} b
 	 */
-	appendArray(a:Array<any>,b:Array<any>): void{
+	appendArray<T>(a:Array<T>,b:Array<T>): void{
 		for (var i = 0, len = b.length; i !== len; ++i) {
 			a.push(b[i]);
 		}
@@ -28,7 +28,7 @@ class _Utils{
 	 * @param  {Number} index
 	 * @param  {Number} howmany
 	 */
-	splice(array: Array<any>,index: u32,howmany: u32): void{
+	splice<T>(array: Array<T>,index: u32,howmany: u32): void{
 		howmany = howmany || 1;
 		for (var i=index, len=array.length-howmany; i < len; i++){
 			array[i] = array[i + howmany];
@@ -43,7 +43,7 @@ class _Utils{
 	 * @param  {Array} array
 	 * @param  {Number} element
 	 */
-	arrayRemove(array: Array<any>, element: any): void{
+	arrayRemove<T>(array: Array<T>, element: T): void{
 		var idx = array.indexOf(element);
 		if(idx!==-1){
 			this.splice(array, idx, 1);

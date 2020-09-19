@@ -46,11 +46,11 @@ var postStepEvent:PostStepEvent = new PostStepEvent();
  */
 export class AddBodyEvent extends EventArgument{
 	body: Body|null = null;
+	sapBroadphase : SAPBroadphase|null = null;
 	constructor(){
 		super("addBody");
 	}
 }
- var addBodyEvent = new AddBodyEvent();
 
 /**
  * Fired when a body is removed from the world.
@@ -59,11 +59,11 @@ export class AddBodyEvent extends EventArgument{
  */
 export class RemoveBodyEvent extends EventArgument{
 	body : Body|null = null;
+	sapBroadphase : SAPBroadphase|null = null;
 	constructor(){
 		super("removeBody");
 	}
 }
-var removeBodyEvent = new RemoveBodyEvent();
 
 /**
  * Fired when a spring is added to the world.
@@ -512,6 +512,10 @@ export default class World extends EventEmitter{
 	 */
 	overlapKeeper: OverlapKeeper = new OverlapKeeper();
 
+	// Special non-static events.
+	addBodyEvent: AddBodyEvent = new AddBodyEvent();
+	removeBodyEvent: RemoveBodyEvent = new RemoveBodyEvent();
+
 	/**
 	 * The dynamics world, where all bodies and constraints live.
 	 *
@@ -542,6 +546,9 @@ export default class World extends EventEmitter{
 		this.frictionGravity = vec2.length(this.gravity) || 10;
 		this.broadphase.setWorld(this);
 		this.defaultContactMaterial = new ContactMaterial(this.defaultMaterial,this.defaultMaterial, null);
+
+		this.addBodyEvent.sapBroadphase = this.broadphase as SAPBroadphase;
+		this.removeBodyEvent.sapBroadphase = this.broadphase as SAPBroadphase;
 	}
 
 	/**

@@ -25,21 +25,41 @@ function sortAxisList(a: Body[], axisIndex: u32): Body[]{
 	return a;
 }
 
+function _addBodyHandler(e: EventArgument): void{
+	if(e instanceof AddBodyEvent && (e as AddBodyEvent).body){
+		let sapB = (e as AddBodyEvent).sapBroadphase;
+		if(sapB) sapB.axisList.push((e as AddBodyEvent).body!);
+	}
+}
+
+function _removeBodyHandler(e: EventArgument): void{
+	// Remove from list
+	if(e instanceof RemoveBodyEvent && (e as RemoveBodyEvent).body){
+		let sapB = (e as RemoveBodyEvent).sapBroadphase;
+		if(sapB){
+			let idx = sapB.axisList.indexOf((e as RemoveBodyEvent).body!);
+			if(idx !== -1){
+				sapB.axisList.splice(idx,1);
+			}
+		}
+	}
+}
+
 export default class SAPBroadphase extends Broadphase{
 	/**
 	 * List of bodies currently in the broadphase.
 	 * @property axisList
 	 * @type {Array}
 	 */
-	axisList: Body[];
+	axisList: Body[] = [];
 	/**
 	 * The axis to sort along. 0 means x-axis and 1 y-axis. If your bodies are more spread out over the X axis, set axisIndex to 0, and you will gain some performance.
 	 * @property axisIndex
 	 * @type {Number}
 	 */
-	axisIndex: u32;
-	private _addBodyHandler: (e: EventArgument) => void;
-	private _removeBodyHandler: (e: EventArgument) => void;
+	axisIndex: i32 = 0;
+	// private _addBodyHandler: (e: EventArgument) => void = (e: EventArgument)=>{};
+	// private _removeBodyHandler: (e: EventArgument) => void = (e: EventArgument)=>{};
 
 	/**
 	 * Sweep and prune broadphase along one axis.
@@ -50,27 +70,6 @@ export default class SAPBroadphase extends Broadphase{
 	 */
 	constructor(){
 		super(Broadphase.SAP);
-
-		this.axisList = [];
-
-		this.axisIndex = 0;
-
-		let _this = this;
-
-		this._addBodyHandler = (e: EventArgument) => {
-			if(e instanceof AddBodyEvent && e.body)
-				_this.axisList.push(e.body);
-		};
-
-		this._removeBodyHandler = (e) => {
-			// Remove from list
-			if(e instanceof RemoveBodyEvent && e.body){
-				let idx = _this.axisList.indexOf(e.body);
-				if(idx !== -1){
-					_this.axisList.splice(idx,1);
-				}
-			}
-		};
 	}
 
 	/**
@@ -87,13 +86,13 @@ export default class SAPBroadphase extends Broadphase{
 
 		// Remove old handlers, if any
 		world
-			.off("addBody",this._addBodyHandler)
-			.off("removeBody",this._removeBodyHandler);
+			.off("addBody", _addBodyHandler)
+			.off("removeBody", _removeBodyHandler);
 
 		// Add handlers to update the list of bodies.
 		// TODO: now that I've added context, we can test moving those inline functions to proper private methods.
-		world.on("addBody",this._addBodyHandler, this)
-			.on("removeBody",this._removeBodyHandler, this);
+		world.on("addBody", _addBodyHandler, this)
+			.on("removeBody", _removeBodyHandler, this);
 
 		this.world = world;
 	};
@@ -120,7 +119,7 @@ export default class SAPBroadphase extends Broadphase{
 		result.length = 0;
 
 		// Update all AABBs if needed
-		let l = bodies.length;
+		let l: i32 = bodies.length;
 		while(l--){
 			let b = bodies[l];
 			if(b.aabbNeedsUpdate){
