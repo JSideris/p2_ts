@@ -92,7 +92,7 @@ export default class Convex extends Shape {
 		let newVertices = vertices ?? [];
 		this.vertices = [];
 		this.normals = [];
-		for(let i = 0; i < newVertices.length; i++){
+		for(let i: i32 = 0; i < newVertices.length; i++){
 			this.vertices.push(vec2.clone(newVertices[i]));
 			this.normals.push(vec2.create());
 		}
@@ -300,7 +300,7 @@ export default class Convex extends Shape {
 		let verts = this.vertices,
 			r2 = 0;
 		if(!verts || verts.length == 0) return 0;
-		for(let i = 0; i!==verts.length; i++){
+		for(let i: i32 = 0; i!==verts.length; i++){
 			let l2 = vec2.squaredLength(verts[i]);
 			if(l2 > r2){
 				r2 = l2;

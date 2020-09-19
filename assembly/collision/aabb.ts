@@ -17,7 +17,7 @@ export default class AABB{
 	 * @param {Array}   [options.upperBound]
 	 * @param {Array}   [options.lowerBound]
 	 * @example
-	 *     var aabb = new AABB({
+	 *     let aabb = new AABB({
 	 *         upperBound: [1, 1],
 	 *         lowerBound: [-1, -1]
 	 *     });
@@ -49,7 +49,7 @@ export default class AABB{
 	 * @param {number} [skinSize=0] Some margin to be added to the AABB.
 	 */
 	setFromPoints(points: Float32Array[], position: Float32Array, angle: f32, skinSize: f32 = 0): void{
-		var l = this.lowerBound,
+		let l = this.lowerBound,
 			u = this.upperBound;
 
 		angle = angle || 0;
@@ -63,20 +63,20 @@ export default class AABB{
 		vec2.copy(u, l);
 
 		// Compute cosines and sines just once
-		var cosAngle = Math.cos(angle),
-			sinAngle = Math.sin(angle);
-		for(var i = 1; i<points.length; i++){
-			var p = points[i];
+		let cosAngle = Mathf.cos(angle),
+			sinAngle = Mathf.sin(angle);
+		for(let i: i32 = 1; i<points.length; i++){
+			let p = points[i];
 
 			if(angle !== 0){
-				var x = p[0],
+				let x = p[0],
 					y = p[1];
 				this.tmp[0] = cosAngle * x -sinAngle * y;
 				this.tmp[1] = sinAngle * x +cosAngle * y;
 				p = this.tmp;
 			}
 
-			for(var j=0; j<2; j++){
+			for(let j: i32 = 0; j < 2; j++){
 				if(p[j] > u[j]){
 					u[j] = p[j];
 				}
@@ -116,20 +116,20 @@ export default class AABB{
 	 * @param  {AABB} aabb
 	 */
 	extend(aabb: AABB): void{
-		var lower = this.lowerBound,
+		let lower = this.lowerBound,
 			upper = this.upperBound;
 
 		// Loop over x and y
-		var i = 2;
+		let i = 2;
 		while(i--){
 			// Extend lower bound
-			var l = aabb.lowerBound[i];
+			let l = aabb.lowerBound[i];
 			if(lower[i] > l){
 				lower[i] = l;
 			}
 
 			// Upper
-			var u = aabb.upperBound[i];
+			let u = aabb.upperBound[i];
 			if(upper[i] < u){
 				upper[i] = u;
 			}
@@ -143,7 +143,7 @@ export default class AABB{
 	 * @return {boolean}
 	 */
 	overlaps(aabb: AABB): boolean{
-		var l1 = this.lowerBound,
+		let l1 = this.lowerBound,
 			u1 = this.upperBound,
 			l2 = aabb.lowerBound,
 			u2 = aabb.upperBound;
@@ -163,7 +163,7 @@ export default class AABB{
 	 * @return {boolean}
 	 */
 	containsPoint(point: Float32Array): boolean{
-		var l = this.lowerBound,
+		let l = this.lowerBound,
 			u = this.upperBound;
 		return l[0] <= point[0] && point[0] <= u[0] && l[1] <= point[1] && point[1] <= u[1];
 	}
@@ -174,33 +174,33 @@ export default class AABB{
 	 * @param  {Ray} ray
 	 * @return {number} -1 if no hit, a number between 0 and 1 if hit, indicating the position between the "from" and "to" points.
 	 * @example
-	 *     var aabb = new AABB({
+	 *     let aabb = new AABB({
 	 *         upperBound: [1, 1],
 	 *         lowerBound: [-1, -1]
 	 *     });
-	 *     var ray = new Ray({
+	 *     let ray = new Ray({
 	 *         from: [-2, 0],
 	 *         to: [0, 0]
 	 *     });
-	 *     var fraction = aabb.overlapsRay(ray); // fraction == 0.5
+	 *     let fraction = aabb.overlapsRay(ray); // fraction == 0.5
 	 */
 	overlapsRay(ray: Ray): f32{
 
 		// ray.direction is unit direction vector of ray
-		var dirFracX = 1 / ray.direction[0];
-		var dirFracY = 1 / ray.direction[1];
+		let dirFracX: f32 = 1.0 / ray.direction[0];
+		let dirFracY: f32 = 1.0 / ray.direction[1];
 
 		// this.lowerBound is the corner of AABB with minimal coordinates - left bottom, rt is maximal corner
-		var from = ray.from;
-		var lowerBound = this.lowerBound;
-		var upperBound = this.upperBound;
-		var t1 = (lowerBound[0] - from[0]) * dirFracX;
-		var t2 = (upperBound[0] - from[0]) * dirFracX;
-		var t3 = (lowerBound[1] - from[1]) * dirFracY;
-		var t4 = (upperBound[1] - from[1]) * dirFracY;
+		let from = ray.from;
+		let lowerBound: Float32Array = this.lowerBound;
+		let upperBound: Float32Array = this.upperBound;
+		let t1: f32 = (lowerBound[0] - from[0]) * dirFracX;
+		let t2: f32 = (upperBound[0] - from[0]) * dirFracX;
+		let t3: f32 = (lowerBound[1] - from[1]) * dirFracY;
+		let t4: f32 = (upperBound[1] - from[1]) * dirFracY;
 
-		var tmin = Math.max(Math.min(t1, t2), Math.min(t3, t4));
-		var tmax = Math.min(Math.max(t1, t2), Math.max(t3, t4));
+		let tmin: f32 = Mathf.max(Mathf.min(t1, t2), Mathf.min(t3, t4));
+		let tmax: f32 = Mathf.min(Mathf.max(t1, t2), Mathf.max(t3, t4));
 
 		// if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behing us
 		if (tmax < 0){

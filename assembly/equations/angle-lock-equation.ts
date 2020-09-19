@@ -4,7 +4,7 @@ import Equation from "./Equation";
 import Body from "../objects/body";
 
 export default class AngleLockEquation extends Equation{
-	angle: number;
+	angle: f32;
 
 	/**
 	 * The gear ratio.
@@ -12,7 +12,7 @@ export default class AngleLockEquation extends Equation{
 	 * @readonly
 	 * @see setRatio
 	 */
-	ratio: any;
+	ratio: f32;
 
 	/**
 	 * Locks the relative angle between two bodies. The constraint tries to keep the dot product between two vectors, local in each body, to zero. The local angle in body i is a parameter.

@@ -27,16 +27,16 @@ export default class NaiveBroadphase extends Broadphase{
 	 * @return {Array}
 	 */
 	getCollisionPairs(world: World): Body[]{
-		var bodies = world.bodies,
-			result = this.result;
+		let bodies: Body[] = world.bodies,
+			result: Body[] = this.result;
 
 		result.length = 0;
 
-		for(var i=0, Ncolliding=bodies.length; i!==Ncolliding; i++){
-			var bi = bodies[i];
+		for(let i: u16 = 0, Ncolliding: u16 = (bodies.length as u16); i < Ncolliding; i++){
+			let bi = bodies[i];
 
-			for(var j=0; j<i; j++){
-				var bj = bodies[j];
+			for(let j: u16 = 0; j < i; j++){
+				let bj = bodies[j];
 
 				if(Broadphase.canCollide(bi,bj) && this.boundingVolumeCheck(bi,bj)){
 					result.push(bi);
@@ -57,11 +57,9 @@ export default class NaiveBroadphase extends Broadphase{
 	 * @return {array}
 	 */
 	aabbQuery(world: World, aabb: AABB, result: Array<Body>): Array<Body>{
-		result = result || [];
-
-		var bodies = world.bodies;
-		for(var i = 0; i < bodies.length; i++){
-			var b = bodies[i];
+		let bodies: Body[] = world.bodies;
+		for(let i: u16 = 0; i < (bodies.length as u16); i++){
+			let b: Body = bodies[i];
 
 			if(b.aabbNeedsUpdate){
 				b.updateAABB();

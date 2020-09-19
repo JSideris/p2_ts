@@ -3,7 +3,7 @@
 import vec2 from "../math/vec2";
 import Body from "../objects/body";
 import RaycastResult from "./raycast-result";
-import Shape from "../shapes/Shape";
+import Shape from "../shapes/shape";
 import AABB from "./aabb";
 
 var intersectBody_worldPosition = vec2.create();
@@ -11,7 +11,7 @@ var intersectBody_worldPosition = vec2.create();
 var  v0 = vec2.create(),
 	intersect = vec2.create();
 
-var doNothing = function(/*result*/){}
+var doNothing = function(result: RaycastResult): void{}
 
 export class RayOptions{
 	from: Float32Array|null;
@@ -21,7 +21,7 @@ export class RayOptions{
 	collisionMask: i16 = -1;
 	collisionGroup: i16 = -1;
 	mode: u16 = Ray.ANY;
-	callback: Function = doNothing;
+	callback: (result: RaycastResult)=>void = doNothing;
 }
 
 export default class Ray{
@@ -29,13 +29,13 @@ export default class Ray{
 	 * Ray start point.
 	 * @property {array} from
 	 */
-	public from: Float32Array;
+	public from: Float32Array = vec2.create();
 
 	/**
 	 * Ray end point
 	 * @property {array} to
 	 */
-	public to: Float32Array;
+	public to: Float32Array = vec2.create();
 
 	/**
 	 * Set to true if you want the Ray to take .collisionResponse flags into account on bodies and shapes.
@@ -71,7 +71,7 @@ export default class Ray{
 	 * Current, user-provided result callback. Will be used if mode is Ray.ALL.
 	 * @property {Function} callback
 	 */
-	public callback: Function;
+	public callback: (result: RaycastResult)=>void = function(){};
 
 	/**
 	 * @readOnly
@@ -106,8 +106,8 @@ export default class Ray{
 	constructor(options: RayOptions|null){
 
 		if(options){
-			this.from = options.from ? vec2.clone(options.from) : vec2.create();
-			this.to = options.to ? vec2.clone(options.to) : vec2.create();
+			this.from = options.from ? vec2.copy(this.from, options.from!) : vec2.create();
+			this.to = options.to ? vec2.copy(this.to, options.to!) : vec2.create();
 			this.checkCollisionResponse = options.checkCollisionResponse;
 			this.skipBackfaces = options.skipBackfaces;
 			this.collisionMask = options.collisionMask;
@@ -255,13 +255,13 @@ export default class Ray{
 		var from = this.from;
 		vec2.set(
 			result.lowerBound,
-			Math.min(to[0], from[0]),
-			Math.min(to[1], from[1])
+			Mathf.min(to[0], from[0]),
+			Mathf.min(to[1], from[1])
 		);
 		vec2.set(
 			result.upperBound,
-			Math.max(to[0], from[0]),
-			Math.max(to[1], from[1])
+			Mathf.max(to[0], from[0]),
+			Mathf.max(to[1], from[1])
 		);
 	};
 

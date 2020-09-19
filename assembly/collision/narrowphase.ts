@@ -2,16 +2,6 @@
 
 import vec2 from "../math/vec2";
 
-var sub = vec2.subtract
-,   add = vec2.add
-,   dot = vec2.dot
-,   rotate = vec2.rotate
-,   normalize = vec2.normalize
-,   copy = vec2.copy
-,   scale = vec2.scale
-,   squaredLength = vec2.squaredLength
-,   createVec2 = vec2.create;
-
 import Circle from "../shapes/Circle";
 import { CircleOptions } from "../shapes/Circle";
 import Convex from "../shapes/Convex";
@@ -33,21 +23,21 @@ import TupleDictionary from "../utils/tuple-dictionary";
 import FrictionEquation from "../equations/friction-equation";
 
 var yAxis = vec2.fromValues(0,1);
-var tmp1 = createVec2()
-,   tmp2 = createVec2()
-,   tmp3 = createVec2()
-,   tmp4 = createVec2()
-,   tmp5 = createVec2()
-,   tmp6 = createVec2()
-,   tmp7 = createVec2()
-,   tmp8 = createVec2()
-,   tmp9 = createVec2()
-,   tmp10 = createVec2()
-,   tmp11 = createVec2()
-,   tmp12 = createVec2()
-,   tmp13 = createVec2()
-,   tmp14 = createVec2()
-,   tmp15 = createVec2()
+var tmp1 = vec2.create()
+,   tmp2 = vec2.create()
+,   tmp3 = vec2.create()
+,   tmp4 = vec2.create()
+,   tmp5 = vec2.create()
+,   tmp6 = vec2.create()
+,   tmp7 = vec2.create()
+,   tmp8 = vec2.create()
+,   tmp9 = vec2.create()
+,   tmp10 = vec2.create()
+,   tmp11 = vec2.create()
+,   tmp12 = vec2.create()
+,   tmp13 = vec2.create()
+,   tmp14 = vec2.create()
+,   tmp15 = vec2.create()
 ,   tmpArray: Array<Float32Array> = [];
 
 
@@ -73,33 +63,33 @@ var collidePolygons_clipPoints1 = [vec2.create(), vec2.create()];
 var collidePolygons_clipPoints2 = [vec2.create(), vec2.create()];
 var collidePolygons_incidentEdge = [vec2.create(), vec2.create()];
 
-var pic_localPoint = createVec2(),
-	pic_r0 = createVec2(),
-	pic_r1 = createVec2();
+var pic_localPoint = vec2.create(),
+	pic_r0 = vec2.create(),
+	pic_r1 = vec2.create();
 
-var bodiesOverlap_shapePositionA = createVec2(),
-	bodiesOverlap_shapePositionB = createVec2();
+var bodiesOverlap_shapePositionA = vec2.create(),
+	bodiesOverlap_shapePositionB = vec2.create();
 
-var capsuleCapsule_tempVec1 = createVec2(),
-	capsuleCapsule_tempVec2 = createVec2();
+var capsuleCapsule_tempVec1 = vec2.create(),
+	capsuleCapsule_tempVec2 = vec2.create();
 
-var convexCapsule_tempVec = createVec2();
+var convexCapsule_tempVec = vec2.create();
 
-var planeCapsule_tmp1 = createVec2(), 
-	planeCapsule_tmp2 = createVec2();
+var planeCapsule_tmp1 = vec2.create(), 
+	planeCapsule_tmp2 = vec2.create();
 
-var circleHeightfield_candidate = createVec2(),
-	circleHeightfield_dist = createVec2(),
-	circleHeightfield_v0 = createVec2(),
-	circleHeightfield_v1 = createVec2(),
-	circleHeightfield_minCandidate = createVec2(),
-	circleHeightfield_worldNormal = createVec2(),
-	circleHeightfield_minCandidateNormal = createVec2();
+var circleHeightfield_candidate = vec2.create(),
+	circleHeightfield_dist = vec2.create(),
+	circleHeightfield_v0 = vec2.create(),
+	circleHeightfield_v1 = vec2.create(),
+	circleHeightfield_minCandidate = vec2.create(),
+	circleHeightfield_worldNormal = vec2.create(),
+	circleHeightfield_minCandidateNormal = vec2.create();
 
-var convexHeightfield_v0 = createVec2(),
-	convexHeightfield_v1 = createVec2(),
-	convexHeightfield_tilePos = createVec2(),
-	convexHeightfield_tempConvexShape = new Convex(0, [createVec2(),createVec2(),createVec2(),createVec2()], null );
+var convexHeightfield_v0 = vec2.create(),
+	convexHeightfield_v1 = vec2.create(),
+	convexHeightfield_tilePos = vec2.create(),
+	convexHeightfield_tempConvexShape = new Convex(0, [vec2.create(),vec2.create(),vec2.create(),vec2.create()], null );
 
 function setConvexToCapsuleShapeMiddle(convexShape: Box, capsuleShape: Capsule): void{
 	let capsuleRadius = capsuleShape.radius;
@@ -122,20 +112,20 @@ function pointInConvex(worldPoint: Float32Array, convexShape: Convex, convexOffs
 		r0 = pic_r0,
 		r1 = pic_r1,
 		verts = convexShape.vertices,
-		lastCross = null;
+		lastCross: f32 = -1;
 
 	vec2.toLocalFrame(localPoint, worldPoint, convexOffset, convexAngle);
 
-	for(let i=0, numVerts=verts.length; i!==numVerts+1; i++){
-		let v0 = verts[i % numVerts],
-			v1 = verts[(i+1) % numVerts];
+	for(let i: i32 =0, numVerts=verts.length; i!==numVerts+1; i++){
+		let v0: Float32Array = verts[i % numVerts],
+			v1: Float32Array = verts[(i+1) % numVerts];
 
-		sub(r0, v0, localPoint);
-		sub(r1, v1, localPoint);
+		vec2.subtract(r0, v0, localPoint);
+		vec2.subtract(r1, v1, localPoint);
 
-		let cross = vec2.crossLength(r0,r1);
+		let cross: f32 = vec2.crossLength(r0,r1);
 
-		if(lastCross === null){
+		if(lastCross == -1){
 			lastCross = cross;
 		}
 
@@ -158,12 +148,12 @@ function pointInConvexLocal(localPoint: Float32Array, convexShape: Convex): bool
 		lastCross = null,
 		numVerts = verts.length;
 
-	for(let i=0; i < numVerts + 1; i++){
+	for(let i: i32 = 0; i < numVerts + 1; i++){
 		let v0 = verts[i % numVerts],
 			v1 = verts[(i + 1) % numVerts];
 
-		sub(r0, v0, localPoint);
-		sub(r1, v1, localPoint);
+		vec2.subtract(r0, v0, localPoint);
+		vec2.subtract(r1, v1, localPoint);
 
 		let cross = vec2.crossLength(r0,r1);
 
@@ -457,10 +447,10 @@ export default class Narrowphase{
 
 		let ce = this.contactEquations,
 			fe = this.frictionEquations;
-		for(let i=0; i<ce.length; i++){
+		for(let i: i32 = 0; i<ce.length; i++){
 			this.contactEquationPool.release(ce[i]);
 		}
-		for(let i=0; i<fe.length; i++){
+		for(let i: i32 = 0; i<fe.length; i++){
 			this.frictionEquationPool.release(fe[i]);
 		}
 
@@ -530,8 +520,8 @@ export default class Narrowphase{
 	 */
 	createFrictionFromContact(c: ContactEquation): FrictionEquation{
 		let eq = this.createFrictionEquation(c.bodyA!, c.bodyB!, c.shapeA!, c.shapeB!);
-		copy(eq.contactPointA, c.contactPointA);
-		copy(eq.contactPointB, c.contactPointB);
+		vec2.copy(eq.contactPointA, c.contactPointA);
+		vec2.copy(eq.contactPointB, c.contactPointB);
 		vec2.rotate90cw(eq.t, c.normalA);
 		eq.contactEquations.push(c);
 		return eq;
@@ -545,24 +535,24 @@ export default class Narrowphase{
 		vec2.set(eq.contactPointA, 0, 0);
 		vec2.set(eq.contactPointB, 0, 0);
 		vec2.set(eq.t, 0, 0);
-		for(let i=0; i < numContacts; i++){
+		for(let i: i32 = 0; i < numContacts; i++){
 			c = this.contactEquations[this.contactEquations.length - 1 - i];
 			if(c.bodyA === bodyA){
-				add(eq.t, eq.t, c.normalA);
-				add(eq.contactPointA, eq.contactPointA, c.contactPointA);
-				add(eq.contactPointB, eq.contactPointB, c.contactPointB);
+				vec2.add(eq.t, eq.t, c.normalA);
+				vec2.add(eq.contactPointA, eq.contactPointA, c.contactPointA);
+				vec2.add(eq.contactPointB, eq.contactPointB, c.contactPointB);
 			} else {
-				sub(eq.t, eq.t, c.normalA);
-				add(eq.contactPointA, eq.contactPointA, c.contactPointB);
-				add(eq.contactPointB, eq.contactPointB, c.contactPointA);
+				vec2.subtract(eq.t, eq.t, c.normalA);
+				vec2.add(eq.contactPointA, eq.contactPointA, c.contactPointB);
+				vec2.add(eq.contactPointB, eq.contactPointB, c.contactPointA);
 			}
 			eq.contactEquations.push(c);
 		}
 
 		let invNumContacts = 1/numContacts;
-		scale(eq.contactPointA, eq.contactPointA, invNumContacts);
-		scale(eq.contactPointB, eq.contactPointB, invNumContacts);
-		normalize(eq.t, eq.t);
+		vec2.scale(eq.contactPointA, eq.contactPointA, invNumContacts);
+		vec2.scale(eq.contactPointB, eq.contactPointB, invNumContacts);
+		vec2.normalize(eq.t, eq.t);
 		vec2.rotate90cw(eq.t, eq.t);
 		return eq;
 	};
@@ -597,127 +587,122 @@ export default class Narrowphase{
 			offsetA = pTmp;
 		}
 
+		let sa = shapeA;
+		let sb = shapeB;
+
 		switch(shapeA.type | shapeB.type){
 			case 0b1:{ // Circle/circle
-				let sa = shapeA as Circle;
-				let sb = shapeB as Circle;
-				result = this.circleCircle(bodyA, sa, offsetA, 
-					bodyB, sb, offsetB, 
-					justTest, sa.radius, sb.radius);
+				if(sa instanceof Circle && sb instanceof Circle)
+					result = this.circleCircle(bodyA, sa, offsetA, 
+						bodyB, sb, offsetB, 
+						justTest, sa.radius, sb.radius);
 				break;
 			}
 			case 0b11:{ // Particle/circle.
-				let sa = shapeA as Circle;
-				let sb = shapeB as Particle;
-				result = this.circleParticle(bodyA, sa, offsetA, 
-					bodyB, sb, offsetB, 
-					justTest);
+				if(sa instanceof Circle && sb instanceof Particle)
+					result = this.circleParticle(bodyA, sa, offsetA, 
+						bodyB, sb, offsetB, 
+						justTest);
 				break;
 			}
 			case 0b101:{ // Plane/circle.
-				let sa = shapeA as Circle;
-				let sb = shapeB as Plane;
-				result = this.circlePlane(bodyA, sa, offsetA, 
-					bodyB, sb, offsetB, bodyB.angle + sb.angle,
-					justTest);
+				if(sa instanceof Circle && sb instanceof Plane)
+					result = this.circlePlane(bodyA, sa, offsetA, 
+						bodyB, sb, offsetB, bodyB.angle + sb.angle,
+						justTest);
 				break;
 			}
 			case 0b100001: // Box/circle.
 			case 0b1001:{ // Convex/circle.
-				let sa = shapeA as Circle;
-				let sb = shapeB as Convex;
-				result = this.circleConvex(bodyA, sa, offsetA, 
-					bodyB, sb, offsetB, bodyB.angle + sb.angle,
-					justTest, sa.radius);
+				if(sa instanceof Circle && sb instanceof Convex)
+					result = this.circleConvex(bodyA, sa, offsetA, 
+						bodyB, sb, offsetB, bodyB.angle + sb.angle,
+						justTest, sa.radius);
 				break;
 			}
 			case 0b10001:{ // Line/circle.
-				let sa = shapeA as Circle;
-				let sb = shapeB as Line;
-				result = this.circleLine(bodyA, sa, offsetA, 
-					bodyB, sb, offsetB, bodyB.angle + sb.angle,
-					justTest, 0, sa.radius);
+				if(sa instanceof Circle && sb instanceof Line)
+					result = this.circleLine(bodyA, sa, offsetA, 
+						bodyB, sb, offsetB, bodyB.angle + sb.angle,
+						justTest, 0, sa.radius);
 				break;
 			}
 			case 0b1000001:{ // Capsule/circle.
-				let sa = shapeA as Circle;
-				let sb = shapeB as Capsule;
-				result = this.circleCapsule(bodyA, sa, offsetA,
-					bodyB, sb, offsetB, bodyB.angle + sb.angle,
-					justTest);
+				if(sa instanceof Circle && sb instanceof Capsule)
+					result = this.circleCapsule(bodyA, sa, offsetA,
+						bodyB, sb, offsetB, bodyB.angle + sb.angle,
+						justTest);
 				break;
 			}
 			case 0b10000001:{ // Heightfield/circle.
-				let sa = shapeA as Circle;
-				let sb = shapeB as Heightfield;
-				result = this.circleHeightfield(bodyA, sa, offsetA,
-					bodyB, sb, offsetB, 
-					justTest, sa.radius);
+				if(sa instanceof Circle && sb instanceof Heightfield)
+					result = this.circleHeightfield(bodyA, sa, offsetA,
+						bodyB, sb, offsetB, 
+						justTest, sa.radius);
 				break;
 			}
 			case 0b110:{ // Plane/particle.
-				let sa = shapeA as Particle;
-				let sb = shapeB as Plane;
-				result = this.particlePlane(bodyA, sa, offsetA, 
-					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-					justTest);
+				
+				if(sa instanceof Particle && sb instanceof Plane)
+					result = this.particlePlane(bodyA, sa, offsetA, 
+						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+						justTest);
 				break;
 			}
 			case 0b100010: // Box/particle.
 			case 0b1010:{ // Convex/particle.
-				let sa = shapeA as Particle;
-				let sb = shapeB as Convex;
-				result = this.particleConvex(bodyA, sa, offsetA, 
-					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-					justTest);
+				if(sa instanceof Particle && sb instanceof Convex)
+					result = this.particleConvex(bodyA, sa, offsetA, 
+						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+						justTest);
 				break;
 			}
 			case 0b1010:{ // Capsule/particle.
-				let sa = shapeA as Particle;
-				let sb = shapeB as Capsule;
-				result = this.particleCapsule(bodyA, sa, offsetA, 
-					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-					justTest);
+				if(sa instanceof Particle && sb instanceof Capsule){
+					result = this.particleCapsule(bodyA, sa, offsetA, 
+						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+						justTest);
+				}
 				break;
 			}
 			case 0b100100: // Box/plane.
 			case 0b1100:{ // Convex/plane.
-				let sa = shapeA as Plane;
-				let sb = shapeB as Convex;
-				result = this.planeConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-					bodyB, sb, offsetB, bodyB.angle + sb.angle,
-					justTest);
+				if(sa instanceof Plane && sb instanceof Convex){
+					result = this.planeConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+						bodyB, sb, offsetB, bodyB.angle + sb.angle,
+						justTest);
+				}
 				break;
 			}
 			case 0b10100:{ // Line/plane.
-				let sa = shapeA as Plane;
-				let sb = shapeB as Line;
-				result = this.planeLine(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-					bodyB, sb, offsetB, bodyB.angle + sb.angle,
-					justTest);
+				if(sa instanceof Plane && sb instanceof Line){
+					result = this.planeLine(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+						bodyB, sb, offsetB, bodyB.angle + sb.angle,
+						justTest);
+				}
 				break;
 			}
 			case 0b1000100:{ // Capsule/plane.
-				let sa = shapeA as Plane;
-				let sb = shapeB as Capsule;
-				result = this.planeCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-					bodyB, sb, offsetB, bodyB.angle + sb.angle,
-					justTest);
+				if(sa instanceof Plane && sb instanceof Capsule){
+					result = this.planeCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+						bodyB, sb, offsetB, bodyB.angle + sb.angle,
+						justTest);
+				}
 				break;
 			}
 			case 0b100000: // Box/box.
 			case 0b101000: // Box/convex.
 			case 0b1000:{ // Convex/convex.
-				let sa = shapeA as Convex;
-				let sb = shapeB as Convex;
-				result = this.convexConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-					justTest);
+				if(sa instanceof Convex && sb instanceof Convex){
+					result = this.convexConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+						justTest);
+				}
 				break;
 			}
 			case 0b11000:{ // Line/convex.
-				let sa = shapeA as Convex;
-				let sb = shapeB as Line;
+				// let sa = sa as Convex;
+				// let sb = sb as Line;
 				// NOT SUPPORTED!
 				// result = this.convexLine(bodyA, sa, offsetA, bodyA.angle + sa.angle,
 				// 	bodyB, sb, offsetB, bodyB.angle + sb.angle, 
@@ -725,24 +710,24 @@ export default class Narrowphase{
 				break;
 			}
 			case 0b1001000:{ // Capsule/convex.
-				let sa = shapeA as Convex;
-				let sb = shapeB as Capsule;
-				result = this.convexCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-					justTest);
+				if(sa instanceof Convex && sb instanceof Capsule){
+					result = this.convexCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+						justTest);
+				}
 				break;
 			}
 			case 0b10001000:{ // Heightfield/convex.
-				let sa = shapeA as Convex;
-				let sb = shapeB as Heightfield;
-				result = this.convexHeightfield(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-					bodyB, sb, offsetB,
-					justTest);
+				if(sa instanceof Convex && sb instanceof Heightfield){
+					result = this.convexHeightfield(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+						bodyB, sb, offsetB,
+						justTest);
+				}
 				break;
 			}
 			case 0b10000:{ // Line/line.
-				let sa = shapeA as Line;
-				let sb = shapeB as Line;
+				// let sa = sa as Line;
+				// let sb = sb as Line;
 				// NOT SUPPORTED!
 				// result = this.lineLine(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
 				// 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
@@ -750,8 +735,8 @@ export default class Narrowphase{
 				break;
 			}
 			case 0b110000:{ // Box/line.
-				let sa = shapeA as Line;
-				let sb = shapeB as Box;
+				// let sa = sa as Line;
+				// let sb = sb as Box;
 				// NOT SUPPORTED!
 				// result = this.lineBox(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
 				// 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
@@ -759,8 +744,8 @@ export default class Narrowphase{
 				break;
 			}
 			case 0b1010000:{ // Capsule/line.
-				let sa = shapeA as Line;
-				let sb = shapeB as Capsule;
+				// let sa = sa as Line;
+				// let sb = sb as Capsule;
 				// NOT SUPPORTED!
 				// result = this.lineCapsule(bodyA, sa, shapePositionA, bodyA.angle + sa.angle,
 				// 	bodyB, sb, offsetB, bodyB.angle + sb.angle,
@@ -768,11 +753,11 @@ export default class Narrowphase{
 				break;
 			}
 			case 0b1000000:{ // Capsule/capsule.
-				let sa = shapeA as Capsule;
-				let sb = shapeB as Capsule;
-				result = this.capsuleCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-					bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-					justTest);
+				if(sa instanceof Capsule && sb instanceof Capsule){
+					result = this.capsuleCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
+						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
+						justTest);
+					}
 				break;
 			}
 		}
@@ -961,12 +946,12 @@ export default class Narrowphase{
 		// let numContacts = 0;
 
 		// // Need 4 circle checks, between all
-		// for(let i=0; i<2; i++){
+		// for(let i: i32 = 0; i<2; i++){
 
 		// 	vec2.set(circlePosi,(i===0?-1:1)*si.length/2,0);
 		// 	vec2.toGlobalFrame(circlePosi, circlePosi, xi, ai);
 
-		// 	for(let j=0; j<2; j++){
+		// 	for(let j: i32 =0; j<2; j++){
 
 		// 		vec2.set(circlePosj,(j===0?-1:1)*sj.length/2, 0);
 		// 		vec2.toGlobalFrame(circlePosj, circlePosj, xj, aj);
@@ -1103,27 +1088,27 @@ export default class Narrowphase{
 		vec2.toGlobalFrame(worldVertex01, worldVertex0, lineOffset, lineAngle);
 		vec2.toGlobalFrame(worldVertex11, worldVertex1, lineOffset, lineAngle);
 
-		copy(worldVertex0,worldVertex01);
-		copy(worldVertex1,worldVertex11);
+		vec2.copy(worldVertex0,worldVertex01);
+		vec2.copy(worldVertex1,worldVertex11);
 
 		// Get vector along the line
-		sub(worldEdge, worldVertex1, worldVertex0);
-		normalize(worldEdgeUnit, worldEdge);
+		vec2.subtract(worldEdge, worldVertex1, worldVertex0);
+		vec2.normalize(worldEdgeUnit, worldEdge);
 
 		// Get tangent to the edge.
 		vec2.rotate90cw(worldTangent, worldEdgeUnit);
 
-		rotate(worldNormal, yAxis, planeAngle);
+		vec2.rotate(worldNormal, yAxis, planeAngle);
 
 		// Check line ends
 		verts[0] = worldVertex0;
 		verts[1] = worldVertex1;
-		for(let i=0; i<verts.length; i++){
+		for(let i: i32 = 0; i<verts.length; i++){
 			let v = verts[i];
 
-			sub(dist, v, planeOffset);
+			vec2.subtract(dist, v, planeOffset);
 
-			let d = dot(dist,worldNormal);
+			let d = vec2.dot(dist,worldNormal);
 
 			if(d < 0){
 
@@ -1134,20 +1119,20 @@ export default class Narrowphase{
 				let c = this.createContactEquation(planeBody,lineBody,planeShape,lineShape);
 				numContacts++;
 
-				copy(c.normalA, worldNormal);
-				normalize(c.normalA,c.normalA);
+				vec2.copy(c.normalA, worldNormal);
+				vec2.normalize(c.normalA,c.normalA);
 
 				// distance vector along plane normal
-				scale(dist, worldNormal, d);
+				vec2.scale(dist, worldNormal, d);
 
 				// Vector from plane center to contact
-				sub(c.contactPointA, v, dist);
-				sub(c.contactPointA, c.contactPointA, planeBody.position);
+				vec2.subtract(c.contactPointA, v, dist);
+				vec2.subtract(c.contactPointA, c.contactPointA, planeBody.position);
 
 				// From line center to contact
-				sub(c.contactPointB, v,    lineOffset);
-				add(c.contactPointB, c.contactPointB, lineOffset);
-				sub(c.contactPointB, c.contactPointB, lineBody.position);
+				vec2.subtract(c.contactPointB, v,    lineOffset);
+				vec2.add(c.contactPointB, c.contactPointB, lineOffset);
+				vec2.subtract(c.contactPointB, c.contactPointB, lineBody.position);
 
 				this.contactEquations.push(c);
 
@@ -1244,41 +1229,41 @@ export default class Narrowphase{
 		vec2.toGlobalFrame(worldVertex01, worldVertex0, lineOffset, lineAngle);
 		vec2.toGlobalFrame(worldVertex11, worldVertex1, lineOffset, lineAngle);
 
-		copy(worldVertex0,worldVertex01);
-		copy(worldVertex1,worldVertex11);
+		vec2.copy(worldVertex0,worldVertex01);
+		vec2.copy(worldVertex1,worldVertex11);
 
 		// Get vector along the line
-		sub(worldEdge, worldVertex1, worldVertex0);
-		normalize(worldEdgeUnit, worldEdge);
+		vec2.subtract(worldEdge, worldVertex1, worldVertex0);
+		vec2.normalize(worldEdgeUnit, worldEdge);
 
 		// Get tangent to the edge.
 		vec2.rotate90cw(worldTangent, worldEdgeUnit);
 
 		// Check distance from the plane spanned by the edge vs the circle
-		sub(dist, circleOffset, worldVertex0);
-		let d = dot(dist, worldTangent); // Distance from center of line to circle center
-		sub(centerDist, worldVertex0, lineOffset);
+		vec2.subtract(dist, circleOffset, worldVertex0);
+		let d = vec2.dot(dist, worldTangent); // Distance from center of line to circle center
+		vec2.subtract(centerDist, worldVertex0, lineOffset);
 
-		sub(lineToCircle, circleOffset, lineOffset);
+		vec2.subtract(lineToCircle, circleOffset, lineOffset);
 
 		let radiusSum = circleRadius + lineRadius;
 
 		if(Math.abs(d) < radiusSum){
 
 			// Now project the circle onto the edge
-			scale(orthoDist, worldTangent, d);
-			sub(projectedPoint, circleOffset, orthoDist);
+			vec2.scale(orthoDist, worldTangent, d);
+			vec2.subtract(projectedPoint, circleOffset, orthoDist);
 
 			// Add the missing line radius
-			scale(lineToCircleOrthoUnit, worldTangent, dot(worldTangent, lineToCircle));
-			normalize(lineToCircleOrthoUnit,lineToCircleOrthoUnit);
-			scale(lineToCircleOrthoUnit, lineToCircleOrthoUnit, lineRadius);
-			add(projectedPoint,projectedPoint,lineToCircleOrthoUnit);
+			vec2.scale(lineToCircleOrthoUnit, worldTangent, vec2.dot(worldTangent, lineToCircle));
+			vec2.normalize(lineToCircleOrthoUnit,lineToCircleOrthoUnit);
+			vec2.scale(lineToCircleOrthoUnit, lineToCircleOrthoUnit, lineRadius);
+			vec2.add(projectedPoint,projectedPoint,lineToCircleOrthoUnit);
 
 			// Check if the point is within the edge span
-			let pos =  dot(worldEdgeUnit, projectedPoint);
-			let pos0 = dot(worldEdgeUnit, worldVertex0);
-			let pos1 = dot(worldEdgeUnit, worldVertex1);
+			let pos =  vec2.dot(worldEdgeUnit, projectedPoint);
+			let pos0 = vec2.dot(worldEdgeUnit, worldVertex0);
+			let pos1 = vec2.dot(worldEdgeUnit, worldVertex1);
 
 			if(pos > pos0 && pos < pos1){
 				// We got contact!
@@ -1289,16 +1274,16 @@ export default class Narrowphase{
 
 				let c = this.createContactEquation(circleBody,lineBody,circleShape,lineShape);
 
-				scale(c.normalA, orthoDist, -1);
-				normalize(c.normalA, c.normalA);
+				vec2.scale(c.normalA, orthoDist, -1);
+				vec2.normalize(c.normalA, c.normalA);
 
-				scale( c.contactPointA, c.normalA,  circleRadius);
-				add(c.contactPointA, c.contactPointA, circleOffset);
-				sub(c.contactPointA, c.contactPointA, circleBody.position);
+				vec2.scale( c.contactPointA, c.normalA,  circleRadius);
+				vec2.add(c.contactPointA, c.contactPointA, circleOffset);
+				vec2.subtract(c.contactPointA, c.contactPointA, circleBody.position);
 
-				sub(c.contactPointB, projectedPoint, lineOffset);
-				add(c.contactPointB, c.contactPointB, lineOffset);
-				sub(c.contactPointB, c.contactPointB, lineBody.position);
+				vec2.subtract(c.contactPointB, projectedPoint, lineOffset);
+				vec2.add(c.contactPointB, c.contactPointB, lineOffset);
+				vec2.subtract(c.contactPointB, c.contactPointB, lineBody.position);
 
 				this.contactEquations.push(c);
 
@@ -1314,12 +1299,12 @@ export default class Narrowphase{
 		verts[0] = worldVertex0;
 		verts[1] = worldVertex1;
 
-		for(let i=0; i<verts.length; i++){
+		for(let i: i32 = 0; i<verts.length; i++){
 			let v = verts[i];
 
-			sub(dist, v, circleOffset);
+			vec2.subtract(dist, v, circleOffset);
 
-			if(squaredLength(dist) < Math.pow(radiusSum, 2)){
+			if(vec2.squaredLength(dist) < Math.pow(radiusSum, 2)){
 
 				if(justTest){
 					return 1;
@@ -1327,19 +1312,19 @@ export default class Narrowphase{
 
 				let c = this.createContactEquation(circleBody,lineBody,circleShape,lineShape);
 
-				copy(c.normalA, dist);
-				normalize(c.normalA,c.normalA);
+				vec2.copy(c.normalA, dist);
+				vec2.normalize(c.normalA,c.normalA);
 
 				// Vector from circle to contact point is the normal times the circle radius
-				scale(c.contactPointA, c.normalA, circleRadius);
-				add(c.contactPointA, c.contactPointA, circleOffset);
-				sub(c.contactPointA, c.contactPointA, circleBody.position);
+				vec2.scale(c.contactPointA, c.normalA, circleRadius);
+				vec2.add(c.contactPointA, c.contactPointA, circleOffset);
+				vec2.subtract(c.contactPointA, c.contactPointA, circleBody.position);
 
-				sub(c.contactPointB, v, lineOffset);
-				scale(lineEndToLineRadius, c.normalA, -lineRadius);
-				add(c.contactPointB, c.contactPointB, lineEndToLineRadius);
-				add(c.contactPointB, c.contactPointB, lineOffset);
-				sub(c.contactPointB, c.contactPointB, lineBody.position);
+				vec2.subtract(c.contactPointB, v, lineOffset);
+				vec2.scale(lineEndToLineRadius, c.normalA, -lineRadius);
+				vec2.add(c.contactPointB, c.contactPointB, lineEndToLineRadius);
+				vec2.add(c.contactPointB, c.contactPointB, lineOffset);
+				vec2.subtract(c.contactPointB, c.contactPointB, lineBody.position);
 
 				this.contactEquations.push(c);
 
@@ -1435,8 +1420,8 @@ export default class Narrowphase{
 		let radius = convexShape.boundingRadius + circleRadius;
 
 		for (let i = 0; i < numVertices; i++){
-			sub(r, localCirclePosition, vertices[i]);
-			let s = dot(normals[i], r);
+			vec2.subtract(r, localCirclePosition, vertices[i]);
+			let s = vec2.dot(normals[i], r);
 
 			if (s > radius){
 				// Early out.
@@ -1450,18 +1435,18 @@ export default class Narrowphase{
 		}
 
 		// Check edges first
-		for(let i=normalIndex + numVertices - 1; i < normalIndex + numVertices + 2; i++){
+		for(let i: i32 = normalIndex + numVertices - 1; i < normalIndex + numVertices + 2; i++){
 			let v0 = vertices[i % numVertices],
 				n = normals[i % numVertices];
 
 			// Get point on circle, closest to the convex
-			scale(candidate, n, -circleRadius);
-			add(candidate,candidate,localCirclePosition);
+			vec2.scale(candidate, n, -circleRadius);
+			vec2.add(candidate,candidate,localCirclePosition);
 
 			if(pointInConvexLocal(candidate,convexShape)){
 
-				sub(candidateDist,v0,candidate);
-				let candidateDistance = Math.abs(dot(candidateDist, n));
+				vec2.subtract(candidateDist,v0,candidate);
+				let candidateDistance = Math.abs(vec2.dot(candidateDist, n));
 
 				if(candidateDistance < minCandidateDistance){
 					minCandidateDistance = candidateDistance;
@@ -1482,31 +1467,31 @@ export default class Narrowphase{
 			vec2.toGlobalFrame(worldVertex0, v0, convexOffset, convexAngle);
 			vec2.toGlobalFrame(worldVertex1, v1, convexOffset, convexAngle);
 
-			sub(edge, worldVertex1, worldVertex0);
+			vec2.subtract(edge, worldVertex1, worldVertex0);
 
-			normalize(edgeUnit, edge);
+			vec2.normalize(edgeUnit, edge);
 
 			// Get tangent to the edge. Points out of the Convex
 			vec2.rotate90cw(normal, edgeUnit);
 
 			// Get point on circle, closest to the convex
-			scale(candidate, normal, -circleRadius);
-			add(candidate,candidate,circleOffset);
+			vec2.scale(candidate, normal, -circleRadius);
+			vec2.add(candidate,candidate,circleOffset);
 
-			scale(closestEdgeProjectedPoint, normal, minCandidateDistance);
-			add(closestEdgeProjectedPoint,closestEdgeProjectedPoint,candidate);
+			vec2.scale(closestEdgeProjectedPoint, normal, minCandidateDistance);
+			vec2.add(closestEdgeProjectedPoint,closestEdgeProjectedPoint,candidate);
 
 			let c = this.createContactEquation(circleBody,convexBody,circleShape,convexShape);
-			sub(c.normalA, candidate, circleOffset);
-			normalize(c.normalA, c.normalA);
+			vec2.subtract(c.normalA, candidate, circleOffset);
+			vec2.normalize(c.normalA, c.normalA);
 
-			scale(c.contactPointA,  c.normalA, circleRadius);
-			add(c.contactPointA, c.contactPointA, circleOffset);
-			sub(c.contactPointA, c.contactPointA, circleBody.position);
+			vec2.scale(c.contactPointA,  c.normalA, circleRadius);
+			vec2.add(c.contactPointA, c.contactPointA, circleOffset);
+			vec2.subtract(c.contactPointA, c.contactPointA, circleBody.position);
 
-			sub(c.contactPointB, closestEdgeProjectedPoint, convexOffset);
-			add(c.contactPointB, c.contactPointB, convexOffset);
-			sub(c.contactPointB, c.contactPointB, convexBody.position);
+			vec2.subtract(c.contactPointB, closestEdgeProjectedPoint, convexOffset);
+			vec2.add(c.contactPointB, c.contactPointB, convexOffset);
+			vec2.subtract(c.contactPointB, c.contactPointB, convexBody.position);
 
 			this.contactEquations.push(c);
 
@@ -1519,33 +1504,33 @@ export default class Narrowphase{
 
 		// Check closest vertices
 		if(circleRadius > 0 && normalIndex !== -1){
-			for(let i=normalIndex + numVertices; i < normalIndex + numVertices + 2; i++){
+			for(let i: i32 = normalIndex + numVertices; i < normalIndex + numVertices + 2; i++){
 				let localVertex = vertices[i % numVertices];
 
-				sub(dist, localVertex, localCirclePosition);
+				vec2.subtract(dist, localVertex, localCirclePosition);
 
-				if(squaredLength(dist) < circleRadius * circleRadius){
+				if(vec2.squaredLength(dist) < circleRadius * circleRadius){
 
 					if(justTest){
 						return 1;
 					}
 
 					vec2.toGlobalFrame(worldVertex, localVertex, convexOffset, convexAngle);
-					sub(dist, worldVertex, circleOffset);
+					vec2.subtract(dist, worldVertex, circleOffset);
 
 					let c = this.createContactEquation(circleBody,convexBody,circleShape,convexShape);
 
-					copy(c.normalA, dist);
-					normalize(c.normalA,c.normalA);
+					vec2.copy(c.normalA, dist);
+					vec2.normalize(c.normalA,c.normalA);
 
 					// Vector from circle to contact point is the normal times the circle radius
-					scale(c.contactPointA, c.normalA, circleRadius);
-					add(c.contactPointA, c.contactPointA, circleOffset);
-					sub(c.contactPointA, c.contactPointA, circleBody.position);
+					vec2.scale(c.contactPointA, c.normalA, circleRadius);
+					vec2.add(c.contactPointA, c.contactPointA, circleOffset);
+					vec2.subtract(c.contactPointA, c.contactPointA, circleBody.position);
 
-					sub(c.contactPointB, worldVertex, convexOffset);
-					add(c.contactPointB, c.contactPointB, convexOffset);
-					sub(c.contactPointB, c.contactPointB, convexBody.position);
+					vec2.subtract(c.contactPointB, worldVertex, convexOffset);
+					vec2.add(c.contactPointB, c.contactPointB, convexOffset);
+					vec2.subtract(c.contactPointB, c.contactPointB, convexBody.position);
 
 					this.contactEquations.push(c);
 
@@ -1613,39 +1598,39 @@ export default class Narrowphase{
 		}
 
 		// Check edges first
-		for(let i=0, numVerts=verts.length; i!==numVerts+1; i++){
+		for(let i: i32 = 0, numVerts=verts.length; i!==numVerts+1; i++){
 			let v0 = verts[i%numVerts],
 				v1 = verts[(i+1)%numVerts];
 
 			// Transform vertices to world
 			// @todo transform point to local space instead
-			rotate(worldVertex0, v0, convexAngle);
-			rotate(worldVertex1, v1, convexAngle);
-			add(worldVertex0, worldVertex0, convexOffset);
-			add(worldVertex1, worldVertex1, convexOffset);
+			vec2.rotate(worldVertex0, v0, convexAngle);
+			vec2.rotate(worldVertex1, v1, convexAngle);
+			vec2.add(worldVertex0, worldVertex0, convexOffset);
+			vec2.add(worldVertex1, worldVertex1, convexOffset);
 
 			// Get world edge
-			sub(worldEdge, worldVertex1, worldVertex0);
-			normalize(worldEdgeUnit, worldEdge);
+			vec2.subtract(worldEdge, worldVertex1, worldVertex0);
+			vec2.normalize(worldEdgeUnit, worldEdge);
 
 			// Get tangent to the edge. Points out of the Convex
 			vec2.rotate90cw(worldTangent, worldEdgeUnit);
 
 			// Check distance from the infinite line (spanned by the edge) to the particle
-			//sub(dist, particleOffset, worldVertex0);
-			//let d = dot(dist, worldTangent);
-			sub(centerDist, worldVertex0, convexOffset);
+			//vec2.subtract(dist, particleOffset, worldVertex0);
+			//let d = vec2.dot(dist, worldTangent);
+			vec2.subtract(centerDist, worldVertex0, convexOffset);
 
-			sub(convexToparticle, particleOffset, convexOffset);
+			vec2.subtract(convexToparticle, particleOffset, convexOffset);
 
-			sub(candidateDist,worldVertex0,particleOffset);
-			let candidateDistance = Math.abs(dot(candidateDist,worldTangent));
+			vec2.subtract(candidateDist,worldVertex0,particleOffset);
+			let candidateDistance = Math.abs(vec2.dot(candidateDist,worldTangent));
 
 			if(candidateDistance < minCandidateDistance){
 				minCandidateDistance = candidateDistance;
-				scale(closestEdgeProjectedPoint,worldTangent,candidateDistance);
-				add(closestEdgeProjectedPoint,closestEdgeProjectedPoint,particleOffset);
-				copy(minEdgeNormal,worldTangent);
+				vec2.scale(closestEdgeProjectedPoint,worldTangent,candidateDistance);
+				vec2.add(closestEdgeProjectedPoint,closestEdgeProjectedPoint,particleOffset);
+				vec2.copy(minEdgeNormal,worldTangent);
 				found = true;
 			}
 		}
@@ -1653,18 +1638,18 @@ export default class Narrowphase{
 		if(found){
 			let c = this.createContactEquation(particleBody,convexBody,particleShape,convexShape);
 
-			scale(c.normalA, minEdgeNormal, -1);
-			normalize(c.normalA, c.normalA);
+			vec2.scale(c.normalA, minEdgeNormal, -1);
+			vec2.normalize(c.normalA, c.normalA);
 
 			// Particle has no extent to the contact point
 			vec2.set(c.contactPointA,  0, 0);
-			add(c.contactPointA, c.contactPointA, particleOffset);
-			sub(c.contactPointA, c.contactPointA, particleBody.position);
+			vec2.add(c.contactPointA, c.contactPointA, particleOffset);
+			vec2.subtract(c.contactPointA, c.contactPointA, particleBody.position);
 
 			// From convex center to point
-			sub(c.contactPointB, closestEdgeProjectedPoint, convexOffset);
-			add(c.contactPointB, c.contactPointB, convexOffset);
-			sub(c.contactPointB, c.contactPointB, convexBody.position);
+			vec2.subtract(c.contactPointB, closestEdgeProjectedPoint, convexOffset);
+			vec2.add(c.contactPointB, c.contactPointB, convexOffset);
+			vec2.subtract(c.contactPointB, c.contactPointB, convexBody.position);
 
 			this.contactEquations.push(c);
 
@@ -1708,9 +1693,9 @@ export default class Narrowphase{
 
 		let dist = tmp1;
 
-		sub(dist,offsetA,offsetB);
+		vec2.subtract(dist,offsetA,offsetB);
 		let r = radiusA + radiusB;
-		if(squaredLength(dist) > r*r){
+		if(vec2.squaredLength(dist) > r*r){
 			return 0;
 		}
 
@@ -1723,11 +1708,11 @@ export default class Narrowphase{
 		let cpB = c.contactPointB;
 		let normalA = c.normalA;
 
-		sub(normalA, offsetB, offsetA);
-		normalize(normalA,normalA);
+		vec2.subtract(normalA, offsetB, offsetA);
+		vec2.normalize(normalA,normalA);
 
-		scale( cpA, normalA,  radiusA);
-		scale( cpB, normalA, -radiusB);
+		vec2.scale( cpA, normalA,  radiusA);
+		vec2.scale( cpB, normalA, -radiusB);
 
 		addSub(cpA, cpA, offsetA, bodyA.position);
 		addSub(cpB, cpB, offsetB, bodyB.position);
@@ -1776,19 +1761,19 @@ export default class Narrowphase{
 			localDist = tmp6;
 
 		let numReported = 0;
-		rotate(worldNormal, yAxis, planeAngle);
+		vec2.rotate(worldNormal, yAxis, planeAngle);
 
 		// Get convex-local plane offset and normal
 		vec2.vectorToLocalFrame(localPlaneNormal, worldNormal, convexAngle);
 		vec2.toLocalFrame(localPlaneOffset, planeOffset, convexOffset, convexAngle);
 
 		let vertices = convexShape.vertices;
-		for(let i=0, numVerts=vertices.length; i!==numVerts; i++){
+		for(let i: i32 = 0, numVerts=vertices.length; i!==numVerts; i++){
 			let v = vertices[i];
 
-			sub(localDist, v, localPlaneOffset);
+			vec2.subtract(localDist, v, localPlaneOffset);
 
-			if(dot(localDist,localPlaneNormal) <= 0){
+			if(vec2.dot(localDist,localPlaneNormal) <= 0){
 
 				if(justTest){
 					return 1;
@@ -1796,26 +1781,26 @@ export default class Narrowphase{
 
 				vec2.toGlobalFrame(worldVertex, v, convexOffset, convexAngle);
 
-				sub(dist, worldVertex, planeOffset);
+				vec2.subtract(dist, worldVertex, planeOffset);
 
 				// Found vertex
 				numReported++;
 
 				let c = this.createContactEquation(planeBody,convexBody,planeShape,convexShape);
 
-				sub(dist, worldVertex, planeOffset);
+				vec2.subtract(dist, worldVertex, planeOffset);
 
-				copy(c.normalA, worldNormal);
+				vec2.copy(c.normalA, worldNormal);
 
-				let d = dot(dist, c.normalA);
-				scale(dist, c.normalA, d);
+				let d = vec2.dot(dist, c.normalA);
+				vec2.scale(dist, c.normalA, d);
 
 				// rj is from convex center to contact
-				sub(c.contactPointB, worldVertex, convexBody.position);
+				vec2.subtract(c.contactPointB, worldVertex, convexBody.position);
 
 				// ri is from plane center to contact
-				sub( c.contactPointA, worldVertex, dist);
-				sub( c.contactPointA, c.contactPointA, planeBody.position);
+				vec2.subtract( c.contactPointA, worldVertex, dist);
+				vec2.subtract( c.contactPointA, c.contactPointA, planeBody.position);
 
 				this.contactEquations.push(c);
 
@@ -1865,10 +1850,10 @@ export default class Narrowphase{
 
 		planeAngle = planeAngle || 0;
 
-		sub(dist, particleOffset, planeOffset);
-		rotate(worldNormal, yAxis, planeAngle);
+		vec2.subtract(dist, particleOffset, planeOffset);
+		vec2.rotate(worldNormal, yAxis, planeAngle);
 
-		let d = dot(dist, worldNormal);
+		let d = vec2.dot(dist, worldNormal);
 
 		if(d > 0){
 			return 0;
@@ -1879,16 +1864,16 @@ export default class Narrowphase{
 
 		let c = this.createContactEquation(planeBody,particleBody,planeShape,particleShape);
 
-		copy(c.normalA, worldNormal);
-		scale( dist, c.normalA, d );
+		vec2.copy(c.normalA, worldNormal);
+		vec2.scale( dist, c.normalA, d );
 		// dist is now the distance vector in the normal direction
 
 		// ri is the particle position projected down onto the plane, from the plane center
-		sub( c.contactPointA, particleOffset, dist);
-		sub( c.contactPointA, c.contactPointA, planeBody.position);
+		vec2.subtract( c.contactPointA, particleOffset, dist);
+		vec2.subtract( c.contactPointA, c.contactPointA, planeBody.position);
 
 		// rj is from the body center to the particle center
-		sub( c.contactPointB, particleOffset, particleBody.position );
+		vec2.subtract( c.contactPointB, particleOffset, particleBody.position );
 
 		this.contactEquations.push(c);
 
@@ -1923,8 +1908,8 @@ export default class Narrowphase{
 		let dist = tmp1;
 		let circleRadius = circleShape.radius;
 
-		sub(dist, particleOffset, circleOffset);
-		if(squaredLength(dist) > circleRadius*circleRadius){
+		vec2.subtract(dist, particleOffset, circleOffset);
+		if(vec2.squaredLength(dist) > circleRadius*circleRadius){
 			return 0;
 		}
 		if(justTest){
@@ -1936,16 +1921,16 @@ export default class Narrowphase{
 		let contactPointA = c.contactPointA;
 		let contactPointB = c.contactPointB;
 
-		copy(normalA, dist);
-		normalize(normalA, normalA);
+		vec2.copy(normalA, dist);
+		vec2.normalize(normalA, normalA);
 
 		// Vector from circle to contact point is the normal times the circle radius
-		scale(contactPointA, normalA, circleRadius);
-		add(contactPointA, contactPointA, circleOffset);
-		sub(contactPointA, contactPointA, circleBody.position);
+		vec2.scale(contactPointA, normalA, circleRadius);
+		vec2.add(contactPointA, contactPointA, circleOffset);
+		vec2.subtract(contactPointA, contactPointA, circleBody.position);
 
 		// Vector from particle center to contact point is zero
-		sub(contactPointB, particleOffset, particleBody.position);
+		vec2.subtract(contactPointB, particleOffset, particleBody.position);
 
 		this.contactEquations.push(c);
 
@@ -2058,13 +2043,13 @@ export default class Narrowphase{
 			worldNormal = tmp2,
 			temp = tmp3;
 
-		sub(planeToCircle, circleOffset, planeOffset);
+		vec2.subtract(planeToCircle, circleOffset, planeOffset);
 
 		// World plane normal
-		rotate(worldNormal, yAxis, planeAngle);
+		vec2.rotate(worldNormal, yAxis, planeAngle);
 
 		// Normal direction distance
-		let d = dot(worldNormal, planeToCircle);
+		let d = vec2.dot(worldNormal, planeToCircle);
 
 		if(d > circleRadius){
 			return 0; // No overlap. Abort.
@@ -2078,20 +2063,20 @@ export default class Narrowphase{
 		let contact = this.createContactEquation(planeBody,circleBody,planeShape,circleShape);
 
 		// ni is the plane world normal
-		copy(contact.normalA, worldNormal);
+		vec2.copy(contact.normalA, worldNormal);
 
 		// rj is the vector from circle center to the contact point
 		let cpB = contact.contactPointB;
-		scale(cpB, contact.normalA, -circleRadius);
-		add(cpB, cpB, circleOffset);
-		sub(cpB, cpB, circleBody.position);
+		vec2.scale(cpB, contact.normalA, -circleRadius);
+		vec2.add(cpB, cpB, circleOffset);
+		vec2.subtract(cpB, cpB, circleBody.position);
 
 		// ri is the distance from plane center to contact.
 		let cpA = contact.contactPointA;
-		scale(temp, contact.normalA, d);
-		sub(cpA, planeToCircle, temp ); // Subtract normal distance vector from the distance vector
-		add(cpA, cpA, planeOffset);
-		sub(cpA, cpA, planeBody.position);
+		vec2.scale(temp, contact.normalA, d);
+		vec2.subtract(cpA, planeToCircle, temp ); // Subtract normal distance vector from the distance vector
+		vec2.add(cpA, cpA, planeOffset);
+		vec2.subtract(cpA, cpA, planeBody.position);
 
 		this.contactEquations.push(contact);
 
@@ -2281,11 +2266,11 @@ export default class Narrowphase{
 
 				vec2.copy(c.normalA, normal);
 				vec2.copy(c.contactPointB, clipPoints2[i]);
-				sub(c.contactPointB, c.contactPointB, body2.position);
+				vec2.subtract(c.contactPointB, c.contactPointB, body2.position);
 
 				vec2.scale(dist, normal, -separation);
 				vec2.add(c.contactPointA, clipPoints2[i], dist);
-				sub(c.contactPointA, c.contactPointA, body1.position);
+				vec2.subtract(c.contactPointA, c.contactPointA, body1.position);
 
 				this.contactEquations.push(c);
 
@@ -2306,19 +2291,21 @@ export default class Narrowphase{
 	circleHeightfield( circleBody: Body,circleShape: Circle,circlePos: Float32Array,
 						hfBody: Body,hfShape: Heightfield,hfPos: Float32Array, justTest: boolean, radius: f32 ): u16{
 
-		let data = hfShape.heights,
-			w = hfShape.elementWidth,
-			dist = circleHeightfield_dist,
-			candidate = circleHeightfield_candidate,
-			minCandidate = circleHeightfield_minCandidate,
-			minCandidateNormal = circleHeightfield_minCandidateNormal,
-			worldNormal = circleHeightfield_worldNormal,
-			v0 = circleHeightfield_v0,
-			v1 = circleHeightfield_v1;
+		let data: f32[] = hfShape.heights,
+			w: f32 = hfShape.elementWidth,
+			dist: Float32Array = circleHeightfield_dist,
+			candidate: Float32Array = circleHeightfield_candidate,
+			minCandidate: Float32Array = circleHeightfield_minCandidate,
+			minCandidateNormal: Float32Array = circleHeightfield_minCandidateNormal,
+			worldNormal: Float32Array = circleHeightfield_worldNormal,
+			v0: Float32Array = circleHeightfield_v0,
+			v1: Float32Array = circleHeightfield_v1;
 
 		// Get the index of the points to test against
-		let idxA = Math.floor( (circlePos[0] - radius - hfPos[0]) / w ),
-			idxB = Math.ceil(  (circlePos[0] + radius - hfPos[0]) / w );
+		
+		// FIXME: What the hell is going on here. Are these f32s or integers?
+		let idxA: f32 = Mathf.floor( (circlePos[0] - radius - hfPos[0]) / w ),
+			idxB: f32 = Mathf.ceil( (circlePos[0] + radius - hfPos[0]) / w );
 
 		/*if(idxB < 0 || idxA >= data.length)
 			return justTest ? false : 0;*/
@@ -2326,14 +2313,15 @@ export default class Narrowphase{
 		if(idxA < 0){
 			idxA = 0;
 		}
-		if(idxB >= data.length){
-			idxB = data.length-1;
+
+		if(idxB >= (data.length as f32)){
+			idxB = (data.length - 1) as f32;
 		}
 
 		// Get max and min
 		let max = data[idxA],
 			min = data[idxB];
-		for(let i=idxA; i<idxB; i++){
+		for(let i: i32 = idxA; i<idxB; i++){
 			if(data[i] < min){
 				min = data[i];
 			}
@@ -2361,28 +2349,28 @@ export default class Narrowphase{
 		let found = false;
 
 		// Check all edges first
-		for(let i=idxA; i<idxB; i++){
+		for(let i: i32 = idxA; i<idxB; i++){
 
 			// Get points
 			vec2.set(v0,     i*w, data[i]  );
 			vec2.set(v1, (i+1)*w, data[i+1]);
-			add(v0,v0,hfPos); // @todo transform circle to local heightfield space instead
-			add(v1,v1,hfPos);
+			vec2.add(v0,v0,hfPos); // @todo transform circle to local heightfield space instead
+			vec2.add(v1,v1,hfPos);
 
 			// Get normal
-			sub(worldNormal, v1, v0);
-			rotate(worldNormal, worldNormal, Math.PI/2);
-			normalize(worldNormal,worldNormal);
+			vec2.subtract(worldNormal, v1, v0);
+			vec2.rotate(worldNormal, worldNormal, Math.PI/2);
+			vec2.normalize(worldNormal,worldNormal);
 
 			// Get point on circle, closest to the edge
-			scale(candidate,worldNormal,-radius);
-			add(candidate,candidate,circlePos);
+			vec2.scale(candidate,worldNormal,-radius);
+			vec2.add(candidate,candidate,circlePos);
 
 			// Distance from v0 to the candidate point
-			sub(dist,candidate,v0);
+			vec2.subtract(dist,candidate,v0);
 
 			// Check if it is in the element "stick"
-			let d = dot(dist,worldNormal);
+			let d = vec2.dot(dist,worldNormal);
 			if(candidate[0] >= v0[0] && candidate[0] < v1[0] && d <= 0){
 
 				if(justTest){
@@ -2392,22 +2380,22 @@ export default class Narrowphase{
 				found = true;
 
 				// Store the candidate point, projected to the edge
-				scale(dist,worldNormal,-d);
-				add(minCandidate,candidate,dist);
-				copy(minCandidateNormal,worldNormal);
+				vec2.scale(dist,worldNormal,-d);
+				vec2.add(minCandidate,candidate,dist);
+				vec2.copy(minCandidateNormal,worldNormal);
 
 				let c = this.createContactEquation(hfBody,circleBody,hfShape,circleShape);
 
 				// Normal is out of the heightfield
-				copy(c.normalA, minCandidateNormal);
+				vec2.copy(c.normalA, minCandidateNormal);
 
 				// Vector from circle to heightfield
-				scale(c.contactPointB,  c.normalA, -radius);
-				add(c.contactPointB, c.contactPointB, circlePos);
-				sub(c.contactPointB, c.contactPointB, circleBody.position);
+				vec2.scale(c.contactPointB,  c.normalA, -radius);
+				vec2.add(c.contactPointB, c.contactPointB, circlePos);
+				vec2.subtract(c.contactPointB, c.contactPointB, circleBody.position);
 
-				copy(c.contactPointA, minCandidate);
-				sub(c.contactPointA, c.contactPointA, hfBody.position);
+				vec2.copy(c.contactPointA, minCandidate);
+				vec2.subtract(c.contactPointA, c.contactPointA, hfBody.position);
 
 				this.contactEquations.push(c);
 
@@ -2420,15 +2408,15 @@ export default class Narrowphase{
 		// Check all vertices
 		found = false;
 		if(radius > 0){
-			for(let i=idxA; i<=idxB; i++){
+			for(let i: i32 = idxA; i<=idxB; i++){
 
 				// Get point
 				vec2.set(v0, i*w, data[i]);
-				add(v0,v0,hfPos);
+				vec2.add(v0,v0,hfPos);
 
-				sub(dist, circlePos, v0);
+				vec2.subtract(dist, circlePos, v0);
 
-				if(squaredLength(dist) < Math.pow(radius, 2)){
+				if(vec2.squaredLength(dist) < Math.pow(radius, 2)){
 
 					if(justTest){
 						return 1;
@@ -2439,16 +2427,16 @@ export default class Narrowphase{
 					let c = this.createContactEquation(hfBody,circleBody,hfShape,circleShape);
 
 					// Construct normal - out of heightfield
-					copy(c.normalA, dist);
-					normalize(c.normalA,c.normalA);
+					vec2.copy(c.normalA, dist);
+					vec2.normalize(c.normalA,c.normalA);
 
-					scale(c.contactPointB, c.normalA, -radius);
-					add(c.contactPointB, c.contactPointB, circlePos);
-					sub(c.contactPointB, c.contactPointB, circleBody.position);
+					vec2.scale(c.contactPointB, c.normalA, -radius);
+					vec2.add(c.contactPointB, c.contactPointB, circlePos);
+					vec2.subtract(c.contactPointB, c.contactPointB, circleBody.position);
 
-					sub(c.contactPointA, v0, hfPos);
-					add(c.contactPointA, c.contactPointA, hfPos);
-					sub(c.contactPointA, c.contactPointA, hfBody.position);
+					vec2.subtract(c.contactPointA, v0, hfPos);
+					vec2.add(c.contactPointA, c.contactPointA, hfPos);
+					vec2.subtract(c.contactPointA, c.contactPointA, hfBody.position);
 
 					this.contactEquations.push(c);
 
@@ -2493,7 +2481,7 @@ export default class Narrowphase{
 		// Get max and min
 		let max = data[idxA],
 			min = data[idxB];
-		for(let i=idxA; i<idxB; i++){
+		for(let i: i32 = idxA; i<idxB; i++){
 			if(data[i] < min){
 				min = data[i];
 			}
@@ -2512,22 +2500,22 @@ export default class Narrowphase{
 		// @todo If possible, construct a convex from several data points (need o check if the points make a convex shape)
 		// @todo transform convex to local heightfield space.
 		// @todo bail out if the heightfield tile is not tall enough.
-		for(let i=idxA; i<idxB; i++){
+		for(let i: i32 = idxA; i<idxB; i++){
 
 			// Get points
 			vec2.set(v0,     i*w, data[i]  );
 			vec2.set(v1, (i+1)*w, data[i+1]);
-			add(v0,v0,hfPos);
-			add(v1,v1,hfPos);
+			vec2.add(v0,v0,hfPos);
+			vec2.add(v1,v1,hfPos);
 
 			// Construct a convex
 			let tileHeight = 100; // todo
 			vec2.set(tilePos, (v1[0] + v0[0])*0.5, (v1[1] + v0[1] - tileHeight)*0.5);
 
-			sub(tileConvex.vertices[0], v1, tilePos);
-			sub(tileConvex.vertices[1], v0, tilePos);
-			copy(tileConvex.vertices[2], tileConvex.vertices[1]);
-			copy(tileConvex.vertices[3], tileConvex.vertices[0]);
+			vec2.subtract(tileConvex.vertices[0], v1, tilePos);
+			vec2.subtract(tileConvex.vertices[1], v0, tilePos);
+			vec2.copy(tileConvex.vertices[2], tileConvex.vertices[1]);
+			vec2.copy(tileConvex.vertices[3], tileConvex.vertices[0]);
 			tileConvex.vertices[2][1] -= tileHeight;
 			tileConvex.vertices[3][1] -= tileHeight;
 			tileConvex.updateNormals();

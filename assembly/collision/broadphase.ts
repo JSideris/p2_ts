@@ -1,7 +1,7 @@
 //type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
 import vec2 from "../math/vec2";
-import Body from "../objects/Body";
+import Body from "../objects/body";
 import World from "../world/world";
 import AABB from "./aabb";
 
@@ -106,7 +106,7 @@ export default class Broadphase{
 			result = Broadphase.aabbCheck(bodyA,bodyB);
 			break;
 		default:
-			throw new Error('Bounding volume type not recognized: '+this.boundingVolumeType);
+			throw new Error('Bounding volume type not recognized: '+this.boundingVolumeType.toString());
 		}
 		return result;
 	};

@@ -51,7 +51,7 @@ class Vec2
 	 * @return {Array}
 	 */
 	crossVZ(out:Float32Array, vec:Float32Array, zcomp:f32):Float32Array{
-		this.rotate(out,vec,-Math.PI/2);// Rotate according to the right hand rule
+		this.rotate(out,vec,-Mathf.PI/2);// Rotate according to the right hand rule
 		this.scale(out,out,zcomp);      // Scale with z
 		return out;
 	};
@@ -66,7 +66,7 @@ class Vec2
 	 * @return {Array}
 	 */
 	crossZV(out:Float32Array, zcomp:f32, vec:Float32Array):Float32Array{
-		this.rotate(out,vec,Math.PI/2); // Rotate according to the right hand rule
+		this.rotate(out,vec,Mathf.PI/2); // Rotate according to the right hand rule
 		this.scale(out,out,zcomp);      // Scale with z
 		return out;
 	};
@@ -82,8 +82,8 @@ class Vec2
 	 */
 	rotate(out:Float32Array,a:Float32Array,angle:f32):Float32Array{
 		if(angle !== 0){
-			var c = Math.cos(angle),
-				s = Math.sin(angle),
+			var c = Mathf.cos(angle),
+				s = Mathf.sin(angle),
 				x = a[0],
 				y = a[1];
 			out[0] = c*x -s*y;
@@ -121,8 +121,8 @@ class Vec2
 	 * @return {Array}
 	 */
 	toLocalFrame(out:Float32Array, worldPoint:Float32Array, framePosition:Float32Array, frameAngle:f32):Float32Array{
-		var c = Math.cos(-frameAngle),
-			s = Math.sin(-frameAngle),
+		var c = Mathf.cos(-frameAngle),
+			s = Mathf.sin(-frameAngle),
 			x = worldPoint[0] - framePosition[0],
 			y = worldPoint[1] - framePosition[1];
 		out[0] = c * x - s * y;
@@ -139,8 +139,8 @@ class Vec2
 	 * @param  {Number} frameAngle
 	 */
 	toGlobalFrame(out:Float32Array, localPoint:Float32Array, framePosition:Float32Array, frameAngle:f32): void{
-		var c = Math.cos(frameAngle),
-			s = Math.sin(frameAngle),
+		var c = Mathf.cos(frameAngle),
+			s = Mathf.sin(frameAngle),
 			x = localPoint[0],
 			y = localPoint[1],
 			addX = framePosition[0],
@@ -158,8 +158,8 @@ class Vec2
 	 * @return {Array}
 	 */
 	vectorToLocalFrame(out:Float32Array, worldVector:Float32Array, frameAngle:f32):Float32Array{
-		var c = Math.cos(-frameAngle),
-			s = Math.sin(-frameAngle),
+		var c = Mathf.cos(-frameAngle),
+			s = Mathf.sin(-frameAngle),
 			x = worldVector[0],
 			y = worldVector[1];
 		out[0] = c*x -s*y;
@@ -350,7 +350,7 @@ class Vec2
 	distance(a:Float32Array, b:Float32Array):f32 {
 		var x = b[0] - a[0],
 			y = b[1] - a[1];
-		return Math.sqrt(x*x + y*y);
+		return Mathf.sqrt(x*x + y*y);
 	};
 
 	/**
@@ -377,7 +377,7 @@ class Vec2
 	length (a:Float32Array):f32 {
 		var x = a[0],
 			y = a[1];
-		return Math.sqrt(x*x + y*y);
+		return Mathf.sqrt(x*x + y*y);
 	};
 
 	/**
@@ -421,7 +421,7 @@ class Vec2
 		var len = x*x + y*y;
 		if (len > 0) {
 			//TODO: evaluate use of glm_invsqrt here?
-			len = 1 / Math.sqrt(len);
+			len = 1 / Mathf.sqrt(len);
 			out[0] = a[0] * len;
 			out[1] = a[1] * len;
 		}

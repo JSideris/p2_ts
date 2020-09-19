@@ -4,6 +4,7 @@ import GSSolver from  "../solver/gs-solver";
 import vec2 from  "../math/vec2";
 import Shape from  "../shapes/shape";
 import EventEmitter from  "../events/event-emitter";
+import { EventArgument } from  "../events/event-emitter";
 import Body from  "../objects/body";
 import Material from  "../material/material";
 import ContactMaterial from  "../material/contact-material";
@@ -30,18 +31,24 @@ import Ray from "../collision/ray";
  * Fired after the step().
  * @event postStep
  */
-var postStepEvent = {
-	type: "postStep"
+export class PostStepEvent extends EventArgument {
+	constructor(){
+		super("postStep");
+	}
 };
+
+var postStepEvent:PostStepEvent = new PostStepEvent();
 
 /**
  * Fired when a body is added to the world.
  * @event addBody
  * @param {Body} body
  */
-class AddBodyEvent{
-	type: String = "addBody";
+export class AddBodyEvent extends EventArgument{
 	body: Body|null = null;
+	constructor(){
+		super("addBody");
+	}
 }
  var addBodyEvent = new AddBodyEvent();
 
@@ -50,9 +57,11 @@ class AddBodyEvent{
  * @event removeBody
  * @param {Body} body
  */
-class RemoveBodyEvent{
-	type: String = "removeBody";
+export class RemoveBodyEvent extends EventArgument{
 	body : Body|null = null;
+	constructor(){
+		super("removeBody");
+	}
 }
 var removeBodyEvent = new RemoveBodyEvent();
 
@@ -61,9 +70,12 @@ var removeBodyEvent = new RemoveBodyEvent();
  * @event addSpring
  * @param {Spring} spring
  */
-class AddSpringEvent{
-	type: String = "addSpring";
+export class AddSpringEvent extends EventArgument{
 	spring: Spring|null = null;
+
+	constructor(){
+		super("addSpring");
+	}
 }
 var addSpringEvent = new AddSpringEvent();
 
@@ -74,13 +86,16 @@ var addSpringEvent = new AddSpringEvent();
  * @param {Body} bodyB
  * @deprecated Impact event will be removed. Use beginContact instead.
  */
-class ImpactEvent{
-	type: String = "impact";
+export class ImpactEvent extends EventArgument{
 	bodyA: Body|null = null;
 	bodyB: Body|null = null;
 	shapeA: Shape|null = null;
 	shapeB: Shape|null = null;
 	contactEquation: ContactEquation|null = null;
+
+	constructor(){
+		super("impact");
+	}
 }
 var impactEvent = new ImpactEvent();
 
@@ -92,21 +107,27 @@ var impactEvent = new ImpactEvent();
  * @event postBroadphase
  * @param {Array} pairs An array of collision pairs. If this array is [body1,body2,body3,body4], then the body pairs 1,2 and 3,4 would advance to narrowphase.
  */
-class PostBroadphaseEvent{
-	type: String = "postBroadphase";
+export class PostBroadphaseEvent extends EventArgument{
 	pairs: Body[]|null = null;
+	constructor(){
+		super("postBroadphase");
+	}
 }
 var postBroadphaseEvent = new PostBroadphaseEvent;
 
 
-class BeginContactEvent{
-	type: String = "beginContact";
+export class BeginContactEvent extends EventArgument{
 	shapeA: Shape|null = null;
 	shapeB: Shape|null = null;
 	bodyA: Body|null = null;
 	bodyB: Body|null = null;
-	contactEquations: Equation[] = [];
+	contactEquations: ContactEquation[] = [];
+
+	constructor(){
+		super("beginContact");
+	}
 }
+
 /**
  * Fired when two shapes starts start to overlap. Fired in the narrowphase, during step.
  * @event beginContact
@@ -126,13 +147,18 @@ var beginContactEvent = new BeginContactEvent();
  * @param {Body}  bodyA
  * @param {Body}  bodyB
  */
-var endContactEvent = {
-	type: "endContact",
-	shapeA: null,
-	shapeB: null,
-	bodyA: null,
-	bodyB: null
+export class EndContactEvent extends EventArgument {
+	shapeA: Shape|null = null;
+	shapeB: Shape|null = null;
+	bodyA: Body|null = null;
+	bodyB: Body|null = null;
+
+	constructor(){
+		super("endContact");
+	}
 };
+
+var endContactEvent = new EndContactEvent();
 
 var hitTest_tmp1 = vec2.create(),
 	hitTest_tmp2 = vec2.create();
@@ -143,10 +169,13 @@ var hitTest_tmp1 = vec2.create(),
  * @param {Array} contactEquations  An array of contacts to be solved.
  * @param {Array} frictionEquations An array of friction equations to be solved.
  */
-class PreSolveEvent{
-	type: String = "preSolve";
+export class PreSolveEvent extends EventArgument{
 	contactEquations: ContactEquation[]|null = null;
 	frictionEquations: FrictionEquation[]|null = null;
+
+	constructor(){
+		super("preSolve");
+	}
 }
 var preSolveEvent = new PreSolveEvent();
 
@@ -157,8 +186,8 @@ function sortBodiesByIsland(a: Body,b: Body): i64{
 function sortEquationsByIsland(equationA: Equation, equationB: Equation): i32{
 	if(!equationA.bodyA || !equationA.bodyB || !equationB.bodyA || !equationB.bodyB) return 0;
 
-	var islandA = equationA.bodyA.islandId > 0 ? equationA.bodyA.islandId : equationA.bodyB.islandId;
-	var islandB = equationB.bodyA.islandId > 0 ? equationB.bodyA.islandId : equationB.bodyB.islandId;
+	let islandA = equationA.bodyA.islandId > 0 ? equationA.bodyA.islandId : equationA.bodyB.islandId;
+	let islandB = equationB.bodyA.islandId > 0 ? equationB.bodyA.islandId : equationB.bodyB.islandId;
 
 	if(islandA !== islandB){
 		return islandA - islandB;
@@ -188,11 +217,11 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 		return;
 	}
 
-	var aiw = ai + bi.angle;
-	var ajw = aj + bj.angle;
+	let aiw = ai + bi.angle;
+	let ajw = aj + bj.angle;
 
 	np.enableFriction = cm.friction > 0;
-	var reducedMass: f32;
+	let reducedMass: f32;
 	if(bi.type === Body.STATIC || bi.type === Body.KINEMATIC){
 		reducedMass = bj.mass;
 	} else if(bj.type === Body.STATIC || bj.type === Body.KINEMATIC){
@@ -209,7 +238,7 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 
 	let numContacts = np.testContact(bi, si, xiw, bj, sj, xjw, sensor);
 	
-	var numFrictionEquations = np.frictionEquations.length - numFrictionBefore;
+	let numFrictionEquations = np.frictionEquations.length - numFrictionBefore;
 
 	if(numContacts){
 
@@ -219,8 +248,8 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 			bj.sleepState  === Body.AWAKE &&
 			bj.type !== Body.STATIC
 		){
-			var speedSquaredB = vec2.squaredLength(bj.velocity) + Math.pow(bj.angularVelocity,2);
-			var speedLimitSquaredB = Math.pow(bj.sleepSpeedLimit,2);
+			let speedSquaredB = vec2.squaredLength(bj.velocity) + Math.pow(bj.angularVelocity,2);
+			let speedLimitSquaredB = Math.pow(bj.sleepSpeedLimit,2);
 			if(speedSquaredB >= speedLimitSquaredB*2){
 				bi._wakeUpAfterNarrowphase = true;
 			}
@@ -232,8 +261,8 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 			bi.sleepState  === Body.AWAKE &&
 			bi.type !== Body.STATIC
 		){
-			var speedSquaredA = vec2.squaredLength(bi.velocity) + Math.pow(bi.angularVelocity,2);
-			var speedLimitSquaredA = Math.pow(bi.sleepSpeedLimit,2);
+			let speedSquaredA = vec2.squaredLength(bi.velocity) + Math.pow(bi.angularVelocity,2);
+			let speedLimitSquaredA = Math.pow(bi.sleepSpeedLimit,2);
 			if(speedSquaredA >= speedLimitSquaredA*2){
 				bj._wakeUpAfterNarrowphase = true;
 			}
@@ -243,7 +272,7 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 		if(world.has('beginContact', null) && world.overlapKeeper.isNewOverlap(si, sj)){
 
 			// Report new shape overlap
-			var e = beginContactEvent;
+			let e = beginContactEvent;
 			e.shapeA = si;
 			e.shapeB = sj;
 			e.bodyA = bi;
@@ -253,7 +282,7 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 			e.contactEquations.length = 0;
 
 			if(!sensor){
-				for(var i=np.contactEquations.length-numContacts; i<np.contactEquations.length; i++){
+				for(let i: i32 = np.contactEquations.length - numContacts; i<np.contactEquations.length; i++){
 					e.contactEquations.push(np.contactEquations[i]);
 				}
 			}
@@ -263,8 +292,8 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 
 		// divide the max friction force by the number of contacts
 		if(!sensor && numFrictionEquations > 1){ // Why divide by 1?
-			for(var i=np.frictionEquations.length-numFrictionEquations; i<np.frictionEquations.length; i++){
-				var f = np.frictionEquations[i];
+			for(let i: i32 = np.frictionEquations.length-numFrictionEquations; i<np.frictionEquations.length; i++){
+				let f = np.frictionEquations[i];
 				f.setSlipForce(f.getSlipForce() / numFrictionEquations);
 			}
 		}
@@ -272,12 +301,12 @@ function runNarrowphase(world: World, np: Narrowphase, bi: Body, si: Shape, xi: 
 }
 
 function setGlobalEquationParams(world: World, relaxation: f32|null, stiffness: f32|null): void {
-	var constraints = world.constraints;
-	for(var i=0; i !== constraints.length; i++){
-		var c = constraints[i];
-		var eqs = c.equations;
-		for(var j=0; j !== eqs.length; j++){
-			var eq = eqs[j];
+	let constraints = world.constraints;
+	for(let i: u16 = 0; i < (constraints.length as u16); i++){
+		let c = constraints[i];
+		let eqs = c.equations;
+		for(let j: i32 = 0; j < eqs.length; j++){
+			let eq = eqs[j];
 			eq.relaxation = relaxation !== null ? relaxation : eq.relaxation;
 			eq.stiffness = stiffness !== null ? stiffness : eq.stiffness;
 			eq.needsUpdate = true;
@@ -496,7 +525,7 @@ export default class World extends EventEmitter{
 	 * @extends EventEmitter
 	 *
 	 * @example
-	 *     var world = new World({
+	 *     let world = new World({
 	 *         gravity: [0, -10],
 	 *         broadphase: new SAPBroadphase()
 	 *     });
@@ -542,7 +571,7 @@ export default class World extends EventEmitter{
 	 * @method addConstraint
 	 * @param {Constraint} constraint
 	 * @example
-	 *     var constraint = new LockConstraint(bodyA, bodyB);
+	 *     let constraint = new LockConstraint(bodyA, bodyB);
 	 *     world.addConstraint(constraint);
 	 */
 	addConstraint(constraint: Constraint): void{
@@ -550,7 +579,7 @@ export default class World extends EventEmitter{
 			throw new Error('Constraints cannot be added during step.');
 		}
 
-		var bodies = this.bodies;
+		let bodies = this.bodies;
 		if(bodies.indexOf(constraint.bodyA) === -1){
 			throw new Error('Cannot add Constraint: bodyA is not added to the World.');
 		}
@@ -590,7 +619,7 @@ export default class World extends EventEmitter{
 	 */
 	getContactMaterial(materialA: Material,materialB: Material): ContactMaterial | null{
 		let cmats = this.contactMaterials;
-		for(let i=0, N=cmats.length; i!==N; i++){
+		for(let i: i32 = 0, N: i32 = cmats.length; i< N; i++){
 			let cm = cmats[i];
 			if((cm.materialA === materialA && cm.materialB === materialB) || (cm.materialA === materialB && cm.materialB === materialA)){
 				return cm;
@@ -624,9 +653,9 @@ export default class World extends EventEmitter{
 	 *
 	 * @example
 	 *     // Simple fixed timestepping without interpolation
-	 *     var fixedTimeStep = 1 / 60;
-	 *     var world = new World();
-	 *     var body = new Body({ mass: 1 });
+	 *     let fixedTimeStep = 1 / 60;
+	 *     let world = new World();
+	 *     let body = new Body({ mass: 1 });
 	 *     world.addBody(body);
 	 *
 	 *     function animate(){
@@ -640,15 +669,15 @@ export default class World extends EventEmitter{
 	 *
 	 * @example
 	 *     // Fixed timestepping with interpolation
-	 *     var maxSubSteps = 10;
-	 *     var lastTimeSeconds;
+	 *     let maxSubSteps = 10;
+	 *     let lastTimeSeconds;
 	 *
 	 *     function animate(time){
 	 *         requestAnimationFrame(animate);
-	 *         var timeSeconds = time / 1000;
+	 *         let timeSeconds = time / 1000;
 	 *
 	 *         if(lastTimeSeconds){
-	 *             var deltaTime = timeSeconds - lastTimeSeconds;
+	 *             let deltaTime = timeSeconds - lastTimeSeconds;
 	 *             world.step(fixedTimeStep, deltaTime, maxSubSteps);
 	 *         }
 	 *
@@ -676,7 +705,7 @@ export default class World extends EventEmitter{
 		} else {
 
 			this.accumulator += timeSinceLastCalled;
-			var substeps = 0;
+			let substeps = 0;
 			while (this.accumulator >= dt && substeps < maxSubSteps) {
 				// Do fixed steps to catch up
 				this.internalStep(dt);
@@ -685,9 +714,9 @@ export default class World extends EventEmitter{
 				substeps++;
 			}
 
-			var t = (this.accumulator % dt) / dt;
-			for(var j=0; j!==this.bodies.length; j++){
-				var b = this.bodies[j];
+			let t = (this.accumulator % dt) / dt;
+			for(let j: i32 = 0; j < this.bodies.length; j++){
+				let b = this.bodies[j];
 				vec2.lerp(b.interpolatedPosition, b.previousPosition, b.position, t);
 				b.interpolatedAngle = b.previousAngle + t * (b.angle - b.previousAngle);
 			}
@@ -708,17 +737,16 @@ export default class World extends EventEmitter{
 
 		this.stepping = true;
 
-		let Nsprings = this.springs.length,
-			springs = this.springs,
-			bodies = this.bodies,
-			g = this.gravity,
-			solver = this.solver,
-			Nbodies = this.bodies.length,
-			broadphase = this.broadphase,
-			np = this.narrowphase,
-			constraints = this.constraints,
-			mg = step_mg,
-			add = vec2.add;
+		let Nsprings: u16 = this.springs.length as u16,
+			springs: Spring[] = this.springs,
+			bodies: Body[] = this.bodies,
+			g: Float32Array = this.gravity,
+			solver: Solver = this.solver,
+			Nbodies: u16 = this.bodies.length as u16,
+			broadphase: Broadphase = this.broadphase,
+			np: Narrowphase = this.narrowphase,
+			constraints: Constraint[] = this.constraints,
+			mg: Float32Array = step_mg;
 
 		this.overlapKeeper.tick();
 
@@ -726,7 +754,7 @@ export default class World extends EventEmitter{
 
 		// Update approximate friction gravity.
 		if(this.useWorldGravityAsFrictionGravity){
-			var gravityLen = vec2.length(this.gravity);
+			let gravityLen = vec2.length(this.gravity);
 			if(!(gravityLen === 0 && this.useFrictionGravityOnZeroGravity)){
 				// Nonzero gravity. Use it.
 				this.frictionGravity = gravityLen;
@@ -735,28 +763,28 @@ export default class World extends EventEmitter{
 
 		// Add gravity to bodies
 		if(this.applyGravity){
-			for(var i=0; i!==Nbodies; i++){
-				var b = bodies[i],
+			for(let i: u16 = 0; i < Nbodies; i++){
+				let b = bodies[i],
 					fi = b.force;
 				if(b.type !== Body.DYNAMIC || b.sleepState === Body.SLEEPING){
 					continue;
 				}
 				vec2.scale(mg,g,b.mass*b.gravityScale); // F=m*g
-				add(fi,fi,mg);
+				vec2.add(fi,fi,mg);
 			}
 		}
 
 		// Add spring forces
 		if(this.applySpringForces){
-			for(var i=0; i!==Nsprings; i++){
-				var s = springs[i];
+			for(let i: u16 = 0; i < Nsprings; i++){
+				let s = springs[i];
 				s.applyForce();
 			}
 		}
 
 		if(this.applyDamping){
-			for(var i=0; i!==Nbodies; i++){
-				var b = bodies[i];
+			for(let i: u16 = 0; i < Nbodies; i++){
+				let b = bodies[i];
 				if(b.type === Body.DYNAMIC){
 					b.applyDamping(dt);
 				}
@@ -764,12 +792,12 @@ export default class World extends EventEmitter{
 		}
 
 		// Broadphase
-		var result: Body[] = broadphase.getCollisionPairs(this);
+		let result: Body[] = broadphase.getCollisionPairs(this);
 
 		// Remove ignored collision pairs
-		var ignoredPairs = this.disabledBodyCollisionPairs;
-		for(var i=ignoredPairs.length-2; i>=0; i-=2){
-			for(var j=result.length-2; j>=0; j-=2){
+		let ignoredPairs = this.disabledBodyCollisionPairs;
+		for(let i: i32 = ignoredPairs.length - 2; i >=0; i -= 2){
+			for(let j: i32 = result.length - 2; j >= 0; j -= 2){
 				if( (ignoredPairs[i]   === result[j] && ignoredPairs[i+1] === result[j+1]) ||
 					(ignoredPairs[i+1] === result[j] && ignoredPairs[i]   === result[j+1])){
 					result.splice(j,2);
@@ -778,11 +806,11 @@ export default class World extends EventEmitter{
 		}
 
 		// Remove constrained pairs with collideConnected == false
-		var Nconstraints = constraints.length;
-		for(i=0; i!==Nconstraints; i++){
-			var c = constraints[i];
+		let Nconstraints = constraints.length;
+		for(let i: u16 = 0; i!==Nconstraints; i++){
+			let c = constraints[i];
 			if(!c.collideConnected){
-				for(var j=result.length-2; j>=0; j-=2){
+				for(let j: i32 = result.length - 2; j >= 0; j -= 2){
 					if( (c.bodyA === result[j] && c.bodyB === result[j+1]) ||
 						(c.bodyB === result[j] && c.bodyA === result[j+1])){
 						result.splice(j,2);
@@ -798,25 +826,25 @@ export default class World extends EventEmitter{
 
 		// Narrowphase
 		np.reset();
-		var defaultContactMaterial = this.defaultContactMaterial;
-		var frictionGravity = this.frictionGravity;
-		for(var i=0, Nresults=result.length; i!==Nresults; i+=2){
-			var bi = result[i],
+		let defaultContactMaterial = this.defaultContactMaterial;
+		let frictionGravity = this.frictionGravity;
+		for(let i: u16 = 0, Nresults = (result.length as u16); i !== Nresults; i+=2){
+			let bi = result[i],
 				bj = result[i+1];
 
 			// Loop over all shapes of body i
-			for(var k=0, Nshapesi=bi.shapes.length; k!==Nshapesi; k++){
-				var si = bi.shapes[k],
+			for(let k=0, Nshapesi=bi.shapes.length; k!==Nshapesi; k++){
+				let si = bi.shapes[k],
 					xi = si.position,
 					ai = si.angle;
 
 				// All shapes of body j
-				for(var l=0, Nshapesj=bj.shapes.length; l!==Nshapesj; l++){
-					var sj = bj.shapes[l],
+				for(let l=0, Nshapesj=bj.shapes.length; l!==Nshapesj; l++){
+					let sj = bj.shapes[l],
 						xj = sj.position,
 						aj = sj.angle;
 
-					var contactMaterial: ContactMaterial | null = null;
+					let contactMaterial: ContactMaterial | null = null;
 					if(si.material && sj.material){
 						contactMaterial = this.getContactMaterial(si.material,sj.material);
 					}
@@ -827,8 +855,8 @@ export default class World extends EventEmitter{
 		}
 
 		// Wake up bodies
-		for(var i=0; i!==Nbodies; i++){
-			var body = bodies[i];
+		for(let i: u16 = 0; i < Nbodies; i++){
+			let body = bodies[i];
 			if(body._wakeUpAfterNarrowphase){
 				body.wakeUp();
 				body._wakeUpAfterNarrowphase = false;
@@ -838,10 +866,10 @@ export default class World extends EventEmitter{
 		// Emit end overlap events
 		if(super.has("endContact", null)){
 			this.overlapKeeper.getEndOverlaps(endOverlaps);
-			var e = endContactEvent;
-			var l = endOverlaps.length;
+			let e = endContactEvent;
+			let l = endOverlaps.length;
 			while(l--){
-				var data = endOverlaps[l];
+				let data = endOverlaps[l];
 				e.shapeA = data.shapeA;
 				e.shapeB = data.shapeB;
 				e.bodyA = data.bodyA;
@@ -857,36 +885,36 @@ export default class World extends EventEmitter{
 		preSolveEvent.contactEquations = preSolveEvent.frictionEquations = null;
 
 		// update constraint equations
-		var Nconstraints = constraints.length;
-		for(i=0; i!==Nconstraints; i++){
+		Nconstraints = constraints.length;
+		for(let i: u16 = 0; i < Nconstraints; i++){
 			constraints[i].update();
 		}
 
 		if(np.contactEquations.length || np.frictionEquations.length || Nconstraints){
 
 			// Get all equations
-			var equations: Equation[] = [];
+			let equations: Equation[] = [];
 			Utils.appendArray(equations, np.contactEquations);
 			Utils.appendArray(equations, np.frictionEquations);
-			for(i=0; i!==Nconstraints; i++){
+			for(let i: u16 = 0; i < Nconstraints; i++){
 				Utils.appendArray(equations, constraints[i].equations);
 			}
 
 			if(this.islandSplit){
 
 				// Initialize the UnionFind
-				var unionFind = this.unionFind;
+				let unionFind = this.unionFind;
 				unionFind.resize(this.bodies.length + 1);
 
 				// Update equation index
-				for(var i=0; i<equations.length; i++){
+				for(let i: u16 = 0; i < (equations.length as u16); i++){
 					equations[i].index = i;
 				}
 
 				// Unite bodies if they are connected by an equation
-				for(var i=0; i<equations.length; i++){
-					var bodyA = equations[i].bodyA;
-					var bodyB = equations[i].bodyB;
+				for(let i: u16 = 0; i < (equations.length as u16); i++){
+					let bodyA = equations[i].bodyA;
+					let bodyB = equations[i].bodyB;
 					if(!bodyA || !bodyB) continue;
 					if(bodyA.type === Body.DYNAMIC && bodyB.type === Body.DYNAMIC){
 						unionFind.union(bodyA.index, bodyB.index);
@@ -894,21 +922,21 @@ export default class World extends EventEmitter{
 				}
 
 				// Find the body islands
-				for(var i=0; i<bodies.length; i++){
-					var body = bodies[i];
+				for(let i: u16 = 0; i < (bodies.length as u16); i++){
+					let body = bodies[i];
 					body.islandId = body.type === Body.DYNAMIC ? unionFind.find(body.index) : -1;
 				}
 
 				// Sort equations by island
 				equations = equations.sort(sortEquationsByIsland);
 
-				var equationIndex = 0;
+				let equationIndex = 0;
 				while(equationIndex < equations.length){
-					var equation = equations[equationIndex++];
+					let equation = equations[equationIndex++];
 					solver.addEquation(equation);
 					if(!equation.bodyA || !equation.bodyB) continue;
-					var currentIslandId = equation.bodyA.islandId > 0 ? equation.bodyA.islandId : equation.bodyB.islandId;
-					var nextIslandId = -1;
+					let currentIslandId = equation.bodyA.islandId > 0 ? equation.bodyA.islandId : equation.bodyB.islandId;
+					let nextIslandId = -1;
 					let ei = equations[equationIndex];
 					if(ei){
 						if(ei.bodyA && ei.bodyB) continue;
@@ -937,23 +965,23 @@ export default class World extends EventEmitter{
 		}
 
 		// Step forward
-		for(var i=0; i!==Nbodies; i++){
-			var body = bodies[i];
+		for(let i: u16 =0; i < Nbodies; i++){
+			let body = bodies[i];
 			if(body.type === Body.DYNAMIC || body.type === Body.KINEMATIC){
 				body.integrate(dt);
 			}
 		}
 
 		// Reset force
-		for(var i=0; i!==Nbodies; i++){
+		for(let i: u16 =0; i < Nbodies; i++){
 			bodies[i].setZeroForce();
 		}
 
 		// Emit impact event
 		if(this.emitImpactEvent && this.has("impact", null)){
-			var ev = impactEvent;
-			for(var i=0; i!==np.contactEquations.length; i++){
-				var eq = np.contactEquations[i];
+			let ev = impactEvent;
+			for(let i: u16 = 0; i < (np.contactEquations.length as u16); i++){
+				let eq = np.contactEquations[i];
 				if(eq.firstImpact){
 					ev.bodyA = eq.bodyA;
 					ev.bodyB = eq.bodyB;
@@ -968,22 +996,22 @@ export default class World extends EventEmitter{
 		// Sleeping update
 		if(this.sleepMode === World.BODY_SLEEPING){
 
-			for(i=0; i!==Nbodies; i++){
+			for(let i: u16 = 0; i < Nbodies; i++){
 				bodies[i].sleepTick(this.time, false, dt);
 			}
 
 		} else if(this.sleepMode === World.ISLAND_SLEEPING && this.islandSplit){
 
 			// Tell all bodies to sleep tick but dont sleep yet
-			for(i=0; i!==Nbodies; i++){
+			for(let i: u16 = 0; i < Nbodies; i++){
 				bodies[i].sleepTick(this.time, true, dt);
 			}
 
 			// Sleep islands
-			var bodiesSortedByIsland = bodies.sort(sortBodiesByIsland);
-			var islandEnd = 1;
-			for(var islandStart=0; islandStart < bodiesSortedByIsland.length; islandStart = islandEnd){
-				var islandId = bodiesSortedByIsland[islandStart].islandId;
+			let bodiesSortedByIsland = bodies.sort(sortBodiesByIsland);
+			let islandEnd: i32 = 1;
+			for(let islandStart: i32 = 0; islandStart < bodiesSortedByIsland.length; islandStart = islandEnd){
+				let islandId = bodiesSortedByIsland[islandStart].islandId;
 
 				// Get islandEnd index
 				/* jshint ignore:start */
@@ -995,15 +1023,15 @@ export default class World extends EventEmitter{
 					continue;
 				}
 
-				var islandShouldSleep = true;
-				for(var i=islandStart; i<islandEnd; i++){
+				let islandShouldSleep = true;
+				for(let i: i32 = islandStart; i<islandEnd; i++){
 					if(!bodiesSortedByIsland[i].wantsToSleep){
 						islandShouldSleep = false;
 						break;
 					}
 				}
 				if(islandShouldSleep){
-					for(var i=islandStart; i<islandEnd; i++){
+					for(let i: u16 = islandStart; i<islandEnd; i++){
 						bodiesSortedByIsland[i].sleep();
 					}
 				}
@@ -1052,7 +1080,7 @@ export default class World extends EventEmitter{
 	 * @param {Body} body
 	 *
 	 * @example
-	 *     var world = new World(),
+	 *     let world = new World(),
 	 *         body = new Body();
 	 *     world.addBody(body);
 	 */
@@ -1084,7 +1112,7 @@ export default class World extends EventEmitter{
 	 * @param {Body} body
 	 *
 	 * @example
-	 *     var removeBody;
+	 *     let removeBody;
 	 *     world.on("beginContact",function(event){
 	 *         // We cannot remove the body here since the world is still stepping.
 	 *         // Instead, schedule the body to be removed after the step is done.
@@ -1104,8 +1132,8 @@ export default class World extends EventEmitter{
 		}
 
 		// TODO: would it be smart to have a .constraints array on the body?
-		var constraints = this.constraints;
-		var l = constraints.length;
+		let constraints = this.constraints;
+		let l: i32 = constraints.length;
 		while (l--) {
 			if(constraints[l].bodyA === body || constraints[l].bodyB === body){
 				throw new Error('Cannot remove Body from World: it still has constraints connected to it.');
@@ -1113,10 +1141,10 @@ export default class World extends EventEmitter{
 		}
 
 		body.world = null;
-		var bodies = this.bodies;
+		let bodies = this.bodies;
 		Utils.arrayRemove(bodies, body);
 		body.index = -1;
-		var l = bodies.length;
+		l = bodies.length;
 		while (l--) {
 			bodies[l].index = l;
 		}
@@ -1128,8 +1156,8 @@ export default class World extends EventEmitter{
 		removeBodyEvent.body = null;
 
 		// Remove disabled body collision pairs that involve body
-		var pairs = this.disabledBodyCollisionPairs;
-		var i = 0;
+		let pairs = this.disabledBodyCollisionPairs;
+		let i = 0;
 		while (i < pairs.length) {
 			if (pairs[i] === body || pairs[i + 1] === body) {
 				pairs.splice(i, 2);
@@ -1145,10 +1173,10 @@ export default class World extends EventEmitter{
 	 * @param {number} id
 	 * @return {Body} The body, or false if it was not found.
 	 */
-	getBodyById(id: u32): Body|null{
-		var bodies = this.bodies;
-		for(var i=0; i<bodies.length; i++){
-			var b = bodies[i];
+	getBodyById(id: u16): Body|null{
+		let bodies = this.bodies;
+		for(let i: i32 = 0; i<bodies.length; i++){
+			let b = bodies[i];
 			if(b.id === id){
 				return b;
 			}
@@ -1174,8 +1202,8 @@ export default class World extends EventEmitter{
 	 * @param {Body} bodyB
 	 */
 	enableBodyCollision(bodyA: Body,bodyB: Body): void{
-		var pairs = this.disabledBodyCollisionPairs;
-		for(var i=0; i<pairs.length; i+=2){
+		let pairs = this.disabledBodyCollisionPairs;
+		for(let i: i32 = 0; i<pairs.length; i+=2){
 			if((pairs[i] === bodyA && pairs[i+1] === bodyB) || (pairs[i+1] === bodyA && pairs[i] === bodyB)){
 				pairs.splice(i,2);
 				return;
@@ -1194,28 +1222,28 @@ export default class World extends EventEmitter{
 		this.solver.removeAllEquations();
 
 		// Remove all constraints
-		var cs = this.constraints;
-		var i = cs.length;
+		let cs = this.constraints;
+		let i = cs.length;
 		while(i--){
 			this.removeConstraint(cs[i]);
 		}
 
 		// Remove all bodies
-		var bodies = this.bodies;
+		let bodies = this.bodies;
 		i = bodies.length;
 		while(i--){
 			this.removeBody(bodies[i]);
 		}
 
 		// Remove all springs
-		var springs = this.springs;
+		let springs = this.springs;
 		i = springs.length;
 		while(i--){
 			this.removeSpring(springs[i]);
 		}
 
 		// Remove all contact materials
-		var cms = this.contactMaterials;
+		let cms = this.contactMaterials;
 		i = cms.length;
 		while(i--){
 			this.removeContactMaterial(cms[i]);
@@ -1240,17 +1268,17 @@ export default class World extends EventEmitter{
 		precision = precision || 0;
 
 		// Create a dummy particle body with a particle shape to test against the bodies
-		var shapeWorldPosition = hitTest_tmp1,
+		let shapeWorldPosition = hitTest_tmp1,
 			shapeLocalPoint = hitTest_tmp2;
 
-		var result = [];
+		let result = [];
 
 		// Check bodies
-		for(var i=0, N = bodies.length; i!==N; i++){
-			var body = bodies[i];
+		for(let i: i32 = 0, N = bodies.length; i!==N; i++){
+			let body = bodies[i];
 
-			for(var j=0, NS = body.shapes.length; j!==NS; j++){
-				var shape = body.shapes[j];
+			for(let j: i32 = 0, NS = body.shapes.length; j!==NS; j++){
+				let shape = body.shapes[j];
 
 				// Get local point position in the shape
 				shape.worldPointToLocal(shapeLocalPoint, worldPoint);
@@ -1282,14 +1310,14 @@ export default class World extends EventEmitter{
 		setGlobalEquationParams(this, null, stiffness);
 
 		// Set for all contact materials
-		var contactMaterials = this.contactMaterials;
-		for(var i=0; i !== contactMaterials.length; i++){
-			var c = contactMaterials[i];
+		let contactMaterials = this.contactMaterials;
+		for(let i: i32 = 0; i !== contactMaterials.length; i++){
+			let c = contactMaterials[i];
 			c.stiffness = c.frictionStiffness = stiffness;
 		}
 
 		// Set for default contact material
-		var c = this.defaultContactMaterial;
+		let c = this.defaultContactMaterial;
 		c.stiffness = c.frictionStiffness = stiffness;
 	}
 
@@ -1302,13 +1330,13 @@ export default class World extends EventEmitter{
 		setGlobalEquationParams(this, relaxation, null);
 
 		// Set for all contact materials
-		for(var i=0; i !== this.contactMaterials.length; i++){
-			var c = this.contactMaterials[i];
+		for(let i: i32 = 0; i !== this.contactMaterials.length; i++){
+			let c = this.contactMaterials[i];
 			c.relaxation = c.frictionRelaxation = relaxation;
 		}
 
 		// Set for default contact material
-		var c = this.defaultContactMaterial;
+		let c = this.defaultContactMaterial;
 		c.relaxation = c.frictionRelaxation = relaxation;
 	}
 
@@ -1320,21 +1348,21 @@ export default class World extends EventEmitter{
 	 * @return {boolean} True if any body was hit.
 	 *
 	 * @example
-	 *     var ray = new Ray({
+	 *     let ray = new Ray({
 	 *         mode: Ray.CLOSEST, // or ANY
 	 *         from: [0, 0],
 	 *         to: [10, 0],
 	 *     });
-	 *     var result = new RaycastResult();
+	 *     let result = new RaycastResult();
 	 *     world.raycast(result, ray);
 	 *
 	 *     // Get the hit point
-	 *     var hitPoint = vec2.create();
+	 *     let hitPoint = vec2.create();
 	 *     result.getHitPoint(hitPoint, ray);
 	 *     console.log('Hit point: ', hitPoint[0], hitPoint[1], ' at distance ' + result.getHitDistance(ray));
 	 *
 	 * @example
-	 *     var ray = new Ray({
+	 *     let ray = new Ray({
 	 *         mode: Ray.ALL,
 	 *         from: [0, 0],
 	 *         to: [10, 0],
@@ -1344,7 +1372,7 @@ export default class World extends EventEmitter{
 	 *             console.log('Hit body and shape: ', result.body, result.shape);
 	 *
 	 *             // Get the hit point
-	 *             var hitPoint = vec2.create();
+	 *             let hitPoint = vec2.create();
 	 *             result.getHitPoint(hitPoint, ray);
 	 *             console.log('Hit point: ', hitPoint[0], hitPoint[1], ' at distance ' + result.getHitDistance(ray));
 	 *
@@ -1352,7 +1380,7 @@ export default class World extends EventEmitter{
 	 *             result.stop();
 	 *         }
 	 *     });
-	 *     var result = new RaycastResult();
+	 *     let result = new RaycastResult();
 	 *     world.raycast(result, ray);
 	 */
 	raycast(result: RaycastResult, ray: Ray): boolean{

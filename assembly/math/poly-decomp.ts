@@ -1,8 +1,5 @@
 //type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
-import FrictionEquationPool from "../utils/friction-equation-pool";
-import polyk from "./polyk";
-
 
 /**
  * Compute the intersection between two lines.
@@ -14,8 +11,8 @@ import polyk from "./polyk";
  * @return {Array}              The intersection point.
  */
 function lineInt(l1: Array<Float32Array>,l2: Array<Float32Array>,precision: f32 = 0): Float32Array{
-    var i = new Float32Array(2); // point
-    var a1: f32, b1: f32, c1: f32, a2: f32, b2: f32, c2: f32, det: f32; // scalars
+    let i = new Float32Array(2); // point
+    let a1: f32, b1: f32, c1: f32, a2: f32, b2: f32, c2: f32, det: f32; // scalars
     a1 = l1[1][1] - l1[0][1];
     b1 = l1[0][0] - l1[1][0];
     c1 = a1 * l1[0][0] + b1 * l1[0][1];
@@ -40,18 +37,18 @@ function lineInt(l1: Array<Float32Array>,l2: Array<Float32Array>,precision: f32 
  * @return {boolean} True if the two line segments intersect
  */
 function lineSegmentsIntersect(p1: Float32Array, p2: Float32Array, q1: Float32Array, q2: Float32Array): boolean{
-	var dx = p2[0] - p1[0];
-	var dy = p2[1] - p1[1];
-	var da = q2[0] - q1[0];
-	var db = q2[1] - q1[1];
+	let dx = p2[0] - p1[0];
+	let dy = p2[1] - p1[1];
+	let da = q2[0] - q1[0];
+	let db = q2[1] - q1[1];
 
 	// segments are parallel
 	if((da*dy - db*dx) === 0){
 		return false;
 	}
 
-	var s = (dx * (q1[1] - p1[1]) + dy * (p1[0] - q1[0])) / (da * dy - db * dx);
-	var t = (da * (p1[1] - q1[1]) + db * (q1[0] - p1[0])) / (db * dx - da * dy);
+	let s = (dx * (q1[1] - p1[1]) + dy * (p1[0] - q1[0])) / (da * dy - db * dx);
+	let t = (da * (p1[1] - q1[1]) + db * (q1[0] - p1[0])) / (db * dx - da * dy);
 
 	return (s>=0 && s<=1 && t>=0 && t<=1);
 }
@@ -85,7 +82,7 @@ function isRightOn(a:Float32Array,b:Float32Array,c:Float32Array): boolean {
     return triangleArea(a, b, c) <= 0;
 }
 
-var tmpPoint1 = new Float32Array(2),
+let tmpPoint1 = new Float32Array(2),
     tmpPoint2 = new Float32Array(2);
 
 /**
@@ -101,7 +98,7 @@ function collinear(a: Float32Array,b: Float32Array,c: Float32Array, thresholdAng
     if(!thresholdAngle){
         return triangleArea(a, b, c) === 0;
     } else {
-        var ab = tmpPoint1,
+        let ab = tmpPoint1,
             bc = tmpPoint2;
 
         ab[0] = b[0]-a[0];
@@ -109,7 +106,7 @@ function collinear(a: Float32Array,b: Float32Array,c: Float32Array, thresholdAng
         bc[0] = c[0]-b[0];
         bc[1] = c[1]-b[1];
 
-        var dot = ab[0]*bc[0] + ab[1]*bc[1],
+        let dot = ab[0]*bc[0] + ab[1]*bc[1],
             magA = Math.sqrt(ab[0]*ab[0] + ab[1]*ab[1]),
             magB = Math.sqrt(bc[0]*bc[0] + bc[1]*bc[1]),
             angle = Math.acos(dot/(magA*magB));
@@ -118,8 +115,8 @@ function collinear(a: Float32Array,b: Float32Array,c: Float32Array, thresholdAng
 }
 
 function sqdist(a: Float32Array,b: Float32Array): f32{
-    var dx = b[0] - a[0];
-    var dy = b[1] - a[1];
+    let dx = b[0] - a[0];
+    let dy = b[1] - a[1];
     return dx * dx + dy * dy;
 }
 
@@ -129,8 +126,8 @@ function sqdist(a: Float32Array,b: Float32Array): f32{
  * @param  {Number} i
  * @return {Array}
  */
-function polygonAt(polygon: Array<Float32Array>, i: u32): Float32Array{
-    var s = polygon.length;
+function polygonAt(polygon: Float32Array[], i: i32): Float32Array{
+    let s: u16 = polygon.length as u16;
     return polygon[i < 0 ? i % s + s : i % s];
 }
 
@@ -151,8 +148,8 @@ function polygonClear(polygon: Array<Float32Array>): void{
  * @param {Number}  to The end vertex index in "poly". Note that this vertex is NOT included when appending.
  * @return {Array}
  */
-function polygonAppend(polygon: Array<Float32Array>, poly: Array<Float32Array>, from: u32, to: u32): void{
-    for(var i=from; i<to; i++){
+function polygonAppend(polygon: Float32Array[], poly: Float32Array[], from: u16, to: u16): void{
+    for(let i: u16 = from; i < to; i++){
         polygon.push(poly[i]);
     }
 }
@@ -161,12 +158,12 @@ function polygonAppend(polygon: Array<Float32Array>, poly: Array<Float32Array>, 
  * Make sure that the polygon vertices are ordered counter-clockwise.
  * @method makeCCW
  */
-function polygonMakeCCW(polygon: Array<Float32Array>): boolean{
-    var br = 0,
-        v = polygon;
+export function polygonMakeCCW(polygon: Float32Array[]): boolean{
+    let br: u16 = 0,
+        v: Float32Array[] = polygon;
 
     // find bottom right point
-    for (var i = 1; i < polygon.length; ++i) {
+    for (let i: u16 = 1; i < (polygon.length as u16); ++i) {
         if (v[i][1] < v[br][1] || (v[i][1] === v[br][1] && v[i][0] > v[br][0])) {
             br = i;
         }
@@ -186,13 +183,13 @@ function polygonMakeCCW(polygon: Array<Float32Array>): boolean{
  * @method reverse
  */
 function polygonReverse(polygon: Float32Array[]): void{
-    let tmp:Array<Float32Array> = [];
-    let N = polygon.length;
-    for(let i=0; i!==N; i++){
-		let p = polygon.pop();
-        tmp.push(p as Float32Array);
+    let tmp:Float32Array[] = [];
+    let N: u16 = polygon.length as u16;
+    for(let i: u16 = 0; i < N; i++){
+		let p: Float32Array = polygon.pop();
+        tmp.push(p);
     }
-    for(let i=0; i!==N; i++){
+    for(let i: u16 = 0; i < N; i++){
 		polygon[i] = tmp[i];
     }
 }
@@ -203,7 +200,7 @@ function polygonReverse(polygon: Float32Array[]): void{
  * @param  {Number}  i
  * @return {boolean}
  */
-function polygonIsReflex(polygon: Array<Float32Array>, i: u32): boolean{
+function polygonIsReflex(polygon: Float32Array[], i: i32): boolean{
     return isRight(polygonAt(polygon, i - 1), polygonAt(polygon, i), polygonAt(polygon, i + 1));
 }
 
@@ -217,7 +214,7 @@ var tmpLine1: Array<Float32Array>=[],
  * @param  {Number} b Vertex index 2
  * @return {boolean}
  */
-function polygonCanSee(polygon: Array<Float32Array>, a: u32,b: u32): boolean {
+function polygonCanSee(polygon: Float32Array[], a: u32,b: u32): boolean {
 	let p: Float32Array;
 	let dist: f32;
 	let l1:Float32Array[] = tmpLine1;
@@ -227,7 +224,7 @@ function polygonCanSee(polygon: Array<Float32Array>, a: u32,b: u32): boolean {
         return false;
     }
     dist = sqdist(polygonAt(polygon, a), polygonAt(polygon, b));
-    for (var i = 0; i !== polygon.length; ++i) { // for each edge
+    for (let i: u16 = 0; i < (polygon.length as u16); ++i) { // for each edge
         if ((i + 1) % polygon.length === a || i === a){ // ignore incident edges
             continue;
         }
@@ -253,9 +250,9 @@ function polygonCanSee(polygon: Array<Float32Array>, a: u32,b: u32): boolean {
  * @param  {Number} b Vertex index 2
  * @return {boolean}
  */
-function polygonCanSee2(polygon: Array<Float32Array>, a: u32,b:u32):boolean {
+function polygonCanSee2(polygon: Float32Array[], a: u32,b:u32):boolean {
     // for each edge
-    for (var i = 0; i !== polygon.length; ++i) {
+    for (let i: u16 = 0; i < (polygon.length as u16); ++i) {
         // ignore incident edges
         if (i === a || i === b || (i + 1) % polygon.length === a || (i + 1) % polygon.length === b){
             continue;
@@ -275,24 +272,24 @@ function polygonCanSee2(polygon: Array<Float32Array>, a: u32,b:u32):boolean {
  * @param  {Polygon} [targetPoly]   Optional target polygon to save in.
  * @return {Polygon}                The resulting copy.
  */
-function polygonCopy(polygon: Array<Float32Array>, i: u32,j:u32,targetPoly: Float32Array[]|null): Array<Float32Array>{
-    var p: Array<Float32Array> = targetPoly || [];
+function polygonCopy(polygon: Array<Float32Array>, i: u16, j: u16, targetPoly: Float32Array[]|null): Array<Float32Array>{
+    let p: Array<Float32Array> = targetPoly || [];
     polygonClear(p);
     if (i < j) {
         // Insert all vertices from i to j
-        for(var k=i; k<=j; k++){
+        for(let k: u16 = i; k <= j; k++){
             p.push(polygon[k]);
         }
 
     } else {
 
         // Insert vertices 0 to j
-        for(var k=0; k<=j; k++){
+        for(let k: u16 = 0; k <= j; k++){
             p.push(polygon[k]);
         }
 
         // Insert vertices i to end
-        for(var k=i; k<polygon.length; k++){
+        for(let k: u16 = i; k < (polygon.length as u16); k++){
             p.push(polygon[k]);
         }
     }
@@ -307,24 +304,24 @@ function polygonCopy(polygon: Array<Float32Array>, i: u32,j:u32,targetPoly: Floa
  * @return {Array}
  */
 function polygonGetCutEdges(polygon: Array<Float32Array>): Array<Array<Float32Array>> {
-    var min: Array<Array<Float32Array>> = [], tmp1: Array<Array<Float32Array>> = [], tmp2: Array<Array<Float32Array>> = [], tmpPoly: Array<Float32Array> = [];
-    var nDiags = Infinity;
+    let min: Array<Array<Float32Array>> = [], tmp1: Array<Array<Float32Array>> = [], tmp2: Array<Array<Float32Array>> = [], tmpPoly: Array<Float32Array> = [];
+    let nDiags = Infinity;
 
-    for (var i = 0; i < polygon.length; ++i) {
+    for (let i: u16 = 0; i < (polygon.length as u16); ++i) {
         if (polygonIsReflex(polygon, i)) {
-            for (var j = 0; j < polygon.length; ++j) {
+            for (let j: u16 = 0; j < (polygon.length as u16); ++j) {
                 if (polygonCanSee(polygon, i, j)) {
                     tmp1 = polygonGetCutEdges(polygonCopy(polygon, i, j, tmpPoly));
                     tmp2 = polygonGetCutEdges(polygonCopy(polygon, j, i, tmpPoly));
 
-                    for(var k=0; k<tmp2.length; k++){
+                    for(let k: u16 = 0; k < (tmp2.length as u16); k++){
                         tmp1.push(tmp2[k]);
                     }
 
                     if (tmp1.length < nDiags) {
                         min = tmp1;
 						nDiags = tmp1.length;
-						var p = [polygonAt(polygon, i), polygonAt(polygon, j)];
+						let p = [polygonAt(polygon, i), polygonAt(polygon, j)];
                         min.push(p);
                     }
                 }
@@ -340,8 +337,8 @@ function polygonGetCutEdges(polygon: Array<Float32Array>): Array<Array<Float32Ar
  * @method decomp
  * @return {Array} An array or Polygon objects.
  */
-function polygonDecomp(polygon: Array<Float32Array>): Array<Array<Float32Array>>{
-    var edges = polygonGetCutEdges(polygon);
+export function polygonDecomp(polygon: Array<Float32Array>): Array<Array<Float32Array>>{
+    let edges = polygonGetCutEdges(polygon);
     if(edges.length > 0){
         return polygonSlice(polygon, edges);
     } else {
@@ -362,14 +359,14 @@ function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float3
     }
     if(cutEdges[0].length===2){
 
-        var polys = [polygon];
+        let polys = [polygon];
 
-        for(var i=0; i<cutEdges.length; i++){
-            var cutEdge = [cutEdges[i]];
+        for(let i: u16 = 0; i < (cutEdges.length as u16); i++){
+            let cutEdge = [cutEdges[i]];
             // Cut all polys
-            for(var j=0; j<polys.length; j++){
-                var poly = polys[j];
-                var result = polygonSlice(poly, cutEdge);
+            for(let j: u16 = 0; j < (polys.length as u16); j++){
+                let poly = polys[j];
+                let result = polygonSlice(poly, cutEdge);
                 if(result){
                     // Found poly! Cut and quit
                     polys.splice(j,1);
@@ -384,9 +381,9 @@ function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float3
     } else {
 
         // Was given one edge
-        var cutEdge = cutEdges;
-        var i = polygon.indexOf(cutEdge[0][0]);
-        var j = polygon.indexOf(cutEdge[0][1]);
+        let cutEdge = cutEdges;
+        let i: i32 = polygon.indexOf(cutEdge[0][0]);
+        let j: i32 = polygon.indexOf(cutEdge[0][1]);
 
         if(i !== -1 && j !== -1){
             return [polygonCopy(polygon, i,j,null),
@@ -404,11 +401,11 @@ function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float3
  * @return {boolean}
  * @todo Should it check all segments with all others?
  */
-function polygonIsSimple(polygon: Array<Float32Array>): boolean{
-    var path: Array<Float32Array> = polygon, i: u32;
+export function polygonIsSimple(polygon: Array<Float32Array>): boolean{
+    let path: Array<Float32Array> = polygon, i: u32;
     // Check
-    for(i=0; i<path.length-1; i++){
-        for(var j=0; j<i-1; j++){
+    for(let i:u16=0; i+1<(path.length as u16); i++){
+        for(let j:u16=0; j + 1 < i ; j++){
             if(lineSegmentsIntersect(path[i], path[i+1], path[j], path[j+1] )){
                 return false;
             }
@@ -416,7 +413,7 @@ function polygonIsSimple(polygon: Array<Float32Array>): boolean{
     }
 
     // Check the segment between the last and the first point to all others
-    for(i=1; i<path.length-2; i++){
+    for(let i: u16 = 1; i + 2 < (path.length as u16); i++){
         if(lineSegmentsIntersect(path[0], path[path.length-1], path[i], path[i+1] )){
             return false;
         }
@@ -426,15 +423,15 @@ function polygonIsSimple(polygon: Array<Float32Array>): boolean{
 }
 
 function getIntersectionPoint(p1: Float32Array, p2: Float32Array, q1: Float32Array, q2: Float32Array, delta: f32 = 0): Float32Array{
-	var a1 = p2[1] - p1[1];
-	var b1 = p1[0] - p2[0];
-	var c1 = (a1 * p1[0]) + (b1 * p1[1]);
-	var a2 = q2[1] - q1[1];
-	var b2 = q1[0] - q2[0];
-	var c2 = (a2 * q1[0]) + (b2 * q1[1]);
-	var det = (a1 * b2) - (a2 * b1);
+	let a1 = p2[1] - p1[1];
+	let b1 = p1[0] - p2[0];
+	let c1 = (a1 * p1[0]) + (b1 * p1[1]);
+	let a2 = q2[1] - q1[1];
+	let b2 = q1[0] - q2[0];
+	let c2 = (a2 * q1[0]) + (b2 * q1[1]);
+	let det = (a1 * b2) - (a2 * b1);
 
-	var pt = new Float32Array(2);
+	let pt = new Float32Array(2);
 
 	if(!scalar_eq(det,0,delta)){
 		pt[0] = ((b2 * c1) - (b1 * c2)) / det;
@@ -458,7 +455,7 @@ function getIntersectionPoint(p1: Float32Array, p2: Float32Array, q1: Float32Arr
  * @param  {Number} [level]
  * @return {Array}
  */
-function polygonQuickDecomp(
+export function polygonQuickDecomp(
 	polygon: Array<Float32Array>, 
 	result: Array<Array<Float32Array>> = new Array<Array<Float32Array>>(), 
 	reflexVertices: Array<Float32Array> = [], 
@@ -468,17 +465,17 @@ function polygonQuickDecomp(
 	level: u16 = 0
 ): Array<Array<Float32Array>>{
 	// TODO: should upperInt really be initialized here? It looks like it's overwritten.
-	var upperInt=new Float32Array(2), lowerInt=new Float32Array(2), p=new Float32Array(2); // Points
+	let upperInt=new Float32Array(2), lowerInt=new Float32Array(2), p=new Float32Array(2); // Points
 	upperInt[0] = 0;
 	upperInt[1] = 0;
 	lowerInt[0] = 0;
 	lowerInt[1] = 0;
 	p[0] = 0;
 	p[1] = 0;
-    var upperDist: f32=0, lowerDist: f32=0, d=0, closestDist: f32=0; // scalars
-    var upperIndex: u32=0, lowerIndex: u32=0, closestIndex: u32=0; // Integers
-    var lowerPoly=new Array<Float32Array>(), upperPoly=new Array<Float32Array>(); // polygons
-    var poly = polygon,
+    let upperDist: f32=0, lowerDist: f32=0, d=0, closestDist: f32=0; // scalars
+    let upperIndex: u16 = 0, lowerIndex: u16 = 0, closestIndex: u16=0; // Integers
+    let lowerPoly=new Array<Float32Array>(), upperPoly=new Array<Float32Array>(); // polygons
+    let poly = polygon,
         v = polygon;
 
     if(v.length < 3){
@@ -491,13 +488,13 @@ function polygonQuickDecomp(
         return result;
     }
 
-    for (var i = 0; i < polygon.length; ++i) {
+    for (let i: u16 = 0; i < (polygon.length as u16); ++i) {
         if (polygonIsReflex(poly, i)) {
             reflexVertices.push(poly[i]);
             upperDist = lowerDist = Infinity;
 
 
-            for (var j = 0; j < polygon.length; ++j) {
+            for (let j: u16 = 0; j < (polygon.length as u16); ++j) {
                 if (isLeft(polygonAt(poly, i - 1), polygonAt(poly, i), polygonAt(poly, j)) && isRightOn(polygonAt(poly, i - 1), polygonAt(poly, i), polygonAt(poly, j - 1))) { // if line intersects with an edge
                     p = getIntersectionPoint(polygonAt(poly, i - 1), polygonAt(poly, i), polygonAt(poly, j), polygonAt(poly, j - 1)); // find the point of intersection
                     if (isRight(polygonAt(poly, i + 1), polygonAt(poly, i), p)) { // make sure it's inside the poly
@@ -565,7 +562,7 @@ function polygonQuickDecomp(
                     return result;
                 }
 
-                for (var j = lowerIndex; j <= upperIndex; ++j) {
+                for (let j: u16 = lowerIndex; j <= upperIndex; ++j) {
                     if (
                         isLeftOn(polygonAt(poly, i - 1), polygonAt(poly, i), polygonAt(poly, j)) &&
                         isRightOn(polygonAt(poly, i + 1), polygonAt(poly, i), polygonAt(poly, j))
@@ -616,10 +613,10 @@ function polygonQuickDecomp(
  * @param  {Number} [precision] The threshold angle to use when determining whether two edges are collinear. Use zero for finest precision.
  * @return {Number}           The number of points removed
  */
-function polygonRemoveCollinearPoints(polygon: Array<Float32Array>, precision: f32): u32{
-    let num: u32 = 0;
-    for(let i:u32=polygon.length-1; polygon.length>3 && i>=0; --i){
-        if(collinear(polygonAt(polygon, i-1),polygonAt(polygon, i),polygonAt(polygon, i+1),precision)){
+export function polygonRemoveCollinearPoints(polygon: Array<Float32Array>, precision: f32): u32{
+    let num: i32 = 0;
+    for(let i:i32 = polygon.length - 1; polygon.length > 3 && i >= 0; --i){
+        if(collinear(polygonAt(polygon, i-1), polygonAt(polygon, i), polygonAt(polygon, i+1), precision)){
             // Remove the middle point
             polygon.splice(i%polygon.length,1);
             num++;
@@ -633,10 +630,10 @@ function polygonRemoveCollinearPoints(polygon: Array<Float32Array>, precision: f
  * @method removeDuplicatePoints
  * @param  {Number} [precision] The threshold to use when determining whether two points are the same. Use zero for best precision.
  */
-function polygonRemoveDuplicatePoints(polygon: Array<Float32Array>, precision: f32): void{
-    for(var i=polygon.length-1; i>=1; --i){
-        var pi = polygon[i];
-        for(var j=i-1; j>=0; --j){
+export function polygonRemoveDuplicatePoints(polygon: Array<Float32Array>, precision: f32): void{
+    for(let i: i32 = polygon.length - 1; i>=1; --i){
+        let pi = polygon[i];
+        for(let j: i32 = i - 1; j >= 0; --j){
             if(points_eq(pi, polygon[j], precision)){
                 polygon.splice(i,1);
                 continue;
@@ -672,13 +669,19 @@ function points_eq(a: Float32Array,b: Float32Array,precision: f32): boolean{
     return scalar_eq(a[0],b[0],precision) && scalar_eq(a[1],b[1],precision);
 }
 
-const exp = {
-    decomp: polygonDecomp,
-    quickDecomp: polygonQuickDecomp,
-    isSimple: polygonIsSimple,
-    removeCollinearPoints: polygonRemoveCollinearPoints,
-    removeDuplicatePoints: polygonRemoveDuplicatePoints,
-    makeCCW: polygonMakeCCW
-};
 
-export default exp;
+// export default {
+//     decomp: polygonDecomp,
+//     quickDecomp: polygonQuickDecomp,
+//     isSimple: polygonIsSimple,
+//     removeCollinearPoints: polygonRemoveCollinearPoints,
+//     removeDuplicatePoints: polygonRemoveDuplicatePoints,
+//     makeCCW: polygonMakeCCW,
+// };
+
+// import {polygonDecomp as decomp} from "./math/poly-decomp";
+// import {polygonQuickDecomp as quickDecomp} from "./math/poly-decomp";
+// import {polygonIsSimple as isSimple} from "./math/poly-decomp";
+// import {polygonRemoveCollinearPoints as removeCollinearPoints} from "./math/poly-decomp";
+// import {polygonRemoveDuplicatePoints as removeDuplicatePoints} from "./math/poly-decomp";
+// import {polygonMakeCCW as makeCCW} from "./math/poly-decomp";

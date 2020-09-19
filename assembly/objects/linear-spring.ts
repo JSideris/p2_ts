@@ -16,10 +16,10 @@ var applyForce_r =              vec2.create(),
 	applyForce_tmp =            vec2.create();
 
 export class LinearSpringOptions extends SpringOptions{
-	localAnchorA: Float32Array|null;
-	localAnchorB: Float32Array|null;
-	worldAnchorA: Float32Array|null;
-	worldAnchorB: Float32Array|null;
+	localAnchorA: Float32Array|null = null;
+	localAnchorB: Float32Array|null = null;
+	worldAnchorA: Float32Array|null = null;
+	worldAnchorB: Float32Array|null = null;
 }
 
 export default class LinearSpring extends Spring{
@@ -28,13 +28,13 @@ export default class LinearSpring extends Spring{
 	 * @property localAnchorA
 	 * @type {Array}
 	 */
-	localAnchorA: Float32Array;
+	localAnchorA: Float32Array = vec2.create();
 	/**
 	 * Anchor for bodyB in local bodyB coordinates.
 	 * @property localAnchorB
 	 * @type {Array}
 	 */
-	localAnchorB: Float32Array;
+	localAnchorB: Float32Array = vec2.create();
 	/**
 	 * Rest length of the spring. Can be set dynamically.
 	 * @property restLength
@@ -78,10 +78,10 @@ export default class LinearSpring extends Spring{
 		this.localAnchorB = vec2.create();
 
 		if(options){
-			if(options.localAnchorA){ vec2.copy(this.localAnchorA, options.localAnchorA); }
-			if(options.localAnchorB){ vec2.copy(this.localAnchorB, options.localAnchorB); }
-			if(options.worldAnchorA){ this.setWorldAnchorA(options.worldAnchorA); }
-			if(options.worldAnchorB){ this.setWorldAnchorB(options.worldAnchorB); }
+			if(options.localAnchorA){ vec2.copy(this.localAnchorA, options.localAnchorA!); }
+			if(options.localAnchorB){ vec2.copy(this.localAnchorB, options.localAnchorB!); }
+			if(options.worldAnchorA){ this.setWorldAnchorA(options.worldAnchorA!); }
+			if(options.worldAnchorB){ this.setWorldAnchorB(options.worldAnchorB!); }
 		}
 
 		var worldAnchorA = vec2.create();

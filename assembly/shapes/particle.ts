@@ -11,8 +11,6 @@ import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 import vec2 from "../math/vec2";
 
-const copy = vec2.copy;
-
 export class ParticleOptions extends ShapeOptions{}
 
 export default class Particle extends Shape{
@@ -50,8 +48,8 @@ export default class Particle extends Shape{
 	 * @param  {Number} angle
 	 */
 	computeAABB(out: AABB, position: Float32Array/*, angle*/): void{
-		copy(out.lowerBound, position);
-		copy(out.upperBound, position);
+		vec2.copy(out.lowerBound, position);
+		vec2.copy(out.upperBound, position);
 	};
 
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32):void{}

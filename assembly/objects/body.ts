@@ -2,24 +2,28 @@
 
 import vec2 from "../math/vec2";
 
-const add = vec2.add, sub = vec2.subtract, vec2create = vec2.create;
-
 import World from "../world/world";
 import Shape from "../shapes/shape";
 import AABB from "../collision/aabb";
-import decomp from "../math/poly-decomp";
 import Convex from "../shapes/Convex";
 import Ray from "../collision/ray";
 import { RayOptions } from "../collision/ray";
 import RaycastResult from "../collision/raycast-result";
 import EventEmitter from "../events/event-emitter";
-//decomp = require('poly-decomp')
+import { EventArgument } from "../events/event-emitter";
 
-var integrate_fhMinv = vec2create();
-var integrate_velodt = vec2create();
-var _tmp = vec2create();
+import {polygonDecomp as decomp} from "../math/poly-decomp";
+import {polygonQuickDecomp as quickDecomp} from "../math/poly-decomp";
+import {polygonIsSimple as isSimple} from "../math/poly-decomp";
+import {polygonRemoveCollinearPoints as removeCollinearPoints} from "../math/poly-decomp";
+import {polygonRemoveDuplicatePoints as removeDuplicatePoints} from "../math/poly-decomp";
+import {polygonMakeCCW as makeCCW} from "../math/poly-decomp";
 
-var _idCounter = 0;
+const integrate_fhMinv: Float32Array = vec2.create();
+const integrate_velodt: Float32Array = vec2.create();
+const _tmp: Float32Array = vec2.create();
+
+var _idCounter:u32 = 0;
 
 export class BodyOptions{
 	mass: f32 = 0;
@@ -143,7 +147,7 @@ export default class Body extends EventEmitter{
 	 *
 	 * @example
 	 *     // Fix X movement on body creation
-	 *     var body = new Body({ mass: 1, fixedX: true });
+	 *     let body = new Body({ mass: 1, fixedX: true });
 	 *
 	 * @example
 	 *     // Fix X movement during runtime
@@ -162,14 +166,14 @@ export default class Body extends EventEmitter{
 	 * @private
 	 * @property {array} massMultiplier
 	 */
-	public massMultiplier:Float32Array = vec2create();
+	public massMultiplier:Float32Array = vec2.create();
 
 	/**
 	 * The position of the body in the world. Don't use this for rendering, instead use .interpolatedPosition
 	 * @property position
 	 * @type {Array}
 	 */
-	public position: Float32Array;
+	public position: Float32Array = vec2.create();
 
 	/**
 	 * The interpolated position of the body. Use this for rendering.
@@ -177,21 +181,21 @@ export default class Body extends EventEmitter{
 	 * @property interpolatedPosition
 	 * @type {Array}
 	 */
-	public interpolatedPosition: Float32Array;
+	public interpolatedPosition: Float32Array = vec2.create();
 
 	/**
 	 * The previous position of the body.
 	 * @property previousPosition
 	 * @type {Array}
 	 */
-	public previousPosition: Float32Array;
+	public previousPosition: Float32Array = vec2.create();
 
 	/**
 	 * The current velocity of the body.
 	 * @property velocity
 	 * @type {Array}
 	 */
-	public velocity: Float32Array;
+	public velocity: Float32Array = vec2.create();
 
 	/**
 	 * Constraint velocity that was added to the body during the last step.
@@ -199,7 +203,7 @@ export default class Body extends EventEmitter{
 	 * @property vlambda
 	 * @type {Array}
 	 */
-	public vlambda: Float32Array = vec2create();
+	public vlambda: Float32Array = vec2.create();
 
 	/**
 	 * Angular constraint velocity that was added to the body during last step.
@@ -256,19 +260,19 @@ export default class Body extends EventEmitter{
 	 *
 	 * @example
 	 *     // This produces a forcefield of 1 Newton in the positive x direction.
-	 *     for(var i=0; i<numSteps; i++){
+	 *     for(let i: u16 = 0; i<numSteps; i++){
 	 *         body.force[0] = 1;
 	 *         world.step(1/60);
 	 *     }
 	 *
 	 * @example
 	 *     // This will apply a rotational force on the body
-	 *     for(var i=0; i<numSteps; i++){
+	 *     for(let i: u16=0; i<numSteps; i++){
 	 *         body.angularForce = -3;
 	 *         world.step(1/60);
 	 *     }
 	 */
-	public force: Float32Array;
+	public force: Float32Array = vec2.create();
 
 	/**
 	 * The angular force acting on the body. See {{#crossLink "Body/force:property"}}{{/crossLink}}.
@@ -305,20 +309,20 @@ export default class Body extends EventEmitter{
 	 *
 	 * @example
 	 *     // Bodies are static by default. Static bodies will never move.
-	 *     var body = new Body();
+	 *     let body = new Body();
 	 *     console.log(body.type == Body.STATIC); // true
 	 *
 	 * @example
 	 *     // By setting the mass of a body to a nonzero number, the body
 	 *     // will become dynamic and will move and interact with other bodies.
-	 *     var dynamicBody = new Body({
+	 *     let dynamicBody = new Body({
 	 *         mass : 1
 	 *     });
 	 *     console.log(dynamicBody.type == Body.DYNAMIC); // true
 	 *
 	 * @example
 	 *     // Kinematic bodies will only move if you change their velocity.
-	 *     var kinematicBody = new Body({
+	 *     let kinematicBody = new Body({
 	 *         type: Body.KINEMATIC // Type can be set via the options object.
 	 *     });
 	 */
@@ -337,7 +341,7 @@ export default class Body extends EventEmitter{
 	 * @property aabb
 	 * @type {AABB}
 	 */
-	public aabb: AABB;
+	public aabb: AABB = new AABB(null, null);
 
 	/**
 	 * Indicates if the AABB needs update. Update it with {{#crossLink "Body/updateAABB:method"}}{{/crossLink}}.
@@ -476,7 +480,7 @@ export default class Body extends EventEmitter{
 	 * @example
 	 *
 	 *     // Create a typical dynamic body
-	 *     var body = new Body({
+	 *     let body = new Body({
 	 *         mass: 1, // non-zero mass will set type to Body.DYNAMIC
 	 *         position: [0, 5],
 	 *         angle: 0,
@@ -485,7 +489,7 @@ export default class Body extends EventEmitter{
 	 *     });
 	 *
 	 *     // Add a circular shape to the body
-	 *     var circleShape = new Circle({ radius: 0.5 });
+	 *     let circleShape = new Circle({ radius: 0.5 });
 	 *     body.addShape(circleShape);
 	 *
 	 *     // Add the body to the world
@@ -494,23 +498,23 @@ export default class Body extends EventEmitter{
 	 * @example
 	 *
 	 *     // Create a static plane body
-	 *     var planeBody = new Body({
+	 *     let planeBody = new Body({
 	 *         mass: 0, // zero mass will set type to Body.STATIC
 	 *         position: [0, 0]
 	 *     });
-	 *     var planeShape = new Plane();
+	 *     let planeShape = new Plane();
 	 *     planeBody.addShape(planeShape);
 	 *     world.addBody(planeBody);
 	 *
 	 * @example
 	 *
 	 *     // Create a moving kinematic box body
-	 *     var platformBody = new Body({
+	 *     let platformBody = new Body({
 	 *         type: Body.KINEMATIC,
 	 *         position: [0, 3],
 	 *         velocity: [1, 0]
 	 *     });
-	 *     var boxShape = new Box({ width: 2, height: 0.5 });
+	 *     let boxShape = new Box({ width: 2, height: 0.5 });
 	 *     platformBody.addShape(boxShape);
 	 *     world.addBody(platformBody);
 	 */
@@ -524,27 +528,26 @@ export default class Body extends EventEmitter{
 			this.fixedRotation = options.fixedRotation;
 			this.fixedX = options.fixedX;
 			this.fixedY = options.fixedY;
-			this.position = options.position ? vec2.clone(options.position) : vec2create();
-			this.velocity = options.velocity ? vec2.clone(options.velocity) : vec2create();
+			if(options.position != null) vec2.copy(this.position, options.position as Float32Array);
+			if(options.velocity != null) vec2.copy(this.velocity, options.velocity as Float32Array);
 			this.angle = options.angle;
 			this.previousAngle = this.angle;
 			this.interpolatedAngle = this.angle;
 			this.angularVelocity = options.angularVelocity;
-			this.force = options.force ? vec2.clone(options.force) : vec2create();
+			if(options.force != null) vec2.copy(this.force, options.force as Float32Array);
 			this.angularForce = options.angularForce;
 			this.damping = options.damping;
 			this.angularDamping = options.angularDamping;
 			this.sleepTimeLimit = options.sleepTimeLimit;
 
 			if(options.type){
-				this.type = options.type!;
+				this.type = options.type;
 			} else if(!(options.mass)){
 				this.type = Body.STATIC;
 			} else {
 				this.type = Body.DYNAMIC;
 			}
 
-			this.aabb = new AABB(null, null);
 			this.allowSleep = options.allowSleep;
 			this.sleepSpeedLimit = options.sleepSpeedLimit;
 			this.gravityScale = options.gravityScale;
@@ -553,10 +556,6 @@ export default class Body extends EventEmitter{
 			this.ccdIterations = options.ccdIterations;
 		}
 		else{
-			this.position =  vec2create();
-			this.velocity = vec2create();
-			this.force = vec2create();
-
 			this.type = Body.STATIC;
 		}
 		this.previousPosition = vec2.clone(this.position);
@@ -586,7 +585,7 @@ export default class Body extends EventEmitter{
 	 * @param {number} density
 	 */
 	setDensity(density: f32): void {
-		var totalArea = this.getArea();
+		let totalArea = this.getArea();
 		this.mass = totalArea * density;
 		this.updateMassProperties();
 	}
@@ -597,8 +596,8 @@ export default class Body extends EventEmitter{
 	 * @return {Number}
 	 */
 	getArea(): f32 {
-		var totalArea = 0;
-		for(var i=0; i<this.shapes.length; i++){
+		let totalArea: f32 = 0;
+		for(let i: u16=0; i<(this.shapes.length as u16); i++){
 			totalArea += this.shapes[i].area;
 		}
 		return totalArea;
@@ -621,13 +620,13 @@ export default class Body extends EventEmitter{
 	 * @method updateAABB
 	 */
 	updateAABB(): void {
-		var shapes: Shape[] = this.shapes,
-			N:u32 = shapes.length,
+		let shapes: Shape[] = this.shapes,
+			N:u16 = shapes.length as u16,
 			offset: Float32Array = _tmp,
 			bodyAngle: f32 = this.angle;
 
-		for(var i=0; i!==N; i++){
-			var shape = shapes[i],
+		for(let i: u16 = 0; i < N; i++){
+			let shape = shapes[i],
 				angle = shape.angle + bodyAngle;
 
 			// Get shape world offset
@@ -652,14 +651,14 @@ export default class Body extends EventEmitter{
 	 * @method updateBoundingRadius
 	 */
 	updateBoundingRadius(): void{
-		var shapes = this.shapes,
-			N = shapes.length,
-			radius = 0;
+		let shapes:Shape[] = this.shapes,
+			N:u16 = shapes.length as u16,
+			radius:f32 = 0;
 
-		for(var i=0; i!==N; i++){
-			var shape = shapes[i],
-				offset = vec2.length(shape.position),
-				r = shape.boundingRadius;
+		for(let i:u16=0; i!==N; i++){
+			let shape:Shape = shapes[i],
+				offset:f32 = vec2.length(shape.position),
+				r:f32 = shape.boundingRadius;
 			if(offset + r > radius){
 				radius = offset + r;
 			}
@@ -679,7 +678,7 @@ export default class Body extends EventEmitter{
 	 * @param  {Number}             [angle]  Local body angle.
 	 *
 	 * @example
-	 *     var body = new Body(),
+	 *     let body = new Body(),
 	 *         shape = new Circle({ radius: 1 });
 	 *
 	 *     // Add the shape to the body, positioned in the center
@@ -695,7 +694,7 @@ export default class Body extends EventEmitter{
 		if(shape.body){
 			throw new Error('A shape can only be added to one body.');
 		}
-		var world = this.world;
+		let world = this.world;
 		if(world && world.stepping){
 			throw new Error('A shape cannot be added during step.');
 		}
@@ -724,12 +723,12 @@ export default class Body extends EventEmitter{
 	 * @return {boolean} True if the shape was found and removed, else false.
 	 */
 	removeShape(shape: Shape): boolean{
-		var world = this.world;
+		let world = this.world;
 		if(world && world.stepping){
 			throw new Error('A shape cannot be removed during step.');
 		}
 
-		var idx = this.shapes.indexOf(shape);
+		let idx = this.shapes.indexOf(shape);
 
 		if(idx !== -1){
 			this.shapes.splice(idx,1);
@@ -761,15 +760,15 @@ export default class Body extends EventEmitter{
 
 		} else {
 
-			var shapes = this.shapes,
-				N = shapes.length,
-				I = 0;
+			let shapes:Shape[] = this.shapes,
+				N: u16 = shapes.length as u16,
+				I:f32 = 0;
 
 			if(!this.fixedRotation){
-				for(var i=0; i<N; i++){
-					var shape = shapes[i],
-						r2 = vec2.squaredLength(shape.position),
-						Icm = shape.computeMomentOfInertia();
+				for(let i:u16=0; i<N; i++){
+					let shape: Shape = shapes[i],
+						r2: f32 = vec2.squaredLength(shape.position),
+						Icm: f32 = shape.computeMomentOfInertia();
 					I += Icm + r2;
 				}
 				this.inertia = this.mass * I;
@@ -797,9 +796,9 @@ export default class Body extends EventEmitter{
 	 * @param  {Array} force The force vector to add, oriented in world space.
 	 * @param  {Array} [relativePoint] A point relative to the body in world space. If not given, it is set to zero and all of the force will be exerted on the center of mass.
 	 * @example
-	 *     var body = new Body({ mass: 1 });
-	 *     var relativePoint = [1, 0]; // Will apply the force at [body.position[0] + 1, body.position[1]]
-	 *     var force = [0, 1]; // up
+	 *     let body = new Body({ mass: 1 });
+	 *     let relativePoint = [1, 0]; // Will apply the force at [body.position[0] + 1, body.position[1]]
+	 *     let force = [0, 1]; // up
 	 *     body.applyForce(force, relativePoint);
 	 *     console.log(body.force); // [0, 1]
 	 *     console.log(body.angularForce); // 1
@@ -807,12 +806,12 @@ export default class Body extends EventEmitter{
 	applyForce(force: Float32Array, relativePoint: Float32Array): void{
 
 		// Add linear force
-		add(this.force, this.force, force);
+		vec2.add(this.force, this.force, force);
 
 		if(relativePoint){
 
 			// Compute produced rotational force
-			var rotForce = vec2.crossLength(relativePoint,force);
+			let rotForce = vec2.crossLength(relativePoint,force);
 
 			// Add rotational force
 			this.angularForce += rotForce;
@@ -825,22 +824,22 @@ export default class Body extends EventEmitter{
 	 * @param  {Array} localForce The force vector to add, oriented in local body space.
 	 * @param  {Array} [localPoint] A point relative to the body in local body space. If not given, it is set to zero and all of the force will be exerted on the center of mass.
 	 * @example
-	 *     var body = new Body({ mass: 1 });
-	 *     var localPoint = [1, 0]; // x=1 locally in the body
-	 *     var localForce = [0, 1]; // up, locally in the body
+	 *     let body = new Body({ mass: 1 });
+	 *     let localPoint = [1, 0]; // x=1 locally in the body
+	 *     let localForce = [0, 1]; // up, locally in the body
 	 *     body.applyForceLocal(localForce, localPoint);
 	 *     console.log(body.force); // [0, 1]
 	 *     console.log(body.angularForce); // 1
 	 */
 	applyForceLocal(localForce: Float32Array, localPoint: Float32Array): void{
 		// These 3 lines were originally outside of this function. Not sure why.
-		var Body_applyForce_forceWorld = vec2create();
-		var Body_applyForce_pointWorld = vec2create();
-		var Body_applyForce_pointLocal = vec2create();
+		let Body_applyForce_forceWorld = vec2.create();
+		let Body_applyForce_pointWorld = vec2.create();
+		let Body_applyForce_pointLocal = vec2.create();
 
 		localPoint = localPoint || Body_applyForce_pointLocal;
-		var worldForce = Body_applyForce_forceWorld;
-		var worldPoint = Body_applyForce_pointWorld;
+		let worldForce = Body_applyForce_forceWorld;
+		let worldPoint = Body_applyForce_pointWorld;
 		this.vectorToWorldFrame(worldForce, localForce);
 		this.vectorToWorldFrame(worldPoint, localPoint);
 		this.applyForce(worldForce, worldPoint);
@@ -852,29 +851,29 @@ export default class Body extends EventEmitter{
 	 * @param  {Array} impulseVector The impulse vector to add, oriented in world space.
 	 * @param  {Array} [relativePoint] A point relative to the body in world space. If not given, it is set to zero and all of the impulse will be exerted on the center of mass.
 	 * @example
-	 *     var body = new Body({ mass: 1 });
-	 *     var relativePoint = [0, 0]; // center of the body
-	 *     var impulseVector = [0, 1]; // world up
+	 *     let body = new Body({ mass: 1 });
+	 *     let relativePoint = [0, 0]; // center of the body
+	 *     let impulseVector = [0, 1]; // world up
 	 *     body.applyImpulse(impulseVector, relativePoint);
 	 */
 	applyImpulse(impulseVector: Float32Array, relativePoint: Float32Array): void{
-		var Body_applyImpulse_velo = vec2create(); // Was originally outside of this function. 
+		let Body_applyImpulse_velo = vec2.create(); // Was originally outside of this function. 
 
 		if(this.type !== Body.DYNAMIC){
 			return;
 		}
 
 		// Compute produced central impulse velocity
-		var velo = Body_applyImpulse_velo;
+		let velo = Body_applyImpulse_velo;
 		vec2.scale(velo, impulseVector, this.invMass);
 		vec2.multiply(velo, this.massMultiplier, velo);
 
 		// Add linear impulse
-		add(this.velocity, velo, this.velocity);
+		vec2.add(this.velocity, velo, this.velocity);
 
 		if(relativePoint){
 			// Compute produced rotational impulse velocity
-			var rotVelo = vec2.crossLength(relativePoint, impulseVector);
+			let rotVelo = vec2.crossLength(relativePoint, impulseVector);
 			rotVelo *= this.invInertia;
 
 			// Add rotational Impulse
@@ -888,22 +887,22 @@ export default class Body extends EventEmitter{
 	 * @param  {Array} localImpulse The impulse vector to add, oriented in local body space.
 	 * @param  {Array} [localPoint] A point relative to the body in local body space. If not given, it is set to zero and all of the impulse will be exerted on the center of mass.
 	 * @example
-	 *     var body = new Body({ mass: 1 });
-	 *     var localPoint = [1, 0]; // x=1, locally in the body
-	 *     var localImpulse = [0, 1]; // up, locally in the body
+	 *     let body = new Body({ mass: 1 });
+	 *     let localPoint = [1, 0]; // x=1, locally in the body
+	 *     let localImpulse = [0, 1]; // up, locally in the body
 	 *     body.applyImpulseLocal(localImpulse, localPoint);
 	 *     console.log(body.velocity); // [1, 0]
 	 *     console.log(body.angularVelocity); // 1
 	 */
 	applyImpulseLocal(localImpulse: Float32Array, localPoint: Float32Array): void {
 		// Originally outside of this function.
-		var Body_applyImpulse_impulseWorld = vec2create();
-		var Body_applyImpulse_pointWorld = vec2create();
-		var Body_applyImpulse_pointLocal = vec2create();
+		let Body_applyImpulse_impulseWorld = vec2.create();
+		let Body_applyImpulse_pointWorld = vec2.create();
+		let Body_applyImpulse_pointLocal = vec2.create();
 
 		localPoint = localPoint || Body_applyImpulse_pointLocal;
-		var worldImpulse = Body_applyImpulse_impulseWorld;
-		var worldPoint = Body_applyImpulse_pointWorld;
+		let worldImpulse = Body_applyImpulse_impulseWorld;
+		let worldPoint = Body_applyImpulse_pointWorld;
 		this.vectorToWorldFrame(worldImpulse, localImpulse);
 		this.vectorToWorldFrame(worldPoint, localPoint);
 		this.applyImpulse(worldImpulse, worldPoint);
@@ -959,8 +958,8 @@ export default class Body extends EventEmitter{
 	 * @param {Number} [options.removeCollinearPoints=0] Set to a number (angle threshold value) to remove collinear points, or 0 to keep all points.
 	 * @return {boolean} True on success, else false.
 	 * @example
-	 *     var body = new Body();
-	 *     var path = [
+	 *     let body = new Body();
+	 *     let path = [
 	 *         [-1, 1],
 	 *         [-1, 0],
 	 *         [1, 0],
@@ -972,58 +971,58 @@ export default class Body extends EventEmitter{
 	 */
 	fromPolygon(path: Float32Array[], options: BodyFromPolygonOptions|null): boolean {
 		// Remove all shapes // TODO: this should really just be a method.
-		for(var i=this.shapes.length; i>=0; --i){
+		for(let i: i32 = this.shapes.length; i>=0; --i){
 			this.removeShape(this.shapes[i]);
 		}
 
 		// Copy the path
-		var p = [];
-		for(var i=0; i<path.length; i++){
+		let p: Float32Array[] = [];
+		for(let i:u16=0; i<(path.length as u16); i++){
 			p[i] = vec2.clone(path[i]);
 		}
 
 		// Make it counter-clockwise
-		decomp.makeCCW(p);
+		makeCCW(p);
 
 		if(options){
 			if(options.removeCollinearPoints != 0){
-				decomp.removeCollinearPoints(p, options.removeCollinearPoints);
+				removeCollinearPoints(p, options.removeCollinearPoints);
 			}
 
 		}
 
 		// Check if any line segment intersects the path itself
 		if(!options || !options.skipSimpleCheck){
-			if(!decomp.isSimple(p)){
+			if(!isSimple(p)){
 				return false;
 			}
 		}
 
 		// Save this path for later
 		this.concavePath = [];
-		for(var i=0; i<p.length; i++){
+		for(let i:u16=0; i<(p.length as u16); i++){
 			this.concavePath[i] = vec2.clone(p[i]);
 		}
 
 		// Slow or fast decomp?
 		let convexes: Array<Array<Float32Array>>;
 		if(options && options.optimalDecomp){
-			convexes = decomp.decomp(p);
+			convexes = decomp(p);
 		} else {
-			convexes = decomp.quickDecomp(p);
+			convexes = quickDecomp(p);
 		}
 
-		var cm = vec2create();
+		let cm = vec2.create();
 
 		// Add convexes
-		for(var i=0; i!==convexes.length; i++){
+		for(let i: i32 = 0; i!==convexes.length; i++){
 			// Create convex
-			var c = new Convex(0, convexes[i], null );
+			let c = new Convex(0, convexes[i], null );
 
 			// Move all vertices so its center of mass is in the local center of the convex
-			for(var j=0; j!==c.vertices.length; j++){
-				var v = c.vertices[j];
-				sub(v,v,c.centerOfMass);
+			for(let j: i32 = 0; j < c.vertices.length; j++){
+				let v = c.vertices[j];
+				vec2.subtract(v,v,c.centerOfMass);
 			}
 
 			vec2.copy(cm,c.centerOfMass);
@@ -1045,8 +1044,8 @@ export default class Body extends EventEmitter{
 	 * Moves the shape offsets so their center of mass becomes the body center of mass.
 	 * @method adjustCenterOfMass
 	 * @example
-	 *     var body = new Body({ position: [0, 0] });
-	 *     var shape = new Circle({ radius: 1 });
+	 *     let body = new Body({ position: [0, 0] });
+	 *     let shape = new Circle({ radius: 1 });
 	 *     body.addShape(shape, [1, 0], 0);
 	 *     body.adjustCenterOfMass();
 	 *     console.log(body.position); // [1, 0]
@@ -1054,37 +1053,39 @@ export default class Body extends EventEmitter{
 	 */
 	adjustCenterOfMass(): void {
 
-		var adjustCenterOfMass_tmp2 = vec2create(),
-			adjustCenterOfMass_tmp3 = vec2create(),
-			adjustCenterOfMass_tmp4 = vec2create();
+		let adjustCenterOfMass_tmp2 = vec2.create(),
+			adjustCenterOfMass_tmp3 = vec2.create(),
+			adjustCenterOfMass_tmp4 = vec2.create();
 
-		var offset_times_area = adjustCenterOfMass_tmp2,
+		let offset_times_area = adjustCenterOfMass_tmp2,
 			sum =               adjustCenterOfMass_tmp3,
 			cm =                adjustCenterOfMass_tmp4,
 			totalArea =         0;
 		vec2.set(sum,0,0);
 
-		for(var i=0; i!==this.shapes.length; i++){
-			var s = this.shapes[i];
+		for(let i: u16 = 0; i < (this.shapes.length as u16); i++){
+			let s = this.shapes[i];
 			vec2.scale(offset_times_area, s.position, s.area);
-			add(sum, sum, offset_times_area);
+			vec2.add(sum, sum, offset_times_area);
 			totalArea += s.area;
 		}
 
 		vec2.scale(cm,sum,1/totalArea);
 
 		// Now move all shapes
-		for(var i=0; i!==this.shapes.length; i++){
-			var s = this.shapes[i];
-			sub(s.position, s.position, cm);
+		for(let i: u16 = 0; i < (this.shapes.length as u16); i++){
+			let s = this.shapes[i];
+			vec2.subtract(s.position, s.position, cm);
 		}
 
 		// Move the body position too
-		add(this.position,this.position,cm);
+		vec2.add(this.position,this.position,cm);
 
 		// And concave path
-		for(var i=0; this.concavePath && i<this.concavePath.length; i++){
-			sub(this.concavePath[i], this.concavePath[i], cm);
+		if(this.concavePath){
+			for(let i: u16 = 0; i<(this.concavePath.length as u16); i++){
+				vec2.subtract(this.concavePath[i], this.concavePath[i], cm);
+			}
 		}
 
 		this.updateMassProperties();
@@ -1096,21 +1097,21 @@ export default class Body extends EventEmitter{
 	 * @method setZeroForce
 	 */
 	setZeroForce(): void {
-		var f = this.force;
+		let f = this.force;
 		f[0] = f[1] = this.angularForce = 0;
 	}
 
 	resetConstraintVelocity(): void {
-		var b = this,
+		let b = this,
 			vlambda = b.vlambda;
 		vec2.set(vlambda,0,0);
 		b.wlambda = 0;
 	}
 
 	addConstraintVelocity(): void {
-		var b = this,
+		let b = this,
 			v = b.velocity;
-		add( v, v, b.vlambda);
+		vec2.add( v, v, b.vlambda);
 		b.angularVelocity += b.wlambda;
 	}
 
@@ -1121,7 +1122,7 @@ export default class Body extends EventEmitter{
 	 */
 	applyDamping(dt: f32): void {
 		if(this.type === Body.DYNAMIC){ // Only for dynamic bodies
-			var v = this.velocity;
+			let v = this.velocity;
 			vec2.scale(v, v, Math.pow(1 - this.damping,dt));
 			this.angularVelocity *= Math.pow(1 - this.angularDamping,dt);
 		}
@@ -1133,7 +1134,7 @@ export default class Body extends EventEmitter{
 	 * @method wakeUp
 	 */
 	wakeUp(): void {
-		var s = this.sleepState;
+		let s = this.sleepState;
 		this.sleepState = Body.AWAKE;
 		this.idleTime = 0;
 		if(s !== Body.AWAKE){
@@ -1167,7 +1168,7 @@ export default class Body extends EventEmitter{
 
 		this.wantsToSleep = false;
 
-		var speedSquared = vec2.squaredLength(this.velocity) + Math.pow(this.angularVelocity,2),
+		let speedSquared = vec2.squaredLength(this.velocity) + Math.pow(this.angularVelocity,2),
 			speedLimitSquared = Math.pow(this.sleepSpeedLimit,2);
 
 		// Add to idle time
@@ -1224,14 +1225,14 @@ export default class Body extends EventEmitter{
 		}
 		vec2.scale(integrate_fhMinv, f, dt * minv);
 		vec2.multiply(integrate_fhMinv, this.massMultiplier, integrate_fhMinv);
-		add(velo, integrate_fhMinv, velo);
+		vec2.add(velo, integrate_fhMinv, velo);
 
 		// CCD
 		if(!this.integrateToTimeOfImpact(dt)){
 
 			// Regular position update
 			vec2.scale(integrate_velodt, velo, dt);
-			add(pos, pos, integrate_velodt);
+			vec2.add(pos, pos, integrate_velodt);
 			if(!this.fixedRotation){
 				this.angle += this.angularVelocity * dt;
 			}
@@ -1250,10 +1251,10 @@ export default class Body extends EventEmitter{
 		rOpts.skipBackfaces = true;
 		let ray = new Ray(rOpts);
 
-		let direction = vec2create();
-		let end = vec2create();
-		let startToEnd = vec2create();
-		let rememberPosition = vec2create();
+		let direction = vec2.create();
+		let end = vec2.create();
+		let startToEnd = vec2.create();
+		let rememberPosition = vec2.create();
 
 		if(this.ccdSpeedThreshold < 0 || vec2.squaredLength(this.velocity) < Math.pow(this.ccdSpeedThreshold, 2)){
 			return false;
@@ -1261,11 +1262,11 @@ export default class Body extends EventEmitter{
 
 		// Ignore all the ignored body pairs
 		// This should probably be done somewhere else for optimization
-		let ignoreBodies = [];
-		let disabledPairs = this.world.disabledBodyCollisionPairs;
-		for(let i=0; i<disabledPairs.length; i+=2){
-			let bodyA = disabledPairs[i];
-			let bodyB = disabledPairs[i+1];
+		let ignoreBodies: Body[] = [];
+		let disabledPairs: Body[] = this.world.disabledBodyCollisionPairs;
+		for(let i: i32 = 0; i<disabledPairs.length; i+=2){
+			let bodyA: Body = disabledPairs[i];
+			let bodyB: Body = disabledPairs[i+1];
 			if(bodyA === this){
 				ignoreBodies.push(bodyB);
 			} else if(bodyB === this){
@@ -1276,11 +1277,11 @@ export default class Body extends EventEmitter{
 		vec2.normalize(direction, this.velocity);
 
 		vec2.scale(end, this.velocity, dt);
-		add(end, end, this.position);
+		vec2.add(end, end, this.position);
 
-		sub(startToEnd, end, this.position);
-		let startToEndAngle = this.angularVelocity * dt;
-		let len = vec2.length(startToEnd);
+		vec2.subtract(startToEnd, end, this.position);
+		let startToEndAngle: f32 = this.angularVelocity * dt;
+		let len: f32 = vec2.length(startToEnd);
 
 		let timeOfImpact = 1;
 
@@ -1288,7 +1289,7 @@ export default class Body extends EventEmitter{
 		vec2.copy(ray.from, this.position);
 		vec2.copy(ray.to, end);
 		ray.update();
-		for(let i=0; i<this.shapes.length; i++){
+		for(let i: i32 = 0; i<this.shapes.length; i++){
 			let shape = this.shapes[i];
 			result.reset();
 			ray.collisionGroup = shape.collisionGroup;
@@ -1310,17 +1311,17 @@ export default class Body extends EventEmitter{
 			return false;
 		}
 		result.getHitPoint(end, ray);
-		sub(startToEnd, end, this.position);
+		vec2.subtract(startToEnd, end, this.position);
 		timeOfImpact = vec2.distance(end, this.position) / len; // guess
 
 		let rememberAngle = this.angle;
 		vec2.copy(rememberPosition, this.position);
 
 		// Got a start and end point. Approximate time of impact using binary search
-		let iter = 0;
-		let tmin = 0;
-		let tmid = timeOfImpact;
-		let tmax = 1;
+		let iter: f32 = 0;
+		let tmin: f32 = 0;
+		let tmid: f32 = timeOfImpact;
+		let tmax: f32 = 1;
 		while (tmax >= tmin && iter < this.ccdIterations) {
 			iter++;
 
@@ -1329,7 +1330,7 @@ export default class Body extends EventEmitter{
 
 			// Move the body to that point
 			vec2.scale(integrate_velodt, startToEnd, tmid);
-			add(this.position, rememberPosition, integrate_velodt);
+			vec2.add(this.position, rememberPosition, integrate_velodt);
 			this.angle = rememberAngle + startToEndAngle * tmid;
 			this.updateAABB();
 
@@ -1352,7 +1353,7 @@ export default class Body extends EventEmitter{
 
 		// move to TOI
 		vec2.scale(integrate_velodt, startToEnd, timeOfImpact);
-		add(this.position, this.position, integrate_velodt);
+		vec2.add(this.position, this.position, integrate_velodt);
 		if(!this.fixedRotation){
 			this.angle += startToEndAngle * timeOfImpact;
 		}
@@ -1367,13 +1368,13 @@ export default class Body extends EventEmitter{
 	 * @param  {Array} relativePoint A world oriented vector, indicating the position of the point to get the velocity from
 	 * @return {Array} The result vector
 	 * @example
-	 *     var body = new Body({
+	 *     let body = new Body({
 	 *         mass: 1,
 	 *         velocity: [1, 0],
 	 *         angularVelocity: 1
 	 *     });
-	 *     var result = [];
-	 *     var point = [1, 0];
+	 *     let result = [];
+	 *     let point = [1, 0];
 	 *     body.getVelocityAtPoint(result, point);
 	 *     console.log(result); // [1, 1]
 	 */
@@ -1429,23 +1430,34 @@ export default class Body extends EventEmitter{
 	static SLEEPING: u16 = 2;
 }
 
+
 /**
  * @event sleepy
  */
-var sleepyEvent = {
-	type: "sleepy"
+class SleepyEvent extends EventArgument {
+	constructor(){
+		super("sleepy");
+	}
 };
 
 /**
  * @event sleep
  */
-var sleepEvent = {
-	type: "sleep"
+class SleepEvent extends EventArgument {
+	constructor(){
+		super("sleep");
+	}
 };
 
 /**
  * @event wakeup
  */
-var wakeUpEvent = {
-	type: "wakeup"
+class WakeUpEvent extends EventArgument {
+	constructor(){
+		super("wakeup");
+	}
 };
+
+const sleepyEvent = new SleepyEvent();
+const sleepEvent = new SleepEvent();
+const wakeUpEvent = new WakeUpEvent();

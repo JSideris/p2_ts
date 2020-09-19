@@ -2,14 +2,13 @@
 
 import Shape from "./Shape";
 import { ShapeOptions } from "./Shape";
-import polyk from "../math/polyk";
+
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
-import Material from "../material/Material";
 import vec2 from "../math/vec2";
 
-var dot = vec2.dot;
+import {Triangulate} from "../math/polyk";
 
 var updateCenterOfMass_centroid = vec2.create(),
 	updateCenterOfMass_centroid_times_mass = vec2.create(),
@@ -55,14 +54,14 @@ export default class Convex extends Shape {
 	 * @property triangles
 	 * @type {Array}
 	 */
-	public triangles: Float32Array[] = [];
+	public triangles: Uint16Array[] = [];
 
 	/**
 	 * The center of mass of the Convex
 	 * @property centerOfMass
 	 * @type {Array}
 	 */
-	public centerOfMass: Float32Array;
+	public centerOfMass: Float32Array = vec2.create();
 
 	/**
 	 * Convex shape class.
@@ -72,9 +71,9 @@ export default class Convex extends Shape {
 	 * @param {object} [options] (Note that this options object will be passed on to the {{#crossLink "Shape"}}{{/crossLink}} constructor.)
 	 * @param {Array} [options.vertices] An array of vertices that span this shape. Vertices are given in counter-clockwise (CCW) direction.
 	 * @example
-	 *     var body = new Body({ mass: 1 });
-	 *     var vertices = [[-1,-1], [1,-1], [1,1], [-1,1]];
-	 *     var convexShape = new Convex({
+	 *     let body = new Body({ mass: 1 });
+	 *     let vertices = [[-1,-1], [1,-1], [1,1], [-1,1]];
+	 *     let convexShape = new Convex({
 	 *         vertices: vertices
 	 *     });
 	 *     body.addShape(convexShape);
@@ -83,10 +82,12 @@ export default class Convex extends Shape {
 		super(type || Shape.CONVEX, options); 
 
 		// Copy the verts
-		let newVertices = vertices || [];
+		let newVertices: Array<Float32Array>;
+		if(vertices != null) newVertices = vertices;
+		else newVertices = [];
 		this.vertices = [];
 		this.normals = [];
-		for(let i = 0; i < newVertices.length; i++){
+		for(let i: i32 = 0; i < newVertices.length; i++){
 			this.vertices.push(vec2.clone(newVertices[i]));
 			this.normals.push(vec2.create());
 		}
@@ -96,8 +97,6 @@ export default class Convex extends Shape {
 		this.updateArea();
 
 		this.updateNormals();
-
-		this.centerOfMass = vec2.create();
 
 		this.triangles = [];
 
@@ -122,14 +121,14 @@ export default class Convex extends Shape {
 
 	
 	updateNormals(): void{
-		var vertices = this.vertices;
-		var normals = this.normals;
+		let vertices = this.vertices;
+		let normals = this.normals;
 
-		for(var i = 0; i < vertices.length; i++){
-			var worldPoint0 = vertices[i];
-			var worldPoint1 = vertices[(i+1) % vertices.length];
+		for(let i: i32 = 0; i < vertices.length; i++){
+			let worldPoint0 = vertices[i];
+			let worldPoint1 = vertices[(i+1) % vertices.length];
 
-			var normal = normals[i];
+			let normal = normals[i];
 			vec2.subtract(normal, worldPoint1, worldPoint0);
 
 			// Get normal - just rotate 90 degrees since vertices are given in CCW
@@ -148,16 +147,16 @@ export default class Convex extends Shape {
 	 */
 	projectOntoLocalAxis(localAxis: Float32Array, result: Float32Array): void{
 
-		var max: f32 = -Infinity,
+		let max: f32 = -Infinity,
 			min: f32 = Infinity,
 			v: Float32Array|null,
-			value: f32|null,
-			localAxis = tmpVec1;
+			value: f32 = 0;
+		//localAxis = tmpVec1; // TODO: this makes no sense. However, it comes from source: https://github.com/schteppe/p2.js/blob/master/src/shapes/Convex.js#L122
 
 		// Get projected position of all vertices
-		for(var i=0; i<this.vertices.length; i++){
+		for(let i: u16 = 0; i < (this.vertices.length as u16); i++){
 			v = this.vertices[i];
-			value = dot(v, localAxis);
+			value = vec2.dot(v, localAxis);
 			if(value > max){
 				max = value;
 			}
@@ -167,7 +166,7 @@ export default class Convex extends Shape {
 		}
 
 		if(min > max){
-			var t = min;
+			let t = min;
 			min = max;
 			max = t;
 		}
@@ -185,7 +184,7 @@ export default class Convex extends Shape {
 		} else {
 			worldAxis = localAxis;
 		}
-		var offset = dot(shapeOffset, worldAxis);
+		let offset = vec2.dot(shapeOffset, worldAxis);
 
 		vec2.set(result, result[0] + offset, result[1] + offset);
 	}
@@ -200,24 +199,24 @@ export default class Convex extends Shape {
 		this.triangles.length = 0;
 
 		// Rewrite on polyk notation, array of numbers
-		var polykVerts = [];
-		for(var i=0; i<this.vertices.length; i++){
-			var v = this.vertices[i];
+		let polykVerts:f32[] = [];
+		for(let i:u16=0; i < (this.vertices.length as u16); i++){
+			let v = this.vertices[i];
 			polykVerts.push(v[0]);
 			polykVerts.push(v[1]);
 		}
 
 		// Triangulate
-		var triangles = polyk.Triangulate(polykVerts);
+		let triangles = Triangulate(polykVerts);
 
 		// Loop over all triangles, add their inertia contributions to I
-		for(var i=0; i<triangles.length; i+=3){
-			var id1 = triangles[i],
-				id2 = triangles[i+1],
-				id3 = triangles[i+2];
+		for(let i:u16=0; i < (triangles.length as u16); i+=3){
+			let id1:u16 = triangles[i] as u16,
+				id2:u16 = triangles[i+1] as u16,
+				id3:u16 = triangles[i+2] as u16;
 
 			// Add to triangles
-			let T = new Float32Array(3);
+			let T = new Uint16Array(3);
 			T[0] = id1;
 			T[1] = id2;
 			T[2] = id3;
@@ -232,7 +231,7 @@ export default class Convex extends Shape {
 	updateCenterOfMass(): void{
 
 
-		var triangles = this.triangles,
+		let triangles = this.triangles,
 				verts = this.vertices,
 				cm = this.centerOfMass,
 				centroid = updateCenterOfMass_centroid,
@@ -242,19 +241,19 @@ export default class Convex extends Shape {
 				centroid_times_mass = updateCenterOfMass_centroid_times_mass;
 
 		vec2.set(cm,0,0);
-		var totalArea = 0;
+		let totalArea: f32 = 0;
 
-		for(var i=0; i!==triangles.length; i++){
-			var t = triangles[i],
-				a = verts[t[0]],
-				b = verts[t[1]],
-				c = verts[t[2]];
+		for(let i: u16 = 0; i < (triangles.length as u16); i++){
+			let t = triangles[i],
+				va = verts[t[0]],
+				vb = verts[t[1]],
+				vc = verts[t[2]];
 
-			vec2.centroid(centroid,a,b,c);
+			vec2.centroid(centroid,va,vb,vc);
 
 			// Get mass for the triangle (density=1 in this case)
-			// http://math.stackexchange.com/questions/80198/area-of-triangle-via-vectors
-			var m = Convex.triangleArea(a,b,c);
+			// http://Mathf.stackexchange.com/questions/80198/area-of-triangle-via-vectors
+			let m = Convex.triangleArea(va,vb,vc);
 			totalArea += m;
 
 			// Add to center of mass
@@ -272,14 +271,14 @@ export default class Convex extends Shape {
 	 * @see http://www.gamedev.net/topic/342822-moment-of-inertia-of-a-polygon-2d/
 	 */
 	computeMomentOfInertia(): f32{
-		var denom = 0.0,
-			numer = 0.0,
-			N = this.vertices.length;
-		for(var j = N-1, i = 0; i < N; j = i, i ++){
-			var p0 = this.vertices[j];
-			var p1 = this.vertices[i];
-			var a = Math.abs(vec2.crossLength(p0,p1));
-			var b = dot(p1,p1) + dot(p1,p0) + dot(p0,p0);
+		let denom: f32 = 0.0,
+			numer: f32 = 0.0,
+			N: i32 = this.vertices.length;
+		for(let j: i32 = N-1, i = 0; i < N; j = i, i ++){
+			let p0 = this.vertices[j];
+			let p1 = this.vertices[i];
+			let a = Mathf.abs(vec2.crossLength(p0,p1));
+			let b = vec2.dot(p1,p1) + vec2.dot(p1,p0) + vec2.dot(p0,p0);
 			denom += a * b;
 			numer += a;
 		}
@@ -292,16 +291,16 @@ export default class Convex extends Shape {
 	 */
 	updateBoundingRadius(): f32{
 		let verts = this.vertices,
-			r2 = 0;
+			r2: f32 = 0;
 		if(!verts || verts.length == 0) return 0;
-		for(let i = 0; i!==verts.length; i++){
-			let l2 = vec2.squaredLength(verts[i]);
+		for(let i:u16 = 0; i!==verts.length; i++){
+			let l2: f32 = vec2.squaredLength(verts[i]);
 			if(l2 > r2){
 				r2 = l2;
 			}
 		}
 
-		this.boundingRadius = Math.sqrt(r2);
+		this.boundingRadius = Mathf.sqrt(r2);
 		
 		return this.boundingRadius;
 	}
@@ -329,16 +328,16 @@ export default class Convex extends Shape {
 		this.updateTriangles();
 		this.area = 0;
 
-		var triangles = this.triangles,
+		let triangles = this.triangles,
 			verts = this.vertices;
-		for(var i=0; i!==triangles.length; i++){
-			var t = triangles[i],
+		for(let i: i32 = 0; i!==triangles.length; i++){
+			let t = triangles[i],
 				a = verts[t[0]],
 				b = verts[t[1]],
 				c = verts[t[2]];
 
 			// Get mass for the triangle (density=1 in this case)
-			var m = Convex.triangleArea(a,b,c);
+			let m = Convex.triangleArea(a,b,c);
 			this.area += m;
 		}
 
@@ -365,25 +364,25 @@ export default class Convex extends Shape {
 	 * @param  {number} angle
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32): void{
-		var rayStart = intersectConvex_rayStart;
-		var rayEnd = intersectConvex_rayEnd;
-		var normal = intersectConvex_normal;
-		var vertices = this.vertices;
+		let rayStart = intersectConvex_rayStart;
+		let rayEnd = intersectConvex_rayEnd;
+		let normal = intersectConvex_normal;
+		let vertices = this.vertices;
 
 		// Transform to local shape space
 		vec2.toLocalFrame(rayStart, ray.from, position, angle);
 		vec2.toLocalFrame(rayEnd, ray.to, position, angle);
 
-		var n = vertices.length;
+		let n = vertices.length;
 
-		for (var i = 0; i < n && !result.shouldStop(ray); i++) {
-			var q1 = vertices[i];
-			var q2 = vertices[(i+1) % n];
-			var delta = vec2.getLineSegmentsIntersectionFraction(rayStart, rayEnd, q1, q2);
+		for (let i = 0; i < n && !result.shouldStop(ray); i++) {
+			let q1 = vertices[i];
+			let q2 = vertices[(i+1) % n];
+			let delta = vec2.getLineSegmentsIntersectionFraction(rayStart, rayEnd, q1, q2);
 
 			if(delta >= 0){
 				vec2.subtract(normal, q2, q1);
-				vec2.rotate(normal, normal, -Math.PI / 2 + angle);
+				vec2.rotate(normal, normal, -Mathf.PI / 2 + angle);
 				vec2.normalize(normal, normal);
 				ray.reportIntersection(result, delta, normal, i);
 			}
@@ -392,22 +391,22 @@ export default class Convex extends Shape {
 
 	pointTest(localPoint: Float32Array): boolean{
 
-		var r0 = pic_r0,
-			r1 = pic_r1,
-			verts = this.vertices,
-			lastCross = null,
-			numVerts = verts.length;
+		let r0: Float32Array = pic_r0,
+			r1: Float32Array = pic_r1,
+			verts: Float32Array[] = this.vertices,
+			lastCross: f32 = -1,
+			numVerts: u16 = verts.length as u16;
 
-		for(var i=0; i < numVerts + 1; i++){
-			var v0 = verts[i % numVerts],
+		for(let i: u16 = 0; i < numVerts + 1; i++){
+			let v0 = verts[i % numVerts],
 				v1 = verts[(i + 1) % numVerts];
 
 			vec2.subtract(r0, v0, localPoint);
 			vec2.subtract(r1, v1, localPoint);
 
-			var cross = vec2.crossLength(r0,r1);
+			let cross: f32 = vec2.crossLength(r0,r1);
 
-			if(lastCross === null){
+			if(lastCross === -1){
 				lastCross = cross;
 			}
 

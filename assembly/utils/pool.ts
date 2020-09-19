@@ -12,10 +12,8 @@ export default abstract class Pool<T>{
 	 * @class Pool
 	 * @constructor
 	 */
-	constructor(size: u32|null) {
-		if(size){
-			this.resize(size);
-		}
+	constructor(size: u32) {
+		this.resize(size);
 	}
 
 	/**
@@ -23,7 +21,7 @@ export default abstract class Pool<T>{
 	 * @param {number} size
 	 * @return {Pool} Self, for chaining
 	 */
-	resize(size: u32): Pool<T> {
+	resize(size: i32): Pool<T> {
 		var objects = this.objects;
 
 		while (objects.length > size) {

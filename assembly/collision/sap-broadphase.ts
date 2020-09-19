@@ -2,21 +2,25 @@
 
 import Broadphase from "./broadphase";
 import World from "../world/world";
+import { RemoveBodyEvent } from "../world/world";
+import { AddBodyEvent } from "../world/world";
 import Body from "../objects/body";
 import AABB from "./aabb";
 import Utils from "../utils/utils";
+import { EventArgument } from "../events/event-emitter";
 
 // TODO: this appears to be a bubble sort. We could probably do better.
 function sortAxisList(a: Body[], axisIndex: u32): Body[]{
-	for(var i=1, l=a.length; i<l; i++) { // Why not i=0?
-		var v = a[i];
-		for(var j=i - 1;j>=0;j--) {
+	for(let i: u16 = 1, l: u16 = (a.length as u16); i < l; i++) { // Why not i=0?
+		let v = a[i];
+		let j: i32 = i - 1;
+		for(; j >= 0; j--) {
 			if(a[j].aabb.lowerBound[axisIndex] <= v.aabb.lowerBound[axisIndex]){
 				break;
 			}
-			a[j+1] = a[j];
+			a[j + 1] = a[j];
 		}
-		a[j+1] = v;
+		a[j + 1] = v;
 	}
 	return a;
 }
@@ -34,8 +38,8 @@ export default class SAPBroadphase extends Broadphase{
 	 * @type {Number}
 	 */
 	axisIndex: u32;
-	private _addBodyHandler: (e: any) => void;
-	private _removeBodyHandler: (e: any) => void;
+	private _addBodyHandler: (e: EventArgument) => void;
+	private _removeBodyHandler: (e: EventArgument) => void;
 
 	/**
 	 * Sweep and prune broadphase along one axis.
@@ -51,15 +55,20 @@ export default class SAPBroadphase extends Broadphase{
 
 		this.axisIndex = 0;
 
-		this._addBodyHandler = (e) => {
-			this.axisList.push(e.body);
+		let _this = this;
+
+		this._addBodyHandler = (e: EventArgument) => {
+			if(e instanceof AddBodyEvent && e.body)
+				_this.axisList.push(e.body);
 		};
 
 		this._removeBodyHandler = (e) => {
 			// Remove from list
-			var idx = this.axisList.indexOf(e.body);
-			if(idx !== -1){
-				this.axisList.splice(idx,1);
+			if(e instanceof RemoveBodyEvent && e.body){
+				let idx = _this.axisList.indexOf(e.body);
+				if(idx !== -1){
+					_this.axisList.splice(idx,1);
+				}
 			}
 		};
 	}
@@ -90,7 +99,7 @@ export default class SAPBroadphase extends Broadphase{
 	};
 
 	sortList(): void{
-		var bodies = this.axisList,
+		let bodies = this.axisList,
 		axisIndex = this.axisIndex;
 
 		// Sort the lists
@@ -104,16 +113,16 @@ export default class SAPBroadphase extends Broadphase{
 	 * @return {Array}
 	 */
 	getCollisionPairs(/*world*/): Array<Body>{
-		var bodies = this.axisList,
+		let bodies = this.axisList,
 			result = this.result,
 			axisIndex = this.axisIndex;
 
 		result.length = 0;
 
 		// Update all AABBs if needed
-		var l = bodies.length;
+		let l = bodies.length;
 		while(l--){
-			var b = bodies[l];
+			let b = bodies[l];
 			if(b.aabbNeedsUpdate){
 				b.updateAABB();
 			}
@@ -123,14 +132,14 @@ export default class SAPBroadphase extends Broadphase{
 		this.sortList();
 
 		// Look through the X list
-		for(var i=0, N=bodies.length|0; i!==N; i++){
-			var bi = bodies[i];
+		for(let i: u16=0, N: u16 = (bodies.length as u16); i < N; i++){
+			let bi = bodies[i];
 
-			for(var j=i+1; j<N; j++){
-				var bj = bodies[j];
+			for(let j: u16 = i + 1; j < N; j++){
+				let bj = bodies[j];
 
 				// Bounds overlap?
-				var overlaps = (bj.aabb.lowerBound[axisIndex] <= bi.aabb.upperBound[axisIndex]);
+				let overlaps: boolean = (bj.aabb.lowerBound[axisIndex] <= bi.aabb.upperBound[axisIndex]);
 				if(!overlaps){
 					break;
 				}
@@ -159,9 +168,9 @@ export default class SAPBroadphase extends Broadphase{
 
 		this.sortList();
 
-		var axisList = this.axisList;
-		for(var i = 0; i < axisList.length; i++){
-			var b = axisList[i];
+		let axisList = this.axisList;
+		for(let i: u16 = 0; i < (axisList.length as u16); i++){
+			let b = axisList[i];
 
 			if(b.aabbNeedsUpdate){
 				b.updateAABB();

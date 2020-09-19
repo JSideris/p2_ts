@@ -5,6 +5,7 @@ import Solver from "./solver";
 import { SolverOptions } from "./solver";
 import World from "../world/world";
 import FrictionEquation from "../equations/friction-equation";
+import Body from "../objects/body";
 
 
 
@@ -43,9 +44,9 @@ function iterateEquation(eq: Equation): f32{
 }
 
 export class GSSolverOptions extends SolverOptions{
-	iterations: u16 = 10;
+	iterations: i32 = 10;
 	tolerance: f32 = 1e-7;
-	frictionIterations: u16 = 0;
+	frictionIterations: i32 = 0;
 }
 
 export default class GSSolver extends Solver{
@@ -54,7 +55,7 @@ export default class GSSolver extends Solver{
 	 * @property iterations
 	 * @type {Number}
 	 */
-	iterations: u16 = 10;
+	iterations: i32 = 10;
 	/**
 	 * The error tolerance, per constraint. If the total error is below this limit, the solver will stop iterating. Set to zero for as good solution as possible, but to something larger than zero to make computations faster.
 	 * @property tolerance
@@ -71,12 +72,12 @@ export default class GSSolver extends Solver{
 	 * @type {Number}
 	 * @default 0
 	 */
-	frictionIterations: number;
+	frictionIterations: i32;
 	/**
 	 * The number of iterations that were made during the last solve. If .tolerance is zero, this value will always be equal to .iterations, but if .tolerance is larger than zero, and the solver can quit early, then this number will be somewhere between 1 and .iterations.
 	 * @property {Number} usedIterations
 	 */
-	usedIterations: number = 0;
+	usedIterations: i32 = 0;
 
 	/**
 	 * Iterative Gauss-Seidel constraint equation solver.
@@ -109,27 +110,26 @@ export default class GSSolver extends Solver{
 
 		this.sortEquations();
 
-		var iter = 0,
-			maxIter = this.iterations,
+		let maxIter = this.iterations,
 			maxFrictionIter = this.frictionIterations,
-			equations = this.equations,
-			Neq = equations.length,
-			tolSquared = Math.pow(this.tolerance * Neq, 2),
-			bodies = world.bodies,
-			Nbodies = bodies.length;
+			equations: Equation[] = this.equations,
+			Neq: i32 = equations.length,
+			tolSquared: f32 = (this.tolerance * (Neq as f32)) * (this.tolerance * (Neq as f32)),
+			bodies: Body[] = world.bodies,
+			Nbodies:i32 = bodies.length;
 
 		this.usedIterations = 0;
 
 		if(Neq){
-			for(var i=0; i!==Nbodies; i++){
-				var b = bodies[i];
+			for(let i: i32 = 0; i < Nbodies; i++){
+				let b: Body = bodies[i];
 
 				// Update solve mass
 				b.updateSolveMassProperties();
 			}
 		}
 
-		for(let i=0; i!==Neq; i++){
+		for(let i: i32 = 0; i < Neq; i++){
 			let c: Equation = equations[i];
 			c.lambda = 0;
 			if(c.timeStep !== h || c.needsUpdate){
@@ -143,12 +143,12 @@ export default class GSSolver extends Solver{
 			c.minForceDt = c.minForce * h;
 		}
 
-		let c: Equation, deltalambdaTot: f32, j: u16;
+		let c: Equation, deltalambdaTot: f32;
 
 		if(Neq !== 0){
 
-			for(i=0; i!==Nbodies; i++){
-				var b = bodies[i];
+			for(let i: i32 = 0; i < Nbodies; i++){
+				let b: Body = bodies[i];
 
 				// Reset vlambda
 				b.resetConstraintVelocity();
@@ -156,16 +156,16 @@ export default class GSSolver extends Solver{
 
 			if(maxFrictionIter){
 				// Iterate over contact equations to get normal forces
-				for(iter=0; iter!==maxFrictionIter; iter++){
+				for(let iter: i32 = 0; iter !== maxFrictionIter; iter++){
 
 					// Accumulate the total error for each iteration.
 					deltalambdaTot = 0.0;
 
-					for(j=0; j!==Neq; j++){
+					for(let j: i32 = 0; j < Neq; j++){
 						c = equations[j];
 
-						var deltalambda = iterateEquation(c);
-						deltalambdaTot += Math.abs(deltalambda);
+						let deltalambda: f32 = iterateEquation(c);
+						deltalambdaTot += Mathf.abs(deltalambda);
 					}
 
 					this.usedIterations++;
@@ -179,33 +179,34 @@ export default class GSSolver extends Solver{
 				updateMultipliers(equations, 1/h);
 
 				// Set computed friction force
-				for(j=0; j!==Neq; j++){
-					var eq = equations[j];
+				for(let j: i32 = 0; j < Neq; j++){
+					let eq = equations[j];
 					if(eq instanceof FrictionEquation){
-						var f = 0.0;
-						for(var k=0; k!==eq.contactEquations.length; k++){
-							f += eq.contactEquations[k].multiplier;
+						let feq: FrictionEquation = eq as FrictionEquation;
+						let f: f32 = 0.0;
+						for(let k: i32 = 0; k < feq.contactEquations.length; k++){
+							f += feq.contactEquations[k].multiplier;
 						}
-						f *= eq.frictionCoefficient / eq.contactEquations.length;
-						eq.maxForce =  f;
-						eq.minForce = -f;
+						f *= feq.frictionCoefficient / (feq.contactEquations.length as f32);
+						feq.maxForce =  f;
+						feq.minForce = -f;
 
-						eq.maxForceDt = f * h;
-						eq.minForceDt = -f * h;
+						feq.maxForceDt = f * h;
+						feq.minForceDt = -f * h;
 					}
 				}
 			}
 
 			// Iterate over all equations
-			for(iter=0; iter!==maxIter; iter++){
+			for(let iter:i32 = 0; iter < maxIter; iter++){
 
 				// Accumulate the total error for each iteration.
 				deltalambdaTot = 0.0;
-				for(j=0; j!==Neq; j++){
+				for(let j: i32 = 0; j < Neq; j++){
 					c = equations[j];
 
-					var deltalambda = iterateEquation(c);
-					deltalambdaTot += Math.abs(deltalambda);
+					let deltalambda = iterateEquation(c);
+					deltalambdaTot += Mathf.abs(deltalambda);
 				}
 
 				this.usedIterations++;
@@ -217,7 +218,7 @@ export default class GSSolver extends Solver{
 			}
 
 			// Add result to velocity
-			for(i=0; i!==Nbodies; i++){
+			for(let i:i32 = 0; i < Nbodies; i++){
 				bodies[i].addConstraintVelocity();
 			}
 

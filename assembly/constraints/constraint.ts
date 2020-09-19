@@ -123,9 +123,9 @@ export default class Constraint{
 	 * @param {Number} stiffness
 	 */
 	setStiffness(stiffness: f32): void{
-		var eqs = this.equations;
-		for(var i=0; i !== eqs.length; i++){
-			var eq = eqs[i];
+		let eqs: Equation[] = this.equations;
+		for(let i: u16 = 0; i < (eqs.length as u16); i++){
+			let eq = eqs[i];
 			eq.stiffness = stiffness;
 			eq.needsUpdate = true;
 		}
@@ -137,9 +137,9 @@ export default class Constraint{
 	 * @param {Number} relaxation
 	 */
 	setRelaxation(relaxation: f32): void{
-		var eqs = this.equations;
-		for(var i=0; i !== eqs.length; i++){
-			var eq = eqs[i];
+		let eqs = this.equations;
+		for(let i: u16 = 0; i < (eqs.length as u16); i++){
+			let eq = eqs[i];
 			eq.relaxation = relaxation;
 			eq.needsUpdate = true;
 		}
@@ -150,9 +150,9 @@ export default class Constraint{
 	 * @param {Number} maxBias
 	 */
 	setMaxBias(maxBias: f32): void{
-		var eqs = this.equations;
-		for(var i=0; i !== eqs.length; i++){
-			var eq = eqs[i];
+		let eqs = this.equations;
+		for(let i: u16 = 0; i < (eqs.length as u16); i++){
+			let eq = eqs[i];
 			eq.maxBias = maxBias;
 		}
 	};

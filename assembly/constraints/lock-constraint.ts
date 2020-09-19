@@ -134,7 +134,7 @@
 // 	 */
 // 	setMaxForce(force: f32){
 // 		var eqs = this.equations;
-// 		for(var i=0; i<this.equations.length; i++){
+// 		for(let i: u16 = 0; i < (this.equations.length as u16); i++){
 // 			eqs[i].maxForce =  force;
 // 			eqs[i].minForce = -force;
 // 		}

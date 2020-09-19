@@ -1,6 +1,6 @@
 //type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
-// var Shape = require('./Shape')
+// let Shape = require('./Shape')
 // ,    vec2 = require('../math/vec2')
 // ,    shallowClone = require('../utils/Utils').shallowClone;
 
@@ -9,7 +9,6 @@ import { ShapeOptions } from "./Shape";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
-import Material from "../material/Material";
 import vec2 from "../math/vec2";
 
 var intersectHeightfield_worldNormal = vec2.create();
@@ -62,18 +61,18 @@ export default class Heightfield extends Shape{
 	 *
 	 * @example
 	 *     // Generate some height data (y-values).
-	 *     var heights = [];
-	 *     for(var i = 0; i < 1000; i++){
-	 *         var y = 0.5 * Math.cos(0.2 * i);
+	 *     let heights = [];
+	 *     for(let i: i32 = 0; i < 1000; i++){
+	 *         let y = 0.5 * Mathf.cos(0.2 * i);
 	 *         heights.push(y);
 	 *     }
 	 *
 	 *     // Create the heightfield shape
-	 *     var shape = new Heightfield({
+	 *     let shape = new Heightfield({
 	 *         heights: heights,
 	 *         elementWidth: 1 // Distance between the data points in X direction
 	 *     });
-	 *     var body = new Body();
+	 *     let body = new Body();
 	 *     body.addShape(shape);
 	 *     world.addBody(body);
 	 *
@@ -97,11 +96,11 @@ export default class Heightfield extends Shape{
 	 * @method updateMaxMinValues
 	 */
 	updateMaxMinValues(): void{
-		var data = this.heights;
-		var maxValue = data[0];
-		var minValue = data[0];
-		for(var i=0; i !== data.length; i++){
-			var v = data[i];
+		let data = this.heights;
+		let maxValue = data[0];
+		let minValue = data[0];
+		for(let i: u16 = 0; i < (data.length as u16); i++){
+			let v = data[i];
 			if(v > maxValue){
 				maxValue = v;
 			}
@@ -127,11 +126,11 @@ export default class Heightfield extends Shape{
 	}
 
 	updateArea(): f32{
-		var data = this.heights,
-			area = 0;
+		let data = this.heights,
+			area: f32 = 0;
 		if(!data) return 0;
-		for(var i=0; i<data.length-1; i++){
-			area += (data[i]+data[i+1]) / 2 * this.elementWidth;
+		for(let i: i32 = 0; i<data.length - 1; i++){
+			area += (data[i]+data[i+1]) / 2.0 * this.elementWidth;
 		}
 		this.area = area;
 
@@ -146,7 +145,7 @@ export default class Heightfield extends Shape{
 	 * @param  {Number} angle
 	 */
 	computeAABB(out: AABB, position: Float32Array, angle: f32): void{
-		var points = [
+		let points = [
 			vec2.create(),
 			vec2.create(),
 			vec2.create(),
@@ -154,8 +153,8 @@ export default class Heightfield extends Shape{
 		] as Float32Array[];
 
 		vec2.set(points[0], 0, this.maxValue);
-		vec2.set(points[1], this.elementWidth * this.heights.length, this.maxValue);
-		vec2.set(points[2], this.elementWidth * this.heights.length, this.minValue);
+		vec2.set(points[1], this.elementWidth * (this.heights.length as f32), this.maxValue);
+		vec2.set(points[2], this.elementWidth * (this.heights.length as f32), this.minValue);
 		vec2.set(points[3], 0, this.minValue);
 		out.setFromPoints(points, position, angle);
 	}
@@ -167,20 +166,21 @@ export default class Heightfield extends Shape{
 	 * @param  {array} end Where to store the resulting end point
 	 * @param  {number} i
 	 */
-	getLineSegment(start: Float32Array, end: Float32Array, i: u32): void{
-		var data = this.heights;
-		var width = this.elementWidth;
-		vec2.set(start, i * width, data[i]);
-		vec2.set(end, (i + 1) * width, data[i + 1]);
+	getLineSegment(start: Float32Array, end: Float32Array, i: i32): void{
+		let data = this.heights;
+		let width = this.elementWidth;
+		vec2.set(start, (i as f32) * width, data[i]);
+		vec2.set(end, ((i as f32) + 1.0) * width, data[i + 1]);
 	}
 
-	getSegmentIndex(position: Float32Array): f32{
-		return Math.floor(position[0] / this.elementWidth);
+	getSegmentIndex(position: Float32Array): i32{
+		return Mathf.floor(position[0] / this.elementWidth) as i32;
 	}
 
-	getClampedSegmentIndex(position: Float32Array): f32{
-		var i = this.getSegmentIndex(position);
-		i = Math.min(this.heights.length, Math.max(i, 0)); // clamp
+	getClampedSegmentIndex(position: Float32Array): i32{
+		let i: i32 = this.getSegmentIndex(position);
+		if(i < 0) i = 0;
+		if(i > this.heights.length) i = this.heights.length;
 		return i;
 	}
 
@@ -193,35 +193,35 @@ export default class Heightfield extends Shape{
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32): void{
 
-		var from = ray.from;
-		var to = ray.to;
+		let from = ray.from;
+		let to = ray.to;
 
-		var worldNormal = intersectHeightfield_worldNormal;
-		var l0 = intersectHeightfield_l0;
-		var l1 = intersectHeightfield_l1;
-		var localFrom = intersectHeightfield_localFrom;
-		var localTo = intersectHeightfield_localTo;
+		let worldNormal = intersectHeightfield_worldNormal;
+		let l0 = intersectHeightfield_l0;
+		let l1 = intersectHeightfield_l1;
+		let localFrom = intersectHeightfield_localFrom;
+		let localTo = intersectHeightfield_localTo;
 
 		// get local ray start and end
 		vec2.toLocalFrame(localFrom, from, position, angle);
 		vec2.toLocalFrame(localTo, to, position, angle);
 
 		// Get the segment range
-		var i0 = this.getClampedSegmentIndex(localFrom);
-		var i1 = this.getClampedSegmentIndex(localTo);
+		let i0 = this.getClampedSegmentIndex(localFrom);
+		let i1 = this.getClampedSegmentIndex(localTo);
 		if(i0 > i1){
-			var tmp = i0;
+			let tmp = i0;
 			i0 = i1;
 			i1 = tmp;
 		}
 
 		// The segments
-		for(var i=0; i<this.heights.length - 1; i++){
+		for(let i: i32 = 0; i<this.heights.length - 1; i++){
 			this.getLineSegment(l0, l1, i);
-			var t = vec2.getLineSegmentsIntersectionFraction(localFrom, localTo, l0, l1);
+			let t = vec2.getLineSegmentsIntersectionFraction(localFrom, localTo, l0, l1);
 			if(t >= 0){
 				vec2.subtract(worldNormal, l1, l0);
-				vec2.rotate(worldNormal, worldNormal, angle + Math.PI / 2);
+				vec2.rotate(worldNormal, worldNormal, angle + Mathf.PI / 2);
 				vec2.normalize(worldNormal, worldNormal);
 				ray.reportIntersection(result, t, worldNormal, -1);
 				if(result.shouldStop(ray)){

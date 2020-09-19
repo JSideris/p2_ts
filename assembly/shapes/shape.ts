@@ -160,8 +160,9 @@ export default abstract class Shape
 	){
 		
 		if(options){
-			if(options.position){
-				vec2.copy(this.position, options.position);
+			let pos = options.position;
+			if(pos != null){
+				vec2.copy(this.position, pos);
 			}
 			this.angle = options.angle;
 			this.type = type;

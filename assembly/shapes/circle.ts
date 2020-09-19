@@ -9,7 +9,6 @@ import { ShapeOptions } from "./Shape";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
-import Material from "../material/Material";
 import vec2 from "../math/vec2";
 
 var Ray_intersectSphere_intersectionPoint = vec2.create();
@@ -68,7 +67,7 @@ export default class Circle extends Shape{
 	 * @return {Number}
 	 */
 	updateArea(): f32{
-		this.area = Math.PI * this.radius * this.radius;
+		this.area = Mathf.PI * this.radius * this.radius;
 		return this.area;
 	}
 
@@ -97,17 +96,17 @@ export default class Circle extends Shape{
 	 * @param  {number} angle
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array/*, angle: f32*/): void{
-		var from = ray.from,
-			to = ray.to,
-			r = this.radius;
+		let from: Float32Array = ray.from,
+			to: Float32Array = ray.to,
+			r: f32 = this.radius;
 
-		var a = Math.pow(to[0] - from[0], 2) + Math.pow(to[1] - from[1], 2);
-		var b = 2 * ((to[0] - from[0]) * (from[0] - position[0]) + (to[1] - from[1]) * (from[1] - position[1]));
-		var c = Math.pow(from[0] - position[0], 2) + Math.pow(from[1] - position[1], 2) - Math.pow(r, 2);
-		var delta = Math.pow(b, 2) - 4 * a * c;
+		let a: f32 = Mathf.pow(to[0] - from[0], 2) + Mathf.pow(to[1] - from[1], 2);
+		let b: f32 = 2 * ((to[0] - from[0]) * (from[0] - position[0]) + (to[1] - from[1]) * (from[1] - position[1]));
+		let c: f32 = Mathf.pow(from[0] - position[0], 2) + Mathf.pow(from[1] - position[1], 2) - Mathf.pow(r, 2);
+		let delta: f32 = Mathf.pow(b, 2) - 4 * a * c;
 
-		var intersectionPoint = Ray_intersectSphere_intersectionPoint;
-		var normal = Ray_intersectSphere_normal;
+		let intersectionPoint: Float32Array = Ray_intersectSphere_intersectionPoint;
+		let normal: Float32Array = Ray_intersectSphere_normal;
 
 		if(delta < 0){
 			// No intersection
@@ -123,10 +122,10 @@ export default class Circle extends Shape{
 			ray.reportIntersection(result, delta, normal, -1);
 
 		} else {
-			var sqrtDelta = Math.sqrt(delta);
-			var inv2a = 1 / (2 * a);
-			var d1 = (- b - sqrtDelta) * inv2a;
-			var d2 = (- b + sqrtDelta) * inv2a;
+			let sqrtDelta: f32 = Mathf.sqrt(delta);
+			let inv2a: f32 = 1.0 / (2.0 * a);
+			let d1: f32 = (- b - sqrtDelta) * inv2a;
+			let d2: f32 = (- b + sqrtDelta) * inv2a;
 
 			if(d1 >= 0 && d1 <= 1){
 				vec2.lerp(intersectionPoint, from, to, d1);

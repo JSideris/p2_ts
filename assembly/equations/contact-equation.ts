@@ -134,8 +134,8 @@ export default class ContactEquation extends Equation{
 	getVelocityAlongNormal(): f32{
 
 
-		this.bodyA && this.bodyA.getVelocityAtPoint(vi, this.contactPointA);
-		this.bodyB && this.bodyB.getVelocityAtPoint(vj, this.contactPointB);
+		this.bodyA!.getVelocityAtPoint(vi, this.contactPointA);
+		this.bodyB!.getVelocityAtPoint(vj, this.contactPointB);
 
 		vec2.subtract(relVel, vi, vj);
 

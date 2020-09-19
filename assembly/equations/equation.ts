@@ -4,12 +4,6 @@ import Body from "../objects/body";
 import vec2 from "../math/vec2";
 import Utils from "../utils/utils";
 
-// Shortcuts.
-var scale = vec2.scale,
-    multiply = vec2.multiply,
-    createVec2 = vec2.create;
-
-
 export default class Equation{
 
 	/**
@@ -117,19 +111,35 @@ export default class Equation{
 	 * @param {number} minForce Minimum force to apply. Default: -Infinity
 	 * @param {number} maxForce Maximum force to apply. Default: Infinity
 	 */
-	constructor(bodyA: Body|null, bodyB: Body|null, minForce: f32|null, maxForce: f32|null){
+	constructor(bodyA: Body|null, bodyB: Body|null, minForce: f32, maxForce: f32){
 
-		this.minForce = minForce == null ? -Infinity : minForce;
-		this.maxForce = maxForce == null ? Infinity : maxForce;
+		// f32 is not nullable in assemblyscript.....
+		// this.minForce = minForce == null ? -Infinity : minForce;
+		// this.maxForce = maxForce == null ? Infinity : maxForce;
+		this.minForce = minForce;
+		this.maxForce = maxForce;
 		this.maxBias = Infinity;
 		this.bodyA = bodyA || null;
 		this.bodyB = bodyB || null;
 		this.stiffness = Equation.DEFAULT_STIFFNESS;
 		this.relaxation = Equation.DEFAULT_RELAXATION;
 		this.G = new Float32Array(6);
-		for(var i=0; i<6; i++){
-			this.G[i]=0;
+		for(let i: u16 = 0; i < 6; i++){
+			this.G[i] = 0;
 		}
+	}
+
+	computeGq(): f32 {
+		var G = this.G,
+			bi = this.bodyA,
+			bj = this.bodyB;
+		if(!bi || ! bj) return 0;
+		var ai = bi.angle,
+			aj = bj.angle;
+	
+		var qi = vec2.create(),
+			qj = vec2.create()
+		return this.gmult(G, qi, ai, qj, aj) + this.offset;
 	}
 
 	/**
@@ -185,33 +195,15 @@ export default class Equation{
 	 * @return {Number}
 	 */
 	computeB(a: f32,b: f32,h: f32): f32{
-		var GW = this.computeGW();
-		var Gq = this.computeGq();
-		var maxBias = this.maxBias;
+		let GW: f32 = this.computeGW();
+		let Gq: f32 = this.computeGq();
+		let maxBias = this.maxBias;
 		if(Math.abs(Gq) > maxBias){
 			Gq = Gq > 0 ? maxBias : -maxBias;
 		}
-		var GiMf = this.computeGiMf();
-		var B = - Gq * a - GW * b - GiMf * h;
+		let GiMf = this.computeGiMf();
+		let B = - Gq * a - GW * b - GiMf * h;
 		return B;
-	}
-
-	/**
-	 * Computes G\*q, where q are the generalized body coordinates
-	 * @method computeGq
-	 * @return {Number}
-	 */
-	computeGq(): f32{
-		var G = this.G,
-			bi = this.bodyA,
-			bj = this.bodyB;
-		if(!bi || ! bj) return 0;
-		var ai = bi.angle,
-			aj = bj.angle;
-
-		var qi = createVec2(),
-			qj = createVec2()
-		return this.gmult(G, qi, ai, qj, aj) + this.offset;
 	}
 
 	/**
@@ -267,13 +259,13 @@ export default class Equation{
 			invIj = bj.invInertiaSolve,
 			G = this.G;
 
-		var iMfi = createVec2(),
-			iMfj = createVec2();
+		var iMfi = vec2.create(),
+			iMfj = vec2.create();
 
-		scale(iMfi, fi, invMassi);
-		multiply(iMfi, bi.massMultiplier, iMfi);
-		scale(iMfj, fj,invMassj);
-		multiply(iMfj, bj.massMultiplier, iMfj);
+		vec2.scale(iMfi, fi, invMassi);
+		vec2.multiply(iMfi, bi.massMultiplier, iMfi);
+		vec2.scale(iMfj, fj,invMassj);
+		vec2.multiply(iMfj, bj.massMultiplier, iMfj);
 
 		return this.gmult(G,iMfi,ti*invIi,iMfj,tj*invIj);
 	}
@@ -334,7 +326,7 @@ export default class Equation{
 	 * @return {Number}
 	 */
 	computeInvC(eps: f32): f32{
-		var invC = 1 / (this.computeGiMGt() + eps);
+		var invC: f32 = 1.0 / (this.computeGiMGt() + eps);
 		return invC;
 	}
 

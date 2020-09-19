@@ -52,7 +52,7 @@ export default class Line extends Shape{
 	}
 
 	computeMomentOfInertia(): f32{
-		return Math.pow(this.length,2) / 12;
+		return Mathf.pow(this.length,2) / 12;
 	};
 
 	updateBoundingRadius(): f32{

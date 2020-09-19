@@ -5,7 +5,7 @@ import Body from "../objects/body";
 
 
 export default class RotationalVelocityEquation extends Equation{
-	ratio: number;
+	ratio: f32;
 
 	/**
 	 * Syncs rotational velocity of two bodies, or sets a relative velocity (motor).

@@ -4,7 +4,8 @@ import vec2 from "../math/vec2";
 import Body from "../objects/body";
 import Constraint from "./constraint";
 import { ConstraintOptions } from "./constraint";
-import Equation from "../equations/Equation";
+import Equation from "../equations/equation";
+import DistanceEquation from "../equations/distance-equation";
 
 var n = vec2.create();
 var ri = vec2.create(); // worldAnchorA
@@ -23,13 +24,13 @@ export default class DistanceConstraint extends Constraint{
 	 * @property localAnchorA
 	 * @type {Array}
 	 */
-	localAnchorA: Float32Array;
+	localAnchorA: Float32Array = vec2.create();
 	/**
 	 * Local anchor in body B.
 	 * @property localAnchorB
 	 * @type {Array}
 	 */
-	localAnchorB: Float32Array;
+	localAnchorB: Float32Array = vec2.create();
 	/**
 	 * The distance to keep.
 	 * @property distance
@@ -109,20 +110,15 @@ export default class DistanceConstraint extends Constraint{
 		super(bodyA,bodyB,Constraint.DISTANCE, options);
 
 		if(options){
-			this.localAnchorA = options.localAnchorA ? vec2.clone(options.localAnchorA) : vec2.create();
-			this.localAnchorB = options.localAnchorB ? vec2.clone(options.localAnchorB) : vec2.create();
+			if(options.localAnchorA) vec2.copy(this.localAnchorA, options.localAnchorA!);
+			if(options.localAnchorB) vec2.copy(this.localAnchorB, options.localAnchorB!);
 			this.distance = options.distance;
-			this.maxForce = options.maxForce;
-			
-		}
-		else{
-			this.localAnchorA = vec2.create();
-			this.localAnchorB = vec2.create();
+			this.maxForce = options.maxForce;	
 		}
 
 		if(this.distance == -1){
 			// Use the current world distance between the world anchor points.
-			var worldAnchorA = vec2.create(),
+			let worldAnchorA = vec2.create(),
 				worldAnchorB = vec2.create(),
 				r = vec2.create();
 
@@ -137,7 +133,7 @@ export default class DistanceConstraint extends Constraint{
 			this.distance = vec2.length(r);
 		}
 
-		var normal = new Equation(bodyA,bodyB,-this.maxForce,this.maxForce); // Just in the normal direction
+		let normal = new DistanceEquation(this, bodyA,bodyB,-this.maxForce,this.maxForce); // Just in the normal direction
 		this.equations = [ normal ];
 
 		// g = (xi - xj).dot(n)
@@ -155,27 +151,30 @@ export default class DistanceConstraint extends Constraint{
 		
 		// => G = [-n -rixn n rjxn]
 
-		var r = vec2.create();
-		var ri = vec2.create(); // worldAnchorA
-		var rj = vec2.create(); // worldAnchorB
-		var that = this;
-		normal.computeGq = function(){
-			var bodyA = this.bodyA!,
-				bodyB = this.bodyB!,
-				xi = bodyA.position,
-				xj = bodyB.position;
+		// MOVED TO DistanceEquation:
+		// {
+			// let r = vec2.create();
+			// let ri = vec2.create(); // worldAnchorA
+			// let rj = vec2.create(); // worldAnchorB
 
-			// Transform local anchors to world
-			vec2.rotate(ri, that.localAnchorA, bodyA.angle);
-			vec2.rotate(rj, that.localAnchorB, bodyB.angle);
+			// normal.computeGq = (eq: Equation): f32 => {
+			// 	var bodyA = eq.bodyA!,
+			// 		bodyB = eq.bodyB!,
+			// 		xi = bodyA.position,
+			// 		xj = bodyB.position;
 
-			vec2.add(r, xj, rj);
-			vec2.subtract(r, r, ri);
-			vec2.subtract(r, r, xi);
+			// 	// Transform local anchors to world
+			// 	vec2.rotate(ri, that.localAnchorA, bodyA.angle);
+			// 	vec2.rotate(rj, that.localAnchorB, bodyB.angle);
 
-			//vec2.subtract(r, bodyB.position, bodyA.position);
-			return vec2.length(r) - that.distance;
-		};
+			// 	vec2.add(r, xj, rj);
+			// 	vec2.subtract(r, r, ri);
+			// 	vec2.subtract(r, r, xi);
+
+			// 	//vec2.subtract(r, bodyB.position, bodyA.position);
+			// 	return vec2.length(r) - that.distance;
+			// };
+		// }
 
 		// Make the contact constraint bilateral
 		this.setMaxForce(this.maxForce);
@@ -187,13 +186,12 @@ export default class DistanceConstraint extends Constraint{
 	 * @method update
 	 */
 	update(): void{
-		var normal = this.equations[0],
-			bodyA = this.bodyA,
-			bodyB = this.bodyB,
-			xi = bodyA.position,
-			xj = bodyB.position,
-			normalEquation = this.equations[0],
-			G = normal.G;
+		let bodyA: Body = this.bodyA,
+			bodyB: Body = this.bodyB,
+			xi: Float32Array = bodyA.position,
+			xj: Float32Array = bodyB.position,
+			normalEquation: Equation = this.equations[0],
+			G = normalEquation.G;
 
 		// Transform local anchors to world
 		vec2.rotate(ri, this.localAnchorA, bodyA.angle);
@@ -205,7 +203,7 @@ export default class DistanceConstraint extends Constraint{
 		vec2.subtract(n, n, xi);
 		this.position = vec2.length(n);
 
-		var violating = false;
+		let violating = false;
 		if(this.upperLimitEnabled){
 			if(this.position > this.upperLimit){
 				normalEquation.maxForce = 0;
@@ -235,7 +233,7 @@ export default class DistanceConstraint extends Constraint{
 		vec2.normalize(n,n);
 
 		// Caluclate cross products
-		var rixn = vec2.crossLength(ri, n),
+		let rixn = vec2.crossLength(ri, n),
 			rjxn = vec2.crossLength(rj, n);
 
 		// G = [-n -rixn n rjxn]
@@ -253,7 +251,7 @@ export default class DistanceConstraint extends Constraint{
 	 * @param {Number} maxForce
 	 */
 	setMaxForce(maxForce: f32): void{
-		var normal = this.equations[0];
+		let normal: Equation = this.equations[0];
 		normal.minForce = -maxForce;
 		normal.maxForce =  maxForce;
 	}
@@ -264,7 +262,7 @@ export default class DistanceConstraint extends Constraint{
 	 * @return {Number}
 	 */
 	getMaxForce(): f32{
-		var normal = this.equations[0];
+		let normal: Equation = this.equations[0];
 		return normal.maxForce;
 	}
 }

@@ -1,38 +1,36 @@
 //type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
-// var Shape = require('./Shape')
+// let Shape = require('./Shape')
 // ,   shallowClone = require('../utils/Utils').shallowClone
 // ,   vec2 = require('../math/vec2');
 
 import vec2 from "../math/vec2";
-import Utils from "../utils/utils";
 import Shape from "./shape";
 import { ShapeOptions } from "./shape";
-import Material from "../material/Material";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
 
 function boxI(w: f32, h: f32): f32 {
-	return w * h * (Math.pow(w, 2) + Math.pow(h, 2)) / 12;
+	return w * h * (Mathf.pow(w, 2) + Mathf.pow(h, 2)) / 12;
 }
 function semiA(r: f32): f32 {
-	return Math.PI * Math.pow(r, 2) / 2;
+	return Mathf.PI * Mathf.pow(r, 2) / 2;
 }
 // http://www.efunda.com/math/areas/CircleHalf.cfm
 function semiI(r: f32): f32 {
-	return ((Math.PI / 4) - (8 / (9 * Math.PI))) * Math.pow(r, 4);
+	return ((Mathf.PI / 4) - (8 / (9 * Mathf.PI))) * Mathf.pow(r, 4);
 }
 function semiC(r: f32): f32 {
-	return (4 * r) / (3 * Math.PI);
+	return (4 * r) / (3 * Mathf.PI);
 }
 // https://en.wikipedia.org/wiki/Second_moment_of_area#Parallel_axis_theorem
 function capsuleA(l: f32, r: f32): f32 {
-	return l * 2 * r + Math.PI * Math.pow(r, 2);
+	return l * 2 * r + Mathf.PI * Mathf.pow(r, 2);
 }
 function capsuleI(l: f32, r: f32): f32 {
-	var d = l / 2 + semiC(r);
-	return boxI(l, 2 * r) + 2 * (semiI(r) + semiA(r) * Math.pow(d, 2));
+	let d = l / 2 + semiC(r);
+	return boxI(l, 2 * r) + 2 * (semiI(r) + semiA(r) * Mathf.pow(d, 2));
 }
 
 var intersectCapsule_hitPointWorld = vec2.create();
@@ -68,8 +66,8 @@ export default class Capsule extends Shape{
 	 * @param {Number} [options.length=1] The distance between the end points, extends along the X axis.
 	 * @param {Number} [options.radius=1] Radius of the capsule.
 	 * @example
-	 *     var body = new Body({ mass: 1 });
-	 *     var capsuleShape = new Capsule({
+	 *     let body = new Body({ mass: 1 });
+	 *     let capsuleShape = new Capsule({
 	 *         length: 1,
 	 *         radius: 2
 	 *     });
@@ -91,7 +89,7 @@ export default class Capsule extends Shape{
 	 */
 	computeMomentOfInertia(): f32{
 		// http://www.efunda.com/math/areas/rectangle.cfm
-		var r = this.radius,
+		let r = this.radius,
 			l = this.length,
 			area = capsuleA(l, r);
 		return (area > 0) ? capsuleI(l, r) / area : 0;
@@ -109,7 +107,7 @@ export default class Capsule extends Shape{
 	 * @method updateArea
 	 */
 	updateArea(): f32{
-		this.area = Math.PI * this.radius * this.radius + this.radius * 2 * this.length;
+		this.area = Mathf.PI * this.radius * this.radius + this.radius * 2 * this.length;
 		return this.area;
 	}
 
@@ -121,8 +119,8 @@ export default class Capsule extends Shape{
 	 */
 	computeAABB(out: AABB, position: Float32Array, angle: f32): void{
 
-		var r = vec2.create();
-		var radius = this.radius;
+		let r = vec2.create();
+		let radius = this.radius;
 
 		// Compute center position of one of the the circles, world oriented, but with local offset
 		vec2.set(r,this.length / 2,0);
@@ -131,10 +129,10 @@ export default class Capsule extends Shape{
 		}
 
 		// Get bounds
-		vec2.set(out.upperBound,  Math.max(r[0]+radius, -r[0]+radius),
-								Math.max(r[1]+radius, -r[1]+radius));
-		vec2.set(out.lowerBound,  Math.min(r[0]-radius, -r[0]-radius),
-								Math.min(r[1]-radius, -r[1]-radius));
+		vec2.set(out.upperBound,  Mathf.max(r[0]+radius, -r[0]+radius),
+								Mathf.max(r[1]+radius, -r[1]+radius));
+		vec2.set(out.lowerBound,  Mathf.min(r[0]-radius, -r[0]-radius),
+								Mathf.min(r[1]-radius, -r[1]-radius));
 
 		// Add offset
 		vec2.add(out.lowerBound, out.lowerBound, position);
@@ -151,26 +149,26 @@ export default class Capsule extends Shape{
 	 */
 	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32): void{
 
-		var from = ray.from;
-		var to = ray.to;
+		let from = ray.from;
+		let to = ray.to;
 
-		var hitPointWorld = intersectCapsule_hitPointWorld;
-		var normal = intersectCapsule_normal;
-		var l0 = intersectCapsule_l0;
-		var l1 = intersectCapsule_l1;
+		let hitPointWorld = intersectCapsule_hitPointWorld;
+		let normal = intersectCapsule_normal;
+		let l0 = intersectCapsule_l0;
+		let l1 = intersectCapsule_l1;
 
 		// The sides
-		var halfLen = this.length / 2;
-		for(var i=0; i<2; i++){
+		let halfLen = this.length / 2;
+		for(let i: f32 = 0; i < 2; i++){
 
 			// get start and end of the line
-			var y = this.radius * (i*2-1);
+			let y: f32 = this.radius * (i * 2 - 1);
 			vec2.set(l0, -halfLen, y);
 			vec2.set(l1, halfLen, y);
 			vec2.toGlobalFrame(l0, l0, position, angle);
 			vec2.toGlobalFrame(l1, l1, position, angle);
 
-			var delta = vec2.getLineSegmentsIntersectionFraction(from, to, l0, l1);
+			let delta = vec2.getLineSegmentsIntersectionFraction(from, to, l0, l1);
 			if(delta >= 0){
 				vec2.rotate(normal, intersectCapsule_unit_y, angle);
 				vec2.scale(normal, normal, (i*2-1));
@@ -182,15 +180,19 @@ export default class Capsule extends Shape{
 		}
 
 		// Circles
-		var diagonalLengthSquared = Math.pow(this.radius, 2) + Math.pow(halfLen, 2);
-		for(var i=0; i<2; i++){
-			vec2.set(l0, halfLen * (i*2-1), 0);
+		let diagonalLengthSquared = Mathf.pow(this.radius, 2) + Mathf.pow(halfLen, 2);
+		for(let i: f32 = 0; i < 2; i++){
+			vec2.set(l0, halfLen * (i * 2 - 1), 0);
 			vec2.toGlobalFrame(l0, l0, position, angle);
 
-			var a = Math.pow(to[0] - from[0], 2) + Math.pow(to[1] - from[1], 2);
-			var b = 2 * ((to[0] - from[0]) * (from[0] - l0[0]) + (to[1] - from[1]) * (from[1] - l0[1]));
-			var c = Math.pow(from[0] - l0[0], 2) + Math.pow(from[1] - l0[1], 2) - Math.pow(this.radius, 2);
-			var delta = Math.pow(b, 2) - 4 * a * c;
+			let dfl0 = from[0] - l0[0];
+			let dfl1 = from[1] - l0[1];
+			let dl0 = to[0] - from[0];
+			let dl1 = to[1] - from[1];
+			let a: f32 = dl0 + dl1 * dl1;
+			let b: f32 = 2.0 * (dl0*dfl0 + dl1*dfl1);
+			let c: f32 = dfl0*dfl0 + dfl1*dfl1 - this.radius*this.radius;
+			let delta: f32 = b*b - 4 * a * c;
 
 			if(delta < 0){
 				// No intersection
@@ -210,10 +212,10 @@ export default class Capsule extends Shape{
 				}
 
 			} else {
-				var sqrtDelta = Math.sqrt(delta);
-				var inv2a = 1 / (2 * a);
-				var d1 = (- b - sqrtDelta) * inv2a;
-				var d2 = (- b + sqrtDelta) * inv2a;
+				let sqrtDelta: f32 = Mathf.sqrt(delta);
+				let inv2a: f32 = 1.0 / (2.0 * a);
+				let d1: f32 = (- b - sqrtDelta) * inv2a;
+				let d2: f32 = (- b + sqrtDelta) * inv2a;
 
 				if(d1 >= 0 && d1 <= 1){
 					vec2.lerp(hitPointWorld, from, to, d1);
@@ -243,18 +245,18 @@ export default class Capsule extends Shape{
 	}
 
 	pointTest(localPoint: Float32Array): boolean{
-		var radius = this.radius;
-		var halfLength = this.length * 0.5;
+		let radius = this.radius;
+		let halfLength = this.length * 0.5;
 
-		if((Math.abs(localPoint[0]) <= halfLength && Math.abs(localPoint[1]) <= radius)){
+		if((Mathf.abs(localPoint[0]) <= halfLength && Mathf.abs(localPoint[1]) <= radius)){
 			return true;
 		}
 
-		if(Math.pow(localPoint[0] - halfLength, 2) + Math.pow(localPoint[1], 2) <= radius * radius){
+		if(Mathf.pow(localPoint[0] - halfLength, 2) + Mathf.pow(localPoint[1], 2) <= radius * radius){
 			return true;
 		}
 
-		if(Math.pow(localPoint[0] + halfLength, 2) + Math.pow(localPoint[1], 2) <= radius * radius){
+		if(Mathf.pow(localPoint[0] + halfLength, 2) + Mathf.pow(localPoint[1], 2) <= radius * radius){
 			return true;
 		}
 

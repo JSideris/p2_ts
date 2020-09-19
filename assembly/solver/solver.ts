@@ -5,13 +5,13 @@ import Equation from "../equations/equation";
 import World from "../world/world";
 
 export class SolverOptions{
-	equationSortFunction: (a: Equation, b: Equation) => number;
+	equationSortFunction: (a: Equation, b: Equation) => i32;
 }
 
 export default abstract class Solver extends EventEmitter{
 	type: u16 = 0;
 	equations: Equation[];
-	equationSortFunction: ((a: Equation, b: Equation) => number)|null = null;
+	equationSortFunction: ((a: Equation, b: Equation) => i32)|null = null;
 
 	/**
 	 * Base class for constraint solvers.
@@ -54,7 +54,7 @@ export default abstract class Solver extends EventEmitter{
 	 */
 	sortEquations(): void{
 		if(this.equationSortFunction){
-			this.equations.sort(this.equationSortFunction);
+			this.equations.sort(this.equationSortFunction!);
 		}
 	};
 
@@ -77,8 +77,8 @@ export default abstract class Solver extends EventEmitter{
 	 * @param {Array} eqs
 	 */
 	addEquations(eqs: Equation[]): void{
-		for(var i=0, N=eqs.length; i!==N; i++){
-			var eq = eqs[i];
+		for(let i: u16 = 0, N: u16 = (eqs.length as u16); i < N; i++){
+			let eq = eqs[i];
 			if(eq.enabled){
 				this.equations.push(eq);
 			}
@@ -92,7 +92,7 @@ export default abstract class Solver extends EventEmitter{
 	 * @param {Equation} eq
 	 */
 	removeEquation(eq: Equation): void{
-		var i = this.equations.indexOf(eq);
+		let i = this.equations.indexOf(eq);
 		if(i !== -1){
 			this.equations.splice(i,1);
 		}

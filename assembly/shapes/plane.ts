@@ -3,7 +3,6 @@
 
 import Shape from "./shape";
 import { ShapeOptions } from "./shape";
-import Material from "../material/Material";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
@@ -56,15 +55,14 @@ export default class Plane extends Shape{
 	 * @param  {Number} angle
 	 */
 	computeAABB(out: AABB, position: Float32Array, angle: f32): void{
-		var a = angle % (2 * Math.PI);
-		var set = vec2.set;
-		var max = 1e7;
+		var a = angle % (2.0 * Mathf.PI);
+		var max: f32 = 1e7;
 		var lowerBound = out.lowerBound;
 		var upperBound = out.upperBound;
 
 		// Set max bounds
-		set(lowerBound, -max, -max);
-		set(upperBound,  max,  max);
+		vec2.set(lowerBound, -max, -max);
+		vec2.set(upperBound,  max,  max);
 
 		if(a === 0){
 			// y goes from -inf to 0

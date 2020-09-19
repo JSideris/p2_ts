@@ -9,7 +9,6 @@ import Convex from "./Convex";
 import { ConvexOptions } from "./Convex";
 import AABB from "../collision/aabb";
 import Shape from "./shape";
-import Material from "../material/Material";
 import vec2 from "../math/vec2";
 
 export class BoxOptions extends ConvexOptions{
@@ -96,7 +95,7 @@ export default class Box extends Convex{
 	updateBoundingRadius(): f32{
 		var w = this.width,
 			h = this.height;
-		this.boundingRadius = Math.sqrt(w*w + h*h) / 2;
+		this.boundingRadius = Mathf.sqrt(w*w + h*h) / 2;
 		return this.boundingRadius;
 	};
 
@@ -107,8 +106,8 @@ export default class Box extends Convex{
 	 * @param  {Number} angle
 	 */
 	computeAABB(out: AABB, position: Float32Array, angle: f32): void{
-		var c = Math.abs(Math.cos(angle)),
-			s = Math.abs(Math.sin(angle)),
+		var c = Mathf.abs(Mathf.cos(angle)),
+			s = Mathf.abs(Mathf.sin(angle)),
 			w = this.width,
 			h = this.height;
 
@@ -131,6 +130,6 @@ export default class Box extends Convex{
 	};
 
 	pointTest(localPoint: Float32Array): boolean{
-		return Math.abs(localPoint[0]) <= this.width * 0.5 && Math.abs(localPoint[1]) <= this.height * 0.5;
+		return Mathf.abs(localPoint[0]) <= this.width * 0.5 && Mathf.abs(localPoint[1]) <= this.height * 0.5;
 	};
 }
