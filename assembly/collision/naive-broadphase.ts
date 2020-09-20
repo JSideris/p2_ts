@@ -26,8 +26,8 @@ export default class NaiveBroadphase extends Broadphase{
 	 * @param  {World} world
 	 * @return {Array}
 	 */
-	getCollisionPairs(world: World): Body[]{
-		let bodies: Body[] = world.bodies,
+	getCollisionPairs(): Body[]{
+		let bodies: Body[] = this.world!.bodies,
 			result: Body[] = this.result;
 
 		result.length = 0;
@@ -56,8 +56,8 @@ export default class NaiveBroadphase extends Broadphase{
 	 * @param {array} result An array to store resulting bodies in.
 	 * @return {array}
 	 */
-	aabbQuery(world: World, aabb: AABB, result: Array<Body>): Array<Body>{
-		let bodies: Body[] = world.bodies;
+	aabbQuery(aabb: AABB, result: Body[]): void{
+		let bodies: Body[] = this.world!.bodies;
 		for(let i: u16 = 0; i < (bodies.length as u16); i++){
 			let b: Body = bodies[i];
 
@@ -70,6 +70,5 @@ export default class NaiveBroadphase extends Broadphase{
 			}
 		}
 
-		return result;
 	};
 }

@@ -96,7 +96,8 @@ export default class OverlapKeeper{
 		return false;
 	}
 
-	getDiff(dictA: TupleDictionary<OverlapKeeperRecord>, dictB: TupleDictionary<OverlapKeeperRecord>, result: Array<OverlapKeeperRecord>|null): Array<OverlapKeeperRecord>{
+	// Made result non-nullable. Hopefully that's okay.
+	getDiff(dictA: TupleDictionary<OverlapKeeperRecord>, dictB: TupleDictionary<OverlapKeeperRecord>, result: Array<OverlapKeeperRecord>): Array<OverlapKeeperRecord>{
 		result = result || [];
 		var last = dictA;
 		var current = dictB;
@@ -109,7 +110,7 @@ export default class OverlapKeeper{
 			var data = current.getByKey(key);
 
 			if(!data){
-				throw new Error('Key '+key+' had no data!');
+				throw new Error("Key " + key.toString() + " had no data!");
 			}
 
 			var lastData = last.getByKey(key);

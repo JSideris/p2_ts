@@ -70,7 +70,7 @@ export default class Body extends EventEmitter{
 	 * @property index
 	 * @type {Number}
 	 */
-	public index: i64 = 0;
+	public index: i32 = 0;
 
 	/**
 	 * The world that this body is added to (read only). This property is set to NULL if the body is not added to any world.
@@ -221,9 +221,9 @@ export default class Body extends EventEmitter{
 	 *     // The angle property is not normalized to the interval 0 to 2*pi, it can be any value.
 	 *     // If you need a value between 0 and 2*pi, use the following function to normalize it.
 	 *     function normalizeAngle(angle){
-	 *         angle = angle % (2*Math.PI);
+	 *         angle = angle % (2*Mathf.PI);
 	 *         if(angle < 0){
-	 *             angle += (2*Math.PI);
+	 *             angle += (2*Mathf.PI);
 	 *         }
 	 *         return angle;
 	 *     }
@@ -326,7 +326,7 @@ export default class Body extends EventEmitter{
 	 *         type: Body.KINEMATIC // Type can be set via the options object.
 	 *     });
 	 */
-	public type: f32 = Body.STATIC;
+	public type: u16 = Body.STATIC;
 
 	/**
 	 * Bounding circle radius. Update with {{#crossLink "Body/updateBoundingRadius:method"}}{{/crossLink}}.
@@ -399,7 +399,7 @@ export default class Body extends EventEmitter{
 	 * @property {Number} gravityScale
 	 * @default 1
 	 */
-	public gravityScale:number = 1;
+	public gravityScale:f32 = 1;
 
 	/**
 	 * Whether to produce contact forces when in contact with other bodies. Note that contacts will be generated, but they will be disabled. That means that this body will move through other bodies, but it will still trigger contact events, etc.
@@ -434,12 +434,12 @@ export default class Body extends EventEmitter{
 	 * @property {number} ccdIterations
 	 * @default 10
 	 */
-	public ccdIterations: f32 = 10;
+	public ccdIterations: i32 = 10;
 
 	/**
 	 * @property {number} islandId
 	 */
-	public islandId: f32 = -1;
+	public islandId: i32 = -1;
 
 	public concavePath: Float32Array[]|null = null;
 
@@ -688,7 +688,7 @@ export default class Body extends EventEmitter{
 	 *     body.addShape(shape,[1,0]);
 	 *
 	 *     // Add another shape to the body, positioned 1 unit length from the body center of mass along the local y-axis, and rotated 90 degrees CCW.
-	 *     body.addShape(shape,[0,1],Math.PI/2);
+	 *     body.addShape(shape,[0,1],Mathf.PI/2);
 	 */
 	addShape(shape: Shape, offset: Float32Array, angle: f32 = 0): void{
 		if(shape.body){
@@ -1123,8 +1123,8 @@ export default class Body extends EventEmitter{
 	applyDamping(dt: f32): void {
 		if(this.type === Body.DYNAMIC){ // Only for dynamic bodies
 			let v = this.velocity;
-			vec2.scale(v, v, Math.pow(1 - this.damping,dt));
-			this.angularVelocity *= Math.pow(1 - this.angularDamping,dt);
+			vec2.scale(v, v, Mathf.pow(1 - this.damping,dt));
+			this.angularVelocity *= Mathf.pow(1 - this.angularDamping,dt);
 		}
 	}
 
@@ -1168,8 +1168,8 @@ export default class Body extends EventEmitter{
 
 		this.wantsToSleep = false;
 
-		let speedSquared = vec2.squaredLength(this.velocity) + Math.pow(this.angularVelocity,2),
-			speedLimitSquared = Math.pow(this.sleepSpeedLimit,2);
+		let speedSquared = vec2.squaredLength(this.velocity) + Mathf.pow(this.angularVelocity,2),
+			speedLimitSquared = Mathf.pow(this.sleepSpeedLimit,2);
 
 		// Add to idle time
 		if(speedSquared >= speedLimitSquared){
@@ -1244,6 +1244,7 @@ export default class Body extends EventEmitter{
 	integrateToTimeOfImpact(dt: f32): boolean{
 
 		if(!this.world) return false;
+		let world = this.world!;
 
 		let result = new RaycastResult();
 		let rOpts = new RayOptions();
@@ -1256,14 +1257,14 @@ export default class Body extends EventEmitter{
 		let startToEnd = vec2.create();
 		let rememberPosition = vec2.create();
 
-		if(this.ccdSpeedThreshold < 0 || vec2.squaredLength(this.velocity) < Math.pow(this.ccdSpeedThreshold, 2)){
+		if(this.ccdSpeedThreshold < 0 || vec2.squaredLength(this.velocity) < this.ccdSpeedThreshold*this.ccdSpeedThreshold){
 			return false;
 		}
 
 		// Ignore all the ignored body pairs
 		// This should probably be done somewhere else for optimization
 		let ignoreBodies: Body[] = [];
-		let disabledPairs: Body[] = this.world.disabledBodyCollisionPairs;
+		let disabledPairs: Body[] = world.disabledBodyCollisionPairs;
 		for(let i: i32 = 0; i<disabledPairs.length; i+=2){
 			let bodyA: Body = disabledPairs[i];
 			let bodyB: Body = disabledPairs[i+1];
@@ -1283,7 +1284,7 @@ export default class Body extends EventEmitter{
 		let startToEndAngle: f32 = this.angularVelocity * dt;
 		let len: f32 = vec2.length(startToEnd);
 
-		let timeOfImpact = 1;
+		let timeOfImpact: f32 = 1;
 
 		let hitBody: Body|null = null;
 		vec2.copy(ray.from, this.position);
@@ -1294,7 +1295,7 @@ export default class Body extends EventEmitter{
 			result.reset();
 			ray.collisionGroup = shape.collisionGroup;
 			ray.collisionMask = shape.collisionMask;
-			this.world.raycast(result, ray);
+			world.raycast(result, ray);
 			hitBody = result.body;
 			if(!hitBody) continue;
 
@@ -1318,7 +1319,7 @@ export default class Body extends EventEmitter{
 		vec2.copy(rememberPosition, this.position);
 
 		// Got a start and end point. Approximate time of impact using binary search
-		let iter: f32 = 0;
+		let iter: i32 = 0;
 		let tmin: f32 = 0;
 		let tmid: f32 = timeOfImpact;
 		let tmax: f32 = 1;
@@ -1335,7 +1336,7 @@ export default class Body extends EventEmitter{
 			this.updateAABB();
 
 			// check overlap
-			let overlaps = this.aabb.overlaps(hitBody.aabb) && this.world.narrowphase.bodiesOverlap(this, hitBody, true);
+			let overlaps = this.aabb.overlaps(hitBody.aabb) && world.narrowphase.bodiesOverlap(this, hitBody, true);
 
 			if (overlaps) {
 				// change max to search lower interval

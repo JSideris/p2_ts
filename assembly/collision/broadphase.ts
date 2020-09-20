@@ -58,7 +58,7 @@ export default class Broadphase extends Object{
 	 * @param  {World} world The world to search in.
 	 * @return {Array} An array of the bodies, ordered in pairs. Example: A result of [a,b,c,d] means that the potential pairs are: (a,b), (c,d).
 	 */
-	getCollisionPairs(world: World):Body[]{
+	getCollisionPairs():Body[]{
 		// I guess this should be overridden?
 		// TODO: possible abstract method.
 		return [];
@@ -163,7 +163,7 @@ export default class Broadphase extends Object{
 	 * @param {array} result An array to store resulting bodies in.
 	 * @return {array}
 	 */
-	aabbQuery(world: World, aabb: AABB, result: Array<Body>): void{
+	aabbQuery(aabb: AABB, result: Body[]): void{
 		// To be implemented in subclasses
 	};
 

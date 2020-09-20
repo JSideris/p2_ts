@@ -111,7 +111,7 @@ export default class SAPBroadphase extends Broadphase{
 	 * @param  {World} world
 	 * @return {Array}
 	 */
-	getCollisionPairs(/*world*/): Array<Body>{
+	getCollisionPairs(/*world*/): Body[]{
 		let bodies = this.axisList,
 			result = this.result,
 			axisIndex = this.axisIndex;
@@ -162,7 +162,7 @@ export default class SAPBroadphase extends Broadphase{
 	 * @return {array}
 	 * @todo since the list is sorted, optimization can be done
 	 */
-	aabbQuery(world: World, aabb: AABB, result: Body[]): Body[]{
+	aabbQuery(aabb: AABB, result: Body[]): void{
 		result = result || [];
 
 		this.sortList();
@@ -179,7 +179,5 @@ export default class SAPBroadphase extends Broadphase{
 				result.push(b);
 			}
 		}
-
-		return result;
 	};
 }

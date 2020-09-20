@@ -1,30 +1,36 @@
 (module
- (type $i32_=>_i32 (func (param i32) (result i32)))
  (type $i32_i32_=>_none (func (param i32 i32)))
- (type $i32_=>_f32 (func (param i32) (result f32)))
+ (type $i32_=>_i32 (func (param i32) (result i32)))
  (type $i32_i32_=>_i32 (func (param i32 i32) (result i32)))
+ (type $i32_=>_f32 (func (param i32) (result f32)))
  (type $i32_=>_none (func (param i32)))
  (type $i32_f32_=>_none (func (param i32 f32)))
  (type $i32_i32_i32_=>_i32 (func (param i32 i32 i32) (result i32)))
  (type $i32_i32_i32_=>_none (func (param i32 i32 i32)))
- (type $i32_i32_i32_i32_=>_i32 (func (param i32 i32 i32 i32) (result i32)))
  (type $i32_i32_i32_f32_=>_none (func (param i32 i32 i32 f32)))
+ (type $i32_i32_i32_i32_=>_i32 (func (param i32 i32 i32 i32) (result i32)))
  (type $i32_i32_i32_i32_f32_=>_none (func (param i32 i32 i32 i32 f32)))
  (type $i32_i32_=>_f32 (func (param i32 i32) (result f32)))
  (type $i32_i32_i32_i32_f32_i32_i32_i32_f32_i32_=>_i32 (func (param i32 i32 i32 i32 f32 i32 i32 i32 f32 i32) (result i32)))
+ (type $i32_i32_i32_f32_=>_i32 (func (param i32 i32 i32 f32) (result i32)))
  (type $none_=>_none (func))
  (type $i32_i32_i32_i32_i32_i32_i32_f32_i32_=>_i32 (func (param i32 i32 i32 i32 i32 i32 i32 f32 i32) (result i32)))
- (type $i32_i32_i32_f32_=>_i32 (func (param i32 i32 i32 f32) (result i32)))
  (type $i32_f32_f32_f32_=>_f32 (func (param i32 f32 f32 f32) (result f32)))
+ (type $none_=>_i32 (func (result i32)))
  (type $i32_i32_i32_i32_=>_none (func (param i32 i32 i32 i32)))
+ (type $i32_f32_i32_=>_none (func (param i32 f32 i32)))
  (type $i32_i32_i32_i32_i32_=>_i32 (func (param i32 i32 i32 i32 i32) (result i32)))
  (type $i32_i32_f32_=>_i32 (func (param i32 i32 f32) (result i32)))
- (type $f32_=>_f32 (func (param f32) (result f32)))
+ (type $i32_i64_=>_i32 (func (param i32 i64) (result i32)))
+ (type $i32_i32_i32_i32_i32_=>_none (func (param i32 i32 i32 i32 i32)))
  (type $i32_i32_i32_f32_f32_=>_none (func (param i32 i32 i32 f32 f32)))
- (type $i32_f32_i32_=>_none (func (param i32 f32 i32)))
- (type $none_=>_i32 (func (result i32)))
  (type $i32_i32_i32_i32_i32_i32_i32_i32_=>_i32 (func (param i32 i32 i32 i32 i32 i32 i32 i32) (result i32)))
  (type $i32_i32_i32_f32_f32_=>_i32 (func (param i32 i32 i32 f32 f32) (result i32)))
+ (type $i32_i64_i32_=>_i32 (func (param i32 i64 i32) (result i32)))
+ (type $i64_=>_i32 (func (param i64) (result i32)))
+ (type $f32_=>_f32 (func (param f32) (result f32)))
+ (type $f32_f32_=>_f32 (func (param f32 f32) (result f32)))
+ (type $i32_i32_i32_i32_i32_i32_i32_i32_i32_f32_=>_none (func (param i32 i32 i32 i32 i32 i32 i32 i32 i32 f32)))
  (type $i32_i32_i32_i32_f32_i32_=>_none (func (param i32 i32 i32 i32 f32 i32)))
  (type $i32_i32_i32_f32_i32_=>_none (func (param i32 i32 i32 f32 i32)))
  (type $i32_i32_i32_f32_i32_i32_=>_none (func (param i32 i32 i32 f32 i32 i32)))
@@ -32,6 +38,9 @@
  (type $i32_i32_f32_=>_none (func (param i32 i32 f32)))
  (type $i32_i32_f32_i32_i32_=>_none (func (param i32 i32 f32 i32 i32)))
  (type $i32_i64_=>_none (func (param i32 i64)))
+ (type $i32_f32_i32_f32_=>_none (func (param i32 f32 i32 f32)))
+ (type $i32_f32_f32_=>_none (func (param i32 f32 f32)))
+ (type $i32_f32_f32_i32_=>_none (func (param i32 f32 f32 i32)))
  (type $i32_f32_f32_f32_f32_i32_=>_none (func (param i32 f32 f32 f32 f32 i32)))
  (type $i32_i32_i32_i32_i32_i32_i32_i32_f32_=>_i32 (func (param i32 i32 i32 i32 i32 i32 i32 i32 f32) (result i32)))
  (type $i32_i32_i32_i32_i32_i32_i32_i32_f32_f32_=>_i32 (func (param i32 i32 i32 i32 i32 i32 i32 i32 f32 f32) (result i32)))
@@ -40,20 +49,18 @@
  (type $i32_i32_i32_i32_f32_i32_i32_i32_i32_=>_i32 (func (param i32 i32 i32 i32 f32 i32 i32 i32 i32) (result i32)))
  (type $i32_i32_i32_i32_f32_f32_=>_i32 (func (param i32 i32 i32 i32 f32 f32) (result i32)))
  (type $i32_i32_i32_f32_i32_i32_f32_=>_i32 (func (param i32 i32 i32 f32 i32 i32 f32) (result i32)))
- (type $i32_i64_=>_i32 (func (param i32 i64) (result i32)))
- (type $i32_i64_i32_=>_i32 (func (param i32 i64 i32) (result i32)))
+ (type $i32_i64_i64_=>_i32 (func (param i32 i64 i64) (result i32)))
+ (type $i32_f32_=>_i32 (func (param i32 f32) (result i32)))
  (type $i32_f32_i32_=>_i32 (func (param i32 f32 i32) (result i32)))
  (type $i32_f32_f32_=>_i32 (func (param i32 f32 f32) (result i32)))
- (type $i64_=>_i32 (func (param i64) (result i32)))
  (type $f32_f32_=>_i32 (func (param f32 f32) (result i32)))
  (type $f32_f32_f32_f32_f32_f32_f32_f32_=>_i32 (func (param f32 f32 f32 f32 f32 f32 f32 f32) (result i32)))
- (type $i32_=>_i64 (func (param i32) (result i64)))
+ (type $i32_i32_=>_i64 (func (param i32 i32) (result i64)))
  (type $i64_i64_=>_i64 (func (param i64 i64) (result i64)))
  (type $i32_i32_i32_=>_f32 (func (param i32 i32 i32) (result f32)))
  (type $i32_i32_i32_i32_=>_f32 (func (param i32 i32 i32 i32) (result f32)))
  (type $i32_i32_i32_f32_i32_f32_=>_f32 (func (param i32 i32 i32 f32 i32 f32) (result f32)))
  (type $i32_f32_=>_f32 (func (param i32 f32) (result f32)))
- (type $f32_f32_=>_f32 (func (param f32 f32) (result f32)))
  (import "env" "abort" (func $~lib/builtins/abort (param i32 i32 i32 i32)))
  (memory $0 1)
  (data (i32.const 1024) "\1e\00\00\00\01\00\00\00\01\00\00\00\1e\00\00\00~\00l\00i\00b\00/\00r\00t\00/\00t\00l\00s\00f\00.\00t\00s")
@@ -97,7 +104,7 @@
  (data (i32.const 2480) "\0c\00\00\00\01\00\00\00\01\00\00\00\0c\00\00\00s\00l\00e\00e\00p\00y")
  (data (i32.const 2512) "\n\00\00\00\01\00\00\00\01\00\00\00\n\00\00\00s\00l\00e\00e\00p")
  (data (i32.const 2544) "\0c\00\00\00\01\00\00\00\01\00\00\00\0c\00\00\00w\00a\00k\00e\00u\00p")
- (data (i32.const 2576) "\08\00\00\00\01\00\00\00M\00\00\00\08\00\00\00\01")
+ (data (i32.const 2576) "\08\00\00\00\01\00\00\00K\00\00\00\08\00\00\00\01")
  (data (i32.const 2600) ")\15DNn\83\f9\a2\c0\dd4\f5\d1W\'\fcA\90C<\99\95b\dba\c5\bb\de\abcQ\fe")
  (data (i32.const 2640) "\1e\00\00\00\01\00\00\00\01\00\00\00\1e\00\00\00u\00n\00e\00x\00p\00e\00c\00t\00e\00d\00 \00n\00u\00l\00l")
  (data (i32.const 2688) "R\00\00\00\01\00\00\00\01\00\00\00R\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00e\00q\00u\00a\00t\00i\00o\00n\00s\00/\00a\00n\00g\00l\00e\00-\00l\00o\00c\00k\00-\00e\00q\00u\00a\00t\00i\00o\00n\00.\00t\00s")
@@ -138,32 +145,66 @@
  (data (i32.const 4576) "B\00\00\00\01\00\00\00\01\00\00\00B\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00c\00o\00l\00l\00i\00s\00i\00o\00n\00/\00n\00a\00r\00r\00o\00w\00p\00h\00a\00s\00e\00.\00t\00s")
  (data (i32.const 4672) "\10\00\00\00\01\00\00\00\01\00\00\00\10\00\00\00N\00o\00 \00d\00a\00t\00a\00!")
  (data (i32.const 4704) "D\00\00\00\01\00\00\00\01\00\00\00D\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00u\00t\00i\00l\00s\00/\00t\00u\00p\00l\00e\00-\00d\00i\00c\00t\00i\00o\00n\00a\00r\00y\00.\00t\00s")
- (data (i32.const 4800) "\08\00\00\00\01\00\00\00M\00\00\00\08\00\00\00\02")
- (data (i32.const 4836) "\01")
- (data (i32.const 4848) "\0e\00\00\00\01\00\00\00\01\00\00\00\0e\00\00\00a\00d\00d\00B\00o\00d\00y")
- (data (i32.const 4880) "H\00\00\00\01\00\00\00\01\00\00\00H\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00c\00o\00l\00l\00i\00s\00i\00o\00n\00/\00s\00a\00p\00-\00b\00r\00o\00a\00d\00p\00h\00a\00s\00e\00.\00t\00s")
- (data (i32.const 4976) "\08\00\00\00\01\00\00\00Y\00\00\00\08\00\00\00\03")
- (data (i32.const 5008) "\14\00\00\00\01\00\00\00\01\00\00\00\14\00\00\00r\00e\00m\00o\00v\00e\00B\00o\00d\00y")
- (data (i32.const 5056) "\08\00\00\00\01\00\00\00Y\00\00\00\08\00\00\00\04")
- (data (i32.const 5092) "\01")
- (data (i32.const 5104) "B\00\00\00\01\00\00\00\01\00\00\00B\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00o\00b\00j\00e\00c\00t\00s\00/\00l\00i\00n\00e\00a\00r\00-\00s\00p\00r\00i\00n\00g\00.\00t\00s")
- (data (i32.const 5200) "\14\00\00\00\01\00\00\00\01\00\00\00\14\00\00\00~\00l\00i\00b\00/\00r\00t\00.\00t\00s")
- (data (i32.const 5248) "l\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00!\19\00\00\02\00\00\00\"A\00\00\00\00\00\00\"\t\00\00\00\00\00\00 \00\00\00\t")
- (data (i32.const 5336) "\0b\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00\"A\00\00\00\00\00\000A\82\00\00\00\00\00 \00\00\00\00\00\00\00\"A\00\00\00\00\00\000A\82")
- (data (i32.const 5400) "\0b")
- (data (i32.const 5412) " \00\00\00\00\00\00\00\02A\00\00\00\00\00\00\02A")
- (data (i32.const 5440) "\0b")
- (data (i32.const 5452) "\02A\00\00\00\00\00\00 ")
- (data (i32.const 5480) "\18\00\00\00\02A")
- (data (i32.const 5496) "\18\00\00\00\02A")
- (data (i32.const 5524) " \00\00\00\00\00\00\000\01\14\00\00\00\00\00\"\n\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 ")
- (data (i32.const 5576) "\0f")
- (data (i32.const 5588) " \00\00\00\00\00\00\00\02A\00\00\00\00\00\00 \00\00\00\00\00\00\00\"A\00\00\00\00\00\00 \00\00\00\00\00\00\00\"\01")
- (data (i32.const 5660) "\10A\14")
- (data (i32.const 5676) "\02A")
- (data (i32.const 5688) "\0c\00\00\00\00\00\00\00(\00\00\00\00\00\00\00\0c\00\00\00 \00\00\00\00\00\00\00\02A\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00\a1\00\00\00\02\00\00\00\"A\00\00\00\00\00\00\"\19\00\00\00\00\00\00\a2\00\00\00\00\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00Q\00\00\00 \00\00\00\00\00\00\00 \00\00\00\t\00\00\00 \00\00\00=\00\00\00 \00\00\00\t\00\00\00 \00\00\00=\00\00\00 \00\00\00)\00\00\00 \00\00\00*\00\00\00 \00\00\00\18\00\00\00 \00\00\00\00\00\00\00 \00\00\00\17\00\00\00 \00\00\00\1a\00\00\00 \00\00\00\t\00\00\00 \00\00\00=\00\00\00 \00\00\00\t\00\00\00 \00\00\00=\00\00\00 \00\00\00\t\00\00\00 \00\00\00\t\00\00\00 \00\00\00\08\00\00\00 \00\00\00d\00\00\00 \00\00\00=\00\00\00 \00\00\00(\00\00\00 \00\00\00\08\00\00\00 \00\00\00d\00\00\00 \00\00\00Q\00\00\00 \00\00\00\13\00\00\00 \00\00\00\14\00\00\00 \00\00\00\13")
- (table $0 5 funcref)
- (elem (i32.const 1) $start:assembly/collision/ray~anonymous|0 $start:assembly/collision/ray~anonymous|0 $assembly/collision/sap-broadphase/_addBodyHandler $assembly/collision/sap-broadphase/_removeBodyHandler)
+ (data (i32.const 4800) "L\00\00\00\01\00\00\00\01\00\00\00L\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00c\00o\00l\00l\00i\00s\00i\00o\00n\00/\00n\00a\00i\00v\00e\00-\00b\00r\00o\00a\00d\00p\00h\00a\00s\00e\00.\00t\00s")
+ (data (i32.const 4896) "\08\00\00\00\01\00\00\00K\00\00\00\08\00\00\00\02")
+ (data (i32.const 4932) "\01")
+ (data (i32.const 4944) "\0e\00\00\00\01\00\00\00\01\00\00\00\0e\00\00\00a\00d\00d\00B\00o\00d\00y")
+ (data (i32.const 4976) "H\00\00\00\01\00\00\00\01\00\00\00H\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00c\00o\00l\00l\00i\00s\00i\00o\00n\00/\00s\00a\00p\00-\00b\00r\00o\00a\00d\00p\00h\00a\00s\00e\00.\00t\00s")
+ (data (i32.const 5072) "\08\00\00\00\01\00\00\00W\00\00\00\08\00\00\00\03")
+ (data (i32.const 5104) "\14\00\00\00\01\00\00\00\01\00\00\00\14\00\00\00r\00e\00m\00o\00v\00e\00B\00o\00d\00y")
+ (data (i32.const 5152) "\08\00\00\00\01\00\00\00W\00\00\00\08\00\00\00\04")
+ (data (i32.const 5188) "\01")
+ (data (i32.const 5200) "B\00\00\00\01\00\00\00\01\00\00\00B\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00o\00b\00j\00e\00c\00t\00s\00/\00l\00i\00n\00e\00a\00r\00-\00s\00p\00r\00i\00n\00g\00.\00t\00s")
+ (data (i32.const 5296) ".\00\00\00\01\00\00\00\01\00\00\00.\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00w\00o\00r\00l\00d\00/\00w\00o\00r\00l\00d\00.\00t\00s")
+ (data (i32.const 5364) "\01")
+ (data (i32.const 5380) "\01")
+ (data (i32.const 5396) "\01")
+ (data (i32.const 5412) "\01")
+ (data (i32.const 5428) "\01")
+ (data (i32.const 5444) "\01")
+ (data (i32.const 5460) "\01")
+ (data (i32.const 5476) "\01")
+ (data (i32.const 5492) "\01")
+ (data (i32.const 5508) "\01")
+ (data (i32.const 5520) "P\00\00\00\01\00\00\00\01\00\00\00P\00\00\00C\00o\00n\00s\00t\00r\00a\00i\00n\00t\00s\00 \00c\00a\00n\00n\00o\00t\00 \00b\00e\00 \00a\00d\00d\00e\00d\00 \00d\00u\00r\00i\00n\00g\00 \00s\00t\00e\00p\00.")
+ (data (i32.const 5616) "n\00\00\00\01\00\00\00\01\00\00\00n\00\00\00C\00a\00n\00n\00o\00t\00 \00a\00d\00d\00 \00C\00o\00n\00s\00t\00r\00a\00i\00n\00t\00:\00 \00b\00o\00d\00y\00A\00 \00i\00s\00 \00n\00o\00t\00 \00a\00d\00d\00e\00d\00 \00t\00o\00 \00t\00h\00e\00 \00W\00o\00r\00l\00d\00.")
+ (data (i32.const 5744) "n\00\00\00\01\00\00\00\01\00\00\00n\00\00\00C\00a\00n\00n\00o\00t\00 \00a\00d\00d\00 \00C\00o\00n\00s\00t\00r\00a\00i\00n\00t\00:\00 \00b\00o\00d\00y\00B\00 \00i\00s\00 \00n\00o\00t\00 \00a\00d\00d\00e\00d\00 \00t\00o\00 \00t\00h\00e\00 \00W\00o\00r\00l\00d\00.")
+ (data (i32.const 5872) "T\00\00\00\01\00\00\00\01\00\00\00T\00\00\00C\00o\00n\00s\00t\00r\00a\00i\00n\00t\00s\00 \00c\00a\00n\00n\00o\00t\00 \00b\00e\00 \00r\00e\00m\00o\00v\00e\00d\00 \00d\00u\00r\00i\00n\00g\00 \00s\00t\00e\00p\00.")
+ (data (i32.const 5988) "\01")
+ (data (i32.const 6004) "\01")
+ (data (i32.const 6016) "\08\00\00\00\01\00\00\00\01\00\00\00\08\00\00\00K\00e\00y\00 ")
+ (data (i32.const 6048) "\1a\00\00\00\01\00\00\00\01\00\00\00\1a\00\00\00 \00h\00a\00d\00 \00n\00o\00 \00d\00a\00t\00a\00!")
+ (data (i32.const 6096) "@\00\00\00\01\00\00\00\01\00\00\00@\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00u\00t\00i\00l\00s\00/\00o\00v\00e\00r\00l\00a\00p\00-\00k\00e\00e\00p\00e\00r\00.\00t\00s")
+ (data (i32.const 6180) "\01")
+ (data (i32.const 6192) "\08\00\00\00\01\00\00\00j\00\00\00\08\00\00\00\05")
+ (data (i32.const 6224) "0\00\00\00\01\00\00\00\01\00\00\000\00\00\00a\00s\00s\00e\00m\00b\00l\00y\00/\00o\00b\00j\00e\00c\00t\00s\00/\00b\00o\00d\00y\00.\00t\00s")
+ (data (i32.const 6292) "\01")
+ (data (i32.const 6308) "\01")
+ (data (i32.const 6320) "\08\00\00\00\01\00\00\00k\00\00\00\08\00\00\00\06")
+ (data (i32.const 6352) "H\00\00\00\01\00\00\00\01\00\00\00H\00\00\00S\00p\00r\00i\00n\00g\00s\00 \00c\00a\00n\00n\00o\00t\00 \00b\00e\00 \00a\00d\00d\00e\00d\00 \00d\00u\00r\00i\00n\00g\00 \00s\00t\00e\00p\00.")
+ (data (i32.const 6448) "L\00\00\00\01\00\00\00\01\00\00\00L\00\00\00S\00p\00r\00i\00n\00g\00s\00 \00c\00a\00n\00n\00o\00t\00 \00b\00e\00 \00r\00e\00m\00o\00v\00e\00d\00 \00d\00u\00r\00i\00n\00g\00 \00s\00t\00e\00p\00.")
+ (data (i32.const 6544) "F\00\00\00\01\00\00\00\01\00\00\00F\00\00\00B\00o\00d\00i\00e\00s\00 \00c\00a\00n\00n\00o\00t\00 \00b\00e\00 \00a\00d\00d\00e\00d\00 \00d\00u\00r\00i\00n\00g\00 \00s\00t\00e\00p\00.")
+ (data (i32.const 6640) "B\00\00\00\01\00\00\00\01\00\00\00B\00\00\00B\00o\00d\00y\00 \00i\00s\00 \00a\00l\00r\00e\00a\00d\00y\00 \00a\00d\00d\00e\00d\00 \00t\00o\00 \00a\00 \00W\00o\00r\00l\00d\00.")
+ (data (i32.const 6736) "J\00\00\00\01\00\00\00\01\00\00\00J\00\00\00B\00o\00d\00i\00e\00s\00 \00c\00a\00n\00n\00o\00t\00 \00b\00e\00 \00r\00e\00m\00o\00v\00e\00d\00 \00d\00u\00r\00i\00n\00g\00 \00s\00t\00e\00p\00.")
+ (data (i32.const 6832) "\90\00\00\00\01\00\00\00\01\00\00\00\90\00\00\00C\00a\00n\00n\00o\00t\00 \00r\00e\00m\00o\00v\00e\00 \00B\00o\00d\00y\00 \00f\00r\00o\00m\00 \00W\00o\00r\00l\00d\00:\00 \00i\00t\00 \00s\00t\00i\00l\00l\00 \00h\00a\00s\00 \00c\00o\00n\00s\00t\00r\00a\00i\00n\00t\00s\00 \00c\00o\00n\00n\00e\00c\00t\00e\00d\00 \00t\00o\00 \00i\00t\00.")
+ (data (i32.const 6996) "\01")
+ (data (i32.const 7008) "\14\00\00\00\01\00\00\00\01\00\00\00\14\00\00\00~\00l\00i\00b\00/\00r\00t\00.\00t\00s")
+ (data (i32.const 7056) "l\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00!\19\00\00\02\00\00\00\"A\00\00\00\00\00\00\"\t\00\00\00\00\00\00 \00\00\00\t")
+ (data (i32.const 7144) "\0b\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00\"A\00\00\00\00\00\000A\82\00\00\00\00\00 \00\00\00\00\00\00\00\"A\00\00\00\00\00\000A\82")
+ (data (i32.const 7208) "\0b")
+ (data (i32.const 7220) " \00\00\00\00\00\00\00\02A\00\00\00\00\00\00\02A")
+ (data (i32.const 7248) "\0b")
+ (data (i32.const 7260) "\02A\00\00\00\00\00\00 ")
+ (data (i32.const 7288) "\18\00\00\00\02A")
+ (data (i32.const 7304) "\18\00\00\00\02A")
+ (data (i32.const 7332) " \00\00\00\00\00\00\000\01\14\00\00\00\00\00\"\n\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 ")
+ (data (i32.const 7384) "\0f")
+ (data (i32.const 7396) " \00\00\00\00\00\00\00\02A\00\00\00\00\00\00\"A\00\00\00\00\00\00 ")
+ (data (i32.const 7452) "\10A\14")
+ (data (i32.const 7468) "\02A")
+ (data (i32.const 7480) "\0c\00\00\00\00\00\00\00(\00\00\00\00\00\00\00\0c\00\00\00 \00\00\00\00\00\00\00\02A\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00\a1\00\00\00\02\00\00\00\"A\00\00\00\00\00\00\"\19\00\00\00\00\00\00\a2\00\00\00\00\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\0c\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00\00\00\00\00 \00\00\00O\00\00\00 \00\00\00\00\00\00\00 \00\00\00\t\00\00\00 \00\00\00;\00\00\00 \00\00\00\t\00\00\00 \00\00\00;\00\00\00 \00\00\00)\00\00\00 \00\00\00*\00\00\00 \00\00\00\18\00\00\00 \00\00\00\00\00\00\00 \00\00\00\17\00\00\00 \00\00\00\1a\00\00\00 \00\00\00\t\00\00\00 \00\00\00;\00\00\00 \00\00\00\t\00\00\00 \00\00\00;\00\00\00 \00\00\00\t\00\00\00 \00\00\00\t\00\00\00 \00\00\00\08\00\00\00 \00\00\00b\00\00\00 \00\00\00;\00\00\00 \00\00\00(\00\00\00 \00\00\00\08\00\00\00 \00\00\00b\00\00\00 \00\00\00O\00\00\00 \00\00\00\13\00\00\00 \00\00\00\14\00\00\00 \00\00\00\13\00\00\00 \00\00\00\00\00\00\00 ")
+ (table $0 7 funcref)
+ (elem (i32.const 1) $start:assembly/collision/ray~anonymous|0 $start:assembly/collision/ray~anonymous|0 $assembly/collision/sap-broadphase/_addBodyHandler $assembly/collision/sap-broadphase/_removeBodyHandler $assembly/world/world/sortEquationsByIsland $assembly/world/world/sortBodiesByIsland)
  (global $~lib/rt/tlsf/ROOT (mut i32) (i32.const 0))
  (global $~lib/rt/tlsf/collectLock (mut i32) (i32.const 0))
  (global $assembly/index/version i32 (i32.const 1200))
@@ -281,8 +322,24 @@
  (global $assembly/constraints/constraint/Constraint.LOCK (mut i32) (i32.const 3))
  (global $assembly/constraints/constraint/Constraint.PRISMATIC (mut i32) (i32.const 4))
  (global $assembly/constraints/constraint/Constraint.REVOLUTE (mut i32) (i32.const 5))
+ (global $assembly/world/world/postStepEvent (mut i32) (i32.const 0))
+ (global $assembly/world/world/addSpringEvent (mut i32) (i32.const 0))
+ (global $assembly/world/world/impactEvent (mut i32) (i32.const 0))
+ (global $assembly/world/world/postBroadphaseEvent (mut i32) (i32.const 0))
+ (global $assembly/world/world/beginContactEvent (mut i32) (i32.const 0))
+ (global $assembly/world/world/endContactEvent (mut i32) (i32.const 0))
+ (global $assembly/world/world/hitTest_tmp1 (mut i32) (i32.const 0))
+ (global $assembly/world/world/hitTest_tmp2 (mut i32) (i32.const 0))
+ (global $assembly/world/world/preSolveEvent (mut i32) (i32.const 0))
+ (global $assembly/world/world/World.NO_SLEEPING (mut i32) (i32.const 1))
+ (global $assembly/world/world/World.BODY_SLEEPING (mut i32) (i32.const 2))
+ (global $assembly/world/world/World.ISLAND_SLEEPING (mut i32) (i32.const 4))
  (global $assembly/shapes/Convex/tmpVec2 (mut i32) (i32.const 0))
+ (global $assembly/objects/body/integrate_fhMinv (mut i32) (i32.const 0))
+ (global $assembly/objects/body/integrate_velodt (mut i32) (i32.const 0))
  (global $assembly/objects/body/_tmp (mut i32) (i32.const 0))
+ (global $assembly/objects/body/sleepyEvent (mut i32) (i32.const 0))
+ (global $assembly/objects/body/sleepEvent (mut i32) (i32.const 0))
  (global $assembly/objects/body/wakeUpEvent (mut i32) (i32.const 0))
  (global $assembly/collision/ray/intersectBody_worldPosition (mut i32) (i32.const 0))
  (global $assembly/collision/ray/v0 (mut i32) (i32.const 0))
@@ -307,41 +364,42 @@
  (global $~lib/rt/pure/ROOTS (mut i32) (i32.const 0))
  (global $~lib/rt/pure/CUR (mut i32) (i32.const 0))
  (global $~lib/rt/pure/END (mut i32) (i32.const 0))
- (global $~lib/rt/__rtti_base i32 (i32.const 5248))
- (global $assembly/collision/aabb/AABB i32 (i32.const 59))
- (global $assembly/equations/angle-lock-equation/AngleLockEquation i32 (i32.const 80))
+ (global $~lib/rt/__rtti_base i32 (i32.const 7056))
+ (global $assembly/collision/aabb/AABB i32 (i32.const 57))
+ (global $assembly/equations/angle-lock-equation/AngleLockEquation i32 (i32.const 78))
  (global $assembly/collision/broadphase/Broadphase i32 (i32.const 40))
- (global $assembly/shapes/capsule/Capsule i32 (i32.const 82))
- (global $assembly/shapes/circle/Circle i32 (i32.const 84))
+ (global $assembly/shapes/capsule/Capsule i32 (i32.const 80))
+ (global $assembly/shapes/circle/Circle i32 (i32.const 82))
  (global $assembly/constraints/constraint/Constraint i32 (i32.const 41))
  (global $assembly/equations/contact-equation/ContactEquation i32 (i32.const 28))
  (global $assembly/utils/contact-equation-pool/ContactEquationPool i32 (i32.const 32))
  (global $assembly/material/contact-material/ContactMaterial i32 (i32.const 37))
  (global $assembly/shapes/convex/Convex i32 (i32.const 8))
- (global $assembly/constraints/distance-constraint/DistanceConstraint i32 (i32.const 86))
+ (global $assembly/constraints/distance-constraint/DistanceConstraint i32 (i32.const 84))
  (global $assembly/equations/equation/Equation i32 (i32.const 24))
  (global $assembly/events/event-emitter/EventEmitter i32 (i32.const 11))
  (global $assembly/equations/friction-equation/FrictionEquation i32 (i32.const 30))
- (global $assembly/equations/distance-equation/DistanceEquation i32 (i32.const 88))
+ (global $assembly/equations/distance-equation/DistanceEquation i32 (i32.const 86))
  (global $assembly/utils/friction-equation-pool/FrictionEquationPool i32 (i32.const 33))
- (global $assembly/solver/gs-solver/GSSolver i32 (i32.const 90))
- (global $assembly/shapes/heightfield/Heightfield i32 (i32.const 92))
- (global $assembly/shapes/line/Line i32 (i32.const 94))
- (global $assembly/material/material/Material i32 (i32.const 44))
+ (global $assembly/solver/gs-solver/GSSolver i32 (i32.const 88))
+ (global $assembly/shapes/heightfield/Heightfield i32 (i32.const 90))
+ (global $assembly/shapes/line/Line i32 (i32.const 92))
+ (global $assembly/material/material/Material i32 (i32.const 38))
  (global $assembly/collision/narrowphase/Narrowphase i32 (i32.const 27))
- (global $assembly/collision/naive-broadphase/NaiveBroadphase i32 (i32.const 101))
- (global $assembly/shapes/particle/Particle i32 (i32.const 96))
- (global $assembly/shapes/plane/Plane i32 (i32.const 97))
- (global $assembly/collision/ray/Ray i32 (i32.const 78))
- (global $assembly/collision/raycast-result/RaycastResult i32 (i32.const 76))
- (global $assembly/shapes/Box/Box i32 (i32.const 102))
- (global $assembly/equations/rotational-velocity-equation/RotationalVelocityEquation i32 (i32.const 104))
- (global $assembly/collision/sap-broadphase/SAPBroadphase i32 (i32.const 55))
+ (global $assembly/collision/naive-broadphase/NaiveBroadphase i32 (i32.const 99))
+ (global $assembly/shapes/particle/Particle i32 (i32.const 94))
+ (global $assembly/shapes/plane/Plane i32 (i32.const 95))
+ (global $assembly/collision/ray/Ray i32 (i32.const 76))
+ (global $assembly/collision/raycast-result/RaycastResult i32 (i32.const 74))
+ (global $assembly/shapes/Box/Box i32 (i32.const 100))
+ (global $assembly/equations/rotational-velocity-equation/RotationalVelocityEquation i32 (i32.const 102))
+ (global $assembly/collision/sap-broadphase/SAPBroadphase i32 (i32.const 53))
  (global $assembly/shapes/shape/Shape i32 (i32.const 9))
  (global $assembly/solver/solver/Solver i32 (i32.const 23))
  (global $assembly/objects/spring/Spring i32 (i32.const 19))
- (global $assembly/objects/linear-spring/LinearSpring i32 (i32.const 105))
- (global $assembly/objects/rotational-spring/RotationalSpring i32 (i32.const 107))
+ (global $assembly/objects/linear-spring/LinearSpring i32 (i32.const 103))
+ (global $assembly/objects/rotational-spring/RotationalSpring i32 (i32.const 105))
+ (global $assembly/world/world/World i32 (i32.const 18))
  (export "memory" (memory $0))
  (export "__alloc" (func $~lib/rt/tlsf/__alloc))
  (export "__retain" (func $~lib/rt/pure/__retain))
@@ -1483,6 +1541,92 @@
  (export "RotationalSpring#get:restAngle" (func $assembly/material/contact-material/ContactMaterial#get:restitution))
  (export "RotationalSpring#set:restAngle" (func $assembly/material/contact-material/ContactMaterial#set:restitution))
  (export "Utils" (global $assembly/utils/utils/Utils))
+ (export "World" (global $assembly/world/world/World))
+ (export "World#constructor" (func $assembly/world/world/World#constructor))
+ (export "World#on" (func $assembly/events/event-emitter/EventEmitter#on))
+ (export "World#off" (func $assembly/events/event-emitter/EventEmitter#off))
+ (export "World#has" (func $assembly/events/event-emitter/EventEmitter#has))
+ (export "World#emit" (func $assembly/events/event-emitter/EventEmitter#emit))
+ (export "World#get:springs" (func $assembly/collision/aabb/AABB#get:tmp))
+ (export "World#set:springs" (func $assembly/collision/aabb/AABB#set:tmp))
+ (export "World#get:bodies" (func $assembly/equations/Equation/Equation#get:bodyA))
+ (export "World#set:bodies" (func $assembly/equations/Equation/Equation#set:bodyA))
+ (export "World#get:disabledBodyCollisionPairs" (func $assembly/equations/Equation/Equation#get:bodyB))
+ (export "World#set:disabledBodyCollisionPairs" (func $assembly/equations/Equation/Equation#set:bodyB))
+ (export "World#get:solver" (func $assembly/constraints/distance-constraint/DistanceConstraint#get:localAnchorA))
+ (export "World#set:solver" (func $assembly/constraints/distance-constraint/DistanceConstraint#set:localAnchorA))
+ (export "World#get:narrowphase" (func $assembly/constraints/distance-constraint/DistanceConstraint#get:localAnchorB))
+ (export "World#set:narrowphase" (func $assembly/constraints/distance-constraint/DistanceConstraint#set:localAnchorB))
+ (export "World#get:gravity" (func $assembly/equations/Equation/Equation#get:G))
+ (export "World#set:gravity" (func $assembly/equations/Equation/Equation#set:G))
+ (export "World#get:frictionGravity" (func $assembly/equations/Equation/Equation#get:offset))
+ (export "World#set:frictionGravity" (func $assembly/equations/Equation/Equation#set:offset))
+ (export "World#get:useWorldGravityAsFrictionGravity" (func $assembly/constraints/distance-constraint/DistanceConstraint#get:upperLimitEnabled))
+ (export "World#set:useWorldGravityAsFrictionGravity" (func $assembly/constraints/distance-constraint/DistanceConstraint#set:upperLimitEnabled))
+ (export "World#get:useFrictionGravityOnZeroGravity" (func $assembly/world/world/World#get:useFrictionGravityOnZeroGravity))
+ (export "World#set:useFrictionGravityOnZeroGravity" (func $assembly/world/world/World#set:useFrictionGravityOnZeroGravity))
+ (export "World#get:broadphase" (func $assembly/world/world/World#get:broadphase))
+ (export "World#set:broadphase" (func $assembly/world/world/World#set:broadphase))
+ (export "World#get:constraints" (func $assembly/shapes/convex/Convex#get:vertices))
+ (export "World#set:constraints" (func $assembly/shapes/convex/Convex#set:vertices))
+ (export "World#get:defaultMaterial" (func $assembly/shapes/convex/Convex#get:normals))
+ (export "World#set:defaultMaterial" (func $assembly/shapes/convex/Convex#set:normals))
+ (export "World#get:defaultContactMaterial" (func $assembly/shapes/convex/Convex#get:triangles))
+ (export "World#set:defaultContactMaterial" (func $assembly/shapes/convex/Convex#set:triangles))
+ (export "World#get:lastTimeStep" (func $assembly/equations/Equation/Equation#get:multiplier))
+ (export "World#set:lastTimeStep" (func $assembly/equations/Equation/Equation#set:multiplier))
+ (export "World#get:applySpringForces" (func $assembly/world/world/World#get:applySpringForces))
+ (export "World#set:applySpringForces" (func $assembly/world/world/World#set:applySpringForces))
+ (export "World#get:applyDamping" (func $assembly/world/world/World#get:applyDamping))
+ (export "World#set:applyDamping" (func $assembly/world/world/World#set:applyDamping))
+ (export "World#get:applyGravity" (func $assembly/world/world/World#get:applyGravity))
+ (export "World#set:applyGravity" (func $assembly/world/world/World#set:applyGravity))
+ (export "World#get:solveConstraints" (func $assembly/world/world/World#get:solveConstraints))
+ (export "World#set:solveConstraints" (func $assembly/world/world/World#set:solveConstraints))
+ (export "World#get:contactMaterials" (func $assembly/world/world/World#get:contactMaterials))
+ (export "World#set:contactMaterials" (func $assembly/world/world/World#set:contactMaterials))
+ (export "World#get:time" (func $assembly/equations/Equation/Equation#get:maxForceDt))
+ (export "World#set:time" (func $assembly/equations/Equation/Equation#set:maxForceDt))
+ (export "World#get:accumulator" (func $assembly/equations/Equation/Equation#get:minForceDt))
+ (export "World#set:accumulator" (func $assembly/equations/Equation/Equation#set:minForceDt))
+ (export "World#get:stepping" (func $assembly/world/world/World#get:stepping))
+ (export "World#set:stepping" (func $assembly/world/world/World#set:stepping))
+ (export "World#get:islandSplit" (func $assembly/world/world/World#get:islandSplit))
+ (export "World#set:islandSplit" (func $assembly/world/world/World#set:islandSplit))
+ (export "World#get:emitImpactEvent" (func $assembly/world/world/World#get:emitImpactEvent))
+ (export "World#set:emitImpactEvent" (func $assembly/world/world/World#set:emitImpactEvent))
+ (export "World#get:sleepMode" (func $assembly/world/world/World#get:sleepMode))
+ (export "World#set:sleepMode" (func $assembly/world/world/World#set:sleepMode))
+ (export "World#get:unionFind" (func $assembly/world/world/World#get:unionFind))
+ (export "World#set:unionFind" (func $assembly/world/world/World#set:unionFind))
+ (export "World#get:overlapKeeper" (func $assembly/equations/contact-equation/ContactEquation#get:penetrationVec))
+ (export "World#set:overlapKeeper" (func $assembly/equations/contact-equation/ContactEquation#set:penetrationVec))
+ (export "World#get:addBodyEvent" (func $assembly/equations/contact-equation/ContactEquation#get:contactPointB))
+ (export "World#set:addBodyEvent" (func $assembly/equations/contact-equation/ContactEquation#set:contactPointB))
+ (export "World#get:removeBodyEvent" (func $assembly/equations/contact-equation/ContactEquation#get:normalA))
+ (export "World#set:removeBodyEvent" (func $assembly/equations/contact-equation/ContactEquation#set:normalA))
+ (export "World#addConstraint" (func $assembly/world/world/World#addConstraint))
+ (export "World#addContactMaterial" (func $assembly/world/world/World#addContactMaterial))
+ (export "World#removeContactMaterial" (func $assembly/world/world/World#removeContactMaterial))
+ (export "World#getContactMaterial" (func $assembly/world/world/World#getContactMaterial))
+ (export "World#removeConstraint" (func $assembly/world/world/World#removeConstraint))
+ (export "World#step" (func $assembly/world/world/World#step))
+ (export "World#internalStep" (func $assembly/world/world/World#internalStep))
+ (export "World#addSpring" (func $assembly/world/world/World#addSpring))
+ (export "World#removeSpring" (func $assembly/world/world/World#removeSpring))
+ (export "World#addBody" (func $assembly/world/world/World#addBody))
+ (export "World#removeBody" (func $assembly/world/world/World#removeBody))
+ (export "World#getBodyById" (func $assembly/world/world/World#getBodyById))
+ (export "World#disableBodyCollision" (func $assembly/world/world/World#disableBodyCollision))
+ (export "World#enableBodyCollision" (func $assembly/world/world/World#enableBodyCollision))
+ (export "World#clear" (func $assembly/world/world/World#clear))
+ (export "World#hitTest" (func $assembly/world/world/World#hitTest))
+ (export "World#setGlobalStiffness" (func $assembly/world/world/World#setGlobalStiffness))
+ (export "World#setGlobalRelaxation" (func $assembly/world/world/World#setGlobalRelaxation))
+ (export "World#raycast" (func $assembly/world/world/World#raycast))
+ (export "World.NO_SLEEPING" (global $assembly/world/world/World.NO_SLEEPING))
+ (export "World.BODY_SLEEPING" (global $assembly/world/world/World.BODY_SLEEPING))
+ (export "World.ISLAND_SLEEPING" (global $assembly/world/world/World.ISLAND_SLEEPING))
  (export "vec2" (global $assembly/math/vec2/vec2))
  (export "__setArgumentsLength" (func $~setArgumentsLength))
  (start $~start)
@@ -2064,12 +2208,12 @@
    if
     unreachable
    end
-   i32.const 6128
+   i32.const 7936
    local.set $1
-   i32.const 6128
+   i32.const 7936
    i32.const 0
    i32.store
-   i32.const 7696
+   i32.const 9504
    i32.const 0
    i32.store
    loop $for-loop|0
@@ -2080,7 +2224,7 @@
      local.get $0
      i32.const 2
      i32.shl
-     i32.const 6128
+     i32.const 7936
      i32.add
      i32.const 0
      i32.store offset=4
@@ -2098,7 +2242,7 @@
        i32.add
        i32.const 2
        i32.shl
-       i32.const 6128
+       i32.const 7936
        i32.add
        i32.const 0
        i32.store offset=96
@@ -2116,13 +2260,13 @@
      br $for-loop|0
     end
    end
-   i32.const 6128
-   i32.const 7712
+   i32.const 7936
+   i32.const 9520
    memory.size
    i32.const 16
    i32.shl
    call $~lib/rt/tlsf/addMemory
-   i32.const 6128
+   i32.const 7936
    global.set $~lib/rt/tlsf/ROOT
   end
   local.get $1
@@ -2506,7 +2650,7 @@
   (local $1 i32)
   (local $2 i32)
   local.get $0
-  i32.const 6116
+  i32.const 7924
   i32.gt_u
   if
    local.get $0
@@ -2553,7 +2697,7 @@
  )
  (func $~lib/rt/pure/__release (param $0 i32)
   local.get $0
-  i32.const 6116
+  i32.const 7924
   i32.gt_u
   if
    local.get $0
@@ -3436,7 +3580,7 @@
   local.get $2
   call $~lib/memory/memory.copy
   local.get $1
-  i32.const 6116
+  i32.const 7924
   i32.ge_u
   if
    local.get $0
@@ -3905,7 +4049,7 @@
   select
   local.tee $2
   i32.const 1
-  i32.const 65
+  i32.const 63
   i32.const 0
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
@@ -3982,7 +4126,7 @@
   if
    i32.const 0
    i32.const 1
-   i32.const 65
+   i32.const 63
    i32.const 1744
    call $~lib/rt/__allocArray
    call $~lib/rt/pure/__retain
@@ -3992,14 +4136,14 @@
   end
   i32.const 0
   i32.const 1
-  i32.const 65
+  i32.const 63
   i32.const 1760
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
   local.set $5
   i32.const 0
   i32.const 1
-  i32.const 65
+  i32.const 63
   i32.const 1776
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
@@ -4300,7 +4444,7 @@
   call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
   i32.const 0
   i32.const 2
-  i32.const 64
+  i32.const 62
   i32.const 1728
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
@@ -4379,7 +4523,7 @@
     call $~lib/array/Array<u16>#__get
     local.set $7
     i32.const 12
-    i32.const 62
+    i32.const 60
     call $~lib/rt/tlsf/__alloc
     call $~lib/rt/pure/__retain
     i32.const 3
@@ -5033,7 +5177,7 @@
   local.get $0
   i32.const 0
   i32.const 2
-  i32.const 63
+  i32.const 61
   i32.const 2064
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
@@ -5145,7 +5289,7 @@
   call $assembly/shapes/convex/Convex#updateNormals
   i32.const 0
   i32.const 2
-  i32.const 63
+  i32.const 61
   i32.const 1792
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
@@ -5502,14 +5646,14 @@
   global.set $assembly/equations/contact-equation/relVel
   call $start:assembly/collision/narrowphase
   i32.const 8
-  i32.const 66
+  i32.const 64
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   i32.const 2096
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/world/world/postStepEvent
   i32.const 12
-  i32.const 67
+  i32.const 65
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   local.tee $0
@@ -5518,9 +5662,9 @@
   local.get $0
   i32.const 2128
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/world/world/addSpringEvent
   i32.const 28
-  i32.const 68
+  i32.const 66
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   local.tee $0
@@ -5541,9 +5685,9 @@
   local.get $0
   i32.const 2176
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/world/world/impactEvent
   i32.const 12
-  i32.const 69
+  i32.const 67
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   local.tee $0
@@ -5552,9 +5696,9 @@
   local.get $0
   i32.const 2208
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/world/world/postBroadphaseEvent
   i32.const 28
-  i32.const 70
+  i32.const 68
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   local.tee $0
@@ -5580,9 +5724,9 @@
   local.get $0
   i32.const 2256
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/world/world/beginContactEvent
   i32.const 24
-  i32.const 71
+  i32.const 69
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   local.tee $0
@@ -5600,13 +5744,13 @@
   local.get $0
   i32.const 2320
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/world/world/endContactEvent
   call $assembly/math/vec2/Vec2#create
-  drop
+  global.set $assembly/world/world/hitTest_tmp1
   call $assembly/math/vec2/Vec2#create
-  drop
+  global.set $assembly/world/world/hitTest_tmp2
   i32.const 16
-  i32.const 72
+  i32.const 70
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   local.tee $0
@@ -5618,7 +5762,7 @@
   local.get $0
   i32.const 2368
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/world/world/preSolveEvent
  )
  (func $start:assembly/collision/ray~anonymous|0 (param $0 i32)
   nop
@@ -5664,27 +5808,27 @@
   call $~lib/typedarray/Float32Array#constructor
   drop
   call $assembly/math/vec2/Vec2#create
-  drop
+  global.set $assembly/objects/body/integrate_fhMinv
   call $assembly/math/vec2/Vec2#create
-  drop
+  global.set $assembly/objects/body/integrate_velodt
   call $assembly/math/vec2/Vec2#create
   global.set $assembly/objects/body/_tmp
   i32.const 8
-  i32.const 73
+  i32.const 71
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   i32.const 2496
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/objects/body/sleepyEvent
   i32.const 8
-  i32.const 74
+  i32.const 72
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   i32.const 2528
   call $assembly/events/event-emitter/EventArgument#constructor
-  drop
+  global.set $assembly/objects/body/sleepEvent
   i32.const 8
-  i32.const 75
+  i32.const 73
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   i32.const 2560
@@ -5727,7 +5871,7 @@
   i32.eqz
   if
    i32.const 12
-   i32.const 59
+   i32.const 57
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -7089,8 +7233,8 @@
   local.get $0
   i32.eqz
   if
-   i32.const 96
-   i32.const 81
+   i32.const 92
+   i32.const 79
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -7162,8 +7306,8 @@
   f32.const 0
   f32.store offset=84
   local.get $0
-  i64.const -1
-  i64.store offset=88
+  i32.const -1
+  i32.store offset=88
   local.get $1
   call $~lib/rt/pure/__retain
   local.set $3
@@ -7283,7 +7427,7 @@
   call $~lib/typedarray/Float32Array#__set
   local.get $0
   local.get $1
-  f32.store offset=100
+  f32.store offset=96
   local.get $2
   call $~lib/rt/pure/__release
  )
@@ -7291,18 +7435,18 @@
   local.get $0
   i32.eqz
   if
-   i32.const 104
-   i32.const 80
+   i32.const 100
+   i32.const 78
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
   end
   local.get $0
   f32.const 0
-  f32.store offset=96
+  f32.store offset=92
   local.get $0
   f32.const 0
-  f32.store offset=100
+  f32.store offset=96
   local.get $0
   local.get $1
   call $~lib/rt/pure/__retain
@@ -7313,13 +7457,13 @@
   call $assembly/equations/Equation/Equation#constructor
   local.tee $0
   local.get $3
-  f32.store offset=96
+  f32.store offset=92
   local.get $0
   local.get $4
-  f32.store offset=100
+  f32.store offset=96
   local.get $0
   local.get $0
-  f32.load offset=100
+  f32.load offset=96
   call $assembly/equations/angle-lock-equation/AngleLockEquation#setRatio
   local.get $1
   call $~lib/rt/pure/__release
@@ -7567,20 +7711,20 @@
   local.get $1
   f32.store offset=84
  )
- (func $assembly/equations/Equation/Equation#get:index (param $0 i32) (result i64)
+ (func $assembly/equations/Equation/Equation#get:index (param $0 i32) (result i32)
   local.get $0
-  i64.load offset=88
+  i32.load offset=88
  )
- (func $assembly/equations/Equation/Equation#set:index (param $0 i32) (param $1 i64)
+ (func $assembly/equations/Equation/Equation#set:index (param $0 i32) (param $1 i32)
   local.get $0
   local.get $1
-  i64.store offset=88
+  i32.store offset=88
  )
  (func $assembly/equations/angle-lock-equation/AngleLockEquation#computeGq (param $0 i32) (result f32)
   (local $1 f32)
   (local $2 i32)
   local.get $0
-  f32.load offset=100
+  f32.load offset=96
   local.get $0
   i32.load offset=12
   local.tee $2
@@ -7594,7 +7738,7 @@
    unreachable
   end
   local.get $2
-  f32.load offset=88
+  f32.load offset=80
   f32.mul
   local.get $0
   i32.load offset=16
@@ -7609,10 +7753,10 @@
    unreachable
   end
   local.get $2
-  f32.load offset=88
+  f32.load offset=80
   f32.sub
   local.get $0
-  f32.load offset=96
+  f32.load offset=92
   f32.add
  )
  (func $assembly/equations/Equation/Equation#update (param $0 i32)
@@ -7753,21 +7897,21 @@
    return
   end
   local.get $1
-  i32.load offset=76
+  i32.load offset=68
   call $~lib/rt/pure/__retain
   local.set $4
   local.get $2
-  i32.load offset=76
+  i32.load offset=68
   call $~lib/rt/pure/__retain
   local.set $5
   local.get $0
   local.get $3
   local.get $4
   local.get $1
-  f32.load offset=100
+  f32.load offset=92
   local.get $5
   local.get $2
-  f32.load offset=100
+  f32.load offset=92
   call $assembly/equations/Equation/Equation#gmult
   local.get $0
   f32.load offset=60
@@ -7818,10 +7962,10 @@
    return
   end
   local.get $1
-  f32.load offset=88
+  f32.load offset=80
   local.set $4
   local.get $3
-  f32.load offset=88
+  f32.load offset=80
   local.set $5
   local.get $0
   local.get $2
@@ -7917,30 +8061,30 @@
    return
   end
   local.get $1
-  i32.load offset=104
+  i32.load offset=96
   call $~lib/rt/pure/__retain
   local.set $6
   local.get $1
-  f32.load offset=108
+  f32.load offset=100
   local.set $5
   local.get $2
-  i32.load offset=104
+  i32.load offset=96
   call $~lib/rt/pure/__retain
   local.set $7
   local.get $2
-  f32.load offset=108
+  f32.load offset=100
   local.set $9
   local.get $1
-  f32.load offset=48
+  f32.load offset=40
   local.set $10
   local.get $2
-  f32.load offset=48
+  f32.load offset=40
   local.set $11
   local.get $1
-  f32.load offset=52
+  f32.load offset=44
   local.set $12
   local.get $2
-  f32.load offset=52
+  f32.load offset=44
   local.set $13
   local.get $0
   i32.load offset=28
@@ -7957,7 +8101,7 @@
   call $~lib/rt/pure/__release
   local.get $3
   local.get $1
-  i32.load offset=60
+  i32.load offset=52
   local.get $3
   call $assembly/math/vec2/Vec2#multiply
   call $~lib/rt/pure/__release
@@ -7968,7 +8112,7 @@
   call $~lib/rt/pure/__release
   local.get $4
   local.get $2
-  i32.load offset=60
+  i32.load offset=52
   local.get $4
   call $assembly/math/vec2/Vec2#multiply
   call $~lib/rt/pure/__release
@@ -8010,7 +8154,7 @@
    i32.const 8
    i32.sub
    i32.load
-   i32.const 80
+   i32.const 78
    i32.eq
    if
     local.get $0
@@ -8086,21 +8230,21 @@
    return
   end
   local.get $1
-  i32.load offset=80
+  i32.load offset=72
   call $~lib/rt/pure/__retain
   local.set $4
   local.get $2
-  i32.load offset=80
+  i32.load offset=72
   call $~lib/rt/pure/__retain
   local.set $5
   local.get $0
   local.get $3
   local.get $4
   local.get $1
-  f32.load offset=84
+  f32.load offset=76
   local.get $5
   local.get $2
-  f32.load offset=84
+  f32.load offset=76
   call $assembly/equations/Equation/Equation#gmult
   local.get $3
   call $~lib/rt/pure/__release
@@ -8141,16 +8285,16 @@
    return
   end
   local.get $1
-  f32.load offset=48
+  f32.load offset=40
   local.set $3
   local.get $2
-  f32.load offset=48
+  f32.load offset=40
   local.set $4
   local.get $1
-  f32.load offset=52
+  f32.load offset=44
   local.set $5
   local.get $2
-  f32.load offset=52
+  f32.load offset=44
   local.set $6
   local.get $0
   i32.load offset=28
@@ -8165,7 +8309,7 @@
   local.get $3
   f32.mul
   local.get $1
-  i32.load offset=60
+  i32.load offset=52
   i32.const 0
   call $~lib/typedarray/Float32Array#__get
   f32.mul
@@ -8179,7 +8323,7 @@
   local.get $3
   f32.mul
   local.get $1
-  i32.load offset=60
+  i32.load offset=52
   i32.const 1
   call $~lib/typedarray/Float32Array#__get
   f32.mul
@@ -8204,7 +8348,7 @@
   local.get $4
   f32.mul
   local.get $2
-  i32.load offset=60
+  i32.load offset=52
   i32.const 0
   call $~lib/typedarray/Float32Array#__get
   f32.mul
@@ -8219,7 +8363,7 @@
   local.get $4
   f32.mul
   local.get $2
-  i32.load offset=60
+  i32.load offset=52
   i32.const 1
   call $~lib/typedarray/Float32Array#__get
   f32.mul
@@ -8312,23 +8456,23 @@
    return
   end
   local.get $2
-  f32.load offset=48
+  f32.load offset=40
   local.set $4
   local.get $3
-  f32.load offset=48
+  f32.load offset=40
   local.set $5
   local.get $2
-  f32.load offset=52
+  f32.load offset=44
   local.set $6
   local.get $3
-  f32.load offset=52
+  f32.load offset=44
   local.set $7
   local.get $0
   i32.load offset=28
   call $~lib/rt/pure/__retain
   local.set $0
   local.get $2
-  i32.load offset=80
+  i32.load offset=72
   local.get $0
   i32.const 0
   call $~lib/typedarray/Float32Array#__get
@@ -8338,11 +8482,11 @@
   local.get $4
   local.get $1
   local.get $2
-  i32.load offset=60
+  i32.load offset=52
   call $assembly/equations/Equation/addToVLambda
   local.get $2
   local.get $2
-  f32.load offset=84
+  f32.load offset=76
   local.get $6
   local.get $0
   i32.const 2
@@ -8351,9 +8495,9 @@
   local.get $1
   f32.mul
   f32.add
-  f32.store offset=84
+  f32.store offset=76
   local.get $3
-  i32.load offset=80
+  i32.load offset=72
   local.get $0
   i32.const 3
   call $~lib/typedarray/Float32Array#__get
@@ -8363,11 +8507,11 @@
   local.get $5
   local.get $1
   local.get $3
-  i32.load offset=60
+  i32.load offset=52
   call $assembly/equations/Equation/addToVLambda
   local.get $3
   local.get $3
-  f32.load offset=84
+  f32.load offset=76
   local.get $7
   local.get $0
   i32.const 5
@@ -8376,7 +8520,7 @@
   local.get $1
   f32.mul
   f32.add
-  f32.store offset=84
+  f32.store offset=76
   local.get $2
   call $~lib/rt/pure/__release
   local.get $3
@@ -8394,21 +8538,21 @@
  )
  (func $assembly/equations/angle-lock-equation/AngleLockEquation#get:angle (param $0 i32) (result f32)
   local.get $0
-  f32.load offset=96
+  f32.load offset=92
  )
  (func $assembly/equations/angle-lock-equation/AngleLockEquation#set:angle (param $0 i32) (param $1 f32)
   local.get $0
   local.get $1
-  f32.store offset=96
+  f32.store offset=92
  )
  (func $assembly/equations/angle-lock-equation/AngleLockEquation#get:ratio (param $0 i32) (result f32)
   local.get $0
-  f32.load offset=100
+  f32.load offset=96
  )
  (func $assembly/equations/angle-lock-equation/AngleLockEquation#set:ratio (param $0 i32) (param $1 f32)
   local.get $0
   local.get $1
-  f32.store offset=100
+  f32.store offset=96
  )
  (func $assembly/equations/angle-lock-equation/AngleLockEquation#setMaxTorque (param $0 i32) (param $1 f32)
   local.get $0
@@ -8465,14 +8609,14 @@
   call $~lib/rt/pure/__retain
   local.set $1
   local.get $0
-  i32.load offset=64
+  i32.load offset=56
   local.get $1
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#squaredDistance
   local.get $0
-  f32.load offset=124
+  f32.load offset=116
   local.get $1
-  f32.load offset=124
+  f32.load offset=116
   f32.add
   local.set $2
   local.get $0
@@ -8497,7 +8641,7 @@
   (local $7 i32)
   (local $8 f32)
   local.get $0
-  i32.load offset=28
+  i32.load offset=20
   call $~lib/rt/pure/__retain
   local.tee $4
   i32.load offset=12
@@ -8505,7 +8649,7 @@
   call $~lib/rt/pure/__retain
   local.set $2
   local.get $0
-  f32.load offset=88
+  f32.load offset=80
   local.set $5
   i32.const 65535
   i32.and
@@ -8537,27 +8681,27 @@
     local.get $2
     local.get $2
     local.get $0
-    i32.load offset=64
+    i32.load offset=56
     call $assembly/math/vec2/Vec2#add
     call $~lib/rt/pure/__release
     local.get $1
     local.get $0
-    i32.load offset=192
+    i32.load offset=176
     local.get $2
     local.get $8
     call $assembly/shapes/shape/Shape#computeAABB@virtual
     local.get $7
     if
      local.get $0
-     i32.load offset=128
+     i32.load offset=120
      local.get $0
-     i32.load offset=192
+     i32.load offset=176
      call $assembly/collision/aabb/AABB#extend
     else
      local.get $0
-     i32.load offset=128
+     i32.load offset=120
      local.get $0
-     i32.load offset=192
+     i32.load offset=176
      call $assembly/collision/aabb/AABB#copy
     end
     local.get $1
@@ -8571,7 +8715,7 @@
   end
   local.get $0
   i32.const 0
-  i32.store8 offset=132
+  i32.store8 offset=124
   local.get $4
   call $~lib/rt/pure/__release
   local.get $2
@@ -8579,13 +8723,13 @@
  )
  (func $assembly/objects/body/Body#getAABB (param $0 i32) (result i32)
   local.get $0
-  i32.load8_u offset=132
+  i32.load8_u offset=124
   if
    local.get $0
    call $assembly/objects/body/Body#updateAABB
   end
   local.get $0
-  i32.load offset=128
+  i32.load offset=120
   call $~lib/rt/pure/__retain
  )
  (func $assembly/collision/broadphase/Broadphase.aabbCheck (param $0 i32) (param $1 i32) (result i32)
@@ -8615,8 +8759,8 @@
   call $~lib/rt/pure/__release
  )
  (func $assembly/collision/broadphase/Broadphase.canCollide (param $0 i32) (param $1 i32) (result i32)
-  (local $2 f32)
-  (local $3 f32)
+  (local $2 i32)
+  (local $3 i32)
   local.get $0
   call $~lib/rt/pure/__retain
   local.set $0
@@ -8624,53 +8768,53 @@
    local.get $1
    call $~lib/rt/pure/__retain
    local.tee $1
-   f32.load offset=120
+   i32.load16_u offset=112
    local.tee $2
-   f32.const 2
-   f32.eq
+   i32.const 2
+   i32.eq
    i32.const 0
    local.get $0
-   f32.load offset=120
+   i32.load16_u offset=112
    local.tee $3
-   f32.const 2
-   f32.eq
+   i32.const 2
+   i32.eq
    select
    i32.const 1
    local.get $2
-   f32.const 4
-   f32.eq
+   i32.const 4
+   i32.eq
    i32.const 0
    local.get $3
-   f32.const 2
-   f32.eq
+   i32.const 2
+   i32.eq
    select
    local.get $2
-   f32.const 2
-   f32.eq
+   i32.const 2
+   i32.eq
    i32.const 0
    local.get $3
-   f32.const 4
-   f32.eq
+   i32.const 4
+   i32.eq
    select
    select
    i32.or
    local.get $2
-   f32.const 4
-   f32.eq
+   i32.const 4
+   i32.eq
    i32.const 0
    local.get $3
-   f32.const 4
-   f32.eq
+   i32.const 4
+   i32.eq
    select
    i32.or
    br_if $folding-inner0
    local.get $0
-   i32.load16_u offset=136
+   i32.load16_u offset=128
    i32.const 2
    i32.eq
    if (result i32)
     local.get $1
-    i32.load16_u offset=136
+    i32.load16_u offset=128
     i32.const 2
     i32.eq
    else
@@ -8678,13 +8822,13 @@
    end
    br_if $folding-inner0
    local.get $0
-   i32.load16_u offset=136
+   i32.load16_u offset=128
    i32.const 2
    i32.eq
    if (result i32)
     local.get $2
-    f32.const 2
-    f32.eq
+    i32.const 2
+    i32.eq
    else
     i32.const 0
    end
@@ -8692,13 +8836,13 @@
     i32.const 1
    else
     local.get $1
-    i32.load16_u offset=136
+    i32.load16_u offset=128
     i32.const 2
     i32.eq
     if (result i32)
      local.get $3
-     f32.const 2
-     f32.eq
+     i32.const 2
+     i32.eq
     else
      i32.const 0
     end
@@ -8805,30 +8949,15 @@
   local.get $2
   call $~lib/rt/pure/__release
  )
- (func $assembly/collision/broadphase/Broadphase#getCollisionPairs (param $0 i32) (param $1 i32) (result i32)
-  local.get $1
-  call $~lib/rt/pure/__retain
+ (func $assembly/collision/broadphase/Broadphase#getCollisionPairs (param $0 i32) (result i32)
   i32.const 0
   i32.const 2
   i32.const 22
   i32.const 2832
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
-  local.set $1
-  call $~lib/rt/pure/__release
-  local.get $1
  )
- (func $~lib/util/number/utoa32 (param $0 i32) (result i32)
-  (local $1 i32)
-  (local $2 i32)
-  (local $3 i32)
-  (local $4 i32)
-  local.get $0
-  i32.eqz
-  if
-   i32.const 3136
-   return
-  end
+ (func $~lib/util/number/decimalCount32 (param $0 i32) (result i32)
   local.get $0
   i32.const 10
   i32.ge_u
@@ -8869,39 +8998,33 @@
   i32.const 100000
   i32.lt_u
   select
-  local.tee $1
-  i32.const 1
-  i32.shl
-  i32.const 1
-  call $~lib/rt/tlsf/__alloc
-  local.tee $2
-  local.set $3
+ )
+ (func $~lib/util/number/utoa_dec_simple<u32> (param $0 i32) (param $1 i32) (param $2 i32)
+  (local $3 i32)
   loop $do-continue|0
-   local.get $0
+   local.get $1
    i32.const 10
    i32.rem_u
-   local.set $4
-   local.get $0
+   local.set $3
+   local.get $1
    i32.const 10
    i32.div_u
-   local.set $0
-   local.get $3
-   local.get $1
+   local.set $1
+   local.get $0
+   local.get $2
    i32.const 1
    i32.sub
-   local.tee $1
+   local.tee $2
    i32.const 1
    i32.shl
    i32.add
-   local.get $4
+   local.get $3
    i32.const 48
    i32.add
    i32.store16
-   local.get $0
+   local.get $1
    br_if $do-continue|0
   end
-  local.get $2
-  call $~lib/rt/pure/__retain
  )
  (func $~lib/string/String#get:length (param $0 i32) (result i32)
   local.get $0
@@ -8911,9 +9034,81 @@
   i32.const 1
   i32.shr_u
  )
- (func $assembly/collision/broadphase/Broadphase#boundingVolumeCheck (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
+ (func $~lib/string/String.__concat (param $0 i32) (param $1 i32) (result i32)
+  (local $2 i32)
   (local $3 i32)
   (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  block $__inlined_func$~lib/string/String#concat (result i32)
+   local.get $0
+   call $~lib/rt/pure/__retain
+   local.tee $2
+   i32.const 3264
+   local.get $2
+   select
+   local.set $3
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.tee $5
+   call $~lib/rt/pure/__retain
+   local.tee $0
+   i32.eqz
+   if
+    local.get $0
+    i32.const 3264
+    i32.ne
+    if
+     local.get $0
+     call $~lib/rt/pure/__release
+    end
+    i32.const 3264
+    local.set $0
+   end
+   local.get $3
+   call $~lib/string/String#get:length
+   i32.const 1
+   i32.shl
+   local.tee $4
+   local.get $0
+   call $~lib/string/String#get:length
+   i32.const 1
+   i32.shl
+   local.tee $6
+   i32.add
+   local.tee $1
+   i32.eqz
+   if
+    local.get $0
+    call $~lib/rt/pure/__release
+    i32.const 2080
+    br $__inlined_func$~lib/string/String#concat
+   end
+   local.get $1
+   i32.const 1
+   call $~lib/rt/tlsf/__alloc
+   call $~lib/rt/pure/__retain
+   local.tee $1
+   local.get $3
+   local.get $4
+   call $~lib/memory/memory.copy
+   local.get $1
+   local.get $4
+   i32.add
+   local.get $0
+   local.get $6
+   call $~lib/memory/memory.copy
+   local.get $0
+   call $~lib/rt/pure/__release
+   local.get $1
+  end
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $5
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/collision/broadphase/Broadphase#boundingVolumeCheck (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
+  (local $3 i32)
   local.get $1
   call $~lib/rt/pure/__retain
   local.set $1
@@ -8947,67 +9142,30 @@
     local.set $0
     br $break|0
    end
-   block $__inlined_func$~lib/string/String#concat (result i32)
+   i32.const 2848
+   block $__inlined_func$~lib/util/number/utoa32 (result i32)
+    i32.const 3136
     local.get $0
     i32.load16_u offset=12
-    call $~lib/util/number/utoa32
-    call $~lib/rt/pure/__retain
-    local.tee $3
-    call $~lib/rt/pure/__retain
     local.tee $0
     i32.eqz
-    if
-     local.get $0
-     i32.const 3264
-     i32.ne
-     if
-      local.get $0
-      call $~lib/rt/pure/__release
-     end
-     i32.const 3264
-     local.set $0
-    end
-    i32.const 2848
-    call $~lib/string/String#get:length
-    i32.const 1
-    i32.shl
-    local.tee $2
+    br_if $__inlined_func$~lib/util/number/utoa32
+    drop
     local.get $0
-    call $~lib/string/String#get:length
+    call $~lib/util/number/decimalCount32
+    local.tee $1
     i32.const 1
     i32.shl
-    local.tee $4
-    i32.add
-    local.tee $1
-    i32.eqz
-    if
-     local.get $0
-     call $~lib/rt/pure/__release
-     i32.const 2080
-     br $__inlined_func$~lib/string/String#concat
-    end
-    local.get $1
     i32.const 1
     call $~lib/rt/tlsf/__alloc
+    local.tee $2
+    local.get $0
+    local.get $1
+    call $~lib/util/number/utoa_dec_simple<u32>
+    local.get $2
     call $~lib/rt/pure/__retain
-    local.tee $1
-    i32.const 2848
-    local.get $2
-    call $~lib/memory/memory.copy
-    local.get $1
-    local.get $2
-    i32.add
-    local.get $0
-    local.get $4
-    call $~lib/memory/memory.copy
-    local.get $0
-    call $~lib/rt/pure/__release
-    local.get $1
    end
-   i32.const 2848
-   call $~lib/rt/pure/__release
-   local.get $3
-   call $~lib/rt/pure/__release
+   call $~lib/string/String.__concat
    i32.const 3296
    i32.const 110
    i32.const 4
@@ -9020,19 +9178,14 @@
   call $~lib/rt/pure/__release
   local.get $0
  )
- (func $assembly/collision/broadphase/Broadphase#aabbQuery (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32)
+ (func $assembly/collision/broadphase/Broadphase#aabbQuery (param $0 i32) (param $1 i32) (param $2 i32)
   local.get $1
   call $~lib/rt/pure/__retain
   local.get $2
   call $~lib/rt/pure/__retain
   local.set $1
-  local.get $3
-  call $~lib/rt/pure/__retain
-  local.set $2
   call $~lib/rt/pure/__release
   local.get $1
-  call $~lib/rt/pure/__release
-  local.get $2
   call $~lib/rt/pure/__release
  )
  (func $assembly/shapes/capsule/Capsule#constructor (param $0 i32) (param $1 i32) (result i32)
@@ -9040,7 +9193,7 @@
   i32.eqz
   if
    i32.const 52
-   i32.const 82
+   i32.const 80
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -10747,20 +10900,20 @@
   local.get $0
   i32.load offset=4
   local.get $2
-  f32.load offset=88
+  f32.load offset=80
   call $assembly/math/vec2/Vec2#rotate
   call $~lib/rt/pure/__release
   local.get $1
   local.get $1
   local.get $2
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#add
   call $~lib/rt/pure/__release
   local.get $3
   local.get $4
   local.get $1
   local.get $2
-  f32.load offset=88
+  f32.load offset=80
   local.get $0
   f32.load offset=8
   f32.add
@@ -10780,7 +10933,7 @@
   i32.eqz
   if
    i32.const 48
-   i32.const 84
+   i32.const 82
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -11583,13 +11736,13 @@
  (func $assembly/objects/body/Body#wakeUp (param $0 i32)
   (local $1 i32)
   local.get $0
-  i32.load16_u offset=136
+  i32.load16_u offset=128
   local.get $0
   i32.const 0
-  i32.store16 offset=136
+  i32.store16 offset=128
   local.get $0
   f32.const 0
-  f32.store offset=164
+  f32.store offset=148
   if
    local.get $0
    global.get $assembly/objects/body/wakeUpEvent
@@ -11843,7 +11996,7 @@
   local.get $0
   i32.eqz
   if
-   i32.const 96
+   i32.const 92
    i32.const 24
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
@@ -11916,8 +12069,8 @@
   f32.const 0
   f32.store offset=84
   local.get $0
-  i64.const -1
-  i64.store offset=88
+  i32.const -1
+  i32.store offset=88
   local.get $1
   call $~lib/rt/pure/__retain
   local.set $6
@@ -12026,12 +12179,15 @@
   local.get $0
   i32.eqz
   if
-   i32.const 128
+   i32.const 124
    i32.const 28
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
   end
+  local.get $0
+  call $assembly/math/vec2/Vec2#create
+  i32.store offset=92
   local.get $0
   call $assembly/math/vec2/Vec2#create
   i32.store offset=96
@@ -12042,20 +12198,17 @@
   call $assembly/math/vec2/Vec2#create
   i32.store offset=104
   local.get $0
-  call $assembly/math/vec2/Vec2#create
-  i32.store offset=108
-  local.get $0
   f32.const 0
-  f32.store offset=112
+  f32.store offset=108
   local.get $0
   i32.const 0
-  i32.store8 offset=116
+  i32.store8 offset=112
+  local.get $0
+  i32.const 0
+  i32.store offset=116
   local.get $0
   i32.const 0
   i32.store offset=120
-  local.get $0
-  i32.const 0
-  i32.store offset=124
   local.get $0
   local.get $1
   call $~lib/rt/pure/__retain
@@ -12126,17 +12279,17 @@
   call $~lib/rt/pure/__retain
   local.set $8
   local.get $0
-  i32.load offset=96
+  i32.load offset=92
   call $~lib/rt/pure/__retain
   local.set $9
   local.get $0
-  i32.load offset=104
+  i32.load offset=100
   call $~lib/rt/pure/__retain
   local.set $10
   local.get $7
   if (result i32)
    local.get $7
-   i32.load offset=64
+   i32.load offset=56
    call $~lib/rt/pure/__retain
   else
    i32.const 2
@@ -12146,7 +12299,7 @@
   local.get $8
   if (result i32)
    local.get $8
-   i32.load offset=64
+   i32.load offset=56
    call $~lib/rt/pure/__retain
   else
    i32.const 2
@@ -12154,7 +12307,7 @@
   end
   local.set $17
   local.get $0
-  i32.load offset=108
+  i32.load offset=104
   call $~lib/rt/pure/__retain
   local.set $4
   local.get $0
@@ -12205,10 +12358,10 @@
   local.get $19
   call $~lib/typedarray/Float32Array#__set
   local.get $0
-  i32.load8_u offset=116
+  i32.load8_u offset=112
   if (result i32)
    local.get $0
-   f32.load offset=112
+   f32.load offset=108
    f32.const 0
    f32.ne
   else
@@ -12220,7 +12373,7 @@
    f32.div
    f32.const 1
    local.get $0
-   f32.load offset=112
+   f32.load offset=108
    f32.add
    f32.mul
    local.get $0
@@ -12229,7 +12382,7 @@
    local.set $6
   else
    local.get $0
-   i32.load offset=100
+   i32.load offset=96
    call $~lib/rt/pure/__retain
    local.tee $18
    call $~lib/rt/pure/__retain
@@ -12337,10 +12490,33 @@
  )
  (func $assembly/equations/contact-equation/ContactEquation#get:contactPointA (param $0 i32) (result i32)
   local.get $0
-  i32.load offset=96
+  i32.load offset=92
   call $~lib/rt/pure/__retain
  )
  (func $assembly/equations/contact-equation/ContactEquation#set:contactPointA (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  local.get $1
+  local.get $0
+  i32.load offset=92
+  local.tee $2
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   drop
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store offset=92
+ )
+ (func $assembly/equations/contact-equation/ContactEquation#get:penetrationVec (param $0 i32) (result i32)
+  local.get $0
+  i32.load offset=96
+  call $~lib/rt/pure/__retain
+ )
+ (func $assembly/equations/contact-equation/ContactEquation#set:penetrationVec (param $0 i32) (param $1 i32)
   (local $2 i32)
   local.get $1
   local.get $0
@@ -12358,12 +12534,12 @@
   local.get $1
   i32.store offset=96
  )
- (func $assembly/equations/contact-equation/ContactEquation#get:penetrationVec (param $0 i32) (result i32)
+ (func $assembly/equations/contact-equation/ContactEquation#get:contactPointB (param $0 i32) (result i32)
   local.get $0
   i32.load offset=100
   call $~lib/rt/pure/__retain
  )
- (func $assembly/equations/contact-equation/ContactEquation#set:penetrationVec (param $0 i32) (param $1 i32)
+ (func $assembly/equations/contact-equation/ContactEquation#set:contactPointB (param $0 i32) (param $1 i32)
   (local $2 i32)
   local.get $1
   local.get $0
@@ -12381,12 +12557,12 @@
   local.get $1
   i32.store offset=100
  )
- (func $assembly/equations/contact-equation/ContactEquation#get:contactPointB (param $0 i32) (result i32)
+ (func $assembly/equations/contact-equation/ContactEquation#get:normalA (param $0 i32) (result i32)
   local.get $0
   i32.load offset=104
   call $~lib/rt/pure/__retain
  )
- (func $assembly/equations/contact-equation/ContactEquation#set:contactPointB (param $0 i32) (param $1 i32)
+ (func $assembly/equations/contact-equation/ContactEquation#set:normalA (param $0 i32) (param $1 i32)
   (local $2 i32)
   local.get $1
   local.get $0
@@ -12404,16 +12580,34 @@
   local.get $1
   i32.store offset=104
  )
- (func $assembly/equations/contact-equation/ContactEquation#get:normalA (param $0 i32) (result i32)
+ (func $assembly/equations/contact-equation/ContactEquation#get:restitution (param $0 i32) (result f32)
   local.get $0
-  i32.load offset=108
+  f32.load offset=108
+ )
+ (func $assembly/equations/contact-equation/ContactEquation#set:restitution (param $0 i32) (param $1 f32)
+  local.get $0
+  local.get $1
+  f32.store offset=108
+ )
+ (func $assembly/equations/contact-equation/ContactEquation#get:firstImpact (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=112
+ )
+ (func $assembly/equations/contact-equation/ContactEquation#set:firstImpact (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=112
+ )
+ (func $assembly/equations/contact-equation/ContactEquation#get:shapeA (param $0 i32) (result i32)
+  local.get $0
+  i32.load offset=116
   call $~lib/rt/pure/__retain
  )
- (func $assembly/equations/contact-equation/ContactEquation#set:normalA (param $0 i32) (param $1 i32)
+ (func $assembly/equations/contact-equation/ContactEquation#set:shapeA (param $0 i32) (param $1 i32)
   (local $2 i32)
   local.get $1
   local.get $0
-  i32.load offset=108
+  i32.load offset=116
   local.tee $2
   i32.ne
   if
@@ -12425,32 +12619,14 @@
   end
   local.get $0
   local.get $1
-  i32.store offset=108
+  i32.store offset=116
  )
- (func $assembly/equations/contact-equation/ContactEquation#get:restitution (param $0 i32) (result f32)
-  local.get $0
-  f32.load offset=112
- )
- (func $assembly/equations/contact-equation/ContactEquation#set:restitution (param $0 i32) (param $1 f32)
-  local.get $0
-  local.get $1
-  f32.store offset=112
- )
- (func $assembly/equations/contact-equation/ContactEquation#get:firstImpact (param $0 i32) (result i32)
-  local.get $0
-  i32.load8_u offset=116
- )
- (func $assembly/equations/contact-equation/ContactEquation#set:firstImpact (param $0 i32) (param $1 i32)
-  local.get $0
-  local.get $1
-  i32.store8 offset=116
- )
- (func $assembly/equations/contact-equation/ContactEquation#get:shapeA (param $0 i32) (result i32)
+ (func $assembly/equations/contact-equation/ContactEquation#get:shapeB (param $0 i32) (result i32)
   local.get $0
   i32.load offset=120
   call $~lib/rt/pure/__retain
  )
- (func $assembly/equations/contact-equation/ContactEquation#set:shapeA (param $0 i32) (param $1 i32)
+ (func $assembly/equations/contact-equation/ContactEquation#set:shapeB (param $0 i32) (param $1 i32)
   (local $2 i32)
   local.get $1
   local.get $0
@@ -12467,29 +12643,6 @@
   local.get $0
   local.get $1
   i32.store offset=120
- )
- (func $assembly/equations/contact-equation/ContactEquation#get:shapeB (param $0 i32) (result i32)
-  local.get $0
-  i32.load offset=124
-  call $~lib/rt/pure/__retain
- )
- (func $assembly/equations/contact-equation/ContactEquation#set:shapeB (param $0 i32) (param $1 i32)
-  (local $2 i32)
-  local.get $1
-  local.get $0
-  i32.load offset=124
-  local.tee $2
-  i32.ne
-  if
-   local.get $1
-   call $~lib/rt/pure/__retain
-   drop
-   local.get $2
-   call $~lib/rt/pure/__release
-  end
-  local.get $0
-  local.get $1
-  i32.store offset=124
  )
  (func $assembly/math/vec2/Vec2#crossVZ (param $0 i32) (param $1 i32) (param $2 f32) (result i32)
   local.get $0
@@ -12518,12 +12671,12 @@
   call $~lib/rt/pure/__retain
   local.tee $2
   local.get $0
-  f32.load offset=100
+  f32.load offset=92
   call $assembly/math/vec2/Vec2#crossVZ
   call $~lib/rt/pure/__release
   local.get $1
   local.get $0
-  i32.load offset=76
+  i32.load offset=68
   local.get $1
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
@@ -12548,7 +12701,7 @@
   local.get $1
   global.get $assembly/equations/contact-equation/vi
   local.get $0
-  i32.load offset=96
+  i32.load offset=92
   call $assembly/objects/body/Body#getVelocityAtPoint
   call $~lib/rt/pure/__release
   local.get $0
@@ -12566,7 +12719,7 @@
   local.get $1
   global.get $assembly/equations/contact-equation/vj
   local.get $0
-  i32.load offset=104
+  i32.load offset=100
   call $assembly/objects/body/Body#getVelocityAtPoint
   call $~lib/rt/pure/__release
   global.get $assembly/equations/contact-equation/relVel
@@ -12575,7 +12728,7 @@
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $0
-  i32.load offset=108
+  i32.load offset=104
   global.get $assembly/equations/contact-equation/relVel
   call $assembly/math/vec2/Vec2#dot
  )
@@ -13526,14 +13679,17 @@
   local.get $0
   i32.eqz
   if
-   i32.const 112
-   i32.const 88
+   i32.const 108
+   i32.const 86
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
   end
   local.get $0
   i32.const 0
+  i32.store offset=92
+  local.get $0
+  call $assembly/math/vec2/Vec2#create
   i32.store offset=96
   local.get $0
   call $assembly/math/vec2/Vec2#create
@@ -13541,9 +13697,6 @@
   local.get $0
   call $assembly/math/vec2/Vec2#create
   i32.store offset=104
-  local.get $0
-  call $assembly/math/vec2/Vec2#create
-  i32.store offset=108
   local.get $1
   call $~lib/rt/pure/__retain
   local.tee $6
@@ -13559,7 +13712,7 @@
   local.get $5
   call $assembly/equations/equation/Equation#constructor
   local.tee $0
-  i32.load offset=96
+  i32.load offset=92
   local.tee $7
   i32.ne
   if
@@ -13571,7 +13724,7 @@
   end
   local.get $0
   local.get $1
-  i32.store offset=96
+  i32.store offset=92
   local.get $6
   call $~lib/rt/pure/__release
   local.get $2
@@ -13603,7 +13756,7 @@
   i32.eqz
   if
    i32.const 56
-   i32.const 86
+   i32.const 84
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -13719,19 +13872,19 @@
    local.get $1
    i32.load offset=20
    local.get $5
-   f32.load offset=88
+   f32.load offset=80
    call $assembly/math/vec2/Vec2#rotate
    call $~lib/rt/pure/__release
    local.get $4
    local.get $1
    i32.load offset=24
    local.get $6
-   f32.load offset=88
+   f32.load offset=80
    call $assembly/math/vec2/Vec2#rotate
    call $~lib/rt/pure/__release
    local.get $0
    local.get $6
-   i32.load offset=64
+   i32.load offset=56
    local.get $4
    call $assembly/math/vec2/Vec2#add
    call $~lib/rt/pure/__release
@@ -13743,7 +13896,7 @@
    local.get $0
    local.get $0
    local.get $5
-   i32.load offset=64
+   i32.load offset=56
    call $assembly/math/vec2/Vec2#subtract
    call $~lib/rt/pure/__release
    local.get $1
@@ -13818,11 +13971,11 @@
   call $~lib/rt/pure/__retain
   local.set $5
   local.get $4
-  i32.load offset=64
+  i32.load offset=56
   call $~lib/rt/pure/__retain
   local.set $6
   local.get $5
-  i32.load offset=64
+  i32.load offset=56
   call $~lib/rt/pure/__retain
   local.set $7
   local.get $0
@@ -13837,14 +13990,14 @@
   local.get $0
   i32.load offset=20
   local.get $4
-  f32.load offset=88
+  f32.load offset=80
   call $assembly/math/vec2/Vec2#rotate
   call $~lib/rt/pure/__release
   global.get $assembly/constraints/distance-constraint/rj
   local.get $0
   i32.load offset=24
   local.get $5
-  f32.load offset=88
+  f32.load offset=80
   call $assembly/math/vec2/Vec2#rotate
   call $~lib/rt/pure/__release
   global.get $assembly/constraints/distance-constraint/n
@@ -14110,7 +14263,7 @@
    i32.const 8
    i32.sub
    i32.load
-   i32.const 88
+   i32.const 86
    i32.eq
    if
     local.get $0
@@ -14958,7 +15111,7 @@
   local.get $0
   i32.eqz
   if
-   i32.const 124
+   i32.const 120
    i32.const 30
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
@@ -14966,13 +15119,13 @@
   end
   local.get $0
   call $assembly/math/vec2/Vec2#create
+  i32.store offset=92
+  local.get $0
+  call $assembly/math/vec2/Vec2#create
   i32.store offset=96
   local.get $0
   call $assembly/math/vec2/Vec2#create
   i32.store offset=100
-  local.get $0
-  call $assembly/math/vec2/Vec2#create
-  i32.store offset=104
   local.get $0
   i32.const 0
   i32.const 2
@@ -14980,16 +15133,16 @@
   i32.const 4160
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
+  i32.store offset=104
+  local.get $0
+  i32.const 0
   i32.store offset=108
   local.get $0
   i32.const 0
   i32.store offset=112
   local.get $0
-  i32.const 0
-  i32.store offset=116
-  local.get $0
   f32.const 0.30000001192092896
-  f32.store offset=120
+  f32.store offset=116
   local.get $0
   local.get $1
   call $~lib/rt/pure/__retain
@@ -15012,15 +15165,15 @@
   (local $6 i32)
   (local $7 i32)
   local.get $0
-  i32.load offset=96
+  i32.load offset=92
   call $~lib/rt/pure/__retain
   local.set $6
   local.get $0
-  i32.load offset=100
+  i32.load offset=96
   call $~lib/rt/pure/__retain
   local.set $7
   local.get $0
-  i32.load offset=104
+  i32.load offset=100
   call $~lib/rt/pure/__retain
   local.set $4
   local.get $0
@@ -15086,10 +15239,33 @@
  )
  (func $assembly/equations/friction-equation/FrictionEquation#get:shapeA (param $0 i32) (result i32)
   local.get $0
-  i32.load offset=112
+  i32.load offset=108
   call $~lib/rt/pure/__retain
  )
  (func $assembly/equations/friction-equation/FrictionEquation#set:shapeA (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  local.get $1
+  local.get $0
+  i32.load offset=108
+  local.tee $2
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   drop
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store offset=108
+ )
+ (func $assembly/equations/friction-equation/FrictionEquation#get:shapeB (param $0 i32) (result i32)
+  local.get $0
+  i32.load offset=112
+  call $~lib/rt/pure/__retain
+ )
+ (func $assembly/equations/friction-equation/FrictionEquation#set:shapeB (param $0 i32) (param $1 i32)
   (local $2 i32)
   local.get $1
   local.get $0
@@ -15107,37 +15283,14 @@
   local.get $1
   i32.store offset=112
  )
- (func $assembly/equations/friction-equation/FrictionEquation#get:shapeB (param $0 i32) (result i32)
-  local.get $0
-  i32.load offset=116
-  call $~lib/rt/pure/__retain
- )
- (func $assembly/equations/friction-equation/FrictionEquation#set:shapeB (param $0 i32) (param $1 i32)
-  (local $2 i32)
-  local.get $1
-  local.get $0
-  i32.load offset=116
-  local.tee $2
-  i32.ne
-  if
-   local.get $1
-   call $~lib/rt/pure/__retain
-   drop
-   local.get $2
-   call $~lib/rt/pure/__release
-  end
-  local.get $0
-  local.get $1
-  i32.store offset=116
- )
  (func $assembly/equations/friction-equation/FrictionEquation#get:frictionCoefficient (param $0 i32) (result f32)
   local.get $0
-  f32.load offset=120
+  f32.load offset=116
  )
  (func $assembly/equations/friction-equation/FrictionEquation#set:frictionCoefficient (param $0 i32) (param $1 f32)
   local.get $0
   local.get $1
-  f32.store offset=120
+  f32.store offset=116
  )
  (func $assembly/equations/distance-equation/DistanceEquation#computeGq (param $0 i32) (result f32)
   (local $1 i32)
@@ -15176,58 +15329,58 @@
   call $~lib/rt/pure/__retain
   local.set $1
   local.get $2
-  i32.load offset=64
+  i32.load offset=56
   call $~lib/rt/pure/__retain
   local.set $3
   local.get $1
-  i32.load offset=64
+  i32.load offset=56
   call $~lib/rt/pure/__retain
   local.set $4
   local.get $0
-  i32.load offset=104
+  i32.load offset=100
   local.get $0
-  i32.load offset=96
+  i32.load offset=92
   i32.load offset=20
   local.get $2
-  f32.load offset=88
+  f32.load offset=80
   call $assembly/math/vec2/Vec2#rotate
   call $~lib/rt/pure/__release
   local.get $0
-  i32.load offset=108
+  i32.load offset=104
   local.get $0
-  i32.load offset=96
+  i32.load offset=92
   i32.load offset=24
   local.get $1
-  f32.load offset=88
+  f32.load offset=80
   call $assembly/math/vec2/Vec2#rotate
   call $~lib/rt/pure/__release
   local.get $0
-  i32.load offset=100
+  i32.load offset=96
   local.get $4
   local.get $0
-  i32.load offset=108
+  i32.load offset=104
   call $assembly/math/vec2/Vec2#add
   call $~lib/rt/pure/__release
   local.get $0
-  i32.load offset=100
+  i32.load offset=96
+  local.get $0
+  i32.load offset=96
   local.get $0
   i32.load offset=100
-  local.get $0
-  i32.load offset=104
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $0
-  i32.load offset=100
+  i32.load offset=96
   local.get $0
-  i32.load offset=100
+  i32.load offset=96
   local.get $3
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $0
-  i32.load offset=100
+  i32.load offset=96
   call $assembly/math/vec2/Vec2#length
   local.get $0
-  i32.load offset=96
+  i32.load offset=92
   f32.load offset=28
   f32.sub
   local.get $2
@@ -15397,7 +15550,7 @@
   i32.eqz
   if
    i32.const 36
-   i32.const 90
+   i32.const 88
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -15641,6 +15794,26 @@
    call $~lib/rt/pure/__release
   end
  )
+ (func $assembly/objects/body/Body#resetConstraintVelocity (param $0 i32)
+  (local $1 i32)
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.tee $0
+  i32.load offset=72
+  call $~lib/rt/pure/__retain
+  local.tee $1
+  f32.const 0
+  f32.const 0
+  call $assembly/math/vec2/Vec2#set
+  call $~lib/rt/pure/__release
+  local.get $0
+  f32.const 0
+  f32.store offset=76
+  local.get $0
+  call $~lib/rt/pure/__release
+  local.get $1
+  call $~lib/rt/pure/__release
+ )
  (func $assembly/solver/gs-solver/iterateEquation (param $0 i32) (result f32)
   (local $1 f32)
   (local $2 f32)
@@ -15751,7 +15924,7 @@
   i32.sub
   i32.load offset=8
   local.tee $0
-  i32.const 5248
+  i32.const 7056
   i32.load
   i32.le_u
   if
@@ -15766,7 +15939,7 @@
     local.get $0
     i32.const 3
     i32.shl
-    i32.const 5252
+    i32.const 7060
     i32.add
     i32.load offset=4
     local.tee $0
@@ -15800,7 +15973,7 @@
   local.set $16
   local.get $0
   i32.load offset=28
-  local.set $10
+  local.set $9
   local.get $0
   i32.load offset=12
   call $~lib/rt/pure/__retain
@@ -15838,37 +16011,37 @@
      local.get $11
      local.get $3
      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
-     local.tee $9
+     local.tee $10
      local.tee $2
-     i32.load16_u offset=136
+     i32.load16_u offset=128
      i32.const 2
      i32.eq
      if (result i32)
       i32.const 1
      else
       local.get $2
-      f32.load offset=120
-      f32.const 4
-      f32.eq
+      i32.load16_u offset=112
+      i32.const 4
+      i32.eq
      end
      if
       local.get $2
       f32.const 0
-      f32.store offset=48
+      f32.store offset=40
       local.get $2
       f32.const 0
-      f32.store offset=52
+      f32.store offset=44
      else
       local.get $2
       local.get $2
+      f32.load offset=28
+      f32.store offset=40
+      local.get $2
+      local.get $2
       f32.load offset=36
-      f32.store offset=48
-      local.get $2
-      local.get $2
-      f32.load offset=44
-      f32.store offset=52
+      f32.store offset=44
      end
-     local.get $9
+     local.get $10
      call $~lib/rt/pure/__release
      local.get $3
      i32.const 1
@@ -15923,11 +16096,11 @@
        i32.const 8
        i32.sub
        i32.load
-       local.tee $9
+       local.tee $10
        i32.const 28
        i32.ne
        if
-        local.get $9
+        local.get $10
         i32.const 30
         i32.eq
         br_if $case1
@@ -15993,24 +16166,9 @@
      local.get $11
      local.get $6
      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
-     local.tee $4
-     call $~lib/rt/pure/__retain
      local.tee $2
-     i32.load offset=80
-     call $~lib/rt/pure/__retain
-     local.tee $9
-     f32.const 0
-     f32.const 0
-     call $assembly/math/vec2/Vec2#set
-     call $~lib/rt/pure/__release
+     call $assembly/objects/body/Body#resetConstraintVelocity
      local.get $2
-     f32.const 0
-     f32.store offset=84
-     local.get $2
-     call $~lib/rt/pure/__release
-     local.get $9
-     call $~lib/rt/pure/__release
-     local.get $4
      call $~lib/rt/pure/__release
      local.get $6
      i32.const 1
@@ -16019,13 +16177,13 @@
      br $for-loop|2
     end
    end
-   local.get $10
+   local.get $9
    if
     i32.const 0
     local.set $6
     loop $for-loop|3
      local.get $6
-     local.get $10
+     local.get $9
      i32.ne
      if
       block $for-break3
@@ -16093,9 +16251,9 @@
       local.get $8
       local.get $6
       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
-      local.tee $10
+      local.tee $9
       local.set $2
-      local.get $10
+      local.get $9
       if (result i32)
        local.get $2
        i32.const 30
@@ -16104,7 +16262,7 @@
        i32.const 0
       end
       if
-       local.get $10
+       local.get $9
        i32.const 30
        call $~lib/rt/__instanceof
        i32.eqz
@@ -16126,20 +16284,20 @@
        loop $for-loop|6
         local.get $4
         local.get $2
-        i32.load offset=108
+        i32.load offset=104
         i32.load offset=12
         i32.lt_s
         if
          local.get $5
          local.get $2
-         i32.load offset=108
+         i32.load offset=104
          local.get $4
          call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
-         local.tee $9
+         local.tee $10
          f32.load offset=56
          f32.add
          local.set $5
-         local.get $9
+         local.get $10
          call $~lib/rt/pure/__release
          local.get $4
          i32.const 1
@@ -16151,9 +16309,9 @@
        local.get $2
        local.get $5
        local.get $2
-       f32.load offset=120
+       f32.load offset=116
        local.get $2
-       i32.load offset=108
+       i32.load offset=104
        i32.load offset=12
        f32.convert_i32_s
        f32.div
@@ -16178,7 +16336,7 @@
        local.get $2
        call $~lib/rt/pure/__release
       end
-      local.get $10
+      local.get $9
       call $~lib/rt/pure/__release
       local.get $6
       i32.const 1
@@ -16258,21 +16416,21 @@
      local.tee $4
      call $~lib/rt/pure/__retain
      local.tee $0
-     i32.load offset=76
+     i32.load offset=68
      call $~lib/rt/pure/__retain
      local.tee $2
      local.get $2
      local.get $0
-     i32.load offset=80
+     i32.load offset=72
      call $assembly/math/vec2/Vec2#add
      call $~lib/rt/pure/__release
      local.get $0
      local.get $0
-     f32.load offset=100
+     f32.load offset=92
      local.get $0
-     f32.load offset=84
+     f32.load offset=76
      f32.add
-     f32.store offset=100
+     f32.store offset=92
      local.get $0
      call $~lib/rt/pure/__release
      local.get $2
@@ -16627,7 +16785,7 @@
   i32.eqz
   if
    i32.const 60
-   i32.const 92
+   i32.const 90
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -16635,7 +16793,7 @@
   local.get $0
   i32.const 0
   i32.const 2
-  i32.const 64
+  i32.const 62
   i32.const 4528
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
@@ -16686,7 +16844,7 @@
    select
    local.tee $2
    i32.const 2
-   i32.const 64
+   i32.const 62
    i32.const 0
    call $~lib/rt/__allocArray
    call $~lib/rt/pure/__retain
@@ -17092,7 +17250,7 @@
   i32.eqz
   if
    i32.const 48
-   i32.const 94
+   i32.const 92
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -17303,7 +17461,7 @@
   i32.eqz
   if
    i32.const 4
-   i32.const 44
+   i32.const 38
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -17466,9 +17624,9 @@
   call $~lib/rt/pure/__retain
   local.tee $2
   local.get $0
-  i32.load offset=64
+  i32.load offset=56
   local.get $0
-  f32.load offset=88
+  f32.load offset=80
   call $assembly/math/vec2/Vec2#toGlobalFrame
   local.get $1
   call $~lib/rt/pure/__release
@@ -17722,6 +17880,22 @@
   local.get $3
   local.tee $1
   local.get $7
+  i32.load offset=116
+  local.tee $4
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  local.get $7
+  local.get $1
+  i32.store offset=116
+  local.get $2
+  local.tee $1
+  local.get $7
   i32.load offset=120
   local.tee $4
   i32.ne
@@ -17735,22 +17909,6 @@
   local.get $7
   local.get $1
   i32.store offset=120
-  local.get $2
-  local.tee $1
-  local.get $7
-  i32.load offset=124
-  local.tee $4
-  i32.ne
-  if
-   local.get $1
-   call $~lib/rt/pure/__retain
-   local.set $1
-   local.get $4
-   call $~lib/rt/pure/__release
-  end
-  local.get $7
-  local.get $1
-  i32.store offset=124
   local.get $7
   local.get $0
   i32.load8_u offset=9
@@ -17761,11 +17919,11 @@
   local.get $6
   call $assembly/collision/narrowphase/Narrowphase#collidedLastStep
   i32.eqz
-  i32.store8 offset=116
+  i32.store8 offset=112
   local.get $7
   local.get $8
   f32.load offset=16
-  f32.store offset=112
+  f32.store offset=108
   local.get $7
   local.get $8
   f32.load offset=20
@@ -17914,6 +18072,22 @@
   local.get $3
   local.tee $1
   local.get $7
+  i32.load offset=108
+  local.tee $4
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  local.get $7
+  local.get $1
+  i32.store offset=108
+  local.get $2
+  local.tee $1
+  local.get $7
   i32.load offset=112
   local.tee $4
   i32.ne
@@ -17927,22 +18101,6 @@
   local.get $7
   local.get $1
   i32.store offset=112
-  local.get $2
-  local.tee $1
-  local.get $7
-  i32.load offset=116
-  local.tee $4
-  i32.ne
-  if
-   local.get $1
-   call $~lib/rt/pure/__retain
-   local.set $1
-   local.get $4
-   call $~lib/rt/pure/__release
-  end
-  local.get $7
-  local.get $1
-  i32.store offset=116
   local.get $7
   local.get $0
   f32.load offset=12
@@ -17954,7 +18112,7 @@
   local.get $7
   local.get $8
   f32.load offset=12
-  f32.store offset=120
+  f32.store offset=116
   local.get $7
   local.get $8
   f32.load offset=36
@@ -17971,7 +18129,7 @@
   i32.const 1
   i32.store8 offset=52
   local.get $7
-  i32.load offset=108
+  i32.load offset=104
   i32.const 0
   call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
   local.get $8
@@ -18021,7 +18179,7 @@
   end
   local.get $0
   local.get $4
-  i32.load offset=120
+  i32.load offset=116
   local.tee $0
   i32.eqz
   if
@@ -18033,7 +18191,7 @@
    unreachable
   end
   local.get $4
-  i32.load offset=124
+  i32.load offset=120
   local.tee $5
   i32.eqz
   if
@@ -18048,25 +18206,25 @@
   local.get $5
   call $assembly/collision/narrowphase/Narrowphase#createFrictionEquation
   local.tee $0
+  i32.load offset=92
+  local.get $4
+  i32.load offset=92
+  call $assembly/math/vec2/Vec2#copy
+  call $~lib/rt/pure/__release
+  local.get $0
   i32.load offset=96
   local.get $4
-  i32.load offset=96
+  i32.load offset=100
   call $assembly/math/vec2/Vec2#copy
   call $~lib/rt/pure/__release
   local.get $0
   i32.load offset=100
   local.get $4
   i32.load offset=104
-  call $assembly/math/vec2/Vec2#copy
-  call $~lib/rt/pure/__release
-  local.get $0
-  i32.load offset=104
-  local.get $4
-  i32.load offset=108
   call $assembly/math/vec2/Vec2#rotate90cw
   call $~lib/rt/pure/__release
   local.get $0
-  i32.load offset=108
+  i32.load offset=104
   local.get $4
   call $~lib/array/Array<~lib/typedarray/Float32Array>#push
   local.get $4
@@ -18157,15 +18315,15 @@
   local.get $12
   call $assembly/collision/narrowphase/Narrowphase#createContactEquation
   local.tee $6
-  i32.load offset=96
+  i32.load offset=92
   call $~lib/rt/pure/__retain
   local.set $7
   local.get $6
-  i32.load offset=104
+  i32.load offset=100
   call $~lib/rt/pure/__retain
   local.set $13
   local.get $6
-  i32.load offset=108
+  i32.load offset=104
   call $~lib/rt/pure/__retain
   local.tee $3
   local.get $2
@@ -18191,13 +18349,13 @@
   local.get $7
   local.get $1
   local.get $10
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/collision/narrowphase/addSub
   local.get $13
   local.get $13
   local.get $2
   local.get $4
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/collision/narrowphase/addSub
   local.get $0
   i32.load
@@ -18325,15 +18483,15 @@
   local.get $10
   call $assembly/collision/narrowphase/Narrowphase#createContactEquation
   local.tee $6
-  i32.load offset=108
+  i32.load offset=104
   call $~lib/rt/pure/__retain
   local.set $7
   local.get $6
-  i32.load offset=96
+  i32.load offset=92
   call $~lib/rt/pure/__retain
   local.set $2
   local.get $6
-  i32.load offset=104
+  i32.load offset=100
   call $~lib/rt/pure/__retain
   local.set $12
   local.get $7
@@ -18357,13 +18515,13 @@
   local.get $2
   local.get $2
   local.get $8
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $12
   local.get $5
   local.get $4
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $0
@@ -18512,16 +18670,16 @@
   local.get $12
   call $assembly/collision/narrowphase/Narrowphase#createContactEquation
   local.tee $8
-  i32.load offset=108
+  i32.load offset=104
   local.get $10
   call $assembly/math/vec2/Vec2#copy
   call $~lib/rt/pure/__release
   local.get $8
-  i32.load offset=104
+  i32.load offset=100
   call $~lib/rt/pure/__retain
   local.tee $6
   local.get $8
-  i32.load offset=108
+  i32.load offset=104
   local.get $14
   f32.neg
   call $assembly/math/vec2/Vec2#scale
@@ -18534,16 +18692,16 @@
   local.get $6
   local.get $6
   local.get $11
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $8
-  i32.load offset=96
+  i32.load offset=92
   call $~lib/rt/pure/__retain
   local.set $5
   local.get $2
   local.get $8
-  i32.load offset=108
+  i32.load offset=104
   local.get $7
   call $assembly/math/vec2/Vec2#scale
   call $~lib/rt/pure/__release
@@ -18560,7 +18718,7 @@
   local.get $5
   local.get $5
   local.get $4
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $0
@@ -19085,58 +19243,58 @@
      local.get $5
      call $assembly/collision/narrowphase/Narrowphase#createContactEquation
      local.tee $1
-     i32.load offset=108
+     i32.load offset=104
      local.get $3
      local.get $13
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=108
+     i32.load offset=104
      local.get $1
-     i32.load offset=108
+     i32.load offset=104
      call $assembly/math/vec2/Vec2#normalize
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $1
-     i32.load offset=108
+     i32.load offset=104
      local.get $9
      call $assembly/math/vec2/Vec2#scale
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $13
      call $assembly/math/vec2/Vec2#add
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $14
-     i32.load offset=64
+     i32.load offset=56
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $18
      local.get $4
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $4
      call $assembly/math/vec2/Vec2#add
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $15
-     i32.load offset=64
+     i32.load offset=56
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $0
@@ -19221,57 +19379,57 @@
         local.get $5
         call $assembly/collision/narrowphase/Narrowphase#createContactEquation
         local.tee $1
-        i32.load offset=108
+        i32.load offset=104
         local.get $17
         call $assembly/math/vec2/Vec2#copy
         call $~lib/rt/pure/__release
         local.get $1
-        i32.load offset=108
+        i32.load offset=104
         local.get $1
-        i32.load offset=108
+        i32.load offset=104
         call $assembly/math/vec2/Vec2#normalize
         call $~lib/rt/pure/__release
         local.get $1
-        i32.load offset=96
+        i32.load offset=92
         local.get $1
-        i32.load offset=108
+        i32.load offset=104
         local.get $9
         call $assembly/math/vec2/Vec2#scale
         call $~lib/rt/pure/__release
         local.get $1
-        i32.load offset=96
+        i32.load offset=92
         local.get $1
-        i32.load offset=96
+        i32.load offset=92
         local.get $13
         call $assembly/math/vec2/Vec2#add
         call $~lib/rt/pure/__release
         local.get $1
-        i32.load offset=96
+        i32.load offset=92
         local.get $1
-        i32.load offset=96
+        i32.load offset=92
         local.get $14
-        i32.load offset=64
+        i32.load offset=56
         call $assembly/math/vec2/Vec2#subtract
         call $~lib/rt/pure/__release
         local.get $1
-        i32.load offset=104
+        i32.load offset=100
         local.get $21
         local.get $4
         call $assembly/math/vec2/Vec2#subtract
         call $~lib/rt/pure/__release
         local.get $1
-        i32.load offset=104
+        i32.load offset=100
         local.get $1
-        i32.load offset=104
+        i32.load offset=100
         local.get $4
         call $assembly/math/vec2/Vec2#add
         call $~lib/rt/pure/__release
         local.get $1
-        i32.load offset=104
+        i32.load offset=100
         local.get $1
-        i32.load offset=104
+        i32.load offset=100
         local.get $15
-        i32.load offset=64
+        i32.load offset=56
         call $assembly/math/vec2/Vec2#subtract
         call $~lib/rt/pure/__release
         local.get $0
@@ -19712,58 +19870,58 @@
       local.get $22
       call $assembly/collision/narrowphase/Narrowphase#createContactEquation
       local.tee $1
-      i32.load offset=108
+      i32.load offset=104
       local.get $23
       f32.const -1
       call $assembly/math/vec2/Vec2#scale
       call $~lib/rt/pure/__release
       local.get $1
-      i32.load offset=108
+      i32.load offset=104
       local.get $1
-      i32.load offset=108
+      i32.load offset=104
       call $assembly/math/vec2/Vec2#normalize
       call $~lib/rt/pure/__release
       local.get $1
-      i32.load offset=96
+      i32.load offset=92
       local.get $1
-      i32.load offset=108
+      i32.load offset=104
       local.get $10
       call $assembly/math/vec2/Vec2#scale
       call $~lib/rt/pure/__release
       local.get $1
-      i32.load offset=96
+      i32.load offset=92
       local.get $1
-      i32.load offset=96
+      i32.load offset=92
       local.get $13
       call $assembly/math/vec2/Vec2#add
       call $~lib/rt/pure/__release
       local.get $1
-      i32.load offset=96
+      i32.load offset=92
       local.get $1
-      i32.load offset=96
+      i32.load offset=92
       local.get $20
-      i32.load offset=64
+      i32.load offset=56
       call $assembly/math/vec2/Vec2#subtract
       call $~lib/rt/pure/__release
       local.get $1
-      i32.load offset=104
+      i32.load offset=100
       local.get $16
       local.get $11
       call $assembly/math/vec2/Vec2#subtract
       call $~lib/rt/pure/__release
       local.get $1
-      i32.load offset=104
+      i32.load offset=100
       local.get $1
-      i32.load offset=104
+      i32.load offset=100
       local.get $11
       call $assembly/math/vec2/Vec2#add
       call $~lib/rt/pure/__release
       local.get $1
-      i32.load offset=104
+      i32.load offset=100
       local.get $1
-      i32.load offset=104
+      i32.load offset=100
       local.get $21
-      i32.load offset=64
+      i32.load offset=56
       call $assembly/math/vec2/Vec2#subtract
       call $~lib/rt/pure/__release
       local.get $0
@@ -19826,71 +19984,71 @@
        local.get $22
        call $assembly/collision/narrowphase/Narrowphase#createContactEquation
        local.tee $8
-       i32.load offset=108
+       i32.load offset=104
        local.get $19
        call $assembly/math/vec2/Vec2#copy
        call $~lib/rt/pure/__release
        local.get $8
-       i32.load offset=108
+       i32.load offset=104
        local.get $8
-       i32.load offset=108
+       i32.load offset=104
        call $assembly/math/vec2/Vec2#normalize
        call $~lib/rt/pure/__release
        local.get $8
-       i32.load offset=96
+       i32.load offset=92
        local.get $8
-       i32.load offset=108
+       i32.load offset=104
        local.get $10
        call $assembly/math/vec2/Vec2#scale
        call $~lib/rt/pure/__release
        local.get $8
-       i32.load offset=96
+       i32.load offset=92
        local.get $8
-       i32.load offset=96
+       i32.load offset=92
        local.get $13
        call $assembly/math/vec2/Vec2#add
        call $~lib/rt/pure/__release
        local.get $8
-       i32.load offset=96
+       i32.load offset=92
        local.get $8
-       i32.load offset=96
+       i32.load offset=92
        local.get $20
-       i32.load offset=64
+       i32.load offset=56
        call $assembly/math/vec2/Vec2#subtract
        call $~lib/rt/pure/__release
        local.get $8
-       i32.load offset=104
+       i32.load offset=100
        local.get $1
        local.get $11
        call $assembly/math/vec2/Vec2#subtract
        call $~lib/rt/pure/__release
        local.get $3
        local.get $8
-       i32.load offset=108
+       i32.load offset=104
        local.get $9
        f32.neg
        call $assembly/math/vec2/Vec2#scale
        call $~lib/rt/pure/__release
        local.get $8
-       i32.load offset=104
+       i32.load offset=100
        local.get $8
-       i32.load offset=104
+       i32.load offset=100
        local.get $3
        call $assembly/math/vec2/Vec2#add
        call $~lib/rt/pure/__release
        local.get $8
-       i32.load offset=104
+       i32.load offset=100
        local.get $8
-       i32.load offset=104
+       i32.load offset=100
        local.get $11
        call $assembly/math/vec2/Vec2#add
        call $~lib/rt/pure/__release
        local.get $8
-       i32.load offset=104
+       i32.load offset=100
        local.get $8
-       i32.load offset=104
+       i32.load offset=100
        local.get $21
-       i32.load offset=64
+       i32.load offset=56
        call $assembly/math/vec2/Vec2#subtract
        call $~lib/rt/pure/__release
        local.get $0
@@ -20401,44 +20559,44 @@
       local.get $20
       call $assembly/collision/narrowphase/Narrowphase#createContactEquation
       local.tee $3
-      i32.load offset=108
+      i32.load offset=104
       local.get $23
       call $assembly/math/vec2/Vec2#copy
       call $~lib/rt/pure/__release
       local.get $3
-      i32.load offset=104
+      i32.load offset=100
       local.get $3
-      i32.load offset=108
+      i32.load offset=104
       local.get $8
       f32.neg
       call $assembly/math/vec2/Vec2#scale
       call $~lib/rt/pure/__release
       local.get $3
-      i32.load offset=104
+      i32.load offset=100
       local.get $3
-      i32.load offset=104
+      i32.load offset=100
       local.get $12
       call $assembly/math/vec2/Vec2#add
       call $~lib/rt/pure/__release
       local.get $3
-      i32.load offset=104
+      i32.load offset=100
       local.get $3
-      i32.load offset=104
+      i32.load offset=100
       local.get $17
-      i32.load offset=64
+      i32.load offset=56
       call $assembly/math/vec2/Vec2#subtract
       call $~lib/rt/pure/__release
       local.get $3
-      i32.load offset=96
+      i32.load offset=92
       local.get $22
       call $assembly/math/vec2/Vec2#copy
       call $~lib/rt/pure/__release
       local.get $3
-      i32.load offset=96
+      i32.load offset=92
       local.get $3
-      i32.load offset=96
+      i32.load offset=92
       local.get $18
-      i32.load offset=64
+      i32.load offset=56
       call $assembly/math/vec2/Vec2#subtract
       call $~lib/rt/pure/__release
       local.get $0
@@ -20519,58 +20677,58 @@
        local.get $20
        call $assembly/collision/narrowphase/Narrowphase#createContactEquation
        local.tee $1
-       i32.load offset=108
+       i32.load offset=104
        local.get $14
        call $assembly/math/vec2/Vec2#copy
        call $~lib/rt/pure/__release
        local.get $1
-       i32.load offset=108
+       i32.load offset=104
        local.get $1
-       i32.load offset=108
+       i32.load offset=104
        call $assembly/math/vec2/Vec2#normalize
        call $~lib/rt/pure/__release
        local.get $1
-       i32.load offset=104
+       i32.load offset=100
        local.get $1
-       i32.load offset=108
+       i32.load offset=104
        local.get $8
        f32.neg
        call $assembly/math/vec2/Vec2#scale
        call $~lib/rt/pure/__release
        local.get $1
-       i32.load offset=104
+       i32.load offset=100
        local.get $1
-       i32.load offset=104
+       i32.load offset=100
        local.get $12
        call $assembly/math/vec2/Vec2#add
        call $~lib/rt/pure/__release
        local.get $1
-       i32.load offset=104
+       i32.load offset=100
        local.get $1
-       i32.load offset=104
+       i32.load offset=100
        local.get $17
-       i32.load offset=64
+       i32.load offset=56
        call $assembly/math/vec2/Vec2#subtract
        call $~lib/rt/pure/__release
        local.get $1
-       i32.load offset=96
+       i32.load offset=92
        local.get $5
        local.get $13
        call $assembly/math/vec2/Vec2#subtract
        call $~lib/rt/pure/__release
        local.get $1
-       i32.load offset=96
+       i32.load offset=92
        local.get $1
-       i32.load offset=96
+       i32.load offset=92
        local.get $13
        call $assembly/math/vec2/Vec2#add
        call $~lib/rt/pure/__release
        local.get $1
-       i32.load offset=96
+       i32.load offset=92
        local.get $1
-       i32.load offset=96
+       i32.load offset=92
        local.get $18
-       i32.load offset=64
+       i32.load offset=56
        call $assembly/math/vec2/Vec2#subtract
        call $~lib/rt/pure/__release
        local.get $0
@@ -20766,35 +20924,35 @@
   local.get $11
   call $assembly/collision/narrowphase/Narrowphase#createContactEquation
   local.tee $1
-  i32.load offset=108
+  i32.load offset=104
   local.get $4
   call $assembly/math/vec2/Vec2#copy
   call $~lib/rt/pure/__release
   local.get $2
   local.get $1
-  i32.load offset=108
+  i32.load offset=104
   local.get $7
   call $assembly/math/vec2/Vec2#scale
   call $~lib/rt/pure/__release
   local.get $1
-  i32.load offset=96
+  i32.load offset=92
   local.get $3
   local.get $2
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $1
-  i32.load offset=96
+  i32.load offset=92
   local.get $1
-  i32.load offset=96
+  i32.load offset=92
   local.get $10
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $1
-  i32.load offset=104
+  i32.load offset=100
   local.get $3
   local.get $9
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $0
@@ -21216,57 +21374,57 @@
     local.get $11
     call $assembly/collision/narrowphase/Narrowphase#createContactEquation
     local.tee $1
-    i32.load offset=108
+    i32.load offset=104
     local.get $18
     f32.const -1
     call $assembly/math/vec2/Vec2#scale
     call $~lib/rt/pure/__release
     local.get $1
-    i32.load offset=108
+    i32.load offset=104
     local.get $1
-    i32.load offset=108
+    i32.load offset=104
     call $assembly/math/vec2/Vec2#normalize
     call $~lib/rt/pure/__release
     local.get $1
-    i32.load offset=96
+    i32.load offset=92
     f32.const 0
     f32.const 0
     call $assembly/math/vec2/Vec2#set
     call $~lib/rt/pure/__release
     local.get $1
-    i32.load offset=96
+    i32.load offset=92
     local.get $1
-    i32.load offset=96
+    i32.load offset=92
     local.get $10
     call $assembly/math/vec2/Vec2#add
     call $~lib/rt/pure/__release
     local.get $1
-    i32.load offset=96
+    i32.load offset=92
     local.get $1
-    i32.load offset=96
+    i32.load offset=92
     local.get $13
-    i32.load offset=64
+    i32.load offset=56
     call $assembly/math/vec2/Vec2#subtract
     call $~lib/rt/pure/__release
     local.get $1
-    i32.load offset=104
+    i32.load offset=100
     local.get $6
     local.get $2
     call $assembly/math/vec2/Vec2#subtract
     call $~lib/rt/pure/__release
     local.get $1
-    i32.load offset=104
+    i32.load offset=100
     local.get $1
-    i32.load offset=104
+    i32.load offset=100
     local.get $2
     call $assembly/math/vec2/Vec2#add
     call $~lib/rt/pure/__release
     local.get $1
-    i32.load offset=104
+    i32.load offset=100
     local.get $1
-    i32.load offset=104
+    i32.load offset=100
     local.get $14
-    i32.load offset=64
+    i32.load offset=56
     call $assembly/math/vec2/Vec2#subtract
     call $~lib/rt/pure/__release
     local.get $0
@@ -21431,7 +21589,7 @@
    unreachable
   end
   local.get $0
-  i32.load offset=120
+  i32.load offset=116
   local.tee $5
   i32.eqz
   if
@@ -21443,7 +21601,7 @@
    unreachable
   end
   local.get $0
-  i32.load offset=124
+  i32.load offset=120
   local.tee $7
   i32.eqz
   if
@@ -21466,6 +21624,12 @@
   call $~lib/rt/pure/__retain
   local.set $5
   local.get $4
+  i32.load offset=92
+  f32.const 0
+  f32.const 0
+  call $assembly/math/vec2/Vec2#set
+  call $~lib/rt/pure/__release
+  local.get $4
   i32.load offset=96
   f32.const 0
   f32.const 0
@@ -21473,12 +21637,6 @@
   call $~lib/rt/pure/__release
   local.get $4
   i32.load offset=100
-  f32.const 0
-  f32.const 0
-  call $assembly/math/vec2/Vec2#set
-  call $~lib/rt/pure/__release
-  local.get $4
-  i32.load offset=104
   f32.const 0
   f32.const 0
   call $assembly/math/vec2/Vec2#set
@@ -21508,11 +21666,19 @@
     i32.eq
     if
      local.get $4
-     i32.load offset=104
+     i32.load offset=100
      local.get $4
-     i32.load offset=104
+     i32.load offset=100
      local.get $0
-     i32.load offset=108
+     i32.load offset=104
+     call $assembly/math/vec2/Vec2#add
+     call $~lib/rt/pure/__release
+     local.get $4
+     i32.load offset=92
+     local.get $4
+     i32.load offset=92
+     local.get $0
+     i32.load offset=92
      call $assembly/math/vec2/Vec2#add
      call $~lib/rt/pure/__release
      local.get $4
@@ -21520,45 +21686,37 @@
      local.get $4
      i32.load offset=96
      local.get $0
-     i32.load offset=96
-     call $assembly/math/vec2/Vec2#add
-     call $~lib/rt/pure/__release
-     local.get $4
      i32.load offset=100
-     local.get $4
-     i32.load offset=100
-     local.get $0
-     i32.load offset=104
      call $assembly/math/vec2/Vec2#add
      call $~lib/rt/pure/__release
     else
      local.get $4
-     i32.load offset=104
+     i32.load offset=100
      local.get $4
-     i32.load offset=104
+     i32.load offset=100
      local.get $0
-     i32.load offset=108
+     i32.load offset=104
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $4
-     i32.load offset=96
+     i32.load offset=92
      local.get $4
-     i32.load offset=96
+     i32.load offset=92
      local.get $0
-     i32.load offset=104
+     i32.load offset=100
      call $assembly/math/vec2/Vec2#add
      call $~lib/rt/pure/__release
      local.get $4
-     i32.load offset=100
-     local.get $4
-     i32.load offset=100
-     local.get $0
      i32.load offset=96
+     local.get $4
+     i32.load offset=96
+     local.get $0
+     i32.load offset=92
      call $assembly/math/vec2/Vec2#add
      call $~lib/rt/pure/__release
     end
     local.get $4
-    i32.load offset=108
+    i32.load offset=104
     local.get $0
     call $~lib/array/Array<~lib/typedarray/Float32Array>#push
     local.get $6
@@ -21569,9 +21727,9 @@
    end
   end
   local.get $4
-  i32.load offset=96
+  i32.load offset=92
   local.get $4
-  i32.load offset=96
+  i32.load offset=92
   f32.const 1
   local.get $1
   f32.convert_i32_s
@@ -21580,22 +21738,22 @@
   call $assembly/math/vec2/Vec2#scale
   call $~lib/rt/pure/__release
   local.get $4
-  i32.load offset=100
+  i32.load offset=96
   local.get $4
-  i32.load offset=100
+  i32.load offset=96
   local.get $8
   call $assembly/math/vec2/Vec2#scale
   call $~lib/rt/pure/__release
   local.get $4
-  i32.load offset=104
+  i32.load offset=100
   local.get $4
-  i32.load offset=104
+  i32.load offset=100
   call $assembly/math/vec2/Vec2#normalize
   call $~lib/rt/pure/__release
   local.get $4
-  i32.load offset=104
+  i32.load offset=100
   local.get $4
-  i32.load offset=104
+  i32.load offset=100
   call $assembly/math/vec2/Vec2#rotate90cw
   call $~lib/rt/pure/__release
   local.get $0
@@ -21797,40 +21955,40 @@
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=108
+     i32.load offset=104
      local.get $5
      call $assembly/math/vec2/Vec2#copy
      call $~lib/rt/pure/__release
      local.get $3
      local.get $1
-     i32.load offset=108
+     i32.load offset=104
      call $assembly/math/vec2/Vec2#dot
      local.set $4
      local.get $3
      local.get $1
-     i32.load offset=108
+     i32.load offset=104
      local.get $4
      call $assembly/math/vec2/Vec2#scale
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $2
      local.get $13
-     i32.load offset=64
+     i32.load offset=56
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $2
      local.get $3
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $12
-     i32.load offset=64
+     i32.load offset=56
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $0
@@ -22115,14 +22273,14 @@
      local.get $10
      call $assembly/collision/narrowphase/Narrowphase#createContactEquation
      local.tee $1
-     i32.load offset=108
+     i32.load offset=104
      local.get $7
      call $assembly/math/vec2/Vec2#copy
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=108
+     i32.load offset=104
      local.get $1
-     i32.load offset=108
+     i32.load offset=104
      call $assembly/math/vec2/Vec2#normalize
      call $~lib/rt/pure/__release
      local.get $6
@@ -22131,38 +22289,38 @@
      call $assembly/math/vec2/Vec2#scale
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $20
      local.get $6
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $1
-     i32.load offset=96
+     i32.load offset=92
      local.get $11
-     i32.load offset=64
+     i32.load offset=56
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $20
      local.get $5
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $5
      call $assembly/math/vec2/Vec2#add
      call $~lib/rt/pure/__release
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $1
-     i32.load offset=104
+     i32.load offset=100
      local.get $12
-     i32.load offset=64
+     i32.load offset=56
      call $assembly/math/vec2/Vec2#subtract
      call $~lib/rt/pure/__release
      local.get $0
@@ -22328,14 +22486,14 @@
   call $~lib/rt/pure/__retain
   local.set $7
   i32.const 28
-  i32.const 85
+  i32.const 83
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   local.tee $1
   i32.eqz
   if
    i32.const 21
-   i32.const 61
+   i32.const 59
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $1
@@ -23465,12 +23623,12 @@
        local.get $16
        call $assembly/collision/narrowphase/Narrowphase#createContactEquation
        local.tee $13
-       i32.load offset=108
+       i32.load offset=104
        local.get $22
        call $assembly/math/vec2/Vec2#copy
        call $~lib/rt/pure/__release
        local.get $13
-       i32.load offset=104
+       i32.load offset=100
        local.get $23
        local.get $30
        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
@@ -23478,11 +23636,11 @@
        call $assembly/math/vec2/Vec2#copy
        call $~lib/rt/pure/__release
        local.get $13
-       i32.load offset=104
+       i32.load offset=100
        local.get $13
-       i32.load offset=104
+       i32.load offset=100
        local.get $18
-       i32.load offset=64
+       i32.load offset=56
        call $assembly/math/vec2/Vec2#subtract
        call $~lib/rt/pure/__release
        local.get $24
@@ -23492,7 +23650,7 @@
        call $assembly/math/vec2/Vec2#scale
        call $~lib/rt/pure/__release
        local.get $13
-       i32.load offset=96
+       i32.load offset=92
        local.get $23
        local.get $30
        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
@@ -23501,11 +23659,11 @@
        call $assembly/math/vec2/Vec2#add
        call $~lib/rt/pure/__release
        local.get $13
-       i32.load offset=96
+       i32.load offset=92
        local.get $13
-       i32.load offset=96
+       i32.load offset=92
        local.get $17
-       i32.load offset=64
+       i32.load offset=56
        call $assembly/math/vec2/Vec2#subtract
        call $~lib/rt/pure/__release
        local.get $0
@@ -23821,7 +23979,7 @@
   call $~lib/rt/pure/__retain
   local.set $6
   i32.const 68
-  i32.const 98
+  i32.const 96
   call $~lib/rt/tlsf/__alloc
   call $~lib/rt/pure/__retain
   local.tee $2
@@ -24052,7 +24210,7 @@
   local.set $3
   i32.const 0
   local.get $12
-  i32.load offset=128
+  i32.load offset=120
   i32.load
   i32.const 0
   call $~lib/typedarray/Float32Array#__get
@@ -24071,7 +24229,7 @@
   select
   local.set $1
   local.get $12
-  i32.load offset=128
+  i32.load offset=120
   i32.load offset=4
   i32.const 0
   call $~lib/typedarray/Float32Array#__get
@@ -24139,7 +24297,7 @@
    end
   end
   local.get $12
-  i32.load offset=128
+  i32.load offset=120
   i32.load
   i32.const 1
   call $~lib/typedarray/Float32Array#__get
@@ -24654,14 +24812,14 @@
                    local.get $11
                    if (result i32)
                     local.get $11
-                    i32.const 84
+                    i32.const 82
                     call $~lib/rt/__instanceof
                    else
                     i32.const 0
                    end
                    if
                     local.get $11
-                    i32.const 84
+                    i32.const 82
                     call $~lib/rt/__instanceof
                     i32.eqz
                     if
@@ -24678,14 +24836,14 @@
                     local.get $8
                     if (result i32)
                      local.get $8
-                     i32.const 84
+                     i32.const 82
                      call $~lib/rt/__instanceof
                     else
                      i32.const 0
                     end
                     if
                      local.get $8
-                     i32.const 84
+                     i32.const 82
                      call $~lib/rt/__instanceof
                      i32.eqz
                      if
@@ -24723,14 +24881,14 @@
                   local.get $11
                   if (result i32)
                    local.get $11
-                   i32.const 84
+                   i32.const 82
                    call $~lib/rt/__instanceof
                   else
                    i32.const 0
                   end
                   if
                    local.get $11
-                   i32.const 84
+                   i32.const 82
                    call $~lib/rt/__instanceof
                    i32.eqz
                    if
@@ -24747,14 +24905,14 @@
                    local.get $8
                    if (result i32)
                     local.get $8
-                    i32.const 96
+                    i32.const 94
                     call $~lib/rt/__instanceof
                    else
                     i32.const 0
                    end
                    if
                     local.get $8
-                    i32.const 96
+                    i32.const 94
                     call $~lib/rt/__instanceof
                     i32.eqz
                     if
@@ -24788,14 +24946,14 @@
                  local.get $11
                  if (result i32)
                   local.get $11
-                  i32.const 84
+                  i32.const 82
                   call $~lib/rt/__instanceof
                  else
                   i32.const 0
                  end
                  if
                   local.get $11
-                  i32.const 84
+                  i32.const 82
                   call $~lib/rt/__instanceof
                   i32.eqz
                   if
@@ -24812,14 +24970,14 @@
                   local.get $8
                   if (result i32)
                    local.get $8
-                   i32.const 97
+                   i32.const 95
                    call $~lib/rt/__instanceof
                   else
                    i32.const 0
                   end
                   if
                    local.get $8
-                   i32.const 97
+                   i32.const 95
                    call $~lib/rt/__instanceof
                    i32.eqz
                    if
@@ -24840,7 +24998,7 @@
                    local.tee $0
                    local.get $6
                    local.get $4
-                   f32.load offset=88
+                   f32.load offset=80
                    local.get $8
                    f32.load offset=8
                    f32.add
@@ -24858,14 +25016,14 @@
                 local.get $11
                 if (result i32)
                  local.get $11
-                 i32.const 84
+                 i32.const 82
                  call $~lib/rt/__instanceof
                 else
                  i32.const 0
                 end
                 if
                  local.get $11
-                 i32.const 84
+                 i32.const 82
                  call $~lib/rt/__instanceof
                  i32.eqz
                  if
@@ -24910,7 +25068,7 @@
                   local.tee $0
                   local.get $6
                   local.get $4
-                  f32.load offset=88
+                  f32.load offset=80
                   local.get $8
                   f32.load offset=8
                   f32.add
@@ -24930,14 +25088,14 @@
                local.get $11
                if (result i32)
                 local.get $11
-                i32.const 84
+                i32.const 82
                 call $~lib/rt/__instanceof
                else
                 i32.const 0
                end
                if
                 local.get $11
-                i32.const 84
+                i32.const 82
                 call $~lib/rt/__instanceof
                 i32.eqz
                 if
@@ -24954,14 +25112,14 @@
                 local.get $8
                 if (result i32)
                  local.get $8
-                 i32.const 94
+                 i32.const 92
                  call $~lib/rt/__instanceof
                 else
                  i32.const 0
                 end
                 if
                  local.get $8
-                 i32.const 94
+                 i32.const 92
                  call $~lib/rt/__instanceof
                  i32.eqz
                  if
@@ -24982,7 +25140,7 @@
                  local.tee $0
                  local.get $6
                  local.get $4
-                 f32.load offset=88
+                 f32.load offset=80
                  local.get $8
                  f32.load offset=8
                  f32.add
@@ -25003,14 +25161,14 @@
               local.get $11
               if (result i32)
                local.get $11
-               i32.const 84
+               i32.const 82
                call $~lib/rt/__instanceof
               else
                i32.const 0
               end
               if
                local.get $11
-               i32.const 84
+               i32.const 82
                call $~lib/rt/__instanceof
                i32.eqz
                if
@@ -25027,14 +25185,14 @@
                local.get $8
                if (result i32)
                 local.get $8
-                i32.const 82
+                i32.const 80
                 call $~lib/rt/__instanceof
                else
                 i32.const 0
                end
                if
                 local.get $8
-                i32.const 82
+                i32.const 80
                 call $~lib/rt/__instanceof
                 i32.eqz
                 if
@@ -25055,7 +25213,7 @@
                 local.tee $0
                 local.get $6
                 local.get $4
-                f32.load offset=88
+                f32.load offset=80
                 local.get $8
                 f32.load offset=8
                 f32.add
@@ -25073,14 +25231,14 @@
              local.get $11
              if (result i32)
               local.get $11
-              i32.const 84
+              i32.const 82
               call $~lib/rt/__instanceof
              else
               i32.const 0
              end
              if
               local.get $11
-              i32.const 84
+              i32.const 82
               call $~lib/rt/__instanceof
               i32.eqz
               if
@@ -25097,14 +25255,14 @@
               local.get $8
               if (result i32)
                local.get $8
-               i32.const 92
+               i32.const 90
                call $~lib/rt/__instanceof
               else
                i32.const 0
               end
               if
                local.get $8
-               i32.const 92
+               i32.const 90
                call $~lib/rt/__instanceof
                i32.eqz
                if
@@ -25140,14 +25298,14 @@
             local.get $11
             if (result i32)
              local.get $11
-             i32.const 96
+             i32.const 94
              call $~lib/rt/__instanceof
             else
              i32.const 0
             end
             if
              local.get $11
-             i32.const 96
+             i32.const 94
              call $~lib/rt/__instanceof
              i32.eqz
              if
@@ -25164,14 +25322,14 @@
              local.get $8
              if (result i32)
               local.get $8
-              i32.const 97
+              i32.const 95
               call $~lib/rt/__instanceof
              else
               i32.const 0
              end
              if
               local.get $8
-              i32.const 97
+              i32.const 95
               call $~lib/rt/__instanceof
               i32.eqz
               if
@@ -25192,7 +25350,7 @@
               local.tee $0
               local.get $6
               local.get $4
-              f32.load offset=88
+              f32.load offset=80
               local.get $8
               f32.load offset=8
               f32.add
@@ -25210,14 +25368,14 @@
            local.get $11
            if (result i32)
             local.get $11
-            i32.const 96
+            i32.const 94
             call $~lib/rt/__instanceof
            else
             i32.const 0
            end
            if
             local.get $11
-            i32.const 96
+            i32.const 94
             call $~lib/rt/__instanceof
             i32.eqz
             if
@@ -25262,7 +25420,7 @@
              local.tee $0
              local.get $6
              local.get $4
-             f32.load offset=88
+             f32.load offset=80
              local.get $8
              f32.load offset=8
              f32.add
@@ -25280,14 +25438,14 @@
           local.get $11
           if (result i32)
            local.get $11
-           i32.const 96
+           i32.const 94
            call $~lib/rt/__instanceof
           else
            i32.const 0
           end
           if
            local.get $11
-           i32.const 96
+           i32.const 94
            call $~lib/rt/__instanceof
            i32.eqz
            if
@@ -25304,14 +25462,14 @@
            local.get $8
            if (result i32)
             local.get $8
-            i32.const 82
+            i32.const 80
             call $~lib/rt/__instanceof
            else
             i32.const 0
            end
            if
             local.get $8
-            i32.const 82
+            i32.const 80
             call $~lib/rt/__instanceof
             i32.eqz
             if
@@ -25332,7 +25490,7 @@
             local.tee $0
             local.get $6
             local.get $4
-            f32.load offset=88
+            f32.load offset=80
             local.get $8
             f32.load offset=8
             f32.add
@@ -25350,14 +25508,14 @@
          local.get $11
          if (result i32)
           local.get $11
-          i32.const 97
+          i32.const 95
           call $~lib/rt/__instanceof
          else
           i32.const 0
          end
          if
           local.get $11
-          i32.const 97
+          i32.const 95
           call $~lib/rt/__instanceof
           i32.eqz
           if
@@ -25400,7 +25558,7 @@
            local.get $10
            local.get $3
            local.get $1
-           f32.load offset=88
+           f32.load offset=80
            local.get $11
            f32.load offset=8
            f32.add
@@ -25408,7 +25566,7 @@
            local.get $9
            local.get $6
            local.get $4
-           f32.load offset=88
+           f32.load offset=80
            local.get $8
            f32.load offset=8
            f32.add
@@ -25426,14 +25584,14 @@
         local.get $11
         if (result i32)
          local.get $11
-         i32.const 97
+         i32.const 95
          call $~lib/rt/__instanceof
         else
          i32.const 0
         end
         if
          local.get $11
-         i32.const 97
+         i32.const 95
          call $~lib/rt/__instanceof
          i32.eqz
          if
@@ -25450,14 +25608,14 @@
          local.get $8
          if (result i32)
           local.get $8
-          i32.const 94
+          i32.const 92
           call $~lib/rt/__instanceof
          else
           i32.const 0
          end
          if
           local.get $8
-          i32.const 94
+          i32.const 92
           call $~lib/rt/__instanceof
           i32.eqz
           if
@@ -25476,7 +25634,7 @@
           local.get $10
           local.get $3
           local.get $1
-          f32.load offset=88
+          f32.load offset=80
           local.get $11
           f32.load offset=8
           f32.add
@@ -25484,7 +25642,7 @@
           local.get $9
           local.get $6
           local.get $4
-          f32.load offset=88
+          f32.load offset=80
           local.get $8
           f32.load offset=8
           f32.add
@@ -25502,14 +25660,14 @@
        local.get $11
        if (result i32)
         local.get $11
-        i32.const 97
+        i32.const 95
         call $~lib/rt/__instanceof
        else
         i32.const 0
        end
        if
         local.get $11
-        i32.const 97
+        i32.const 95
         call $~lib/rt/__instanceof
         i32.eqz
         if
@@ -25526,14 +25684,14 @@
         local.get $8
         if (result i32)
          local.get $8
-         i32.const 82
+         i32.const 80
          call $~lib/rt/__instanceof
         else
          i32.const 0
         end
         if
          local.get $8
-         i32.const 82
+         i32.const 80
          call $~lib/rt/__instanceof
          i32.eqz
          if
@@ -25552,7 +25710,7 @@
          local.get $10
          local.get $3
          local.get $1
-         f32.load offset=88
+         f32.load offset=80
          local.get $11
          f32.load offset=8
          f32.add
@@ -25560,7 +25718,7 @@
          local.get $9
          local.get $6
          local.get $4
-         f32.load offset=88
+         f32.load offset=80
          local.get $8
          f32.load offset=8
          f32.add
@@ -25628,7 +25786,7 @@
         local.get $10
         local.get $3
         local.get $1
-        f32.load offset=88
+        f32.load offset=80
         local.get $11
         f32.load offset=8
         f32.add
@@ -25636,7 +25794,7 @@
         local.get $9
         local.get $6
         local.get $4
-        f32.load offset=88
+        f32.load offset=80
         local.get $8
         f32.load offset=8
         f32.add
@@ -25678,14 +25836,14 @@
       local.get $8
       if (result i32)
        local.get $8
-       i32.const 82
+       i32.const 80
        call $~lib/rt/__instanceof
       else
        i32.const 0
       end
       if
        local.get $8
-       i32.const 82
+       i32.const 80
        call $~lib/rt/__instanceof
        i32.eqz
        if
@@ -25704,7 +25862,7 @@
        local.get $10
        local.get $3
        local.get $1
-       f32.load offset=88
+       f32.load offset=80
        local.get $11
        f32.load offset=8
        f32.add
@@ -25712,7 +25870,7 @@
        local.get $9
        local.get $6
        local.get $4
-       f32.load offset=88
+       f32.load offset=80
        local.get $8
        f32.load offset=8
        f32.add
@@ -25754,14 +25912,14 @@
      local.get $8
      if (result i32)
       local.get $8
-      i32.const 92
+      i32.const 90
       call $~lib/rt/__instanceof
      else
       i32.const 0
      end
      if
       local.get $8
-      i32.const 92
+      i32.const 90
       call $~lib/rt/__instanceof
       i32.eqz
       if
@@ -25780,7 +25938,7 @@
       local.get $10
       local.get $3
       local.get $1
-      f32.load offset=88
+      f32.load offset=80
       local.get $11
       f32.load offset=8
       f32.add
@@ -25801,14 +25959,14 @@
    local.get $11
    if (result i32)
     local.get $11
-    i32.const 82
+    i32.const 80
     call $~lib/rt/__instanceof
    else
     i32.const 0
    end
    if
     local.get $11
-    i32.const 82
+    i32.const 80
     call $~lib/rt/__instanceof
     i32.eqz
     if
@@ -25825,14 +25983,14 @@
     local.get $8
     if (result i32)
      local.get $8
-     i32.const 82
+     i32.const 80
      call $~lib/rt/__instanceof
     else
      i32.const 0
     end
     if
      local.get $8
-     i32.const 82
+     i32.const 80
      call $~lib/rt/__instanceof
      i32.eqz
      if
@@ -25851,7 +26009,7 @@
      local.get $10
      local.get $3
      local.get $1
-     f32.load offset=88
+     f32.load offset=80
      local.get $11
      f32.load offset=8
      f32.add
@@ -25859,7 +26017,7 @@
      local.get $9
      local.get $6
      local.get $4
-     f32.load offset=88
+     f32.load offset=80
      local.get $8
      f32.load offset=8
      f32.add
@@ -25913,7 +26071,7 @@
   call $~lib/rt/pure/__retain
   local.set $7
   local.get $1
-  i32.load offset=28
+  i32.load offset=20
   i32.load offset=12
   local.set $10
   loop $for-loop|0
@@ -25922,14 +26080,14 @@
    i32.ne
    if
     local.get $1
-    i32.load offset=28
+    i32.load offset=20
     local.get $9
     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
     local.set $4
     i32.const 0
     local.set $8
     local.get $2
-    i32.load offset=28
+    i32.load offset=20
     i32.load offset=12
     local.set $11
     loop $for-loop|1
@@ -25938,7 +26096,7 @@
      i32.ne
      if
       local.get $2
-      i32.load offset=28
+      i32.load offset=20
       local.get $8
       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
       local.set $5
@@ -26042,6 +26200,95 @@
   local.get $2
   call $~lib/rt/pure/__release
   i32.const 0
+ )
+ (func $assembly/utils/tuple-dictionary/TupleDictionary<u32>#reset (param $0 i32)
+  (local $1 i32)
+  (local $2 i32)
+  local.get $0
+  i32.load
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $0
+  i32.load offset=4
+  call $~lib/rt/pure/__retain
+  local.set $0
+  i32.const 16
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.set $2
+  local.get $1
+  i32.load
+  call $~lib/rt/pure/__release
+  local.get $1
+  local.get $2
+  i32.store
+  local.get $1
+  i32.const 3
+  i32.store offset=4
+  i32.const 64
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  local.set $2
+  local.get $1
+  i32.load offset=8
+  call $~lib/rt/pure/__release
+  local.get $1
+  local.get $2
+  i32.store offset=8
+  local.get $1
+  i32.const 4
+  i32.store offset=12
+  local.get $1
+  i32.const 0
+  i32.store offset=16
+  local.get $1
+  i32.const 0
+  i32.store offset=20
+  local.get $0
+  i32.load offset=12
+  drop
+  local.get $0
+  i32.const 0
+  i32.const 3
+  call $~lib/array/ensureSize
+  local.get $0
+  i32.const 0
+  i32.store offset=12
+  local.get $1
+  call $~lib/rt/pure/__release
+  local.get $0
+  call $~lib/rt/pure/__release
+ )
+ (func $~lib/map/Map<i64,u32>#has (param $0 i32) (param $1 i64) (result i32)
+  local.get $0
+  local.get $1
+  local.get $1
+  call $~lib/util/hash/hash64
+  call $~lib/map/Map<i64,u32>#find
+  i32.const 0
+  i32.ne
+ )
+ (func $~lib/array/Array<i64>#push (param $0 i32) (param $1 i64)
+  (local $2 i32)
+  (local $3 i32)
+  local.get $0
+  local.get $0
+  i32.load offset=12
+  local.tee $2
+  i32.const 1
+  i32.add
+  local.tee $3
+  i32.const 3
+  call $~lib/array/ensureSize
+  local.get $0
+  i32.load offset=4
+  local.get $2
+  i32.const 3
+  i32.shl
+  i32.add
+  local.get $1
+  i64.store
+  local.get $0
+  local.get $3
+  i32.store offset=12
  )
  (func $~lib/map/Map<i64,u32>#rehash (param $0 i32) (param $1 i32)
   (local $2 i32)
@@ -26276,69 +26523,17 @@
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
-  (local $5 i32)
-  (local $6 i64)
+  (local $5 i64)
+  (local $6 i32)
   (local $7 i32)
   (local $8 i32)
-  (local $9 i32)
   local.get $0
   i32.load offset=28
-  local.tee $1
-  i32.load
-  call $~lib/rt/pure/__retain
-  local.set $2
-  local.get $1
-  i32.load offset=4
-  call $~lib/rt/pure/__retain
-  local.set $1
-  i32.const 16
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $3
-  local.get $2
-  i32.load
-  call $~lib/rt/pure/__release
-  local.get $2
-  local.get $3
-  i32.store
-  local.get $2
-  i32.const 3
-  i32.store offset=4
-  i32.const 64
-  call $~lib/arraybuffer/ArrayBuffer#constructor
-  local.set $3
-  local.get $2
-  i32.load offset=8
-  call $~lib/rt/pure/__release
-  local.get $2
-  local.get $3
-  i32.store offset=8
-  local.get $2
-  i32.const 4
-  i32.store offset=12
-  local.get $2
-  i32.const 0
-  i32.store offset=16
-  local.get $2
-  i32.const 0
-  i32.store offset=20
-  local.get $1
-  i32.load offset=12
-  drop
-  local.get $1
-  i32.const 0
-  i32.const 3
-  call $~lib/array/ensureSize
-  local.get $1
-  i32.const 0
-  i32.store offset=12
-  local.get $2
-  call $~lib/rt/pure/__release
-  local.get $1
-  call $~lib/rt/pure/__release
+  call $assembly/utils/tuple-dictionary/TupleDictionary<u32>#reset
   local.get $0
   i32.load
   call $~lib/rt/pure/__retain
-  local.tee $7
+  local.tee $6
   i32.load offset=12
   local.set $2
   loop $while-continue|0
@@ -26349,10 +26544,10 @@
    local.set $2
    local.get $1
    if
-    local.get $7
+    local.get $6
     local.get $2
     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
-    local.tee $8
+    local.tee $4
     i32.load offset=12
     local.tee $1
     i32.eqz
@@ -26366,9 +26561,9 @@
     end
     local.get $1
     i32.load offset=8
-    local.get $8
+    local.get $4
     i32.load offset=16
-    local.tee $5
+    local.tee $8
     i32.eqz
     if
      i32.const 2656
@@ -26382,49 +26577,28 @@
     i32.load offset=28
     local.set $1
     i64.extend_i32_u
-    local.get $5
+    local.get $8
     i32.load offset=8
     i64.extend_i32_u
     call $assembly/utils/tuple-dictionary/TupleDictionary<u32>#getKey
-    local.set $6
+    local.set $5
     local.get $1
     i32.load
-    local.get $6
-    local.get $6
-    call $~lib/util/hash/hash64
-    call $~lib/map/Map<i64,u32>#find
+    local.get $5
+    call $~lib/map/Map<i64,u32>#has
     i32.eqz
     if
      local.get $1
      i32.load offset=4
-     local.tee $3
-     i32.load offset=12
-     local.tee $9
-     i32.const 1
-     i32.add
-     local.set $5
-     local.get $3
      local.get $5
-     i32.const 3
-     call $~lib/array/ensureSize
-     local.get $3
-     i32.load offset=4
-     local.get $9
-     i32.const 3
-     i32.shl
-     i32.add
-     local.get $6
-     i64.store
-     local.get $3
-     local.get $5
-     i32.store offset=12
+     call $~lib/array/Array<i64>#push
     end
     local.get $1
     i32.load
-    local.get $6
+    local.get $5
     call $~lib/map/Map<i64,u32>#set
     call $~lib/rt/pure/__release
-    local.get $8
+    local.get $4
     call $~lib/rt/pure/__release
     br $while-continue|0
    end
@@ -26438,7 +26612,7 @@
   call $~lib/rt/pure/__retain
   local.set $1
   loop $for-loop|1
-   local.get $4
+   local.get $3
    local.get $2
    i32.load offset=12
    i32.lt_s
@@ -26446,24 +26620,24 @@
     local.get $0
     i32.load offset=16
     local.get $2
-    local.get $4
+    local.get $3
     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
-    local.tee $3
+    local.tee $4
     call $assembly/utils/contact-equation-pool/ContactEquationPool#release
     call $~lib/rt/pure/__release
-    local.get $3
-    call $~lib/rt/pure/__release
     local.get $4
+    call $~lib/rt/pure/__release
+    local.get $3
     i32.const 1
     i32.add
-    local.set $4
+    local.set $3
     br $for-loop|1
    end
   end
   i32.const 0
-  local.set $4
+  local.set $3
   loop $for-loop|2
-   local.get $4
+   local.get $3
    local.get $1
    i32.load offset=12
    i32.lt_s
@@ -26471,17 +26645,17 @@
     local.get $0
     i32.load offset=20
     local.get $1
-    local.get $4
+    local.get $3
     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
-    local.tee $3
+    local.tee $4
     call $assembly/utils/contact-equation-pool/ContactEquationPool#release
     call $~lib/rt/pure/__release
-    local.get $3
-    call $~lib/rt/pure/__release
     local.get $4
+    call $~lib/rt/pure/__release
+    local.get $3
     i32.const 1
     i32.add
-    local.set $4
+    local.set $3
     br $for-loop|2
    end
   end
@@ -26495,7 +26669,7 @@
   local.get $0
   i32.load offset=12
   call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
-  local.get $7
+  local.get $6
   call $~lib/rt/pure/__release
   local.get $2
   call $~lib/rt/pure/__release
@@ -26511,14 +26685,15 @@
    local.get $0
   else
    i32.const 14
-   i32.const 101
+   i32.const 99
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
   end
   global.get $assembly/collision/broadphase/Broadphase.NAIVE
   call $assembly/collision/broadphase/Broadphase#constructor
  )
- (func $assembly/collision/naive-broadphase/NaiveBroadphase#getCollisionPairs (param $0 i32) (param $1 i32) (result i32)
+ (func $assembly/collision/naive-broadphase/NaiveBroadphase#getCollisionPairs (param $0 i32) (result i32)
+  (local $1 i32)
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
@@ -26526,50 +26701,59 @@
   (local $6 i32)
   (local $7 i32)
   (local $8 i32)
-  (local $9 i32)
-  local.get $1
-  call $~lib/rt/pure/__retain
-  local.tee $8
+  local.get $0
+  i32.load offset=8
+  local.tee $4
+  i32.eqz
+  if
+   i32.const 2656
+   i32.const 4816
+   i32.const 30
+   i32.const 24
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $4
   i32.load offset=12
   call $~lib/rt/pure/__retain
-  local.set $2
+  local.set $1
   local.get $0
   i32.load offset=4
   call $~lib/rt/pure/__retain
   local.tee $5
   i32.const 0
   call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
-  local.get $2
+  local.get $1
   i32.load offset=12
   i32.const 65535
   i32.and
-  local.set $9
+  local.set $8
   loop $for-loop|3
    local.get $6
    i32.const 65535
    i32.and
-   local.get $9
+   local.get $8
    i32.lt_u
    if
-    local.get $2
+    local.get $1
     local.get $6
     i32.const 65535
     i32.and
-    local.tee $1
+    local.tee $4
     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
-    local.set $3
+    local.set $2
     i32.const 0
-    local.set $4
+    local.set $3
     loop $for-loop|5
-     local.get $4
+     local.get $3
      i32.const 65535
      i32.and
-     local.get $1
+     local.get $4
      i32.lt_u
      if
-      local.get $3
       local.get $2
-      local.get $4
+      local.get $1
+      local.get $3
       i32.const 65535
       i32.and
       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
@@ -26577,7 +26761,7 @@
       call $assembly/collision/broadphase/Broadphase.canCollide
       if (result i32)
        local.get $0
-       local.get $3
+       local.get $2
        local.get $7
        call $assembly/collision/broadphase/Broadphase#boundingVolumeCheck
       else
@@ -26585,7 +26769,7 @@
       end
       if
        local.get $5
-       local.get $3
+       local.get $2
        call $~lib/array/Array<~lib/typedarray/Float32Array>#push
        local.get $5
        local.get $7
@@ -26593,14 +26777,14 @@
       end
       local.get $7
       call $~lib/rt/pure/__release
-      local.get $4
+      local.get $3
       i32.const 1
       i32.add
-      local.set $4
+      local.set $3
       br $for-loop|5
      end
     end
-    local.get $3
+    local.get $2
     call $~lib/rt/pure/__release
     local.get $6
     i32.const 1
@@ -26609,30 +26793,37 @@
     br $for-loop|3
    end
   end
-  local.get $2
-  call $~lib/rt/pure/__release
-  local.get $8
+  local.get $1
   call $~lib/rt/pure/__release
   local.get $5
  )
- (func $assembly/collision/naive-broadphase/NaiveBroadphase#aabbQuery (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (result i32)
+ (func $assembly/collision/naive-broadphase/NaiveBroadphase#aabbQuery (param $0 i32) (param $1 i32) (param $2 i32)
+  (local $3 i32)
   (local $4 i32)
-  (local $5 i32)
   local.get $1
   call $~lib/rt/pure/__retain
-  local.set $5
+  local.set $4
   local.get $2
   call $~lib/rt/pure/__retain
   local.set $2
-  local.get $3
-  call $~lib/rt/pure/__retain
-  local.set $3
-  local.get $5
+  local.get $0
+  i32.load offset=8
+  local.tee $0
+  i32.eqz
+  if
+   i32.const 2656
+   i32.const 4816
+   i32.const 60
+   i32.const 24
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
   i32.load offset=12
   call $~lib/rt/pure/__retain
   local.set $1
   loop $for-loop|1
-   local.get $4
+   local.get $3
    i32.const 65535
    i32.and
    local.get $1
@@ -26642,48 +26833,47 @@
    i32.lt_u
    if
     local.get $1
-    local.get $4
+    local.get $3
     i32.const 65535
     i32.and
     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
     local.tee $0
-    i32.load8_u offset=132
+    i32.load8_u offset=124
     if
      local.get $0
      call $assembly/objects/body/Body#updateAABB
     end
     local.get $0
-    i32.load offset=128
-    local.get $2
+    i32.load offset=120
+    local.get $4
     call $assembly/collision/aabb/AABB#overlaps
     if
-     local.get $3
+     local.get $2
      local.get $0
      call $~lib/array/Array<~lib/typedarray/Float32Array>#push
     end
     local.get $0
     call $~lib/rt/pure/__release
-    local.get $4
+    local.get $3
     i32.const 1
     i32.add
-    local.set $4
+    local.set $3
     br $for-loop|1
    end
   end
   local.get $1
   call $~lib/rt/pure/__release
-  local.get $5
+  local.get $4
   call $~lib/rt/pure/__release
   local.get $2
   call $~lib/rt/pure/__release
-  local.get $3
  )
  (func $assembly/shapes/particle/Particle#constructor (param $0 i32) (param $1 i32) (result i32)
   local.get $0
   i32.eqz
   if
    i32.const 41
-   i32.const 96
+   i32.const 94
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -26746,7 +26936,7 @@
   i32.eqz
   if
    i32.const 41
-   i32.const 97
+   i32.const 95
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -26773,28 +26963,63 @@
   f32.store offset=36
   f32.const inf
  )
- (func $~lib/math/NativeMathf.mod (param $0 f32) (result f32)
-  (local $1 i32)
+ (func $~lib/math/NativeMathf.mod (param $0 f32) (param $1 f32) (result f32)
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
-  local.get $0
-  i32.reinterpret_f32
-  local.tee $1
-  i32.const -2147483648
-  i32.and
-  local.set $4
+  (local $5 i32)
+  (local $6 i32)
+  (local $7 i32)
+  (local $8 i32)
   local.get $1
+  f32.abs
+  f32.const 1
+  f32.eq
+  if
+   local.get $0
+   local.get $0
+   f32.trunc
+   f32.sub
+   local.get $0
+   f32.copysign
+   return
+  end
+  local.get $1
+  i32.reinterpret_f32
+  local.tee $3
   i32.const 23
   i32.shr_u
   i32.const 255
   i32.and
+  local.set $5
+  local.get $0
+  i32.reinterpret_f32
   local.tee $2
+  i32.const -2147483648
+  i32.and
+  local.set $7
+  i32.const 1
+  local.get $1
+  local.get $1
+  f32.ne
+  local.get $2
+  i32.const 23
+  i32.shr_u
+  i32.const 255
+  i32.and
+  local.tee $4
   i32.const 255
   i32.eq
+  i32.const 1
+  local.get $3
+  i32.const 1
+  i32.shl
+  local.tee $6
+  select
+  select
   if
    local.get $0
-   f32.const 6.2831854820251465
+   local.get $1
    f32.mul
    local.tee $0
    local.get $0
@@ -26802,113 +27027,134 @@
    return
   end
   block $folding-inner0
-   local.get $1
+   local.get $2
    i32.const 1
    i32.shl
-   local.tee $3
-   i32.const -2121130058
+   local.tee $8
+   local.get $6
    i32.le_u
    if
-    local.get $3
-    i32.const -2121130058
+    local.get $6
+    local.get $8
     i32.eq
     br_if $folding-inner0
     local.get $0
     return
    end
-   local.get $2
+   local.get $4
    if (result i32)
-    local.get $1
+    local.get $2
     i32.const 8388607
     i32.and
     i32.const 8388608
     i32.or
    else
-    local.get $1
-    i32.const 1
     local.get $2
-    local.get $1
+    i32.const 1
+    local.get $4
+    local.get $2
     i32.const 9
     i32.shl
     i32.clz
     i32.sub
-    local.tee $2
+    local.tee $4
     i32.sub
     i32.shl
    end
-   local.set $1
+   local.set $2
+   local.get $5
+   if (result i32)
+    local.get $3
+    i32.const 8388607
+    i32.and
+    i32.const 8388608
+    i32.or
+   else
+    local.get $3
+    i32.const 1
+    local.get $5
+    local.get $3
+    i32.const 9
+    i32.shl
+    i32.clz
+    i32.sub
+    local.tee $5
+    i32.sub
+    i32.shl
+   end
+   local.set $3
    loop $while-continue|0
-    local.get $2
-    i32.const 129
+    local.get $4
+    local.get $5
     i32.gt_s
     if
-     local.get $1
-     i32.const 13176795
+     local.get $2
+     local.get $3
      i32.ge_u
      if (result i32)
-      local.get $1
-      i32.const 13176795
+      local.get $2
+      local.get $3
       i32.eq
       br_if $folding-inner0
-      local.get $1
-      i32.const 13176795
+      local.get $2
+      local.get $3
       i32.sub
      else
-      local.get $1
+      local.get $2
      end
      i32.const 1
      i32.shl
-     local.set $1
-     local.get $2
+     local.set $2
+     local.get $4
      i32.const 1
      i32.sub
-     local.set $2
+     local.set $4
      br $while-continue|0
     end
    end
-   local.get $1
-   i32.const 13176795
+   local.get $2
+   local.get $3
    i32.ge_u
    if
-    local.get $1
-    i32.const 13176795
+    local.get $2
+    local.get $3
     i32.eq
     br_if $folding-inner0
-    local.get $1
-    i32.const 13176795
+    local.get $2
+    local.get $3
     i32.sub
-    local.set $1
+    local.set $2
    end
-   local.get $1
-   local.get $1
+   local.get $2
+   local.get $2
    i32.const 8
    i32.shl
    i32.clz
    local.tee $3
    i32.shl
-   local.set $1
-   local.get $2
+   local.set $2
+   local.get $4
    local.get $3
    i32.sub
-   local.tee $2
+   local.tee $4
    i32.const 0
    i32.gt_s
    if (result i32)
-    local.get $1
+    local.get $2
     i32.const 8388608
     i32.sub
-    local.get $2
+    local.get $4
     i32.const 23
     i32.shl
     i32.or
    else
-    local.get $1
-    i32.const 1
     local.get $2
+    i32.const 1
+    local.get $4
     i32.sub
     i32.shr_u
    end
-   local.get $4
+   local.get $7
    i32.or
    f32.reinterpret_i32
    return
@@ -26926,6 +27172,7 @@
   call $~lib/rt/pure/__retain
   local.set $0
   local.get $3
+  f32.const 6.2831854820251465
   call $~lib/math/NativeMathf.mod
   local.set $3
   local.get $4
@@ -27186,7 +27433,7 @@
   i32.eqz
   if
    i32.const 36
-   i32.const 78
+   i32.const 76
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -27213,7 +27460,7 @@
   i32.const 0
   i32.store16 offset=14
   local.get $0
-  i32.const 4816
+  i32.const 4912
   i32.store offset=16
   local.get $0
   call $assembly/math/vec2/Vec2#create
@@ -27542,7 +27789,7 @@
   local.tee $6
   if (result i32)
    local.get $1
-   i32.load8_u offset=160
+   i32.load8_u offset=144
    i32.eqz
   else
    i32.const 0
@@ -27558,7 +27805,7 @@
   call $~lib/rt/pure/__retain
   local.set $2
   local.get $1
-  i32.load offset=28
+  i32.load offset=20
   i32.load offset=12
   local.set $7
   loop $for-loop|0
@@ -27568,7 +27815,7 @@
    if
     block $for-break0
      local.get $1
-     i32.load offset=28
+     i32.load offset=20
      local.get $5
      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
      local.set $3
@@ -27602,13 +27849,13 @@
       local.get $3
       i32.load offset=4
       local.get $1
-      f32.load offset=88
+      f32.load offset=80
       call $assembly/math/vec2/Vec2#rotate
       call $~lib/rt/pure/__release
       local.get $2
       local.get $2
       local.get $1
-      i32.load offset=64
+      i32.load offset=56
       call $assembly/math/vec2/Vec2#add
       call $~lib/rt/pure/__release
       local.get $0
@@ -27617,7 +27864,7 @@
       local.get $3
       f32.load offset=8
       local.get $1
-      f32.load offset=88
+      f32.load offset=80
       f32.add
       local.get $2
       local.get $1
@@ -27770,7 +28017,7 @@
   i32.eqz
   if
    i32.const 21
-   i32.const 76
+   i32.const 74
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -27932,7 +28179,7 @@
   i32.eqz
   if
    i32.const 68
-   i32.const 102
+   i32.const 100
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -28243,15 +28490,15 @@
   local.get $0
   i32.eqz
   if
-   i32.const 100
-   i32.const 104
+   i32.const 96
+   i32.const 102
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
   end
   local.get $0
   f32.const 0
-  f32.store offset=96
+  f32.store offset=92
   local.get $0
   local.get $1
   call $~lib/rt/pure/__retain
@@ -28265,7 +28512,7 @@
   f32.store offset=60
   local.get $0
   f32.const 1
-  f32.store offset=96
+  f32.store offset=92
   local.get $1
   call $~lib/rt/pure/__release
   local.get $2
@@ -28284,7 +28531,7 @@
   local.get $4
   i32.const 5
   local.get $0
-  f32.load offset=96
+  f32.load offset=92
   call $~lib/typedarray/Float32Array#__set
   local.get $0
   call $assembly/equations/Equation/Equation#computeGiMf
@@ -28306,7 +28553,7 @@
   i32.eqz
   if
    i32.const 24
-   i32.const 55
+   i32.const 53
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -28315,7 +28562,7 @@
   i32.const 0
   i32.const 2
   i32.const 22
-  i32.const 4848
+  i32.const 4944
   call $~lib/rt/__allocArray
   call $~lib/rt/pure/__retain
   i32.store offset=16
@@ -28337,20 +28584,20 @@
   local.get $1
   if (result i32)
    local.get $0
-   i32.const 54
+   i32.const 52
    call $~lib/rt/__instanceof
   else
    i32.const 0
   end
   if (result i32)
    local.get $1
-   i32.const 54
+   i32.const 52
    call $~lib/rt/__instanceof
    if (result i32)
     local.get $0
    else
     i32.const 4384
-    i32.const 4896
+    i32.const 4992
     i32.const 29
     i32.const 35
     call $~lib/builtins/abort
@@ -28362,12 +28609,12 @@
   end
   if
    local.get $1
-   i32.const 54
+   i32.const 52
    call $~lib/rt/__instanceof
    i32.eqz
    if
     i32.const 4384
-    i32.const 4896
+    i32.const 4992
     i32.const 30
     i32.const 15
     call $~lib/builtins/abort
@@ -28381,12 +28628,12 @@
     local.get $2
     i32.load offset=16
     local.get $1
-    i32.const 54
+    i32.const 52
     call $~lib/rt/__instanceof
     i32.eqz
     if
      i32.const 4384
-     i32.const 4896
+     i32.const 4992
      i32.const 31
      i32.const 32
      call $~lib/builtins/abort
@@ -28398,7 +28645,7 @@
     i32.eqz
     if
      i32.const 2656
-     i32.const 4896
+     i32.const 4992
      i32.const 31
      i32.const 31
      call $~lib/builtins/abort
@@ -28413,13 +28660,12 @@
   local.get $1
   call $~lib/rt/pure/__release
  )
- (func $~lib/array/Array<assembly/objects/body/Body>#splice (param $0 i32) (param $1 i32) (result i32)
-  (local $2 i32)
+ (func $~lib/array/Array<assembly/objects/body/Body>#splice (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
   (local $3 i32)
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
-  i32.const 1
+  local.get $2
   local.get $0
   i32.load offset=12
   local.tee $3
@@ -28446,9 +28692,9 @@
   end
   local.tee $1
   i32.sub
-  local.tee $2
-  i32.const 1
+  local.tee $4
   local.get $2
+  local.get $4
   i32.lt_s
   select
   local.tee $2
@@ -28515,20 +28761,20 @@
   local.get $1
   if (result i32)
    local.get $0
-   i32.const 56
+   i32.const 54
    call $~lib/rt/__instanceof
   else
    i32.const 0
   end
   if (result i32)
    local.get $1
-   i32.const 56
+   i32.const 54
    call $~lib/rt/__instanceof
    if (result i32)
     local.get $0
    else
     i32.const 4384
-    i32.const 4896
+    i32.const 4992
     i32.const 37
     i32.const 38
     call $~lib/builtins/abort
@@ -28540,12 +28786,12 @@
   end
   if
    local.get $1
-   i32.const 56
+   i32.const 54
    call $~lib/rt/__instanceof
    i32.eqz
    if
     i32.const 4384
-    i32.const 4896
+    i32.const 4992
     i32.const 38
     i32.const 15
     call $~lib/builtins/abort
@@ -28559,12 +28805,12 @@
     local.get $2
     i32.load offset=16
     local.get $1
-    i32.const 56
+    i32.const 54
     call $~lib/rt/__instanceof
     i32.eqz
     if
      i32.const 4384
-     i32.const 4896
+     i32.const 4992
      i32.const 40
      i32.const 37
      call $~lib/builtins/abort
@@ -28576,7 +28822,7 @@
     i32.eqz
     if
      i32.const 2656
-     i32.const 4896
+     i32.const 4992
      i32.const 40
      i32.const 36
      call $~lib/builtins/abort
@@ -28591,6 +28837,7 @@
      local.get $2
      i32.load offset=16
      local.get $0
+     i32.const 1
      call $~lib/array/Array<assembly/objects/body/Body>#splice
      call $~lib/rt/pure/__release
     end
@@ -28649,22 +28896,22 @@
   local.get $3
   call $~lib/rt/pure/__release
   local.get $1
-  i32.const 4864
-  i32.const 4992
+  i32.const 4960
+  i32.const 5088
   call $assembly/events/event-emitter/EventEmitter#off
   local.tee $4
-  i32.const 5024
-  i32.const 5072
+  i32.const 5120
+  i32.const 5168
   call $assembly/events/event-emitter/EventEmitter#off
   call $~lib/rt/pure/__release
   local.get $1
-  i32.const 4864
-  i32.const 4992
+  i32.const 4960
+  i32.const 5088
   local.get $0
   call $assembly/events/event-emitter/EventEmitter#on
   local.tee $3
-  i32.const 5024
-  i32.const 5072
+  i32.const 5120
+  i32.const 5168
   local.get $0
   call $assembly/events/event-emitter/EventEmitter#on
   call $~lib/rt/pure/__release
@@ -28737,12 +28984,12 @@
        local.get $0
        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
        local.tee $5
-       i32.load offset=128
+       i32.load offset=120
        i32.load
        local.get $1
        call $~lib/typedarray/Float32Array#__get
        local.get $4
-       i32.load offset=128
+       i32.load offset=120
        i32.load
        local.get $1
        call $~lib/typedarray/Float32Array#__get
@@ -28843,7 +29090,7 @@
     local.get $1
     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
     local.tee $2
-    i32.load8_u offset=132
+    i32.load8_u offset=124
     if
      local.get $2
      call $assembly/objects/body/Body#updateAABB
@@ -28898,12 +29145,12 @@
        i32.and
        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
        local.tee $2
-       i32.load offset=128
+       i32.load offset=120
        i32.load
        local.get $7
        call $~lib/typedarray/Float32Array#__get
        local.get $1
-       i32.load offset=128
+       i32.load offset=120
        i32.load offset=4
        local.get $7
        call $~lib/typedarray/Float32Array#__get
@@ -28956,15 +29203,13 @@
   call $~lib/rt/pure/__release
   local.get $4
  )
- (func $assembly/collision/sap-broadphase/SAPBroadphase#aabbQuery (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (result i32)
+ (func $assembly/collision/sap-broadphase/SAPBroadphase#aabbQuery (param $0 i32) (param $1 i32) (param $2 i32)
+  (local $3 i32)
   (local $4 i32)
-  (local $5 i32)
   local.get $1
   call $~lib/rt/pure/__retain
-  local.get $2
-  call $~lib/rt/pure/__retain
   local.set $4
-  local.get $3
+  local.get $2
   call $~lib/rt/pure/__retain
   local.tee $2
   local.set $1
@@ -28976,7 +29221,7 @@
    i32.const 0
    i32.const 2
    i32.const 22
-   i32.const 5104
+   i32.const 5200
    call $~lib/rt/__allocArray
    call $~lib/rt/pure/__retain
   end
@@ -29007,13 +29252,13 @@
     i32.and
     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
     local.tee $2
-    i32.load8_u offset=132
+    i32.load8_u offset=124
     if
      local.get $2
      call $assembly/objects/body/Body#updateAABB
     end
     local.get $2
-    i32.load offset=128
+    i32.load offset=120
     local.get $4
     call $assembly/collision/aabb/AABB#overlaps
     if
@@ -29032,10 +29277,10 @@
   end
   local.get $3
   call $~lib/rt/pure/__release
-  call $~lib/rt/pure/__release
   local.get $4
   call $~lib/rt/pure/__release
   local.get $1
+  call $~lib/rt/pure/__release
  )
  (func $assembly/solver/solver/Solver#solve (param $0 i32) (param $1 f32) (param $2 i32)
   unreachable
@@ -29134,9 +29379,9 @@
   call $~lib/rt/pure/__retain
   local.tee $2
   local.get $0
-  i32.load offset=64
+  i32.load offset=56
   local.get $0
-  f32.load offset=88
+  f32.load offset=80
   call $assembly/math/vec2/Vec2#toLocalFrame
   call $~lib/rt/pure/__release
   local.get $1
@@ -29203,7 +29448,7 @@
   i32.eqz
   if
    i32.const 28
-   i32.const 105
+   i32.const 103
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -29258,7 +29503,7 @@
     i32.eqz
     if
      i32.const 2656
-     i32.const 5120
+     i32.const 5216
      i32.const 81
      i32.const 59
      call $~lib/builtins/abort
@@ -29279,7 +29524,7 @@
     i32.eqz
     if
      i32.const 2656
-     i32.const 5120
+     i32.const 5216
      i32.const 82
      i32.const 59
      call $~lib/builtins/abort
@@ -29298,7 +29543,7 @@
     i32.eqz
     if
      i32.const 2656
-     i32.const 5120
+     i32.const 5216
      i32.const 83
      i32.const 51
      call $~lib/builtins/abort
@@ -29317,7 +29562,7 @@
     i32.eqz
     if
      i32.const 2656
-     i32.const 5120
+     i32.const 5216
      i32.const 84
      i32.const 51
      call $~lib/builtins/abort
@@ -29443,13 +29688,13 @@
   local.get $10
   local.get $8
   local.get $1
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $11
   local.get $9
   local.get $2
-  i32.load offset=64
+  i32.load offset=56
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $6
@@ -29466,14 +29711,14 @@
   call $~lib/rt/pure/__release
   local.get $3
   local.get $2
-  i32.load offset=76
+  i32.load offset=68
   local.get $1
-  i32.load offset=76
+  i32.load offset=68
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $5
   local.get $2
-  f32.load offset=100
+  f32.load offset=92
   local.get $11
   call $assembly/math/vec2/Vec2#crossZV
   call $~lib/rt/pure/__release
@@ -29484,7 +29729,7 @@
   call $~lib/rt/pure/__release
   local.get $5
   local.get $1
-  f32.load offset=100
+  f32.load offset=92
   local.get $10
   call $assembly/math/vec2/Vec2#crossZV
   call $~lib/rt/pure/__release
@@ -29510,16 +29755,16 @@
   call $assembly/math/vec2/Vec2#scale
   call $~lib/rt/pure/__release
   local.get $1
-  i32.load offset=104
+  i32.load offset=96
   local.get $1
-  i32.load offset=104
+  i32.load offset=96
   local.get $4
   call $assembly/math/vec2/Vec2#subtract
   call $~lib/rt/pure/__release
   local.get $2
-  i32.load offset=104
+  i32.load offset=96
   local.get $2
-  i32.load offset=104
+  i32.load offset=96
   local.get $4
   call $assembly/math/vec2/Vec2#add
   call $~lib/rt/pure/__release
@@ -29533,16 +29778,16 @@
   local.set $13
   local.get $1
   local.get $1
-  f32.load offset=108
+  f32.load offset=100
   local.get $12
   f32.sub
-  f32.store offset=108
+  f32.store offset=100
   local.get $2
   local.get $2
-  f32.load offset=108
+  f32.load offset=100
   local.get $13
   f32.add
-  f32.store offset=108
+  f32.store offset=100
   local.get $1
   call $~lib/rt/pure/__release
   local.get $2
@@ -29571,7 +29816,7 @@
   i32.eqz
   if
    i32.const 20
-   i32.const 107
+   i32.const 105
    call $~lib/rt/tlsf/__alloc
    call $~lib/rt/pure/__retain
    local.set $0
@@ -29592,9 +29837,9 @@
   call $assembly/objects/spring/Spring#constructor
   local.tee $3
   local.get $1
-  f32.load offset=88
+  f32.load offset=80
   local.get $0
-  f32.load offset=88
+  f32.load offset=80
   f32.sub
   f32.store offset=16
   local.get $0
@@ -29627,36 +29872,6653 @@
   i32.load offset=12
   call $~lib/rt/pure/__retain
   local.tee $0
-  f32.load offset=88
+  f32.load offset=80
   local.get $1
-  f32.load offset=88
+  f32.load offset=80
   f32.sub
   local.get $4
   f32.sub
   f32.mul
   local.get $3
   local.get $0
-  f32.load offset=100
+  f32.load offset=92
   local.get $1
-  f32.load offset=100
+  f32.load offset=92
   f32.sub
   f32.mul
   f32.sub
   local.set $2
   local.get $1
   local.get $1
-  f32.load offset=108
+  f32.load offset=100
   local.get $2
   f32.sub
-  f32.store offset=108
+  f32.store offset=100
   local.get $0
   local.get $0
-  f32.load offset=108
+  f32.load offset=100
   local.get $2
   f32.add
-  f32.store offset=108
+  f32.store offset=100
   local.get $1
   call $~lib/rt/pure/__release
+  local.get $0
+  call $~lib/rt/pure/__release
+ )
+ (func $~lib/array/Array<i32>#__set (param $0 i32) (param $1 i32) (param $2 i32)
+  (local $3 i32)
+  local.get $1
+  local.get $0
+  i32.load offset=12
+  i32.ge_u
+  if
+   local.get $1
+   i32.const 0
+   i32.lt_s
+   if
+    i32.const 1344
+    i32.const 1568
+    i32.const 120
+    i32.const 22
+    call $~lib/builtins/abort
+    unreachable
+   end
+   local.get $0
+   local.get $1
+   i32.const 1
+   i32.add
+   local.tee $3
+   i32.const 2
+   call $~lib/array/ensureSize
+   local.get $0
+   local.get $3
+   i32.store offset=12
+  end
+  local.get $0
+  i32.load offset=4
+  local.get $1
+  i32.const 2
+  i32.shl
+  i32.add
+  local.get $2
+  i32.store
+ )
+ (func $assembly/world/union-find/UnionFind#resize (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  local.get $0
+  local.get $1
+  i32.store offset=8
+  local.get $0
+  local.get $1
+  i32.store offset=12
+  local.get $0
+  i32.load offset=4
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $0
+  i32.load
+  call $~lib/rt/pure/__retain
+  local.set $3
+  i32.const 0
+  local.set $0
+  loop $for-loop|0
+   local.get $0
+   local.get $1
+   i32.lt_s
+   if
+    local.get $3
+    local.get $0
+    local.get $0
+    call $~lib/array/Array<i32>#__set
+    local.get $2
+    local.get $0
+    i32.const 1
+    call $~lib/array/Array<i32>#__set
+    local.get $0
+    i32.const 1
+    i32.add
+    local.set $0
+    br $for-loop|0
+   end
+  end
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#constructor (result i32)
+  (local $0 i32)
+  (local $1 i32)
+  i32.const 8
+  i32.const 48
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $1
+  i32.const 0
+  i32.store
+  local.get $1
+  i32.const 0
+  i32.store offset=4
+  i32.const 24
+  i32.const 49
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $0
+  i32.const 16
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  i32.store
+  local.get $0
+  i32.const 3
+  i32.store offset=4
+  local.get $0
+  i32.const 64
+  call $~lib/arraybuffer/ArrayBuffer#constructor
+  i32.store offset=8
+  local.get $0
+  i32.const 4
+  i32.store offset=12
+  local.get $0
+  i32.const 0
+  i32.store offset=16
+  local.get $0
+  i32.const 0
+  i32.store offset=20
+  local.get $1
+  i32.load
+  call $~lib/rt/pure/__release
+  local.get $1
+  local.get $0
+  i32.store
+  i32.const 0
+  i32.const 3
+  i32.const 36
+  i32.const 5488
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  local.set $0
+  local.get $1
+  i32.load offset=4
+  call $~lib/rt/pure/__release
+  local.get $1
+  local.get $0
+  i32.store offset=4
+  local.get $1
+ )
+ (func $assembly/utils/overlap-keeper-record/OverlapKeeperRecord#set (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (param $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $5
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $3
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $4
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $2
+  local.tee $1
+  local.get $0
+  i32.load
+  local.tee $6
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $6
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store
+  local.get $4
+  local.tee $1
+  local.get $0
+  i32.load offset=4
+  local.tee $6
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $6
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store offset=4
+  local.get $5
+  local.tee $1
+  local.get $0
+  i32.load offset=8
+  local.tee $6
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $6
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store offset=8
+  local.get $3
+  local.tee $1
+  local.get $0
+  i32.load offset=12
+  local.tee $6
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $6
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store offset=12
+  local.get $5
+  call $~lib/rt/pure/__release
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/utils/overlap-keeper-record-pool/OverlapKeeperRecordPool#create (result i32)
+  (local $0 i32)
+  i32.const 16
+  i32.const 47
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $0
+  i32.const 0
+  i32.store
+  local.get $0
+  i32.const 0
+  i32.store offset=4
+  local.get $0
+  i32.const 0
+  i32.store offset=8
+  local.get $0
+  i32.const 0
+  i32.store offset=12
+  local.get $0
+  i32.const 0
+  i32.const 0
+  i32.const 0
+  i32.const 0
+  call $assembly/utils/overlap-keeper-record/OverlapKeeperRecord#set
+  i32.const 0
+  call $~lib/rt/pure/__release
+  i32.const 0
+  call $~lib/rt/pure/__release
+  i32.const 0
+  call $~lib/rt/pure/__release
+  i32.const 0
+  call $~lib/rt/pure/__release
+  local.get $0
+ )
+ (func $assembly/world/world/World#constructor (param $0 i32) (param $1 i32) (result i32)
+  (local $2 f32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  local.get $0
+  i32.eqz
+  if
+   i32.const 108
+   i32.const 18
+   call $~lib/rt/tlsf/__alloc
+   call $~lib/rt/pure/__retain
+   local.set $0
+  end
+  local.get $0
+  i32.const 0
+  i32.const 2
+  i32.const 21
+  i32.const 5376
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  i32.store offset=8
+  local.get $0
+  i32.const 0
+  i32.const 2
+  i32.const 22
+  i32.const 5392
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  i32.store offset=12
+  local.get $0
+  i32.const 0
+  i32.const 2
+  i32.const 22
+  i32.const 5408
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  i32.store offset=16
+  local.get $0
+  i32.const 0
+  i32.const 0
+  call $assembly/solver/gs-solver/GSSolver#constructor
+  i32.store offset=20
+  local.get $0
+  i32.const 0
+  call $assembly/collision/narrowphase/Narrowphase#constructor
+  i32.store offset=24
+  local.get $0
+  f32.const 0
+  f32.const -9.779999732971191
+  call $assembly/math/vec2/Vec2#fromValues
+  i32.store offset=28
+  local.get $0
+  f32.const 10
+  f32.store offset=32
+  local.get $0
+  i32.const 1
+  i32.store8 offset=36
+  local.get $0
+  i32.const 1
+  i32.store8 offset=37
+  local.get $0
+  i32.const 0
+  call $assembly/collision/sap-broadphase/SAPBroadphase#constructor
+  i32.store offset=40
+  local.get $0
+  i32.const 0
+  i32.const 2
+  i32.const 43
+  i32.const 5424
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  i32.store offset=44
+  local.get $0
+  i32.const 0
+  call $assembly/material/material/Material#constructor
+  i32.store offset=48
+  local.get $0
+  i32.const 0
+  i32.store offset=52
+  local.get $0
+  f32.const 0.01666666753590107
+  f32.store offset=56
+  local.get $0
+  i32.const 1
+  i32.store8 offset=60
+  local.get $0
+  i32.const 1
+  i32.store8 offset=61
+  local.get $0
+  i32.const 1
+  i32.store8 offset=62
+  local.get $0
+  i32.const 1
+  i32.store8 offset=63
+  local.get $0
+  i32.const 0
+  i32.const 2
+  i32.const 44
+  i32.const 5440
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  i32.store offset=64
+  local.get $0
+  f32.const 0
+  f32.store offset=68
+  local.get $0
+  f32.const 0
+  f32.store offset=72
+  local.get $0
+  i32.const 0
+  i32.store8 offset=76
+  local.get $0
+  i32.const 1
+  i32.store8 offset=77
+  local.get $0
+  i32.const 1
+  i32.store8 offset=78
+  local.get $0
+  global.get $assembly/world/world/World.NO_SLEEPING
+  i32.store16 offset=80
+  i32.const 16
+  i32.const 45
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $3
+  i32.const 0
+  i32.store
+  local.get $3
+  i32.const 0
+  i32.store offset=4
+  local.get $3
+  i32.const 0
+  i32.store offset=8
+  local.get $3
+  i32.const 0
+  i32.store offset=12
+  i32.const 0
+  i32.const 2
+  i32.const 7
+  i32.const 5456
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $3
+  i32.load
+  call $~lib/rt/pure/__release
+  local.get $3
+  local.get $4
+  i32.store
+  i32.const 0
+  i32.const 2
+  i32.const 7
+  i32.const 5472
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $3
+  i32.load offset=4
+  call $~lib/rt/pure/__release
+  local.get $3
+  local.get $4
+  i32.store offset=4
+  local.get $3
+  i32.const 1
+  i32.store offset=8
+  local.get $3
+  i32.const 1
+  i32.store offset=12
+  local.get $3
+  i32.const 1
+  call $assembly/world/union-find/UnionFind#resize
+  local.get $0
+  local.get $3
+  i32.store offset=84
+  local.get $0
+  i32.const 0
+  i32.store offset=88
+  local.get $0
+  i32.const 0
+  i32.store offset=92
+  i32.const 20
+  i32.const 46
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $4
+  call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#constructor
+  i32.store
+  local.get $4
+  call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#constructor
+  i32.store offset=4
+  i32.const 4
+  i32.const 50
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $3
+  i32.const 0
+  i32.const 2
+  i32.const 51
+  i32.const 5504
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  i32.store
+  local.get $3
+  i32.load
+  call $~lib/rt/pure/__retain
+  local.set $5
+  loop $while-continue|0
+   local.get $5
+   i32.load offset=12
+   i32.const 16
+   i32.gt_s
+   if
+    local.get $5
+    call $~lib/array/Array<assembly/equations/contact-equation/ContactEquation>#pop
+    call $~lib/rt/pure/__release
+    br $while-continue|0
+   end
+  end
+  loop $while-continue|1
+   local.get $5
+   i32.load offset=12
+   i32.const 16
+   i32.lt_s
+   if
+    local.get $5
+    call $assembly/utils/overlap-keeper-record-pool/OverlapKeeperRecordPool#create
+    local.tee $6
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+    local.get $6
+    call $~lib/rt/pure/__release
+    br $while-continue|1
+   end
+  end
+  local.get $3
+  call $~lib/rt/pure/__retain
+  local.get $5
+  call $~lib/rt/pure/__release
+  call $~lib/rt/pure/__release
+  local.get $4
+  local.get $3
+  i32.store offset=8
+  local.get $4
+  call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#constructor
+  i32.store offset=12
+  local.get $4
+  i32.const 0
+  i32.const 2
+  i32.const 51
+  i32.const 5520
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  i32.store offset=16
+  local.get $0
+  local.get $4
+  i32.store offset=96
+  i32.const 16
+  i32.const 52
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $3
+  i32.const 0
+  i32.store offset=8
+  local.get $3
+  i32.const 0
+  i32.store offset=12
+  local.get $0
+  local.get $3
+  i32.const 4960
+  call $assembly/events/event-emitter/EventArgument#constructor
+  i32.store offset=100
+  i32.const 16
+  i32.const 54
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $3
+  i32.const 0
+  i32.store offset=8
+  local.get $3
+  i32.const 0
+  i32.store offset=12
+  local.get $0
+  local.get $3
+  i32.const 5120
+  call $assembly/events/event-emitter/EventArgument#constructor
+  i32.store offset=104
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $0
+  call $assembly/events/event-emitter/EventEmitter#constructor
+  local.set $0
+  local.get $3
+  if
+   local.get $3
+   i32.load
+   if
+    local.get $0
+    i32.load offset=28
+    local.get $3
+    i32.load
+    local.tee $4
+    i32.eqz
+    if
+     i32.const 2656
+     i32.const 5312
+     i32.const 543
+     i32.const 48
+     call $~lib/builtins/abort
+     unreachable
+    end
+    local.get $4
+    call $assembly/math/vec2/Vec2#copy
+    call $~lib/rt/pure/__release
+   end
+   local.get $0
+   local.get $3
+   i32.load8_u offset=4
+   i32.store8 offset=77
+  end
+  local.get $0
+  local.get $0
+  i32.load offset=28
+  call $assembly/math/vec2/Vec2#length
+  local.tee $2
+  i32.reinterpret_f32
+  i32.const 1
+  i32.shl
+  i32.const 2
+  i32.sub
+  i32.const -16777218
+  i32.gt_u
+  if (result f32)
+   f32.const 10
+  else
+   local.get $2
+  end
+  f32.store offset=32
+  block $__inlined_func$assembly/collision/broadphase/Broadphase#setWorld@virtual
+   local.get $0
+   i32.load offset=40
+   local.tee $1
+   i32.const 8
+   i32.sub
+   i32.load
+   i32.const 53
+   i32.eq
+   if
+    local.get $1
+    local.get $0
+    call $assembly/collision/sap-broadphase/SAPBroadphase#setWorld
+    br $__inlined_func$assembly/collision/broadphase/Broadphase#setWorld@virtual
+   end
+   local.get $1
+   local.get $0
+   call $assembly/collision/broadphase/Broadphase#setWorld
+  end
+  i32.const 0
+  local.get $0
+  i32.load offset=48
+  local.get $0
+  i32.load offset=48
+  i32.const 0
+  call $assembly/material/contact-material/ContactMaterial#constructor
+  local.set $1
+  local.get $0
+  i32.load offset=52
+  call $~lib/rt/pure/__release
+  local.get $0
+  local.get $1
+  i32.store offset=52
+  local.get $0
+  i32.load offset=100
+  local.tee $4
+  local.get $0
+  i32.load offset=40
+  local.tee $1
+  i32.const 53
+  call $~lib/rt/__instanceof
+  i32.eqz
+  if
+   i32.const 4384
+   i32.const 5312
+   i32.const 551
+   i32.const 37
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $1
+  local.get $4
+  i32.load offset=12
+  local.tee $4
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  local.get $1
+  i32.store offset=12
+  local.get $0
+  i32.load offset=104
+  local.tee $4
+  local.get $0
+  i32.load offset=40
+  local.tee $1
+  i32.const 53
+  call $~lib/rt/__instanceof
+  i32.eqz
+  if
+   i32.const 4384
+   i32.const 5312
+   i32.const 552
+   i32.const 40
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $1
+  local.get $4
+  i32.load offset=12
+  local.tee $4
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  local.get $1
+  i32.store offset=12
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $0
+ )
+ (func $assembly/world/world/World#get:useFrictionGravityOnZeroGravity (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=37
+ )
+ (func $assembly/world/world/World#set:useFrictionGravityOnZeroGravity (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=37
+ )
+ (func $assembly/world/world/World#get:broadphase (param $0 i32) (result i32)
+  local.get $0
+  i32.load offset=40
+  call $~lib/rt/pure/__retain
+ )
+ (func $assembly/world/world/World#set:broadphase (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  local.get $1
+  local.get $0
+  i32.load offset=40
+  local.tee $2
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   drop
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store offset=40
+ )
+ (func $assembly/world/world/World#get:applySpringForces (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=60
+ )
+ (func $assembly/world/world/World#set:applySpringForces (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=60
+ )
+ (func $assembly/world/world/World#get:applyDamping (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=61
+ )
+ (func $assembly/world/world/World#set:applyDamping (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=61
+ )
+ (func $assembly/world/world/World#get:applyGravity (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=62
+ )
+ (func $assembly/world/world/World#set:applyGravity (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=62
+ )
+ (func $assembly/world/world/World#get:solveConstraints (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=63
+ )
+ (func $assembly/world/world/World#set:solveConstraints (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=63
+ )
+ (func $assembly/world/world/World#get:contactMaterials (param $0 i32) (result i32)
+  local.get $0
+  i32.load offset=64
+  call $~lib/rt/pure/__retain
+ )
+ (func $assembly/world/world/World#set:contactMaterials (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  local.get $1
+  local.get $0
+  i32.load offset=64
+  local.tee $2
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   drop
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store offset=64
+ )
+ (func $assembly/world/world/World#get:stepping (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=76
+ )
+ (func $assembly/world/world/World#set:stepping (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=76
+ )
+ (func $assembly/world/world/World#get:islandSplit (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=77
+ )
+ (func $assembly/world/world/World#set:islandSplit (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=77
+ )
+ (func $assembly/world/world/World#get:emitImpactEvent (param $0 i32) (result i32)
+  local.get $0
+  i32.load8_u offset=78
+ )
+ (func $assembly/world/world/World#set:emitImpactEvent (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store8 offset=78
+ )
+ (func $assembly/world/world/World#get:sleepMode (param $0 i32) (result i32)
+  local.get $0
+  i32.load16_u offset=80
+ )
+ (func $assembly/world/world/World#set:sleepMode (param $0 i32) (param $1 i32)
+  local.get $0
+  local.get $1
+  i32.store16 offset=80
+ )
+ (func $assembly/world/world/World#get:unionFind (param $0 i32) (result i32)
+  local.get $0
+  i32.load offset=84
+  call $~lib/rt/pure/__retain
+ )
+ (func $assembly/world/world/World#set:unionFind (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  local.get $1
+  local.get $0
+  i32.load offset=84
+  local.tee $2
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   drop
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  local.get $1
+  i32.store offset=84
+ )
+ (func $assembly/world/world/World#addConstraint (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $0
+  i32.load8_u offset=76
+  if
+   i32.const 5536
+   i32.const 5312
+   i32.const 587
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=12
+  call $~lib/rt/pure/__retain
+  local.tee $2
+  local.get $1
+  i32.load offset=8
+  call $~lib/array/Array<%28assembly/events/event-emitter/EventArgument%29=>void>#indexOf
+  i32.const -1
+  i32.eq
+  if
+   i32.const 5632
+   i32.const 5312
+   i32.const 592
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $2
+  local.get $1
+  i32.load offset=12
+  call $~lib/array/Array<%28assembly/events/event-emitter/EventArgument%29=>void>#indexOf
+  i32.const -1
+  i32.eq
+  if
+   i32.const 5760
+   i32.const 5312
+   i32.const 595
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=44
+  local.get $1
+  call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $1
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#addContactMaterial (param $0 i32) (param $1 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $0
+  i32.load offset=64
+  local.get $1
+  call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+  local.get $1
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/utils/utils/_Utils#arrayRemove<assembly/material/contact-material/ContactMaterial> (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.tee $2
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.tee $4
+  call $~lib/array/Array<%28assembly/events/event-emitter/EventArgument%29=>void>#indexOf
+  local.tee $0
+  i32.const -1
+  i32.ne
+  if
+   local.get $2
+   call $~lib/rt/pure/__retain
+   local.tee $1
+   i32.load offset=12
+   i32.const 1
+   i32.sub
+   local.set $3
+   loop $for-loop|0
+    local.get $0
+    local.get $3
+    i32.lt_s
+    if
+     local.get $1
+     local.get $0
+     local.get $1
+     local.get $0
+     i32.const 1
+     i32.add
+     local.tee $0
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $5
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__set
+     local.get $5
+     call $~lib/rt/pure/__release
+     br $for-loop|0
+    end
+   end
+   local.get $1
+   local.get $3
+   call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
+   local.get $1
+   call $~lib/rt/pure/__release
+  end
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#removeContactMaterial (param $0 i32) (param $1 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $0
+  i32.load offset=64
+  local.get $1
+  call $assembly/utils/utils/_Utils#arrayRemove<assembly/material/contact-material/ContactMaterial>
+  local.get $1
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#getContactMaterial (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $0
+  i32.load offset=64
+  call $~lib/rt/pure/__retain
+  local.tee $4
+  i32.load offset=12
+  local.set $0
+  loop $for-loop|0
+   local.get $5
+   local.get $0
+   i32.lt_s
+   if
+    local.get $3
+    local.get $4
+    local.get $5
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $1
+    i32.load offset=4
+    i32.eq
+    if (result i32)
+     local.get $2
+     local.get $1
+     i32.load offset=8
+     i32.eq
+    else
+     i32.const 0
+    end
+    if (result i32)
+     i32.const 1
+    else
+     local.get $2
+     local.get $1
+     i32.load offset=4
+     i32.eq
+     if (result i32)
+      local.get $3
+      local.get $1
+      i32.load offset=8
+      i32.eq
+     else
+      i32.const 0
+     end
+    end
+    if
+     local.get $3
+     call $~lib/rt/pure/__release
+     local.get $2
+     call $~lib/rt/pure/__release
+     local.get $4
+     call $~lib/rt/pure/__release
+     local.get $1
+     return
+    end
+    local.get $1
+    call $~lib/rt/pure/__release
+    local.get $5
+    i32.const 1
+    i32.add
+    local.set $5
+    br $for-loop|0
+   end
+  end
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $2
+  call $~lib/rt/pure/__release
+  i32.const 0
+ )
+ (func $assembly/world/world/World#removeConstraint (param $0 i32) (param $1 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $0
+  i32.load8_u offset=76
+  if
+   i32.const 5888
+   i32.const 5312
+   i32.const 647
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=44
+  local.get $1
+  call $assembly/utils/utils/_Utils#arrayRemove<assembly/material/contact-material/ContactMaterial>
+  local.get $1
+  call $~lib/rt/pure/__release
+ )
+ (func $~lib/array/Array<i64>#__get (param $0 i32) (param $1 i32) (result i64)
+  local.get $1
+  local.get $0
+  i32.load offset=12
+  i32.ge_u
+  if
+   i32.const 1344
+   i32.const 1568
+   i32.const 104
+   i32.const 42
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=4
+  local.get $1
+  i32.const 3
+  i32.shl
+  i32.add
+  i64.load
+ )
+ (func $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#getByKey (param $0 i32) (param $1 i64) (result i32)
+  local.get $0
+  i32.load
+  local.get $1
+  local.get $1
+  call $~lib/util/hash/hash64
+  call $~lib/map/Map<i64,u32>#find
+  local.tee $0
+  i32.eqz
+  if
+   i32.const 3472
+   i32.const 3536
+   i32.const 104
+   i32.const 17
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=8
+  call $~lib/rt/pure/__retain
+ )
+ (func $~lib/map/Map<i64,assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#set (param $0 i32) (param $1 i64) (param $2 i32) (result i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $0
+  local.get $1
+  local.get $1
+  call $~lib/util/hash/hash64
+  local.tee $5
+  call $~lib/map/Map<i64,u32>#find
+  local.tee $2
+  if
+   local.get $3
+   local.get $2
+   i32.load offset=8
+   local.tee $4
+   i32.ne
+   if
+    local.get $2
+    local.get $3
+    call $~lib/rt/pure/__retain
+    i32.store offset=8
+    local.get $4
+    call $~lib/rt/pure/__release
+   end
+  else
+   local.get $0
+   i32.load offset=16
+   local.get $0
+   i32.load offset=12
+   i32.eq
+   if
+    local.get $0
+    local.get $0
+    i32.load offset=20
+    local.get $0
+    i32.load offset=12
+    i32.const 3
+    i32.mul
+    i32.const 4
+    i32.div_s
+    i32.lt_s
+    if (result i32)
+     local.get $0
+     i32.load offset=4
+    else
+     local.get $0
+     i32.load offset=4
+     i32.const 1
+     i32.shl
+     i32.const 1
+     i32.or
+    end
+    call $~lib/map/Map<i64,u32>#rehash
+   end
+   local.get $0
+   i32.load offset=8
+   call $~lib/rt/pure/__retain
+   local.set $4
+   local.get $0
+   local.get $0
+   i32.load offset=16
+   local.tee $2
+   i32.const 1
+   i32.add
+   i32.store offset=16
+   local.get $4
+   local.get $2
+   i32.const 4
+   i32.shl
+   i32.add
+   local.tee $2
+   local.get $1
+   i64.store
+   local.get $2
+   local.get $3
+   call $~lib/rt/pure/__retain
+   i32.store offset=8
+   local.get $0
+   local.get $0
+   i32.load offset=20
+   i32.const 1
+   i32.add
+   i32.store offset=20
+   local.get $2
+   local.get $0
+   i32.load
+   local.get $5
+   local.get $0
+   i32.load offset=4
+   i32.and
+   i32.const 2
+   i32.shl
+   i32.add
+   local.tee $5
+   i32.load
+   i32.store offset=12
+   local.get $5
+   local.get $2
+   i32.store
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.get $3
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#copy (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i64)
+  (local $6 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $0
+  call $assembly/utils/tuple-dictionary/TupleDictionary<u32>#reset
+  local.get $3
+  i32.load offset=4
+  i32.const 0
+  local.set $1
+  local.get $0
+  i32.load offset=4
+  call $~lib/rt/pure/__retain
+  local.set $2
+  call $~lib/rt/pure/__retain
+  local.tee $4
+  i32.load offset=12
+  local.set $6
+  loop $for-loop|0
+   local.get $1
+   local.get $6
+   i32.ne
+   if
+    local.get $2
+    local.get $4
+    local.get $1
+    call $~lib/array/Array<i64>#__get
+    call $~lib/array/Array<i64>#push
+    local.get $1
+    i32.const 1
+    i32.add
+    local.set $1
+    br $for-loop|0
+   end
+  end
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $3
+  i32.load offset=4
+  i32.load offset=12
+  local.set $1
+  loop $while-continue|0
+   local.get $1
+   local.tee $2
+   i32.const 1
+   i32.sub
+   local.set $1
+   local.get $2
+   if
+    local.get $3
+    i32.load offset=4
+    local.get $1
+    call $~lib/array/Array<i64>#__get
+    local.set $5
+    local.get $0
+    i32.load
+    local.get $5
+    local.get $3
+    local.get $5
+    call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#getByKey
+    local.tee $2
+    call $~lib/map/Map<i64,assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#set
+    call $~lib/rt/pure/__release
+    local.get $2
+    call $~lib/rt/pure/__release
+    br $while-continue|0
+   end
+  end
+  local.get $3
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/utils/overlap-keeper/OverlapKeeper#tick (param $0 i32)
+  (local $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  (local $7 i32)
+  (local $8 i32)
+  local.get $0
+  i32.load
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $0
+  i32.load offset=4
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $3
+  i32.load offset=4
+  i32.load offset=12
+  local.set $2
+  loop $while-continue|0
+   local.get $2
+   local.tee $1
+   i32.const 1
+   i32.sub
+   local.set $2
+   local.get $1
+   if
+    local.get $3
+    local.get $3
+    i32.load offset=4
+    local.get $2
+    call $~lib/array/Array<i64>#__get
+    call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#getByKey
+    local.tee $5
+    if
+     local.get $0
+     i32.load offset=8
+     local.set $1
+     local.get $5
+     call $~lib/rt/pure/__retain
+     local.tee $6
+     call $~lib/rt/pure/__retain
+     local.tee $7
+     i32.const 0
+     i32.const 0
+     i32.const 0
+     i32.const 0
+     call $assembly/utils/overlap-keeper-record/OverlapKeeperRecord#set
+     local.get $1
+     call $~lib/rt/pure/__retain
+     local.get $7
+     call $~lib/rt/pure/__release
+     call $~lib/rt/pure/__release
+     local.get $1
+     i32.load
+     local.get $6
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+     local.get $1
+     call $~lib/rt/pure/__retain
+     local.get $6
+     call $~lib/rt/pure/__release
+     call $~lib/rt/pure/__release
+    end
+    br $while-continue|0
+   end
+  end
+  local.get $3
+  call $assembly/utils/tuple-dictionary/TupleDictionary<u32>#reset
+  local.get $3
+  local.get $4
+  call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#copy
+  local.get $4
+  call $assembly/utils/tuple-dictionary/TupleDictionary<u32>#reset
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $5
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#get (param $0 i32) (param $1 i64) (param $2 i64) (result i32)
+  local.get $0
+  local.get $1
+  local.get $2
+  call $assembly/utils/tuple-dictionary/TupleDictionary<u32>#getKey
+  call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#getByKey
+ )
+ (func $assembly/utils/overlap-keeper/OverlapKeeper#setOverlapping (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (param $4 i32)
+  (local $5 i64)
+  (local $6 i32)
+  (local $7 i32)
+  (local $8 i32)
+  (local $9 i64)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $8
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $6
+  local.get $3
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $4
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $0
+  i32.load offset=4
+  call $~lib/rt/pure/__retain
+  local.tee $1
+  local.get $6
+  i32.load offset=16
+  i64.extend_i32_u
+  local.get $4
+  i32.load offset=16
+  i64.extend_i32_u
+  call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#get
+  local.tee $2
+  i32.eqz
+  if
+   local.get $0
+   i32.load offset=8
+   i32.load
+   call $~lib/rt/pure/__retain
+   local.tee $0
+   i32.load offset=12
+   if (result i32)
+    local.get $0
+    call $~lib/array/Array<assembly/equations/contact-equation/ContactEquation>#pop
+   else
+    call $assembly/utils/overlap-keeper-record-pool/OverlapKeeperRecordPool#create
+   end
+   local.set $7
+   local.get $0
+   call $~lib/rt/pure/__release
+   local.get $7
+   local.get $8
+   local.get $6
+   local.get $3
+   local.get $4
+   call $assembly/utils/overlap-keeper-record/OverlapKeeperRecord#set
+   local.get $6
+   i32.load offset=16
+   i64.extend_i32_u
+   local.get $4
+   i32.load offset=16
+   i64.extend_i32_u
+   local.get $7
+   call $~lib/rt/pure/__retain
+   local.tee $0
+   i32.eqz
+   if
+    i32.const 4688
+    i32.const 4720
+    i32.const 77
+    i32.const 4
+    call $~lib/builtins/abort
+    unreachable
+   end
+   call $assembly/utils/tuple-dictionary/TupleDictionary<u32>#getKey
+   local.set $5
+   local.get $1
+   i32.load
+   local.get $5
+   call $~lib/map/Map<i64,u32>#has
+   i32.eqz
+   if
+    local.get $1
+    i32.load offset=4
+    local.get $5
+    call $~lib/array/Array<i64>#push
+   end
+   local.get $1
+   i32.load
+   local.get $5
+   local.get $0
+   call $~lib/map/Map<i64,assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#set
+   call $~lib/rt/pure/__release
+   local.get $0
+   call $~lib/rt/pure/__release
+  end
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $8
+  call $~lib/rt/pure/__release
+  local.get $6
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $1
+  call $~lib/rt/pure/__release
+  local.get $7
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/runNarrowphase (param $0 i32) (param $1 i32) (param $2 i32) (param $3 i32) (param $4 i32) (param $5 i32) (param $6 i32) (param $7 i32) (param $8 i32) (param $9 f32)
+  (local $10 i32)
+  (local $11 i32)
+  (local $12 i32)
+  (local $13 i32)
+  (local $14 i32)
+  (local $15 i32)
+  (local $16 i32)
+  (local $17 i32)
+  (local $18 i32)
+  (local $19 i32)
+  (local $20 i32)
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.set $12
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $3
+  call $~lib/rt/pure/__retain
+  local.set $10
+  local.get $4
+  call $~lib/rt/pure/__retain
+  local.set $15
+  local.get $5
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $6
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $7
+  call $~lib/rt/pure/__retain
+  local.set $16
+  local.get $8
+  call $~lib/rt/pure/__retain
+  local.set $5
+  call $assembly/math/vec2/Vec2#create
+  local.set $8
+  call $assembly/math/vec2/Vec2#create
+  local.set $13
+  block $folding-inner0
+   local.get $10
+   i32.load16_s offset=24
+   local.get $4
+   i32.load16_s offset=28
+   i32.and
+   if (result i32)
+    local.get $4
+    i32.load16_s offset=24
+    local.get $10
+    i32.load16_s offset=28
+    i32.and
+    i32.const 0
+    i32.ne
+   else
+    i32.const 0
+   end
+   i32.eqz
+   br_if $folding-inner0
+   local.get $8
+   local.get $15
+   local.get $2
+   i32.load offset=56
+   local.get $2
+   f32.load offset=80
+   call $assembly/math/vec2/Vec2#toGlobalFrame
+   local.get $13
+   local.get $16
+   local.get $3
+   i32.load offset=56
+   local.get $3
+   f32.load offset=80
+   call $assembly/math/vec2/Vec2#toGlobalFrame
+   local.get $8
+   local.get $13
+   call $assembly/math/vec2/Vec2#distance
+   local.get $10
+   f32.load offset=20
+   local.get $4
+   f32.load offset=20
+   f32.add
+   f32.gt
+   br_if $folding-inner0
+   local.get $2
+   f32.load offset=80
+   drop
+   local.get $3
+   f32.load offset=80
+   drop
+   local.get $1
+   local.get $5
+   f32.load offset=12
+   f32.const 0
+   f32.gt
+   i32.store8 offset=8
+   local.get $1
+   local.get $5
+   f32.load offset=12
+   local.get $9
+   f32.mul
+   local.get $2
+   i32.load16_u offset=112
+   i32.const 2
+   i32.eq
+   if (result i32)
+    i32.const 1
+   else
+    local.get $2
+    i32.load16_u offset=112
+    i32.const 4
+    i32.eq
+   end
+   if (result f32)
+    local.get $3
+    f32.load offset=24
+   else
+    local.get $3
+    i32.load16_u offset=112
+    i32.const 2
+    i32.eq
+    if (result i32)
+     i32.const 1
+    else
+     local.get $3
+     i32.load16_u offset=112
+     i32.const 4
+     i32.eq
+    end
+    if (result f32)
+     local.get $2
+     f32.load offset=24
+    else
+     local.get $2
+     f32.load offset=24
+     local.get $3
+     f32.load offset=24
+     f32.mul
+     local.get $2
+     f32.load offset=24
+     local.get $3
+     f32.load offset=24
+     f32.add
+     f32.div
+    end
+   end
+   f32.mul
+   f32.store offset=12
+   local.get $5
+   local.tee $0
+   local.get $1
+   i32.load offset=32
+   local.tee $6
+   i32.ne
+   if
+    local.get $0
+    call $~lib/rt/pure/__retain
+    local.set $0
+    local.get $6
+    call $~lib/rt/pure/__release
+   end
+   local.get $1
+   local.get $0
+   i32.store offset=32
+   local.get $1
+   local.get $2
+   i32.load8_u offset=144
+   if (result i32)
+    local.get $3
+    i32.load8_u offset=144
+   else
+    i32.const 0
+   end
+   if (result i32)
+    local.get $10
+    i32.load8_u offset=26
+   else
+    i32.const 0
+   end
+   if (result i32)
+    local.get $4
+    i32.load8_u offset=26
+   else
+    i32.const 0
+   end
+   i32.store8 offset=9
+   local.get $1
+   i32.load offset=4
+   i32.load offset=12
+   local.set $0
+   local.get $1
+   local.get $2
+   local.get $10
+   local.get $8
+   local.get $3
+   local.get $4
+   local.get $13
+   local.get $10
+   i32.load8_u offset=40
+   local.tee $6
+   i32.eqz
+   if
+    local.get $4
+    i32.load8_u offset=40
+    local.set $6
+   end
+   local.get $6
+   call $assembly/collision/narrowphase/Narrowphase#testContact
+   local.set $18
+   local.get $1
+   i32.load offset=4
+   i32.load offset=12
+   local.get $0
+   i32.sub
+   local.set $17
+   local.get $18
+   if
+    local.get $2
+    i32.load8_u offset=125
+    if (result i32)
+     local.get $2
+     i32.load16_u offset=112
+     i32.const 1
+     i32.eq
+    else
+     i32.const 0
+    end
+    if (result i32)
+     local.get $2
+     i32.load16_u offset=128
+     i32.const 2
+     i32.eq
+    else
+     i32.const 0
+    end
+    if (result i32)
+     local.get $3
+     i32.load16_u offset=128
+     i32.eqz
+    else
+     i32.const 0
+    end
+    if (result i32)
+     local.get $3
+     i32.load16_u offset=112
+     i32.const 2
+     i32.ne
+    else
+     i32.const 0
+    end
+    if
+     local.get $3
+     i32.load offset=68
+     call $assembly/math/vec2/Vec2#squaredLength
+     local.get $3
+     f32.load offset=92
+     f32.const 2
+     call $~lib/math/NativeMathf.pow
+     f32.add
+     local.get $3
+     f32.load offset=132
+     f32.const 2
+     call $~lib/math/NativeMathf.pow
+     f32.const 2
+     f32.mul
+     f32.ge
+     if
+      local.get $2
+      i32.const 1
+      i32.store8 offset=172
+     end
+    end
+    local.get $3
+    i32.load8_u offset=125
+    if (result i32)
+     local.get $3
+     i32.load16_u offset=112
+     i32.const 1
+     i32.eq
+    else
+     i32.const 0
+    end
+    if (result i32)
+     local.get $3
+     i32.load16_u offset=128
+     i32.const 2
+     i32.eq
+    else
+     i32.const 0
+    end
+    if (result i32)
+     local.get $2
+     i32.load16_u offset=128
+     i32.eqz
+    else
+     i32.const 0
+    end
+    if (result i32)
+     local.get $2
+     i32.load16_u offset=112
+     i32.const 2
+     i32.ne
+    else
+     i32.const 0
+    end
+    if
+     local.get $2
+     i32.load offset=68
+     call $assembly/math/vec2/Vec2#squaredLength
+     local.get $2
+     f32.load offset=92
+     f32.const 2
+     call $~lib/math/NativeMathf.pow
+     f32.add
+     local.get $2
+     f32.load offset=132
+     f32.const 2
+     call $~lib/math/NativeMathf.pow
+     f32.const 2
+     f32.mul
+     f32.ge
+     if
+      local.get $3
+      i32.const 1
+      i32.store8 offset=172
+     end
+    end
+    local.get $12
+    i32.load offset=96
+    local.get $2
+    local.get $10
+    local.get $3
+    local.get $4
+    call $assembly/utils/overlap-keeper/OverlapKeeper#setOverlapping
+    local.get $12
+    i32.const 2256
+    i32.const 0
+    call $assembly/events/event-emitter/EventEmitter#has
+    if
+     local.get $12
+     i32.load offset=96
+     local.set $0
+     local.get $10
+     call $~lib/rt/pure/__retain
+     local.set $7
+     local.get $4
+     call $~lib/rt/pure/__retain
+     local.set $11
+     local.get $0
+     i32.load
+     call $~lib/rt/pure/__retain
+     local.set $14
+     local.get $0
+     i32.load offset=4
+     call $~lib/rt/pure/__retain
+     local.set $19
+     local.get $14
+     local.get $7
+     i32.load offset=16
+     i64.extend_i32_u
+     local.get $11
+     i32.load offset=16
+     i64.extend_i32_u
+     call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#get
+     local.tee $20
+     if (result i32)
+      i32.const 0
+     else
+      local.get $19
+      local.get $7
+      i32.load offset=16
+      i64.extend_i32_u
+      local.get $11
+      i32.load offset=16
+      i64.extend_i32_u
+      call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#get
+      local.tee $0
+      call $~lib/rt/pure/__release
+      local.get $0
+      i32.eqz
+      i32.eqz
+     end
+     local.set $0
+     local.get $20
+     call $~lib/rt/pure/__release
+     local.get $7
+     call $~lib/rt/pure/__release
+     local.get $11
+     call $~lib/rt/pure/__release
+     local.get $14
+     call $~lib/rt/pure/__release
+     local.get $19
+     call $~lib/rt/pure/__release
+    else
+     i32.const 0
+     local.set $0
+    end
+    local.get $0
+    if
+     global.get $assembly/world/world/beginContactEvent
+     call $~lib/rt/pure/__retain
+     local.tee $7
+     local.get $10
+     local.tee $0
+     local.get $7
+     i32.load offset=8
+     local.tee $14
+     i32.ne
+     if
+      local.get $0
+      call $~lib/rt/pure/__retain
+      local.set $0
+      local.get $14
+      call $~lib/rt/pure/__release
+     end
+     local.get $0
+     i32.store offset=8
+     local.get $4
+     local.tee $0
+     local.get $7
+     i32.load offset=12
+     local.tee $11
+     i32.ne
+     if
+      local.get $0
+      call $~lib/rt/pure/__retain
+      local.set $0
+      local.get $11
+      call $~lib/rt/pure/__release
+     end
+     local.get $7
+     local.get $0
+     i32.store offset=12
+     local.get $2
+     local.set $0
+     local.get $2
+     local.get $7
+     i32.load offset=16
+     local.tee $11
+     i32.ne
+     if
+      local.get $0
+      call $~lib/rt/pure/__retain
+      local.set $0
+      local.get $11
+      call $~lib/rt/pure/__release
+     end
+     local.get $7
+     local.get $0
+     i32.store offset=16
+     local.get $3
+     local.set $0
+     local.get $3
+     local.get $7
+     i32.load offset=20
+     local.tee $11
+     i32.ne
+     if
+      local.get $0
+      call $~lib/rt/pure/__retain
+      local.set $0
+      local.get $11
+      call $~lib/rt/pure/__release
+     end
+     local.get $7
+     local.get $0
+     i32.store offset=20
+     local.get $7
+     i32.load offset=24
+     i32.const 0
+     call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
+     local.get $6
+     i32.eqz
+     if
+      local.get $1
+      i32.load
+      i32.load offset=12
+      local.get $18
+      i32.sub
+      local.set $0
+      loop $for-loop|0
+       local.get $0
+       local.get $1
+       i32.load
+       i32.load offset=12
+       i32.lt_s
+       if
+        local.get $7
+        i32.load offset=24
+        local.get $1
+        i32.load
+        local.get $0
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+        local.tee $11
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+        local.get $11
+        call $~lib/rt/pure/__release
+        local.get $0
+        i32.const 1
+        i32.add
+        local.set $0
+        br $for-loop|0
+       end
+      end
+     end
+     local.get $12
+     local.get $7
+     call $assembly/events/event-emitter/EventEmitter#emit
+     call $~lib/rt/pure/__release
+     local.get $7
+     call $~lib/rt/pure/__release
+    end
+    i32.const 0
+    local.get $17
+    i32.const 1
+    i32.gt_s
+    local.get $6
+    select
+    if
+     local.get $1
+     i32.load offset=4
+     i32.load offset=12
+     local.get $17
+     i32.sub
+     local.set $0
+     loop $for-loop|1
+      local.get $0
+      local.get $1
+      i32.load offset=4
+      i32.load offset=12
+      i32.lt_s
+      if
+       local.get $1
+       i32.load offset=4
+       local.get $0
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+       local.tee $6
+       f32.load offset=4
+       local.set $9
+       local.get $6
+       local.get $9
+       local.get $17
+       f32.convert_i32_s
+       f32.div
+       call $assembly/equations/angle-lock-equation/AngleLockEquation#setMaxTorque
+       local.get $6
+       call $~lib/rt/pure/__release
+       local.get $0
+       i32.const 1
+       i32.add
+       local.set $0
+       br $for-loop|1
+      end
+     end
+    end
+   end
+   local.get $8
+   call $~lib/rt/pure/__release
+   local.get $13
+   call $~lib/rt/pure/__release
+   local.get $12
+   call $~lib/rt/pure/__release
+   local.get $1
+   call $~lib/rt/pure/__release
+   local.get $2
+   call $~lib/rt/pure/__release
+   local.get $10
+   call $~lib/rt/pure/__release
+   local.get $15
+   call $~lib/rt/pure/__release
+   local.get $3
+   call $~lib/rt/pure/__release
+   local.get $4
+   call $~lib/rt/pure/__release
+   local.get $16
+   call $~lib/rt/pure/__release
+   local.get $5
+   call $~lib/rt/pure/__release
+   return
+  end
+  local.get $12
+  call $~lib/rt/pure/__release
+  local.get $1
+  call $~lib/rt/pure/__release
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $10
+  call $~lib/rt/pure/__release
+  local.get $15
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $16
+  call $~lib/rt/pure/__release
+  local.get $5
+  call $~lib/rt/pure/__release
+  local.get $8
+  call $~lib/rt/pure/__release
+  local.get $13
+  call $~lib/rt/pure/__release
+ )
+ (func $~lib/util/number/itoa64 (param $0 i64) (result i32)
+  (local $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  local.get $0
+  i64.eqz
+  if
+   i32.const 3136
+   return
+  end
+  local.get $0
+  i64.const 63
+  i64.shr_u
+  i32.wrap_i64
+  local.tee $2
+  if
+   i64.const 0
+   local.get $0
+   i64.sub
+   local.set $0
+  end
+  local.get $0
+  i64.const 4294967295
+  i64.le_u
+  if
+   local.get $0
+   i32.wrap_i64
+   local.tee $1
+   call $~lib/util/number/decimalCount32
+   local.get $2
+   i32.add
+   local.tee $3
+   i32.const 1
+   i32.shl
+   i32.const 1
+   call $~lib/rt/tlsf/__alloc
+   local.tee $4
+   local.get $1
+   local.get $3
+   call $~lib/util/number/utoa_dec_simple<u32>
+  else
+   local.get $2
+   local.get $0
+   i64.const 100000000000
+   i64.ge_u
+   i32.const 10
+   i32.add
+   local.get $0
+   i64.const 10000000000
+   i64.ge_u
+   i32.add
+   local.get $0
+   i64.const 100000000000000
+   i64.ge_u
+   i32.const 13
+   i32.add
+   local.get $0
+   i64.const 10000000000000
+   i64.ge_u
+   i32.add
+   local.get $0
+   i64.const 1000000000000
+   i64.lt_u
+   select
+   local.get $0
+   i64.const 10000000000000000
+   i64.ge_u
+   i32.const 16
+   i32.add
+   local.get $0
+   i64.const -8446744073709551616
+   i64.ge_u
+   i32.const 18
+   i32.add
+   local.get $0
+   i64.const 1000000000000000000
+   i64.ge_u
+   i32.add
+   local.get $0
+   i64.const 100000000000000000
+   i64.lt_u
+   select
+   local.get $0
+   i64.const 1000000000000000
+   i64.lt_u
+   select
+   i32.add
+   local.tee $1
+   i32.const 1
+   i32.shl
+   i32.const 1
+   call $~lib/rt/tlsf/__alloc
+   local.tee $4
+   local.set $3
+   loop $do-continue|0
+    local.get $0
+    i64.const 10
+    i64.rem_u
+    i32.wrap_i64
+    local.set $5
+    local.get $0
+    i64.const 10
+    i64.div_u
+    local.set $0
+    local.get $3
+    local.get $1
+    i32.const 1
+    i32.sub
+    local.tee $1
+    i32.const 1
+    i32.shl
+    i32.add
+    local.get $5
+    i32.const 48
+    i32.add
+    i32.store16
+    local.get $0
+    i64.const 0
+    i64.ne
+    br_if $do-continue|0
+   end
+  end
+  local.get $2
+  if
+   local.get $4
+   i32.const 45
+   i32.store16
+  end
+  local.get $4
+  call $~lib/rt/pure/__retain
+ )
+ (func $assembly/utils/overlap-keeper/OverlapKeeper#getDiff (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  (local $7 i64)
+  (local $8 i32)
+  (local $9 i32)
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $5
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.tee $1
+  local.set $0
+  local.get $1
+  if (result i32)
+   local.get $0
+   call $~lib/rt/pure/__retain
+  else
+   i32.const 0
+   i32.const 2
+   i32.const 51
+   i32.const 6016
+   call $~lib/rt/__allocArray
+   call $~lib/rt/pure/__retain
+  end
+  local.set $0
+  local.get $1
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__retain
+  local.set $6
+  local.get $5
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $0
+  i32.const 0
+  call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
+  local.get $3
+  i32.load offset=4
+  i32.load offset=12
+  local.set $1
+  loop $while-continue|0
+   local.get $1
+   local.tee $2
+   i32.const 1
+   i32.sub
+   local.set $1
+   local.get $2
+   if
+    local.get $3
+    local.get $3
+    i32.load offset=4
+    local.get $1
+    call $~lib/array/Array<i64>#__get
+    local.tee $7
+    call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#getByKey
+    local.tee $8
+    i32.eqz
+    if
+     i32.const 6032
+     local.get $7
+     call $~lib/util/number/itoa64
+     call $~lib/string/String.__concat
+     i32.const 6064
+     call $~lib/string/String.__concat
+     i32.const 6112
+     i32.const 113
+     i32.const 5
+     call $~lib/builtins/abort
+     unreachable
+    end
+    local.get $6
+    local.get $7
+    call $assembly/utils/tuple-dictionary/TupleDictionary<assembly/utils/overlap-keeper-record/OverlapKeeperRecord>#getByKey
+    local.tee $9
+    i32.eqz
+    if
+     local.get $0
+     local.get $8
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+    end
+    br $while-continue|0
+   end
+  end
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $5
+  call $~lib/rt/pure/__release
+  local.get $6
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $8
+  call $~lib/rt/pure/__release
+  local.get $9
+  call $~lib/rt/pure/__release
+  local.get $0
+ )
+ (func $~lib/array/Array<i32>#__get (param $0 i32) (param $1 i32) (result i32)
+  local.get $1
+  local.get $0
+  i32.load offset=12
+  i32.ge_u
+  if
+   i32.const 1344
+   i32.const 1568
+   i32.const 104
+   i32.const 42
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=4
+  local.get $1
+  i32.const 2
+  i32.shl
+  i32.add
+  i32.load
+ )
+ (func $assembly/world/union-find/UnionFind#find (param $0 i32) (param $1 i32) (result i32)
+  local.get $0
+  i32.load
+  call $~lib/rt/pure/__retain
+  local.set $0
+  loop $while-continue|0
+   local.get $0
+   local.get $1
+   call $~lib/array/Array<i32>#__get
+   local.get $1
+   i32.ne
+   if
+    local.get $0
+    local.get $1
+    local.get $0
+    local.get $0
+    local.get $1
+    call $~lib/array/Array<i32>#__get
+    call $~lib/array/Array<i32>#__get
+    call $~lib/array/Array<i32>#__set
+    local.get $0
+    local.get $1
+    call $~lib/array/Array<i32>#__get
+    local.set $1
+    br $while-continue|0
+   end
+  end
+  local.get $0
+  call $~lib/rt/pure/__release
+  local.get $1
+ )
+ (func $assembly/world/union-find/UnionFind#union (param $0 i32) (param $1 i32) (param $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  local.get $0
+  local.get $1
+  call $assembly/world/union-find/UnionFind#find
+  local.tee $3
+  local.get $0
+  local.get $2
+  call $assembly/world/union-find/UnionFind#find
+  local.tee $2
+  i32.eq
+  if
+   return
+  end
+  local.get $0
+  i32.load offset=4
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $0
+  i32.load
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $1
+  local.get $3
+  call $~lib/array/Array<i32>#__get
+  local.get $1
+  local.get $2
+  call $~lib/array/Array<i32>#__get
+  i32.lt_s
+  if
+   local.get $4
+   local.get $3
+   local.get $2
+   call $~lib/array/Array<i32>#__set
+   local.get $1
+   local.get $2
+   local.get $1
+   local.get $2
+   call $~lib/array/Array<i32>#__get
+   local.get $1
+   local.get $3
+   call $~lib/array/Array<i32>#__get
+   i32.add
+   call $~lib/array/Array<i32>#__set
+  else
+   local.get $4
+   local.get $2
+   local.get $3
+   call $~lib/array/Array<i32>#__set
+   local.get $1
+   local.get $3
+   local.get $1
+   local.get $3
+   call $~lib/array/Array<i32>#__get
+   local.get $1
+   local.get $2
+   call $~lib/array/Array<i32>#__get
+   i32.add
+   call $~lib/array/Array<i32>#__set
+  end
+  local.get $0
+  local.get $0
+  i32.load offset=12
+  i32.const 1
+  i32.sub
+  i32.store offset=12
+  local.get $1
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/sortEquationsByIsland (param $0 i32) (param $1 i32) (result i32)
+  (local $2 i32)
+  (local $3 i32)
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $2
+  i32.load offset=12
+  if (result i32)
+   local.get $2
+   i32.load offset=16
+   i32.eqz
+  else
+   i32.const 1
+  end
+  if (result i32)
+   i32.const 1
+  else
+   local.get $3
+   i32.load offset=12
+   i32.eqz
+  end
+  if (result i32)
+   i32.const 1
+  else
+   local.get $3
+   i32.load offset=16
+   i32.eqz
+  end
+  if
+   local.get $2
+   call $~lib/rt/pure/__release
+   local.get $3
+   call $~lib/rt/pure/__release
+   i32.const 0
+   return
+  end
+  local.get $2
+  i32.load offset=12
+  local.tee $0
+  i32.eqz
+  if
+   i32.const 2656
+   i32.const 5312
+   i32.const 190
+   i32.const 21
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=164
+  i32.const 0
+  i32.gt_s
+  if
+   local.get $2
+   i32.load offset=12
+   local.tee $0
+   i32.eqz
+   if
+    i32.const 2656
+    i32.const 5312
+    i32.const 190
+    i32.const 53
+    call $~lib/builtins/abort
+    unreachable
+   end
+  else
+   local.get $2
+   i32.load offset=16
+   local.tee $0
+   i32.eqz
+   if
+    i32.const 2656
+    i32.const 5312
+    i32.const 190
+    i32.const 81
+    call $~lib/builtins/abort
+    unreachable
+   end
+  end
+  local.get $0
+  i32.load offset=164
+  local.set $0
+  local.get $3
+  i32.load offset=12
+  local.tee $1
+  i32.eqz
+  if
+   i32.const 2656
+   i32.const 5312
+   i32.const 191
+   i32.const 21
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $1
+  i32.load offset=164
+  i32.const 0
+  i32.gt_s
+  if
+   local.get $3
+   i32.load offset=12
+   local.tee $1
+   i32.eqz
+   if
+    i32.const 2656
+    i32.const 5312
+    i32.const 191
+    i32.const 53
+    call $~lib/builtins/abort
+    unreachable
+   end
+  else
+   local.get $3
+   i32.load offset=16
+   local.tee $1
+   i32.eqz
+   if
+    i32.const 2656
+    i32.const 5312
+    i32.const 191
+    i32.const 81
+    call $~lib/builtins/abort
+    unreachable
+   end
+  end
+  local.get $0
+  local.get $1
+  i32.load offset=164
+  local.tee $1
+  i32.ne
+  if
+   local.get $2
+   call $~lib/rt/pure/__release
+   local.get $3
+   call $~lib/rt/pure/__release
+   local.get $0
+   local.get $1
+   i32.sub
+   local.set $0
+  else
+   local.get $2
+   i32.load offset=88
+   local.get $3
+   i32.load offset=88
+   i32.sub
+   local.set $0
+   local.get $2
+   call $~lib/rt/pure/__release
+   local.get $3
+   call $~lib/rt/pure/__release
+  end
+  local.get $0
+ )
+ (func $assembly/world/world/World#raycast (param $0 i32) (param $1 i32) (param $2 i32) (result i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $4
+  i32.const 0
+  i32.const 0
+  i32.const 0
+  call $assembly/collision/aabb/AABB#constructor
+  local.set $2
+  i32.const 0
+  i32.const 2
+  i32.const 22
+  i32.const 6320
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $4
+  local.get $2
+  call $assembly/collision/ray/Ray#getAABB
+  block $__inlined_func$assembly/collision/broadphase/Broadphase#aabbQuery@virtual
+   block $default
+    block $case1
+     local.get $0
+     i32.load offset=40
+     local.tee $0
+     i32.const 8
+     i32.sub
+     i32.load
+     local.tee $5
+     i32.const 99
+     i32.ne
+     if
+      local.get $5
+      i32.const 53
+      i32.eq
+      br_if $case1
+      br $default
+     end
+     local.get $0
+     local.get $2
+     local.get $1
+     call $assembly/collision/naive-broadphase/NaiveBroadphase#aabbQuery
+     br $__inlined_func$assembly/collision/broadphase/Broadphase#aabbQuery@virtual
+    end
+    local.get $0
+    local.get $2
+    local.get $1
+    call $assembly/collision/sap-broadphase/SAPBroadphase#aabbQuery
+    br $__inlined_func$assembly/collision/broadphase/Broadphase#aabbQuery@virtual
+   end
+   local.get $0
+   local.get $2
+   local.get $1
+   call $assembly/collision/broadphase/Broadphase#aabbQuery
+  end
+  local.get $4
+  local.get $3
+  local.get $1
+  call $assembly/collision/ray/Ray#intersectBodies
+  local.get $1
+  i32.const 0
+  call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
+  local.get $3
+  f32.load offset=16
+  f32.const -1
+  f32.ne
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $1
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/objects/body/Body#integrateToTimeOfImpact (param $0 i32) (param $1 f32) (result i32)
+  (local $2 i32)
+  (local $3 f32)
+  (local $4 i32)
+  (local $5 f32)
+  (local $6 i32)
+  (local $7 i32)
+  (local $8 i32)
+  (local $9 i32)
+  (local $10 i32)
+  (local $11 i32)
+  (local $12 i32)
+  (local $13 i32)
+  (local $14 i32)
+  (local $15 i32)
+  (local $16 i32)
+  (local $17 i32)
+  (local $18 f32)
+  (local $19 f32)
+  local.get $0
+  i32.load offset=16
+  i32.eqz
+  if
+   i32.const 0
+   return
+  end
+  local.get $0
+  i32.load offset=16
+  local.tee $4
+  i32.eqz
+  if
+   i32.const 2656
+   i32.const 6240
+   i32.const 1247
+   i32.const 15
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $4
+  call $~lib/rt/pure/__retain
+  local.set $13
+  i32.const 0
+  call $assembly/collision/raycast-result/RaycastResult#constructor
+  local.set $11
+  i32.const 20
+  i32.const 77
+  call $~lib/rt/tlsf/__alloc
+  call $~lib/rt/pure/__retain
+  local.tee $6
+  i32.const 0
+  i32.store
+  local.get $6
+  i32.const 0
+  i32.store offset=4
+  local.get $6
+  i32.const 1
+  i32.store8 offset=8
+  local.get $6
+  i32.const 0
+  i32.store8 offset=9
+  local.get $6
+  i32.const -1
+  i32.store16 offset=10
+  local.get $6
+  i32.const -1
+  i32.store16 offset=12
+  local.get $6
+  global.get $assembly/collision/ray/Ray.ANY
+  i32.store16 offset=14
+  local.get $6
+  i32.const 2592
+  i32.store offset=16
+  local.get $6
+  global.get $assembly/collision/ray/Ray.CLOSEST
+  i32.store16 offset=14
+  local.get $6
+  i32.const 1
+  i32.store8 offset=9
+  i32.const 0
+  local.get $6
+  call $assembly/collision/ray/Ray#constructor
+  local.set $8
+  call $assembly/math/vec2/Vec2#create
+  local.set $17
+  call $assembly/math/vec2/Vec2#create
+  local.set $7
+  call $assembly/math/vec2/Vec2#create
+  local.set $9
+  call $assembly/math/vec2/Vec2#create
+  local.set $14
+  local.get $0
+  f32.load offset=156
+  f32.const 0
+  f32.lt
+  if (result i32)
+   i32.const 1
+  else
+   local.get $0
+   i32.load offset=68
+   call $assembly/math/vec2/Vec2#squaredLength
+   local.get $0
+   f32.load offset=156
+   local.get $0
+   f32.load offset=156
+   f32.mul
+   f32.lt
+  end
+  if
+   local.get $13
+   call $~lib/rt/pure/__release
+   local.get $11
+   call $~lib/rt/pure/__release
+   local.get $6
+   call $~lib/rt/pure/__release
+   local.get $8
+   call $~lib/rt/pure/__release
+   local.get $17
+   call $~lib/rt/pure/__release
+   local.get $7
+   call $~lib/rt/pure/__release
+   local.get $9
+   call $~lib/rt/pure/__release
+   local.get $14
+   call $~lib/rt/pure/__release
+   i32.const 0
+   return
+  end
+  i32.const 0
+  i32.const 2
+  i32.const 22
+  i32.const 6304
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  local.set $15
+  local.get $13
+  i32.load offset=16
+  call $~lib/rt/pure/__retain
+  local.set $16
+  loop $for-loop|0
+   local.get $2
+   local.get $16
+   i32.load offset=12
+   i32.lt_s
+   if
+    local.get $16
+    local.get $2
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.set $10
+    local.get $16
+    local.get $2
+    i32.const 1
+    i32.add
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.set $4
+    local.get $0
+    local.get $10
+    i32.eq
+    if
+     local.get $15
+     local.get $4
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+    else
+     local.get $0
+     local.get $4
+     i32.eq
+     if
+      local.get $15
+      local.get $10
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+     end
+    end
+    local.get $10
+    call $~lib/rt/pure/__release
+    local.get $4
+    call $~lib/rt/pure/__release
+    local.get $2
+    i32.const 2
+    i32.add
+    local.set $2
+    br $for-loop|0
+   end
+  end
+  local.get $17
+  local.get $0
+  i32.load offset=68
+  call $assembly/math/vec2/Vec2#normalize
+  call $~lib/rt/pure/__release
+  local.get $7
+  local.get $0
+  i32.load offset=68
+  local.get $1
+  call $assembly/math/vec2/Vec2#scale
+  call $~lib/rt/pure/__release
+  local.get $7
+  local.get $7
+  local.get $0
+  i32.load offset=56
+  call $assembly/math/vec2/Vec2#add
+  call $~lib/rt/pure/__release
+  local.get $9
+  local.get $7
+  local.get $0
+  i32.load offset=56
+  call $assembly/math/vec2/Vec2#subtract
+  call $~lib/rt/pure/__release
+  local.get $0
+  f32.load offset=92
+  local.get $1
+  f32.mul
+  local.set $18
+  local.get $9
+  call $assembly/math/vec2/Vec2#length
+  drop
+  i32.const 0
+  local.set $2
+  local.get $8
+  i32.load
+  local.get $0
+  i32.load offset=56
+  call $assembly/math/vec2/Vec2#copy
+  call $~lib/rt/pure/__release
+  local.get $8
+  i32.load offset=4
+  local.get $7
+  call $assembly/math/vec2/Vec2#copy
+  call $~lib/rt/pure/__release
+  local.get $8
+  call $assembly/collision/ray/Ray#update
+  loop $for-loop|1
+   local.get $12
+   local.get $0
+   i32.load offset=20
+   i32.load offset=12
+   i32.lt_s
+   if
+    block $for-break1
+     local.get $0
+     i32.load offset=20
+     local.get $12
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.set $10
+     local.get $11
+     call $assembly/collision/raycast-result/RaycastResult#reset
+     local.get $8
+     local.get $10
+     i32.load16_s offset=24
+     i32.store16 offset=12
+     local.get $8
+     local.get $10
+     i32.load16_s offset=28
+     i32.store16 offset=10
+     local.get $13
+     local.get $11
+     local.get $8
+     call $assembly/world/world/World#raycast
+     drop
+     local.get $2
+     local.tee $4
+     local.get $11
+     i32.load offset=8
+     local.tee $2
+     i32.ne
+     if
+      local.get $2
+      call $~lib/rt/pure/__retain
+      local.set $2
+      local.get $4
+      call $~lib/rt/pure/__release
+     end
+     local.get $2
+     if
+      local.get $0
+      local.get $2
+      i32.eq
+      if (result i32)
+       i32.const 1
+      else
+       local.get $15
+       local.get $2
+       call $~lib/array/Array<%28assembly/events/event-emitter/EventArgument%29=>void>#indexOf
+       i32.const -1
+       i32.ne
+      end
+      if
+       local.get $2
+       if
+        local.get $2
+        call $~lib/rt/pure/__release
+       end
+       i32.const 0
+       local.set $2
+      end
+      local.get $2
+      if
+       local.get $10
+       call $~lib/rt/pure/__release
+       br $for-break1
+      end
+     end
+     local.get $10
+     call $~lib/rt/pure/__release
+     local.get $12
+     i32.const 1
+     i32.add
+     local.set $12
+     br $for-loop|1
+    end
+   end
+  end
+  local.get $2
+  i32.eqz
+  if
+   local.get $13
+   call $~lib/rt/pure/__release
+   local.get $11
+   call $~lib/rt/pure/__release
+   local.get $6
+   call $~lib/rt/pure/__release
+   local.get $8
+   call $~lib/rt/pure/__release
+   local.get $17
+   call $~lib/rt/pure/__release
+   local.get $7
+   call $~lib/rt/pure/__release
+   local.get $9
+   call $~lib/rt/pure/__release
+   local.get $14
+   call $~lib/rt/pure/__release
+   local.get $16
+   call $~lib/rt/pure/__release
+   local.get $15
+   call $~lib/rt/pure/__release
+   local.get $2
+   call $~lib/rt/pure/__release
+   i32.const 0
+   return
+  end
+  local.get $11
+  local.get $7
+  local.get $8
+  call $assembly/collision/raycast-result/RaycastResult#getHitPoint
+  local.get $9
+  local.get $7
+  local.get $0
+  i32.load offset=56
+  call $assembly/math/vec2/Vec2#subtract
+  call $~lib/rt/pure/__release
+  local.get $7
+  local.get $0
+  i32.load offset=56
+  call $assembly/math/vec2/Vec2#distance
+  drop
+  local.get $0
+  f32.load offset=80
+  local.set $19
+  local.get $14
+  local.get $0
+  i32.load offset=56
+  call $assembly/math/vec2/Vec2#copy
+  call $~lib/rt/pure/__release
+  i32.const 0
+  local.set $12
+  f32.const 1
+  local.set $1
+  loop $while-continue|2
+   local.get $1
+   local.get $5
+   f32.ge
+   if (result i32)
+    local.get $12
+    local.get $0
+    i32.load offset=160
+    i32.lt_s
+   else
+    i32.const 0
+   end
+   if
+    local.get $12
+    i32.const 1
+    i32.add
+    local.set $12
+    global.get $assembly/objects/body/integrate_velodt
+    local.get $9
+    local.get $1
+    local.get $5
+    f32.add
+    f32.const 2
+    f32.div
+    local.tee $3
+    call $assembly/math/vec2/Vec2#scale
+    call $~lib/rt/pure/__release
+    local.get $0
+    i32.load offset=56
+    local.get $14
+    global.get $assembly/objects/body/integrate_velodt
+    call $assembly/math/vec2/Vec2#add
+    call $~lib/rt/pure/__release
+    local.get $0
+    local.get $19
+    local.get $18
+    local.get $3
+    f32.mul
+    f32.add
+    f32.store offset=80
+    local.get $0
+    call $assembly/objects/body/Body#updateAABB
+    local.get $0
+    i32.load offset=120
+    local.get $2
+    i32.load offset=120
+    call $assembly/collision/aabb/AABB#overlaps
+    local.tee $4
+    if (result i32)
+     local.get $13
+     i32.load offset=24
+     local.get $0
+     local.get $2
+     i32.const 1
+     call $assembly/collision/narrowphase/Narrowphase#bodiesOverlap
+    else
+     local.get $4
+    end
+    if
+     local.get $3
+     local.set $1
+    else
+     local.get $3
+     local.set $5
+    end
+    br $while-continue|2
+   end
+  end
+  local.get $0
+  i32.load offset=56
+  local.get $14
+  call $assembly/math/vec2/Vec2#copy
+  call $~lib/rt/pure/__release
+  local.get $0
+  local.get $19
+  f32.store offset=80
+  global.get $assembly/objects/body/integrate_velodt
+  local.get $9
+  local.get $1
+  call $assembly/math/vec2/Vec2#scale
+  call $~lib/rt/pure/__release
+  local.get $0
+  i32.load offset=56
+  local.get $0
+  i32.load offset=56
+  global.get $assembly/objects/body/integrate_velodt
+  call $assembly/math/vec2/Vec2#add
+  call $~lib/rt/pure/__release
+  local.get $0
+  i32.load8_u offset=48
+  i32.eqz
+  if
+   local.get $0
+   local.get $0
+   f32.load offset=80
+   local.get $18
+   local.get $1
+   f32.mul
+   f32.add
+   f32.store offset=80
+  end
+  local.get $13
+  call $~lib/rt/pure/__release
+  local.get $11
+  call $~lib/rt/pure/__release
+  local.get $6
+  call $~lib/rt/pure/__release
+  local.get $8
+  call $~lib/rt/pure/__release
+  local.get $17
+  call $~lib/rt/pure/__release
+  local.get $7
+  call $~lib/rt/pure/__release
+  local.get $9
+  call $~lib/rt/pure/__release
+  local.get $14
+  call $~lib/rt/pure/__release
+  local.get $15
+  call $~lib/rt/pure/__release
+  local.get $16
+  call $~lib/rt/pure/__release
+  local.get $2
+  call $~lib/rt/pure/__release
+  i32.const 1
+ )
+ (func $assembly/objects/body/Body#integrate (param $0 i32) (param $1 f32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 f32)
+  local.get $0
+  f32.load offset=28
+  local.set $5
+  local.get $0
+  i32.load offset=96
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $0
+  i32.load offset=56
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $0
+  i32.load offset=68
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $0
+  i32.load offset=64
+  local.get $0
+  i32.load offset=56
+  call $assembly/math/vec2/Vec2#copy
+  call $~lib/rt/pure/__release
+  local.get $0
+  local.get $0
+  f32.load offset=80
+  f32.store offset=84
+  local.get $0
+  i32.load8_u offset=48
+  i32.eqz
+  if
+   local.get $0
+   local.get $0
+   f32.load offset=92
+   local.get $0
+   f32.load offset=100
+   local.get $0
+   f32.load offset=36
+   f32.mul
+   local.get $1
+   f32.mul
+   f32.add
+   f32.store offset=92
+  end
+  global.get $assembly/objects/body/integrate_fhMinv
+  local.get $4
+  local.get $1
+  local.get $5
+  f32.mul
+  call $assembly/math/vec2/Vec2#scale
+  call $~lib/rt/pure/__release
+  global.get $assembly/objects/body/integrate_fhMinv
+  local.get $0
+  i32.load offset=52
+  global.get $assembly/objects/body/integrate_fhMinv
+  call $assembly/math/vec2/Vec2#multiply
+  call $~lib/rt/pure/__release
+  local.get $2
+  global.get $assembly/objects/body/integrate_fhMinv
+  local.get $2
+  call $assembly/math/vec2/Vec2#add
+  call $~lib/rt/pure/__release
+  local.get $0
+  local.get $1
+  call $assembly/objects/body/Body#integrateToTimeOfImpact
+  i32.eqz
+  if
+   global.get $assembly/objects/body/integrate_velodt
+   local.get $2
+   local.get $1
+   call $assembly/math/vec2/Vec2#scale
+   call $~lib/rt/pure/__release
+   local.get $3
+   local.get $3
+   global.get $assembly/objects/body/integrate_velodt
+   call $assembly/math/vec2/Vec2#add
+   call $~lib/rt/pure/__release
+   local.get $0
+   i32.load8_u offset=48
+   i32.eqz
+   if
+    local.get $0
+    local.get $0
+    f32.load offset=80
+    local.get $0
+    f32.load offset=92
+    local.get $1
+    f32.mul
+    f32.add
+    f32.store offset=80
+   end
+  end
+  local.get $0
+  i32.const 1
+  i32.store8 offset=124
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $2
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/objects/body/Body#sleep (param $0 i32)
+  local.get $0
+  i32.const 2
+  i32.store16 offset=128
+  local.get $0
+  f32.const 0
+  f32.store offset=100
+  local.get $0
+  f32.const 0
+  f32.store offset=92
+  local.get $0
+  i32.load offset=68
+  f32.const 0
+  f32.const 0
+  call $assembly/math/vec2/Vec2#set
+  call $~lib/rt/pure/__release
+  local.get $0
+  i32.load offset=96
+  f32.const 0
+  f32.const 0
+  call $assembly/math/vec2/Vec2#set
+  call $~lib/rt/pure/__release
+  local.get $0
+  global.get $assembly/objects/body/sleepEvent
+  call $assembly/events/event-emitter/EventEmitter#emit
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/objects/body/Body#sleepTick (param $0 i32) (param $1 f32) (param $2 i32) (param $3 f32)
+  local.get $0
+  i32.load8_u offset=125
+  if (result i32)
+   local.get $0
+   i32.load16_u offset=112
+   i32.const 2
+   i32.eq
+  else
+   i32.const 1
+  end
+  if
+   return
+  end
+  local.get $0
+  i32.const 0
+  i32.store8 offset=126
+  local.get $0
+  i32.load offset=68
+  call $assembly/math/vec2/Vec2#squaredLength
+  local.get $0
+  f32.load offset=92
+  f32.const 2
+  call $~lib/math/NativeMathf.pow
+  f32.add
+  local.get $0
+  f32.load offset=132
+  f32.const 2
+  call $~lib/math/NativeMathf.pow
+  f32.ge
+  if
+   local.get $0
+   f32.const 0
+   f32.store offset=148
+   local.get $0
+   i32.const 0
+   i32.store16 offset=128
+  else
+   local.get $0
+   local.get $0
+   f32.load offset=148
+   local.get $3
+   f32.add
+   f32.store offset=148
+   local.get $0
+   i32.load16_u offset=128
+   i32.const 1
+   i32.ne
+   if
+    local.get $0
+    i32.const 1
+    i32.store16 offset=128
+    local.get $0
+    global.get $assembly/objects/body/sleepyEvent
+    call $assembly/events/event-emitter/EventEmitter#emit
+    call $~lib/rt/pure/__release
+   end
+  end
+  local.get $0
+  f32.load offset=148
+  local.get $0
+  f32.load offset=136
+  f32.gt
+  if
+   local.get $2
+   if
+    local.get $0
+    i32.const 1
+    i32.store8 offset=126
+   else
+    local.get $0
+    call $assembly/objects/body/Body#sleep
+   end
+  end
+ )
+ (func $assembly/world/world/sortBodiesByIsland (param $0 i32) (param $1 i32) (result i32)
+  (local $2 i32)
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.set $0
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $0
+  i32.load offset=164
+  local.get $1
+  i32.load offset=164
+  i32.sub
+  local.get $0
+  call $~lib/rt/pure/__release
+  local.get $1
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#internalStep (param $0 i32) (param $1 f32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  (local $7 i32)
+  (local $8 i32)
+  (local $9 i32)
+  (local $10 i32)
+  (local $11 i32)
+  (local $12 i32)
+  (local $13 i32)
+  (local $14 i32)
+  (local $15 f32)
+  (local $16 i32)
+  (local $17 i32)
+  (local $18 i32)
+  (local $19 i32)
+  (local $20 i32)
+  (local $21 i32)
+  (local $22 i32)
+  (local $23 i32)
+  (local $24 i32)
+  (local $25 i32)
+  (local $26 i32)
+  (local $27 i32)
+  (local $28 i32)
+  (local $29 i32)
+  (local $30 i32)
+  (local $31 i32)
+  call $assembly/math/vec2/Vec2#create
+  local.set $14
+  i32.const 0
+  i32.const 2
+  i32.const 51
+  i32.const 6000
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  local.set $22
+  local.get $0
+  i32.const 1
+  i32.store8 offset=76
+  local.get $0
+  i32.load offset=8
+  i32.load offset=12
+  local.set $31
+  local.get $0
+  i32.load offset=8
+  call $~lib/rt/pure/__retain
+  local.set $13
+  local.get $0
+  i32.load offset=12
+  call $~lib/rt/pure/__retain
+  local.set $26
+  local.get $0
+  i32.load offset=28
+  call $~lib/rt/pure/__retain
+  local.set $12
+  local.get $0
+  i32.load offset=20
+  call $~lib/rt/pure/__retain
+  local.set $25
+  local.get $0
+  i32.load offset=12
+  i32.load offset=12
+  local.set $24
+  local.get $0
+  i32.load offset=40
+  call $~lib/rt/pure/__retain
+  local.set $21
+  local.get $0
+  i32.load offset=24
+  call $~lib/rt/pure/__retain
+  local.set $27
+  local.get $0
+  i32.load offset=44
+  call $~lib/rt/pure/__retain
+  local.set $23
+  local.get $14
+  call $~lib/rt/pure/__retain
+  local.set $16
+  local.get $0
+  i32.load offset=96
+  call $assembly/utils/overlap-keeper/OverlapKeeper#tick
+  local.get $0
+  local.get $1
+  f32.store offset=56
+  local.get $0
+  i32.load8_u offset=36
+  if
+   local.get $0
+   i32.load offset=28
+   call $assembly/math/vec2/Vec2#length
+   local.tee $15
+   f32.const 0
+   f32.eq
+   if (result i32)
+    local.get $0
+    i32.load8_u offset=37
+   else
+    i32.const 0
+   end
+   i32.eqz
+   if
+    local.get $0
+    local.get $15
+    f32.store offset=32
+   end
+  end
+  local.get $0
+  i32.load8_u offset=62
+  if
+   local.get $24
+   i32.const 65535
+   i32.and
+   local.set $6
+   loop $for-loop|1
+    local.get $2
+    i32.const 65535
+    i32.and
+    local.get $6
+    i32.lt_u
+    if
+     local.get $26
+     local.get $2
+     i32.const 65535
+     i32.and
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $4
+     i32.load offset=96
+     call $~lib/rt/pure/__retain
+     local.set $3
+     local.get $4
+     i32.load16_u offset=112
+     i32.const 1
+     i32.ne
+     if (result i32)
+      i32.const 1
+     else
+      local.get $4
+      i32.load16_u offset=128
+      i32.const 2
+      i32.eq
+     end
+     i32.eqz
+     if
+      local.get $16
+      local.get $12
+      local.get $4
+      f32.load offset=24
+      local.get $4
+      f32.load offset=140
+      f32.mul
+      call $assembly/math/vec2/Vec2#scale
+      call $~lib/rt/pure/__release
+      local.get $3
+      local.get $3
+      local.get $16
+      call $assembly/math/vec2/Vec2#add
+      call $~lib/rt/pure/__release
+     end
+     local.get $4
+     call $~lib/rt/pure/__release
+     local.get $3
+     call $~lib/rt/pure/__release
+     local.get $2
+     i32.const 1
+     i32.add
+     local.set $2
+     br $for-loop|1
+    end
+   end
+  end
+  local.get $0
+  i32.load8_u offset=60
+  if
+   i32.const 0
+   local.set $2
+   local.get $31
+   i32.const 65535
+   i32.and
+   local.set $7
+   loop $for-loop|3
+    local.get $2
+    i32.const 65535
+    i32.and
+    local.get $7
+    i32.lt_u
+    if
+     local.get $13
+     local.get $2
+     i32.const 65535
+     i32.and
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $4
+     local.set $3
+     block $__inlined_func$assembly/objects/spring/Spring#applyForce@virtual
+      block $default
+       block $case1
+        local.get $4
+        i32.const 8
+        i32.sub
+        i32.load
+        local.tee $31
+        i32.const 103
+        i32.ne
+        if
+         local.get $31
+         i32.const 105
+         i32.eq
+         br_if $case1
+         br $default
+        end
+        local.get $3
+        call $assembly/objects/linear-spring/LinearSpring#applyForce
+        br $__inlined_func$assembly/objects/spring/Spring#applyForce@virtual
+       end
+       local.get $3
+       call $assembly/objects/rotational-spring/RotationalSpring#applyForce
+       br $__inlined_func$assembly/objects/spring/Spring#applyForce@virtual
+      end
+      unreachable
+     end
+     local.get $4
+     call $~lib/rt/pure/__release
+     local.get $2
+     i32.const 1
+     i32.add
+     local.set $2
+     br $for-loop|3
+    end
+   end
+  end
+  local.get $0
+  i32.load8_u offset=61
+  if
+   i32.const 0
+   local.set $2
+   local.get $24
+   i32.const 65535
+   i32.and
+   local.set $7
+   loop $for-loop|5
+    local.get $2
+    i32.const 65535
+    i32.and
+    local.get $7
+    i32.lt_u
+    if
+     local.get $26
+     local.get $2
+     i32.const 65535
+     i32.and
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $4
+     i32.load16_u offset=112
+     i32.const 1
+     i32.eq
+     if
+      local.get $4
+      i32.load16_u offset=112
+      i32.const 1
+      i32.eq
+      if
+       local.get $4
+       i32.load offset=68
+       call $~lib/rt/pure/__retain
+       local.tee $3
+       local.get $3
+       f32.const 1
+       local.get $4
+       f32.load offset=104
+       f32.sub
+       local.get $1
+       call $~lib/math/NativeMathf.pow
+       call $assembly/math/vec2/Vec2#scale
+       call $~lib/rt/pure/__release
+       local.get $4
+       local.get $4
+       f32.load offset=92
+       f32.const 1
+       local.get $4
+       f32.load offset=108
+       f32.sub
+       local.get $1
+       call $~lib/math/NativeMathf.pow
+       f32.mul
+       f32.store offset=92
+       local.get $3
+       call $~lib/rt/pure/__release
+      end
+     end
+     local.get $4
+     call $~lib/rt/pure/__release
+     local.get $2
+     i32.const 1
+     i32.add
+     local.set $2
+     br $for-loop|5
+    end
+   end
+  end
+  block $__inlined_func$assembly/collision/broadphase/Broadphase#getCollisionPairs@virtual (result i32)
+   block $default0
+    block $case11
+     local.get $21
+     i32.const 8
+     i32.sub
+     i32.load
+     local.tee $2
+     i32.const 99
+     i32.ne
+     if
+      local.get $2
+      i32.const 53
+      i32.eq
+      br_if $case11
+      br $default0
+     end
+     local.get $21
+     call $assembly/collision/naive-broadphase/NaiveBroadphase#getCollisionPairs
+     br $__inlined_func$assembly/collision/broadphase/Broadphase#getCollisionPairs@virtual
+    end
+    local.get $21
+    call $assembly/collision/sap-broadphase/SAPBroadphase#getCollisionPairs
+    br $__inlined_func$assembly/collision/broadphase/Broadphase#getCollisionPairs@virtual
+   end
+   local.get $21
+   call $assembly/collision/broadphase/Broadphase#getCollisionPairs
+  end
+  local.set $7
+  local.get $0
+  i32.load offset=16
+  call $~lib/rt/pure/__retain
+  local.tee $20
+  i32.load offset=12
+  i32.const 2
+  i32.sub
+  local.set $4
+  loop $for-loop|6
+   local.get $4
+   i32.const 0
+   i32.ge_s
+   if
+    local.get $7
+    i32.load offset=12
+    i32.const 2
+    i32.sub
+    local.set $2
+    loop $for-loop|7
+     local.get $2
+     i32.const 0
+     i32.ge_s
+     if
+      local.get $20
+      local.get $4
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $6
+      local.get $7
+      local.get $2
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $29
+      i32.eq
+      if (result i32)
+       local.get $20
+       local.get $4
+       i32.const 1
+       i32.add
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+       local.set $3
+       local.get $7
+       local.get $2
+       i32.const 1
+       i32.add
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+       local.set $31
+       local.get $3
+       call $~lib/rt/pure/__release
+       local.get $31
+       call $~lib/rt/pure/__release
+       local.get $3
+       local.get $31
+       i32.eq
+      else
+       i32.const 0
+      end
+      if
+       i32.const 1
+       local.set $3
+      else
+       local.get $20
+       local.get $4
+       i32.const 1
+       i32.add
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+       local.tee $30
+       local.get $7
+       local.get $2
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+       local.tee $28
+       i32.eq
+       if (result i32)
+        local.get $20
+        local.get $4
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+        local.set $3
+        local.get $7
+        local.get $2
+        i32.const 1
+        i32.add
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+        local.set $31
+        local.get $3
+        call $~lib/rt/pure/__release
+        local.get $31
+        call $~lib/rt/pure/__release
+        local.get $3
+        local.get $31
+        i32.eq
+       else
+        i32.const 0
+       end
+       local.set $3
+       local.get $30
+       call $~lib/rt/pure/__release
+       local.get $28
+       call $~lib/rt/pure/__release
+      end
+      local.get $3
+      if
+       local.get $7
+       local.get $2
+       i32.const 2
+       call $~lib/array/Array<assembly/objects/body/Body>#splice
+       call $~lib/rt/pure/__release
+      end
+      local.get $6
+      call $~lib/rt/pure/__release
+      local.get $29
+      call $~lib/rt/pure/__release
+      local.get $2
+      i32.const 2
+      i32.sub
+      local.set $2
+      br $for-loop|7
+     end
+    end
+    local.get $4
+    i32.const 2
+    i32.sub
+    local.set $4
+    br $for-loop|6
+   end
+  end
+  local.get $23
+  i32.load offset=12
+  local.set $6
+  i32.const 0
+  local.set $3
+  loop $for-loop|10
+   local.get $6
+   local.get $3
+   i32.const 65535
+   i32.and
+   i32.ne
+   if
+    local.get $23
+    local.get $3
+    i32.const 65535
+    i32.and
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $31
+    i32.load8_u offset=16
+    i32.eqz
+    if
+     local.get $7
+     i32.load offset=12
+     i32.const 2
+     i32.sub
+     local.set $2
+     loop $for-loop|11
+      local.get $2
+      i32.const 0
+      i32.ge_s
+      if
+       local.get $31
+       i32.load offset=8
+       local.get $7
+       local.get $2
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+       local.tee $29
+       i32.eq
+       if (result i32)
+        local.get $31
+        i32.load offset=12
+        local.get $7
+        local.get $2
+        i32.const 1
+        i32.add
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+        local.tee $30
+        call $~lib/rt/pure/__release
+        local.get $30
+        i32.eq
+       else
+        i32.const 0
+       end
+       if
+        i32.const 1
+        local.set $4
+       else
+        local.get $31
+        i32.load offset=12
+        local.get $7
+        local.get $2
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+        local.tee $30
+        i32.eq
+        if (result i32)
+         local.get $31
+         i32.load offset=8
+         local.get $7
+         local.get $2
+         i32.const 1
+         i32.add
+         call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+         local.tee $28
+         call $~lib/rt/pure/__release
+         local.get $28
+         i32.eq
+        else
+         i32.const 0
+        end
+        local.set $4
+        local.get $30
+        call $~lib/rt/pure/__release
+       end
+       local.get $4
+       if
+        local.get $7
+        local.get $2
+        i32.const 2
+        call $~lib/array/Array<assembly/objects/body/Body>#splice
+        call $~lib/rt/pure/__release
+       end
+       local.get $29
+       call $~lib/rt/pure/__release
+       local.get $2
+       i32.const 2
+       i32.sub
+       local.set $2
+       br $for-loop|11
+      end
+     end
+    end
+    local.get $31
+    call $~lib/rt/pure/__release
+    local.get $3
+    i32.const 1
+    i32.add
+    local.set $3
+    br $for-loop|10
+   end
+  end
+  global.get $assembly/world/world/postBroadphaseEvent
+  local.tee $4
+  local.get $7
+  local.tee $2
+  local.get $4
+  i32.load offset=8
+  local.tee $4
+  i32.ne
+  if
+   local.get $2
+   call $~lib/rt/pure/__retain
+   local.set $2
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  local.get $2
+  i32.store offset=8
+  local.get $0
+  global.get $assembly/world/world/postBroadphaseEvent
+  call $assembly/events/event-emitter/EventEmitter#emit
+  call $~lib/rt/pure/__release
+  global.get $assembly/world/world/postBroadphaseEvent
+  local.tee $4
+  local.get $4
+  i32.load offset=8
+  local.tee $4
+  if
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  i32.const 0
+  i32.store offset=8
+  local.get $27
+  call $assembly/collision/narrowphase/Narrowphase#reset
+  local.get $0
+  i32.load offset=52
+  local.tee $2
+  i32.eqz
+  if
+   i32.const 2656
+   i32.const 5312
+   i32.const 837
+   i32.const 32
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $6
+  local.get $0
+  f32.load offset=32
+  local.set $15
+  i32.const 0
+  local.set $28
+  local.get $7
+  i32.load offset=12
+  i32.const 65535
+  i32.and
+  local.set $10
+  loop $for-loop|15
+   local.get $10
+   local.get $28
+   i32.const 65535
+   i32.and
+   i32.ne
+   if
+    local.get $7
+    local.get $28
+    i32.const 65535
+    i32.and
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.set $18
+    local.get $7
+    local.get $28
+    i32.const 1
+    i32.add
+    i32.const 65535
+    i32.and
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.set $17
+    i32.const 0
+    local.set $30
+    local.get $18
+    i32.load offset=20
+    i32.load offset=12
+    local.set $9
+    loop $for-loop|16
+     local.get $9
+     local.get $30
+     i32.ne
+     if
+      local.get $18
+      i32.load offset=20
+      local.get $30
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $19
+      i32.load offset=4
+      call $~lib/rt/pure/__retain
+      local.set $11
+      local.get $19
+      f32.load offset=8
+      drop
+      i32.const 0
+      local.set $3
+      local.get $17
+      i32.load offset=20
+      i32.load offset=12
+      local.set $8
+      loop $for-loop|17
+       local.get $3
+       local.get $8
+       i32.ne
+       if
+        local.get $17
+        i32.load offset=20
+        local.get $3
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+        local.tee $31
+        i32.load offset=4
+        call $~lib/rt/pure/__retain
+        local.set $29
+        local.get $31
+        f32.load offset=8
+        drop
+        local.get $19
+        i32.load offset=32
+        if (result i32)
+         local.get $31
+         i32.load offset=32
+        else
+         i32.const 0
+        end
+        if (result i32)
+         local.get $19
+         i32.load offset=32
+         local.tee $2
+         i32.eqz
+         if
+          i32.const 2656
+          i32.const 5312
+          i32.const 857
+          i32.const 49
+          call $~lib/builtins/abort
+          unreachable
+         end
+         local.get $31
+         i32.load offset=32
+         local.tee $4
+         i32.eqz
+         if
+          i32.const 2656
+          i32.const 5312
+          i32.const 857
+          i32.const 63
+          call $~lib/builtins/abort
+          unreachable
+         end
+         local.get $0
+         local.get $2
+         local.get $4
+         call $assembly/world/world/World#getContactMaterial
+         i32.const 0
+         call $~lib/rt/pure/__release
+        else
+         i32.const 0
+        end
+        local.tee $4
+        local.tee $2
+        i32.eqz
+        if
+         local.get $6
+         local.tee $5
+         local.set $2
+        end
+        local.get $2
+        i32.eqz
+        if
+         i32.const 2656
+         i32.const 5312
+         i32.const 860
+         i32.const 53
+         call $~lib/builtins/abort
+         unreachable
+        end
+        local.get $0
+        local.get $27
+        local.get $18
+        local.get $19
+        local.get $11
+        local.get $17
+        local.get $31
+        local.get $29
+        local.get $2
+        local.get $15
+        call $assembly/world/world/runNarrowphase
+        local.get $31
+        call $~lib/rt/pure/__release
+        local.get $29
+        call $~lib/rt/pure/__release
+        local.get $4
+        call $~lib/rt/pure/__release
+        local.get $5
+        call $~lib/rt/pure/__release
+        local.get $3
+        i32.const 1
+        i32.add
+        local.set $3
+        br $for-loop|17
+       end
+      end
+      local.get $19
+      call $~lib/rt/pure/__release
+      local.get $11
+      call $~lib/rt/pure/__release
+      local.get $30
+      i32.const 1
+      i32.add
+      local.set $30
+      br $for-loop|16
+     end
+    end
+    local.get $18
+    call $~lib/rt/pure/__release
+    local.get $17
+    call $~lib/rt/pure/__release
+    local.get $28
+    i32.const 2
+    i32.add
+    local.set $28
+    br $for-loop|15
+   end
+  end
+  i32.const 0
+  local.set $2
+  local.get $24
+  i32.const 65535
+  i32.and
+  local.set $3
+  loop $for-loop|19
+   local.get $2
+   i32.const 65535
+   i32.and
+   local.get $3
+   i32.lt_u
+   if
+    local.get $26
+    local.get $2
+    i32.const 65535
+    i32.and
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $4
+    i32.load8_u offset=172
+    if
+     local.get $4
+     call $assembly/objects/body/Body#wakeUp
+     local.get $4
+     i32.const 0
+     i32.store8 offset=172
+    end
+    local.get $4
+    call $~lib/rt/pure/__release
+    local.get $2
+    i32.const 1
+    i32.add
+    local.set $2
+    br $for-loop|19
+   end
+  end
+  local.get $0
+  i32.const 2320
+  i32.const 0
+  call $assembly/events/event-emitter/EventEmitter#has
+  if
+   local.get $0
+   i32.load offset=96
+   local.set $2
+   local.get $22
+   call $~lib/rt/pure/__retain
+   local.set $4
+   local.get $2
+   i32.load offset=4
+   local.get $2
+   i32.load
+   local.get $4
+   call $assembly/utils/overlap-keeper/OverlapKeeper#getDiff
+   local.get $4
+   call $~lib/rt/pure/__release
+   call $~lib/rt/pure/__release
+   global.get $assembly/world/world/endContactEvent
+   call $~lib/rt/pure/__retain
+   local.set $31
+   local.get $22
+   i32.load offset=12
+   local.set $5
+   loop $while-continue|20
+    local.get $5
+    local.tee $2
+    i32.const 1
+    i32.sub
+    local.set $5
+    local.get $2
+    if
+     local.get $22
+     local.get $5
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $29
+     i32.load
+     local.tee $2
+     local.get $31
+     i32.load offset=8
+     local.tee $4
+     i32.ne
+     if
+      local.get $2
+      call $~lib/rt/pure/__retain
+      local.set $2
+      local.get $4
+      call $~lib/rt/pure/__release
+     end
+     local.get $31
+     local.get $2
+     i32.store offset=8
+     local.get $29
+     i32.load offset=4
+     local.tee $4
+     local.get $31
+     i32.load offset=12
+     local.tee $2
+     i32.ne
+     if
+      local.get $4
+      call $~lib/rt/pure/__retain
+      local.set $4
+      local.get $2
+      call $~lib/rt/pure/__release
+     end
+     local.get $31
+     local.get $4
+     i32.store offset=12
+     local.get $29
+     i32.load offset=8
+     local.tee $3
+     local.get $31
+     i32.load offset=16
+     local.tee $2
+     i32.ne
+     if
+      local.get $3
+      call $~lib/rt/pure/__retain
+      local.set $3
+      local.get $2
+      call $~lib/rt/pure/__release
+     end
+     local.get $31
+     local.get $3
+     i32.store offset=16
+     local.get $29
+     i32.load offset=12
+     local.tee $2
+     local.get $31
+     i32.load offset=20
+     local.tee $4
+     i32.ne
+     if
+      local.get $2
+      call $~lib/rt/pure/__retain
+      local.set $2
+      local.get $4
+      call $~lib/rt/pure/__release
+     end
+     local.get $31
+     local.get $2
+     i32.store offset=20
+     local.get $0
+     local.get $31
+     call $assembly/events/event-emitter/EventEmitter#emit
+     call $~lib/rt/pure/__release
+     local.get $29
+     call $~lib/rt/pure/__release
+     br $while-continue|20
+    end
+   end
+   local.get $22
+   i32.const 0
+   call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
+   local.get $31
+   call $~lib/rt/pure/__release
+  end
+  global.get $assembly/world/world/preSolveEvent
+  local.tee $4
+  local.get $27
+  i32.load
+  local.tee $2
+  local.get $4
+  i32.load offset=8
+  local.tee $4
+  i32.ne
+  if
+   local.get $2
+   call $~lib/rt/pure/__retain
+   local.set $2
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  local.get $2
+  i32.store offset=8
+  global.get $assembly/world/world/preSolveEvent
+  local.tee $2
+  local.get $27
+  i32.load offset=4
+  local.tee $30
+  local.get $2
+  i32.load offset=12
+  local.tee $2
+  i32.ne
+  if
+   local.get $30
+   call $~lib/rt/pure/__retain
+   local.set $30
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  local.get $30
+  i32.store offset=12
+  local.get $0
+  global.get $assembly/world/world/preSolveEvent
+  call $assembly/events/event-emitter/EventEmitter#emit
+  call $~lib/rt/pure/__release
+  global.get $assembly/world/world/preSolveEvent
+  local.tee $4
+  local.get $4
+  i32.load offset=8
+  local.tee $4
+  if
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  i32.const 0
+  i32.store offset=8
+  global.get $assembly/world/world/preSolveEvent
+  local.tee $2
+  local.get $2
+  i32.load offset=12
+  local.tee $2
+  if
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  i32.const 0
+  i32.store offset=12
+  local.get $23
+  i32.load offset=12
+  local.set $3
+  i32.const 0
+  local.set $2
+  loop $for-loop|21
+   local.get $2
+   local.get $3
+   i32.lt_s
+   if
+    local.get $23
+    local.get $2
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $4
+    local.set $5
+    block $__inlined_func$assembly/constraints/constraint/Constraint#update@virtual
+     local.get $4
+     i32.const 8
+     i32.sub
+     i32.load
+     i32.const 84
+     i32.eq
+     if
+      local.get $5
+      call $assembly/constraints/distance-constraint/DistanceConstraint#update
+      br $__inlined_func$assembly/constraints/constraint/Constraint#update@virtual
+     end
+     local.get $5
+     call $assembly/constraints/constraint/Constraint#update
+    end
+    local.get $4
+    call $~lib/rt/pure/__release
+    local.get $2
+    i32.const 1
+    i32.add
+    local.set $2
+    br $for-loop|21
+   end
+  end
+  local.get $27
+  i32.load
+  i32.load offset=12
+  if (result i32)
+   i32.const 1
+  else
+   local.get $27
+   i32.load offset=4
+   i32.load offset=12
+  end
+  if (result i32)
+   i32.const 1
+  else
+   local.get $3
+  end
+  if
+   i32.const 0
+   i32.const 2
+   i32.const 25
+   i32.const 6192
+   call $~lib/rt/__allocArray
+   call $~lib/rt/pure/__retain
+   local.set $4
+   i32.const 0
+   local.set $2
+   local.get $27
+   i32.load
+   i32.load offset=12
+   local.set $5
+   loop $for-loop|22
+    local.get $2
+    local.get $5
+    i32.lt_s
+    if
+     local.get $4
+     local.get $27
+     i32.load
+     local.get $2
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $31
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+     local.get $31
+     call $~lib/rt/pure/__release
+     local.get $2
+     i32.const 1
+     i32.add
+     local.set $2
+     br $for-loop|22
+    end
+   end
+   i32.const 0
+   local.set $5
+   local.get $27
+   i32.load offset=4
+   i32.load offset=12
+   local.set $2
+   loop $for-loop|23
+    local.get $5
+    local.get $2
+    i32.lt_s
+    if
+     local.get $4
+     local.get $27
+     i32.load offset=4
+     local.get $5
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $31
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+     local.get $31
+     call $~lib/rt/pure/__release
+     local.get $5
+     i32.const 1
+     i32.add
+     local.set $5
+     br $for-loop|23
+    end
+   end
+   i32.const 0
+   local.set $2
+   loop $for-loop|24
+    local.get $2
+    local.get $3
+    i32.lt_s
+    if
+     i32.const 0
+     local.set $30
+     local.get $23
+     local.get $2
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $31
+     i32.load offset=4
+     call $~lib/rt/pure/__retain
+     local.tee $5
+     i32.load offset=12
+     local.set $29
+     loop $for-loop|25
+      local.get $30
+      local.get $29
+      i32.lt_s
+      if
+       local.get $4
+       local.get $5
+       local.get $30
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+       local.tee $28
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+       local.get $28
+       call $~lib/rt/pure/__release
+       local.get $30
+       i32.const 1
+       i32.add
+       local.set $30
+       br $for-loop|25
+      end
+     end
+     local.get $31
+     call $~lib/rt/pure/__release
+     local.get $5
+     call $~lib/rt/pure/__release
+     local.get $2
+     i32.const 1
+     i32.add
+     local.set $2
+     br $for-loop|24
+    end
+   end
+   local.get $0
+   i32.load8_u offset=77
+   if
+    local.get $0
+    i32.load offset=84
+    call $~lib/rt/pure/__retain
+    local.tee $31
+    local.get $0
+    i32.load offset=12
+    i32.load offset=12
+    i32.const 1
+    i32.add
+    call $assembly/world/union-find/UnionFind#resize
+    i32.const 0
+    local.set $5
+    loop $for-loop|27
+     local.get $5
+     i32.const 65535
+     i32.and
+     local.get $4
+     i32.load offset=12
+     i32.const 65535
+     i32.and
+     i32.lt_u
+     if
+      local.get $4
+      local.get $5
+      i32.const 65535
+      i32.and
+      local.tee $2
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $3
+      local.get $2
+      i32.store offset=88
+      local.get $3
+      call $~lib/rt/pure/__release
+      local.get $5
+      i32.const 1
+      i32.add
+      local.set $5
+      br $for-loop|27
+     end
+    end
+    i32.const 0
+    local.set $5
+    loop $for-loop|29
+     local.get $5
+     i32.const 65535
+     i32.and
+     local.get $4
+     i32.load offset=12
+     i32.const 65535
+     i32.and
+     i32.lt_u
+     if
+      local.get $4
+      local.get $5
+      i32.const 65535
+      i32.and
+      local.tee $3
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $30
+      i32.load offset=12
+      call $~lib/rt/pure/__retain
+      local.set $2
+      local.get $4
+      local.get $3
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $28
+      i32.load offset=16
+      call $~lib/rt/pure/__retain
+      local.tee $3
+      i32.eqz
+      i32.const 1
+      local.get $2
+      select
+      i32.eqz
+      if
+       local.get $2
+       i32.load16_u offset=112
+       i32.const 1
+       i32.eq
+       if (result i32)
+        local.get $3
+        i32.load16_u offset=112
+        i32.const 1
+        i32.eq
+       else
+        i32.const 0
+       end
+       if
+        local.get $31
+        local.get $2
+        i32.load offset=12
+        local.get $3
+        i32.load offset=12
+        call $assembly/world/union-find/UnionFind#union
+       end
+      end
+      local.get $30
+      call $~lib/rt/pure/__release
+      local.get $2
+      call $~lib/rt/pure/__release
+      local.get $28
+      call $~lib/rt/pure/__release
+      local.get $3
+      call $~lib/rt/pure/__release
+      local.get $5
+      i32.const 1
+      i32.add
+      local.set $5
+      br $for-loop|29
+     end
+    end
+    i32.const 0
+    local.set $5
+    loop $for-loop|31
+     local.get $5
+     i32.const 65535
+     i32.and
+     local.get $26
+     i32.load offset=12
+     i32.const 65535
+     i32.and
+     i32.lt_u
+     if
+      local.get $26
+      local.get $5
+      i32.const 65535
+      i32.and
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $2
+      local.get $2
+      i32.load16_u offset=112
+      i32.const 1
+      i32.eq
+      if (result i32)
+       local.get $31
+       local.get $2
+       i32.load offset=12
+       call $assembly/world/union-find/UnionFind#find
+      else
+       i32.const -1
+      end
+      i32.store offset=164
+      local.get $2
+      call $~lib/rt/pure/__release
+      local.get $5
+      i32.const 1
+      i32.add
+      local.set $5
+      br $for-loop|31
+     end
+    end
+    local.get $4
+    i32.const 6208
+    call $~lib/array/Array<assembly/equations/equation/Equation>#sort
+    local.get $4
+    call $~lib/rt/pure/__release
+    local.set $4
+    i32.const 0
+    local.set $2
+    loop $while-continue|32
+     local.get $2
+     local.get $4
+     i32.load offset=12
+     i32.lt_s
+     if
+      local.get $2
+      local.tee $3
+      i32.const 1
+      i32.add
+      local.set $2
+      local.get $25
+      local.get $4
+      local.get $3
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $3
+      call $assembly/solver/solver/Solver#addEquation
+      local.get $3
+      i32.load offset=12
+      if (result i32)
+       local.get $3
+       i32.load offset=16
+       i32.eqz
+      else
+       i32.const 1
+      end
+      if
+       local.get $3
+       call $~lib/rt/pure/__release
+       br $while-continue|32
+      end
+      local.get $3
+      i32.load offset=12
+      local.tee $5
+      i32.eqz
+      if
+       i32.const 2656
+       i32.const 5312
+       i32.const 957
+       i32.const 33
+       call $~lib/builtins/abort
+       unreachable
+      end
+      local.get $5
+      i32.load offset=164
+      i32.const 0
+      i32.gt_s
+      if
+       local.get $3
+       i32.load offset=12
+       local.tee $5
+       i32.eqz
+       if
+        i32.const 2656
+        i32.const 5312
+        i32.const 957
+        i32.const 64
+        call $~lib/builtins/abort
+        unreachable
+       end
+      else
+       local.get $3
+       i32.load offset=16
+       local.tee $5
+       i32.eqz
+       if
+        i32.const 2656
+        i32.const 5312
+        i32.const 957
+        i32.const 91
+        call $~lib/builtins/abort
+        unreachable
+       end
+      end
+      local.get $5
+      i32.load offset=164
+      local.set $5
+      local.get $3
+      i32.load offset=12
+      local.tee $29
+      i32.eqz
+      if
+       i32.const 2656
+       i32.const 5312
+       i32.const 960
+       i32.const 21
+       call $~lib/builtins/abort
+       unreachable
+      end
+      local.get $29
+      i32.load offset=164
+      i32.const 0
+      i32.gt_s
+      if
+       local.get $3
+       i32.load offset=12
+       local.tee $30
+       i32.eqz
+       if
+        i32.const 2656
+        i32.const 5312
+        i32.const 960
+        i32.const 52
+        call $~lib/builtins/abort
+        unreachable
+       end
+      else
+       local.get $3
+       i32.load offset=16
+       local.tee $30
+       i32.eqz
+       if
+        i32.const 2656
+        i32.const 5312
+        i32.const 960
+        i32.const 79
+        call $~lib/builtins/abort
+        unreachable
+       end
+      end
+      local.get $30
+      i32.load offset=164
+      local.tee $30
+      i32.const 0
+      i32.lt_s
+      if (result i32)
+       i32.const 0
+      else
+       local.get $30
+      end
+      local.get $5
+      i32.ne
+      if (result i32)
+       i32.const 1
+      else
+       local.get $2
+       local.get $4
+       i32.load offset=12
+       i32.eq
+      end
+      if
+       local.get $0
+       i32.load8_u offset=63
+       if
+        local.get $25
+        local.get $1
+        local.get $0
+        call $assembly/solver/solver/Solver#solve@virtual
+       end
+       local.get $25
+       i32.load offset=12
+       i32.const 0
+       call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
+      end
+      local.get $3
+      call $~lib/rt/pure/__release
+      br $while-continue|32
+     end
+    end
+    local.get $31
+    call $~lib/rt/pure/__release
+   else
+    local.get $25
+    local.get $4
+    call $assembly/solver/solver/Solver#addEquations
+    local.get $0
+    i32.load8_u offset=63
+    if
+     local.get $25
+     local.get $1
+     local.get $0
+     call $assembly/solver/solver/Solver#solve@virtual
+    end
+    local.get $25
+    i32.load offset=12
+    i32.const 0
+    call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
+   end
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  i32.const 0
+  local.set $4
+  local.get $24
+  i32.const 65535
+  i32.and
+  local.set $5
+  loop $for-loop|34
+   local.get $4
+   i32.const 65535
+   i32.and
+   local.get $5
+   i32.lt_u
+   if
+    local.get $26
+    local.get $4
+    i32.const 65535
+    i32.and
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $2
+    i32.load16_u offset=112
+    i32.const 1
+    i32.eq
+    if (result i32)
+     i32.const 1
+    else
+     local.get $2
+     i32.load16_u offset=112
+     i32.const 4
+     i32.eq
+    end
+    if
+     local.get $2
+     local.get $1
+     call $assembly/objects/body/Body#integrate
+    end
+    local.get $2
+    call $~lib/rt/pure/__release
+    local.get $4
+    i32.const 1
+    i32.add
+    local.set $4
+    br $for-loop|34
+   end
+  end
+  i32.const 0
+  local.set $4
+  local.get $24
+  i32.const 65535
+  i32.and
+  local.set $5
+  loop $for-loop|36
+   local.get $4
+   i32.const 65535
+   i32.and
+   local.get $5
+   i32.lt_u
+   if
+    local.get $26
+    local.get $4
+    i32.const 65535
+    i32.and
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $3
+    i32.load offset=96
+    call $~lib/rt/pure/__retain
+    local.set $2
+    local.get $3
+    f32.const 0
+    f32.store offset=100
+    local.get $2
+    i32.const 1
+    f32.const 0
+    call $~lib/typedarray/Float32Array#__set
+    local.get $2
+    i32.const 0
+    local.get $2
+    i32.const 1
+    call $~lib/typedarray/Float32Array#__get
+    call $~lib/typedarray/Float32Array#__set
+    local.get $2
+    call $~lib/rt/pure/__release
+    local.get $3
+    call $~lib/rt/pure/__release
+    local.get $4
+    i32.const 1
+    i32.add
+    local.set $4
+    br $for-loop|36
+   end
+  end
+  local.get $0
+  i32.load8_u offset=78
+  if (result i32)
+   local.get $0
+   i32.const 2176
+   i32.const 0
+   call $assembly/events/event-emitter/EventEmitter#has
+  else
+   i32.const 0
+  end
+  if
+   global.get $assembly/world/world/impactEvent
+   call $~lib/rt/pure/__retain
+   local.set $4
+   i32.const 0
+   local.set $5
+   loop $for-loop|38
+    local.get $5
+    i32.const 65535
+    i32.and
+    local.get $27
+    i32.load
+    i32.load offset=12
+    i32.const 65535
+    i32.and
+    i32.lt_u
+    if
+     local.get $27
+     i32.load
+     local.get $5
+     i32.const 65535
+     i32.and
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $2
+     i32.load8_u offset=112
+     if
+      local.get $2
+      i32.load offset=12
+      local.tee $3
+      local.get $4
+      i32.load offset=8
+      local.tee $31
+      i32.ne
+      if
+       local.get $3
+       call $~lib/rt/pure/__retain
+       local.set $3
+       local.get $31
+       call $~lib/rt/pure/__release
+      end
+      local.get $4
+      local.get $3
+      i32.store offset=8
+      local.get $2
+      i32.load offset=16
+      local.tee $3
+      local.get $4
+      i32.load offset=12
+      local.tee $31
+      i32.ne
+      if
+       local.get $3
+       call $~lib/rt/pure/__retain
+       local.set $3
+       local.get $31
+       call $~lib/rt/pure/__release
+      end
+      local.get $4
+      local.get $3
+      i32.store offset=12
+      local.get $2
+      i32.load offset=116
+      local.tee $3
+      local.get $4
+      i32.load offset=16
+      local.tee $31
+      i32.ne
+      if
+       local.get $3
+       call $~lib/rt/pure/__retain
+       local.set $3
+       local.get $31
+       call $~lib/rt/pure/__release
+      end
+      local.get $4
+      local.get $3
+      i32.store offset=16
+      local.get $2
+      i32.load offset=120
+      local.tee $3
+      local.get $4
+      i32.load offset=20
+      local.tee $31
+      i32.ne
+      if
+       local.get $3
+       call $~lib/rt/pure/__retain
+       local.set $3
+       local.get $31
+       call $~lib/rt/pure/__release
+      end
+      local.get $4
+      local.get $3
+      i32.store offset=20
+      local.get $2
+      local.tee $3
+      local.get $4
+      i32.load offset=24
+      local.tee $31
+      i32.ne
+      if
+       local.get $3
+       call $~lib/rt/pure/__retain
+       local.set $3
+       local.get $31
+       call $~lib/rt/pure/__release
+      end
+      local.get $4
+      local.get $3
+      i32.store offset=24
+      local.get $0
+      local.get $4
+      call $assembly/events/event-emitter/EventEmitter#emit
+      call $~lib/rt/pure/__release
+     end
+     local.get $2
+     call $~lib/rt/pure/__release
+     local.get $5
+     i32.const 1
+     i32.add
+     local.set $5
+     br $for-loop|38
+    end
+   end
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  global.get $assembly/world/world/World.BODY_SLEEPING
+  local.get $0
+  i32.load16_u offset=80
+  i32.eq
+  if
+   i32.const 0
+   local.set $4
+   local.get $24
+   i32.const 65535
+   i32.and
+   local.set $2
+   loop $for-loop|40
+    local.get $4
+    i32.const 65535
+    i32.and
+    local.get $2
+    i32.lt_u
+    if
+     local.get $26
+     local.get $4
+     i32.const 65535
+     i32.and
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $3
+     local.get $0
+     f32.load offset=68
+     i32.const 0
+     local.get $1
+     call $assembly/objects/body/Body#sleepTick
+     local.get $3
+     call $~lib/rt/pure/__release
+     local.get $4
+     i32.const 1
+     i32.add
+     local.set $4
+     br $for-loop|40
+    end
+   end
+  else
+   global.get $assembly/world/world/World.ISLAND_SLEEPING
+   local.get $0
+   i32.load16_u offset=80
+   i32.eq
+   if (result i32)
+    local.get $0
+    i32.load8_u offset=77
+   else
+    i32.const 0
+   end
+   if
+    i32.const 0
+    local.set $4
+    local.get $24
+    i32.const 65535
+    i32.and
+    local.set $2
+    loop $for-loop|42
+     local.get $4
+     i32.const 65535
+     i32.and
+     local.get $2
+     i32.lt_u
+     if
+      local.get $26
+      local.get $4
+      i32.const 65535
+      i32.and
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $3
+      local.get $0
+      f32.load offset=68
+      i32.const 1
+      local.get $1
+      call $assembly/objects/body/Body#sleepTick
+      local.get $3
+      call $~lib/rt/pure/__release
+      local.get $4
+      i32.const 1
+      i32.add
+      local.set $4
+      br $for-loop|42
+     end
+    end
+    local.get $26
+    i32.const 6336
+    call $~lib/array/Array<assembly/equations/equation/Equation>#sort
+    local.set $5
+    i32.const 0
+    local.set $2
+    loop $for-loop|43
+     local.get $2
+     local.get $5
+     i32.load offset=12
+     i32.lt_s
+     if
+      local.get $5
+      local.get $2
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $30
+      i32.load offset=164
+      local.set $4
+      local.get $2
+      i32.const 1
+      i32.add
+      local.set $3
+      loop $for-loop|44
+       local.get $3
+       local.get $5
+       i32.load offset=12
+       i32.lt_s
+       if
+        local.get $4
+        local.get $5
+        local.get $3
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+        local.tee $31
+        i32.load offset=164
+        i32.eq
+        local.set $28
+        local.get $31
+        call $~lib/rt/pure/__release
+       else
+        i32.const 0
+        local.set $28
+       end
+       local.get $28
+       if
+        local.get $3
+        i32.const 1
+        i32.add
+        local.set $3
+        br $for-loop|44
+       end
+      end
+      local.get $4
+      i32.const -1
+      i32.ne
+      if
+       i32.const 1
+       local.set $31
+       local.get $2
+       local.set $4
+       loop $for-loop|45
+        local.get $4
+        local.get $3
+        i32.lt_s
+        if
+         block $for-break45
+          local.get $5
+          local.get $4
+          call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+          local.tee $29
+          i32.load8_u offset=126
+          i32.eqz
+          if
+           i32.const 0
+           local.set $31
+           local.get $29
+           call $~lib/rt/pure/__release
+           br $for-break45
+          end
+          local.get $29
+          call $~lib/rt/pure/__release
+          local.get $4
+          i32.const 1
+          i32.add
+          local.set $4
+          br $for-loop|45
+         end
+        end
+       end
+       local.get $31
+       if
+        local.get $2
+        local.set $4
+        loop $for-loop|46
+         local.get $4
+         local.get $3
+         i32.lt_s
+         if
+          local.get $5
+          local.get $4
+          call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+          local.tee $2
+          call $assembly/objects/body/Body#sleep
+          local.get $2
+          call $~lib/rt/pure/__release
+          local.get $4
+          i32.const 1
+          i32.add
+          local.set $4
+          br $for-loop|46
+         end
+        end
+       end
+      end
+      local.get $30
+      call $~lib/rt/pure/__release
+      local.get $3
+      local.set $2
+      br $for-loop|43
+     end
+    end
+    local.get $5
+    call $~lib/rt/pure/__release
+   end
+  end
+  local.get $0
+  i32.const 0
+  i32.store8 offset=76
+  local.get $0
+  global.get $assembly/world/world/postStepEvent
+  call $assembly/events/event-emitter/EventEmitter#emit
+  call $~lib/rt/pure/__release
+  local.get $14
+  call $~lib/rt/pure/__release
+  local.get $22
+  call $~lib/rt/pure/__release
+  local.get $13
+  call $~lib/rt/pure/__release
+  local.get $26
+  call $~lib/rt/pure/__release
+  local.get $12
+  call $~lib/rt/pure/__release
+  local.get $25
+  call $~lib/rt/pure/__release
+  local.get $21
+  call $~lib/rt/pure/__release
+  local.get $27
+  call $~lib/rt/pure/__release
+  local.get $23
+  call $~lib/rt/pure/__release
+  local.get $16
+  call $~lib/rt/pure/__release
+  local.get $7
+  call $~lib/rt/pure/__release
+  local.get $20
+  call $~lib/rt/pure/__release
+  local.get $6
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#step (param $0 i32) (param $1 f32) (param $2 f32) (param $3 i32)
+  (local $4 i32)
+  local.get $3
+  i32.const 10
+  local.get $3
+  i32.const 65535
+  i32.and
+  select
+  local.set $3
+  local.get $2
+  f32.const 0
+  local.get $2
+  i32.reinterpret_f32
+  i32.const 1
+  i32.shl
+  i32.const 2
+  i32.sub
+  i32.const -16777218
+  i32.le_u
+  select
+  local.tee $2
+  f32.const 0
+  f32.eq
+  if
+   local.get $0
+   local.get $1
+   call $assembly/world/world/World#internalStep
+   local.get $0
+   local.get $0
+   f32.load offset=68
+   local.get $1
+   f32.add
+   f32.store offset=68
+  else
+   local.get $0
+   local.get $0
+   f32.load offset=72
+   local.get $2
+   f32.add
+   f32.store offset=72
+   loop $while-continue|1
+    local.get $0
+    f32.load offset=72
+    local.get $1
+    f32.ge
+    if (result i32)
+     local.get $4
+     i32.const 65535
+     i32.and
+     local.get $3
+     i32.const 65535
+     i32.and
+     i32.lt_u
+    else
+     i32.const 0
+    end
+    if
+     local.get $0
+     local.get $1
+     call $assembly/world/world/World#internalStep
+     local.get $0
+     local.get $0
+     f32.load offset=68
+     local.get $1
+     f32.add
+     f32.store offset=68
+     local.get $0
+     local.get $0
+     f32.load offset=72
+     local.get $1
+     f32.sub
+     f32.store offset=72
+     local.get $4
+     i32.const 1
+     i32.add
+     local.set $4
+     br $while-continue|1
+    end
+   end
+   local.get $0
+   f32.load offset=72
+   local.get $1
+   call $~lib/math/NativeMathf.mod
+   local.get $1
+   f32.div
+   local.set $1
+   i32.const 0
+   local.set $4
+   loop $for-loop|2
+    local.get $4
+    local.get $0
+    i32.load offset=12
+    i32.load offset=12
+    i32.lt_s
+    if
+     local.get $0
+     i32.load offset=12
+     local.get $4
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $3
+     i32.load offset=60
+     local.get $3
+     i32.load offset=64
+     local.get $3
+     i32.load offset=56
+     local.get $1
+     call $assembly/math/vec2/Vec2#lerp
+     call $~lib/rt/pure/__release
+     local.get $3
+     local.get $3
+     f32.load offset=84
+     local.get $1
+     local.get $3
+     f32.load offset=80
+     local.get $3
+     f32.load offset=84
+     f32.sub
+     f32.mul
+     f32.add
+     f32.store offset=88
+     local.get $3
+     call $~lib/rt/pure/__release
+     local.get $4
+     i32.const 1
+     i32.add
+     local.set $4
+     br $for-loop|2
+    end
+   end
+  end
+ )
+ (func $assembly/world/world/World#addSpring (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $0
+  i32.load8_u offset=76
+  if
+   i32.const 6368
+   i32.const 5312
+   i32.const 1071
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=8
+  local.get $2
+  call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+  global.get $assembly/world/world/addSpringEvent
+  local.tee $3
+  local.get $2
+  local.tee $1
+  local.get $3
+  i32.load offset=8
+  local.tee $3
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $3
+   call $~lib/rt/pure/__release
+  end
+  local.get $1
+  i32.store offset=8
+  local.get $0
+  global.get $assembly/world/world/addSpringEvent
+  call $assembly/events/event-emitter/EventEmitter#emit
+  call $~lib/rt/pure/__release
+  global.get $assembly/world/world/addSpringEvent
+  local.tee $0
+  local.get $0
+  i32.load offset=8
+  local.tee $0
+  if
+   local.get $0
+   call $~lib/rt/pure/__release
+  end
+  i32.const 0
+  i32.store offset=8
+  local.get $2
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#removeSpring (param $0 i32) (param $1 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $0
+  i32.load8_u offset=76
+  if
+   i32.const 6464
+   i32.const 5312
+   i32.const 1087
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=8
+  local.get $1
+  call $assembly/utils/utils/_Utils#arrayRemove<assembly/material/contact-material/ContactMaterial>
+  local.get $1
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#addBody (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $0
+  i32.load8_u offset=76
+  if
+   i32.const 6560
+   i32.const 5312
+   i32.const 1106
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $2
+  i32.load offset=16
+  if
+   i32.const 6656
+   i32.const 5312
+   i32.const 1111
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $2
+  local.get $0
+  i32.load offset=12
+  i32.load offset=12
+  i32.store offset=12
+  local.get $0
+  i32.load offset=12
+  local.get $2
+  call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+  local.get $0
+  local.set $1
+  local.get $0
+  local.get $2
+  i32.load offset=16
+  local.tee $3
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $3
+   call $~lib/rt/pure/__release
+  end
+  local.get $2
+  local.get $1
+  i32.store offset=16
+  local.get $2
+  local.set $1
+  local.get $2
+  local.get $0
+  i32.load offset=100
+  local.tee $3
+  i32.load offset=8
+  local.tee $4
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $4
+   call $~lib/rt/pure/__release
+  end
+  local.get $3
+  local.get $1
+  i32.store offset=8
+  local.get $0
+  local.get $0
+  i32.load offset=100
+  call $assembly/events/event-emitter/EventEmitter#emit
+  call $~lib/rt/pure/__release
+  local.get $0
+  i32.load offset=100
+  local.tee $0
+  local.get $0
+  i32.load offset=8
+  local.tee $0
+  if
+   local.get $0
+   call $~lib/rt/pure/__release
+  end
+  i32.const 0
+  i32.store offset=8
+  local.get $2
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#removeBody (param $0 i32) (param $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $3
+  local.get $0
+  i32.load8_u offset=76
+  if
+   i32.const 6752
+   i32.const 5312
+   i32.const 1148
+   i32.const 4
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  i32.load offset=44
+  call $~lib/rt/pure/__retain
+  local.tee $6
+  i32.load offset=12
+  local.set $1
+  loop $while-continue|0
+   local.get $1
+   local.tee $2
+   i32.const 1
+   i32.sub
+   local.set $1
+   local.get $2
+   if
+    local.get $3
+    local.get $6
+    local.get $1
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $5
+    i32.load offset=8
+    i32.eq
+    if
+     i32.const 1
+     local.set $2
+    else
+     local.get $3
+     local.get $6
+     local.get $1
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $4
+     i32.load offset=12
+     i32.eq
+     local.set $2
+     local.get $4
+     call $~lib/rt/pure/__release
+    end
+    local.get $2
+    if
+     i32.const 6848
+     i32.const 5312
+     i32.const 1156
+     i32.const 5
+     call $~lib/builtins/abort
+     unreachable
+    end
+    local.get $5
+    call $~lib/rt/pure/__release
+    br $while-continue|0
+   end
+  end
+  local.get $3
+  i32.load offset=16
+  local.tee $2
+  if
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  local.get $3
+  i32.const 0
+  i32.store offset=16
+  local.get $0
+  i32.load offset=12
+  call $~lib/rt/pure/__retain
+  local.tee $5
+  local.get $3
+  call $assembly/utils/utils/_Utils#arrayRemove<assembly/material/contact-material/ContactMaterial>
+  local.get $3
+  i32.const -1
+  i32.store offset=12
+  local.get $5
+  i32.load offset=12
+  local.set $1
+  loop $while-continue|1
+   local.get $1
+   local.tee $2
+   i32.const 1
+   i32.sub
+   local.set $1
+   local.get $2
+   if
+    local.get $5
+    local.get $1
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $2
+    local.get $1
+    i32.store offset=12
+    local.get $2
+    call $~lib/rt/pure/__release
+    br $while-continue|1
+   end
+  end
+  local.get $0
+  i32.load offset=104
+  local.tee $2
+  local.get $3
+  local.tee $1
+  local.get $2
+  i32.load offset=8
+  local.tee $2
+  i32.ne
+  if
+   local.get $1
+   call $~lib/rt/pure/__retain
+   local.set $1
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  local.get $1
+  i32.store offset=8
+  local.get $3
+  call $assembly/objects/body/Body#resetConstraintVelocity
+  local.get $0
+  local.get $0
+  i32.load offset=104
+  call $assembly/events/event-emitter/EventEmitter#emit
+  call $~lib/rt/pure/__release
+  local.get $0
+  i32.load offset=104
+  local.tee $2
+  i32.const 0
+  local.set $1
+  local.get $2
+  i32.load offset=8
+  local.tee $2
+  if
+   local.get $2
+   call $~lib/rt/pure/__release
+  end
+  i32.const 0
+  i32.store offset=8
+  local.get $0
+  i32.load offset=16
+  call $~lib/rt/pure/__retain
+  local.set $0
+  loop $while-continue|2
+   local.get $1
+   local.get $0
+   i32.load offset=12
+   i32.lt_s
+   if
+    local.get $3
+    local.get $0
+    local.get $1
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $4
+    i32.eq
+    if (result i32)
+     i32.const 1
+    else
+     local.get $0
+     local.get $1
+     i32.const 1
+     i32.add
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $2
+     call $~lib/rt/pure/__release
+     local.get $2
+     local.get $3
+     i32.eq
+    end
+    if
+     local.get $0
+     local.get $1
+     i32.const 2
+     call $~lib/array/Array<assembly/objects/body/Body>#splice
+     call $~lib/rt/pure/__release
+    else
+     local.get $1
+     i32.const 2
+     i32.add
+     local.set $1
+    end
+    local.get $4
+    call $~lib/rt/pure/__release
+    br $while-continue|2
+   end
+  end
+  local.get $6
+  call $~lib/rt/pure/__release
+  local.get $5
+  call $~lib/rt/pure/__release
+  local.get $0
+  call $~lib/rt/pure/__release
+  local.get $3
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#getBodyById (param $0 i32) (param $1 i32) (result i32)
+  (local $2 i32)
+  (local $3 i32)
+  local.get $0
+  i32.load offset=12
+  call $~lib/rt/pure/__retain
+  local.set $0
+  loop $for-loop|0
+   local.get $2
+   local.get $0
+   i32.load offset=12
+   i32.lt_s
+   if
+    local.get $0
+    local.get $2
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $3
+    i32.load offset=8
+    local.get $1
+    i32.const 65535
+    i32.and
+    i32.eq
+    if
+     local.get $0
+     call $~lib/rt/pure/__release
+     local.get $3
+     return
+    end
+    local.get $3
+    call $~lib/rt/pure/__release
+    local.get $2
+    i32.const 1
+    i32.add
+    local.set $2
+    br $for-loop|0
+   end
+  end
+  local.get $0
+  call $~lib/rt/pure/__release
+  i32.const 0
+ )
+ (func $assembly/world/world/World#disableBodyCollision (param $0 i32) (param $1 i32) (param $2 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $1
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $0
+  i32.load offset=16
+  local.get $1
+  call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+  local.get $0
+  i32.load offset=16
+  local.get $2
+  call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+  local.get $1
+  call $~lib/rt/pure/__release
+  local.get $2
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#enableBodyCollision (param $0 i32) (param $1 i32) (param $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $4
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $2
+  local.get $0
+  i32.load offset=16
+  call $~lib/rt/pure/__retain
+  local.set $1
+  loop $for-loop|0
+   local.get $3
+   local.get $1
+   i32.load offset=12
+   i32.lt_s
+   if
+    local.get $4
+    local.get $1
+    local.get $3
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $5
+    i32.eq
+    if (result i32)
+     local.get $1
+     local.get $3
+     i32.const 1
+     i32.add
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $0
+     call $~lib/rt/pure/__release
+     local.get $0
+     local.get $2
+     i32.eq
+    else
+     i32.const 0
+    end
+    if
+     i32.const 1
+     local.set $0
+    else
+     local.get $4
+     local.get $1
+     local.get $3
+     i32.const 1
+     i32.add
+     call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+     local.tee $6
+     i32.eq
+     if (result i32)
+      local.get $1
+      local.get $3
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $0
+      call $~lib/rt/pure/__release
+      local.get $0
+      local.get $2
+      i32.eq
+     else
+      i32.const 0
+     end
+     local.set $0
+     local.get $6
+     call $~lib/rt/pure/__release
+    end
+    local.get $0
+    if
+     local.get $1
+     local.get $3
+     i32.const 2
+     call $~lib/array/Array<assembly/objects/body/Body>#splice
+     call $~lib/rt/pure/__release
+     local.get $4
+     call $~lib/rt/pure/__release
+     local.get $2
+     call $~lib/rt/pure/__release
+     local.get $1
+     call $~lib/rt/pure/__release
+     local.get $5
+     call $~lib/rt/pure/__release
+     return
+    end
+    local.get $5
+    call $~lib/rt/pure/__release
+    local.get $3
+    i32.const 2
+    i32.add
+    local.set $3
+    br $for-loop|0
+   end
+  end
+  local.get $1
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $2
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#clear (param $0 i32)
+  (local $1 i32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  local.get $0
+  i32.load offset=20
+  i32.load offset=12
+  i32.const 0
+  call $~lib/array/Array<~lib/typedarray/Uint16Array>#set:length
+  local.get $0
+  i32.load offset=44
+  call $~lib/rt/pure/__retain
+  local.tee $3
+  i32.load offset=12
+  local.set $1
+  loop $while-continue|0
+   local.get $1
+   local.tee $2
+   i32.const 1
+   i32.sub
+   local.set $1
+   local.get $2
+   if
+    local.get $0
+    local.get $3
+    local.get $1
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $2
+    call $assembly/world/world/World#removeConstraint
+    local.get $2
+    call $~lib/rt/pure/__release
+    br $while-continue|0
+   end
+  end
+  local.get $0
+  i32.load offset=12
+  call $~lib/rt/pure/__retain
+  local.tee $4
+  i32.load offset=12
+  local.set $1
+  loop $while-continue|1
+   local.get $1
+   local.tee $2
+   i32.const 1
+   i32.sub
+   local.set $1
+   local.get $2
+   if
+    local.get $0
+    local.get $4
+    local.get $1
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $2
+    call $assembly/world/world/World#removeBody
+    local.get $2
+    call $~lib/rt/pure/__release
+    br $while-continue|1
+   end
+  end
+  local.get $0
+  i32.load offset=8
+  call $~lib/rt/pure/__retain
+  local.tee $5
+  i32.load offset=12
+  local.set $1
+  loop $while-continue|2
+   local.get $1
+   local.tee $2
+   i32.const 1
+   i32.sub
+   local.set $1
+   local.get $2
+   if
+    local.get $0
+    local.get $5
+    local.get $1
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $2
+    call $assembly/world/world/World#removeSpring
+    local.get $2
+    call $~lib/rt/pure/__release
+    br $while-continue|2
+   end
+  end
+  local.get $0
+  i32.load offset=64
+  call $~lib/rt/pure/__retain
+  local.tee $6
+  i32.load offset=12
+  local.set $1
+  loop $while-continue|3
+   local.get $1
+   local.tee $2
+   i32.const 1
+   i32.sub
+   local.set $1
+   local.get $2
+   if
+    local.get $0
+    local.get $6
+    local.get $1
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $2
+    call $assembly/world/world/World#removeContactMaterial
+    local.get $2
+    call $~lib/rt/pure/__release
+    br $while-continue|3
+   end
+  end
+  local.get $3
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $5
+  call $~lib/rt/pure/__release
+  local.get $6
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#hitTest (param $0 i32) (param $1 i32) (param $2 i32) (param $3 f32) (result i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  (local $7 i32)
+  (local $8 i32)
+  (local $9 i32)
+  (local $10 i32)
+  (local $11 i32)
+  (local $12 i32)
+  local.get $1
+  call $~lib/rt/pure/__retain
+  local.set $7
+  local.get $2
+  call $~lib/rt/pure/__retain
+  local.set $8
+  local.get $3
+  f32.const 0
+  local.get $3
+  i32.reinterpret_f32
+  i32.const 1
+  i32.shl
+  i32.const 2
+  i32.sub
+  i32.const -16777218
+  i32.le_u
+  select
+  local.set $3
+  global.get $assembly/world/world/hitTest_tmp1
+  call $~lib/rt/pure/__retain
+  local.set $5
+  global.get $assembly/world/world/hitTest_tmp2
+  call $~lib/rt/pure/__retain
+  local.set $4
+  i32.const 0
+  i32.const 2
+  i32.const 22
+  i32.const 7008
+  call $~lib/rt/__allocArray
+  call $~lib/rt/pure/__retain
+  local.set $9
+  local.get $8
+  i32.load offset=12
+  local.set $11
+  loop $for-loop|0
+   local.get $10
+   local.get $11
+   i32.ne
+   if
+    i32.const 0
+    local.set $2
+    local.get $8
+    local.get $10
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $0
+    i32.load offset=20
+    i32.load offset=12
+    local.set $12
+    loop $for-loop|1
+     local.get $2
+     local.get $12
+     i32.ne
+     if
+      local.get $0
+      i32.load offset=20
+      local.get $2
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $1
+      local.get $4
+      local.get $7
+      call $assembly/shapes/shape/Shape#worldPointToLocal
+      block $__inlined_func$assembly/shapes/shape/Shape#pointTest@virtual (result i32)
+       block $default
+        block $case5
+         block $case4
+          block $case3
+           block $case2
+            block $case1
+             local.get $1
+             i32.const 8
+             i32.sub
+             i32.load
+             local.tee $6
+             i32.const 80
+             i32.ne
+             if
+              local.get $6
+              i32.const 82
+              i32.eq
+              br_if $case1
+              local.get $6
+              i32.const 8
+              i32.eq
+              br_if $case2
+              local.get $6
+              i32.const 95
+              i32.eq
+              br_if $case3
+              local.get $6
+              i32.const 100
+              i32.eq
+              br_if $case4
+              local.get $6
+              i32.const 96
+              i32.eq
+              br_if $case5
+              br $default
+             end
+             local.get $1
+             local.get $4
+             call $assembly/shapes/capsule/Capsule#pointTest
+             br $__inlined_func$assembly/shapes/shape/Shape#pointTest@virtual
+            end
+            local.get $1
+            local.get $4
+            call $assembly/shapes/circle/Circle#pointTest
+            br $__inlined_func$assembly/shapes/shape/Shape#pointTest@virtual
+           end
+           local.get $1
+           local.get $4
+           call $assembly/shapes/convex/Convex#pointTest
+           br $__inlined_func$assembly/shapes/shape/Shape#pointTest@virtual
+          end
+          local.get $1
+          local.get $4
+          call $assembly/shapes/plane/Plane#pointTest
+          br $__inlined_func$assembly/shapes/shape/Shape#pointTest@virtual
+         end
+         local.get $1
+         local.get $4
+         call $assembly/shapes/Box/Box#pointTest
+         br $__inlined_func$assembly/shapes/shape/Shape#pointTest@virtual
+        end
+        local.get $1
+        local.get $4
+        call $assembly/shapes/Box/Box#pointTest
+        br $__inlined_func$assembly/shapes/shape/Shape#pointTest@virtual
+       end
+       i32.const 0
+      end
+      if
+       local.get $9
+       local.get $0
+       call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+      else
+       local.get $5
+       local.get $1
+       i32.load offset=4
+       local.get $0
+       f32.load offset=80
+       call $assembly/math/vec2/Vec2#rotate
+       call $~lib/rt/pure/__release
+       local.get $5
+       local.get $5
+       local.get $0
+       i32.load offset=56
+       call $assembly/math/vec2/Vec2#add
+       call $~lib/rt/pure/__release
+       global.get $assembly/shapes/shape/Shape.PARTICLE
+       local.get $1
+       i32.load16_u offset=12
+       i32.eq
+       if (result i32)
+        local.get $5
+        local.get $7
+        call $assembly/math/vec2/Vec2#squaredDistance
+        local.get $3
+        local.get $3
+        f32.mul
+        f32.lt
+       else
+        i32.const 0
+       end
+       if
+        local.get $9
+        local.get $0
+        call $~lib/array/Array<~lib/typedarray/Float32Array>#push
+       end
+      end
+      local.get $1
+      call $~lib/rt/pure/__release
+      local.get $2
+      i32.const 1
+      i32.add
+      local.set $2
+      br $for-loop|1
+     end
+    end
+    local.get $0
+    call $~lib/rt/pure/__release
+    local.get $10
+    i32.const 1
+    i32.add
+    local.set $10
+    br $for-loop|0
+   end
+  end
+  local.get $5
+  call $~lib/rt/pure/__release
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $7
+  call $~lib/rt/pure/__release
+  local.get $8
+  call $~lib/rt/pure/__release
+  local.get $9
+ )
+ (func $assembly/world/world/setGlobalEquationParams (param $0 i32) (param $1 f32) (param $2 f32)
+  (local $3 i32)
+  (local $4 i32)
+  (local $5 i32)
+  (local $6 i32)
+  (local $7 i32)
+  (local $8 i32)
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.tee $7
+  i32.load offset=44
+  call $~lib/rt/pure/__retain
+  local.set $4
+  loop $for-loop|0
+   local.get $5
+   local.get $4
+   i32.load offset=12
+   i32.lt_s
+   if
+    local.get $4
+    local.get $5
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $8
+    i32.load offset=4
+    call $~lib/rt/pure/__retain
+    local.set $6
+    i32.const 0
+    local.set $3
+    loop $for-loop|1
+     local.get $3
+     local.get $6
+     i32.load offset=12
+     i32.lt_s
+     if
+      local.get $6
+      local.get $3
+      call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+      local.tee $0
+      local.get $1
+      f32.const -1
+      f32.ne
+      if (result f32)
+       local.get $1
+      else
+       local.get $0
+       f32.load offset=24
+      end
+      f32.store offset=24
+      local.get $0
+      local.get $2
+      f32.const -1
+      f32.ne
+      if (result f32)
+       local.get $2
+      else
+       local.get $0
+       f32.load offset=20
+      end
+      f32.store offset=20
+      local.get $0
+      i32.const 1
+      i32.store8 offset=52
+      local.get $0
+      call $~lib/rt/pure/__release
+      local.get $3
+      i32.const 1
+      i32.add
+      local.set $3
+      br $for-loop|1
+     end
+    end
+    local.get $8
+    call $~lib/rt/pure/__release
+    local.get $6
+    call $~lib/rt/pure/__release
+    local.get $5
+    i32.const 1
+    i32.add
+    local.set $5
+    br $for-loop|0
+   end
+  end
+  local.get $4
+  call $~lib/rt/pure/__release
+  local.get $7
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#setGlobalStiffness (param $0 i32) (param $1 f32)
+  (local $2 i32)
+  (local $3 i32)
+  (local $4 i32)
+  local.get $0
+  f32.const -1
+  local.get $1
+  call $assembly/world/world/setGlobalEquationParams
+  local.get $0
+  i32.load offset=64
+  call $~lib/rt/pure/__retain
+  local.set $2
+  loop $for-loop|0
+   local.get $3
+   local.get $2
+   i32.load offset=12
+   i32.ne
+   if
+    local.get $2
+    local.get $3
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $4
+    local.get $1
+    f32.store offset=28
+    local.get $4
+    local.get $1
+    f32.store offset=20
+    local.get $4
+    call $~lib/rt/pure/__release
+    local.get $3
+    i32.const 1
+    i32.add
+    local.set $3
+    br $for-loop|0
+   end
+  end
+  local.get $0
+  i32.load offset=52
+  local.tee $0
+  i32.eqz
+  if
+   i32.const 2656
+   i32.const 5312
+   i32.const 1337
+   i32.const 11
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.tee $0
+  local.get $1
+  f32.store offset=28
+  local.get $0
+  local.get $1
+  f32.store offset=20
+  local.get $2
+  call $~lib/rt/pure/__release
+  local.get $0
+  call $~lib/rt/pure/__release
+ )
+ (func $assembly/world/world/World#setGlobalRelaxation (param $0 i32) (param $1 f32)
+  (local $2 i32)
+  (local $3 i32)
+  local.get $0
+  local.get $1
+  f32.const -1
+  call $assembly/world/world/setGlobalEquationParams
+  loop $for-loop|0
+   local.get $2
+   local.get $0
+   i32.load offset=64
+   i32.load offset=12
+   i32.ne
+   if
+    local.get $0
+    i32.load offset=64
+    local.get $2
+    call $~lib/array/Array<~lib/typedarray/Float32Array>#__get
+    local.tee $3
+    local.get $1
+    f32.store offset=32
+    local.get $3
+    local.get $1
+    f32.store offset=24
+    local.get $3
+    call $~lib/rt/pure/__release
+    local.get $2
+    i32.const 1
+    i32.add
+    local.set $2
+    br $for-loop|0
+   end
+  end
+  local.get $0
+  i32.load offset=52
+  local.tee $0
+  i32.eqz
+  if
+   i32.const 2656
+   i32.const 5312
+   i32.const 1356
+   i32.const 11
+   call $~lib/builtins/abort
+   unreachable
+  end
+  local.get $0
+  call $~lib/rt/pure/__retain
+  local.tee $0
+  local.get $1
+  f32.store offset=32
+  local.get $0
+  local.get $1
+  f32.store offset=24
   local.get $0
   call $~lib/rt/pure/__release
  )
@@ -29943,12 +36805,12 @@
    local.get $0
    i32.load offset=8
    local.tee $3
-   i32.const 5248
+   i32.const 7056
    i32.load
    i32.gt_u
    if
     i32.const 1344
-    i32.const 5216
+    i32.const 7024
     i32.const 22
     i32.const 28
     call $~lib/builtins/abort
@@ -29957,7 +36819,7 @@
    local.get $3
    i32.const 3
    i32.shl
-   i32.const 5252
+   i32.const 7060
    i32.add
    i32.load
    i32.const 32
@@ -30057,11 +36919,11 @@
            i32.sub
            i32.load
            local.tee $1
-           i32.const 82
+           i32.const 80
            i32.ne
            if
             local.get $1
-            i32.const 84
+            i32.const 82
             i32.eq
             br_if $case1
             local.get $1
@@ -30069,27 +36931,27 @@
             i32.eq
             br_if $case2
             local.get $1
-            i32.const 92
+            i32.const 90
             i32.eq
             br_if $case3
             local.get $1
-            i32.const 94
+            i32.const 92
             i32.eq
             br_if $case4
             local.get $1
-            i32.const 96
+            i32.const 94
             i32.eq
             br_if $case5
             local.get $1
-            i32.const 97
+            i32.const 95
             i32.eq
             br_if $case6
             local.get $1
-            i32.const 102
+            i32.const 100
             i32.eq
             br_if $case7
             local.get $1
-            i32.const 98
+            i32.const 96
             i32.eq
             br_if $case8
             br $default
@@ -30157,11 +37019,11 @@
            i32.sub
            i32.load
            local.tee $1
-           i32.const 82
+           i32.const 80
            i32.ne
            if
             local.get $1
-            i32.const 84
+            i32.const 82
             i32.eq
             br_if $case1
             local.get $1
@@ -30169,27 +37031,27 @@
             i32.eq
             br_if $case2
             local.get $1
-            i32.const 92
+            i32.const 90
             i32.eq
             br_if $case3
             local.get $1
-            i32.const 94
+            i32.const 92
             i32.eq
             br_if $case4
             local.get $1
-            i32.const 96
+            i32.const 94
             i32.eq
             br_if $case5
             local.get $1
-            i32.const 97
+            i32.const 95
             i32.eq
             br_if $case6
             local.get $1
-            i32.const 102
+            i32.const 100
             i32.eq
             br_if $case7
             local.get $1
-            i32.const 98
+            i32.const 96
             i32.eq
             br_if $case8
             br $default
@@ -30244,11 +37106,11 @@
     i32.sub
     i32.load
     local.tee $1
-    i32.const 102
+    i32.const 100
     i32.ne
     if
      local.get $1
-     i32.const 98
+     i32.const 96
      i32.eq
      br_if $case1
      br $default
@@ -30276,11 +37138,11 @@
     i32.sub
     i32.load
     local.tee $1
-    i32.const 102
+    i32.const 100
     i32.ne
     if
      local.get $1
-     i32.const 98
+     i32.const 96
      i32.eq
      br_if $case1
      br $default
@@ -30314,11 +37176,11 @@
           i32.sub
           i32.load
           local.tee $4
-          i32.const 82
+          i32.const 80
           i32.ne
           if
            local.get $4
-           i32.const 84
+           i32.const 82
            i32.eq
            br_if $case1
            local.get $4
@@ -30326,26 +37188,26 @@
            i32.eq
            br_if $case2
            local.get $4
-           i32.const 92
+           i32.const 90
            i32.eq
            br_if $case3
            local.get $4
-           i32.const 94
+           i32.const 92
            i32.eq
            br_if $case4
            local.get $4
-           i32.const 96
+           i32.const 94
            i32.eq
            br_if $case5
            local.get $4
-           i32.const 97
+           i32.const 95
            i32.eq
            br_if $case6
            local.get $4
-           i32.const 102
+           i32.const 100
            i32.eq
            local.get $4
-           i32.const 98
+           i32.const 96
            i32.eq
            i32.or
            br_if $folding-inner0
@@ -30422,24 +37284,24 @@
          i32.sub
          i32.load
          local.tee $5
-         i32.const 82
+         i32.const 80
          i32.ne
          if
           local.get $5
-          i32.const 84
+          i32.const 82
           i32.eq
           br_if $case1
           local.get $5
           i32.const 8
           i32.eq
           local.get $5
-          i32.const 98
+          i32.const 96
           i32.eq
           i32.or
           br_if $case2
           block $tablify|0
            local.get $5
-           i32.const 92
+           i32.const 90
            i32.sub
            br_table $case3 $tablify|0 $case4 $tablify|0 $case5 $case6 $tablify|0 $tablify|0 $tablify|0 $tablify|0 $case2 $tablify|0
           end
@@ -30503,9 +37365,25 @@
   end
   unreachable
  )
+ (func $assembly/solver/solver/Solver#solve@virtual (param $0 i32) (param $1 f32) (param $2 i32)
+  local.get $0
+  i32.const 8
+  i32.sub
+  i32.load
+  i32.const 88
+  i32.eq
+  if
+   local.get $0
+   local.get $1
+   local.get $2
+   call $assembly/solver/gs-solver/GSSolver#solve
+   return
+  end
+  unreachable
+ )
  (func $~lib/rt/pure/__visit (param $0 i32) (param $1 i32)
   local.get $0
-  i32.const 6116
+  i32.const 7924
   i32.lt_u
   if
    return
@@ -30657,103 +37535,68 @@
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
-  block $folding-inner8
-   block $folding-inner7
-    block $folding-inner6
-     block $folding-inner5
-      block $folding-inner3
-       block $folding-inner2
-        block $folding-inner1
-         block $folding-inner0
-          block $block$63$break
-           block $block$26$break
-            block $block$11$break
-             block $switch$1$default
-              block $switch$1$case$108
-               block $switch$1$case$107
-                block $switch$1$case$95
-                 block $switch$1$case$94
-                  block $switch$1$case$91
-                   block $switch$1$case$90
-                    block $switch$1$case$88
-                     block $switch$1$case$81
-                      block $switch$1$case$79
-                       block $switch$1$case$73
-                        block $switch$1$case$70
-                         block $switch$1$case$69
-                          block $switch$1$case$62
-                           block $switch$1$case$61
-                            block $switch$1$case$57
-                             block $switch$1$case$56
-                              block $switch$1$case$53
-                               block $switch$1$case$51
-                                block $switch$1$case$50
-                                 block $switch$1$case$37
-                                  block $switch$1$case$32
-                                   block $switch$1$case$30
-                                    block $switch$1$case$29
-                                     block $switch$1$case$25
-                                      block $switch$1$case$20
-                                       block $switch$1$case$19
-                                        block $switch$1$case$16
-                                         block $switch$1$case$12
-                                          block $switch$1$case$10
-                                           block $switch$1$case$4
-                                            block $switch$1$case$2
-                                             local.get $0
-                                             i32.const 8
-                                             i32.sub
-                                             i32.load
-                                             br_table $switch$1$case$2 $switch$1$case$2 $switch$1$case$4 $switch$1$case$2 $switch$1$case$2 $switch$1$case$4 $folding-inner0 $folding-inner1 $switch$1$case$10 $block$11$break $switch$1$case$12 $folding-inner6 $folding-inner6 $folding-inner0 $switch$1$case$16 $switch$1$case$2 $folding-inner0 $switch$1$case$19 $switch$1$case$20 $folding-inner7 $switch$1$case$2 $folding-inner0 $folding-inner0 $switch$1$case$25 $block$26$break $folding-inner0 $switch$1$case$4 $switch$1$case$29 $switch$1$case$30 $folding-inner0 $switch$1$case$32 $folding-inner0 $switch$1$case$4 $switch$1$case$4 $folding-inner6 $switch$1$case$37 $folding-inner1 $folding-inner3 $switch$1$case$2 $switch$1$case$2 $folding-inner3 $folding-inner5 $switch$1$case$2 $folding-inner0 $switch$1$case$2 $folding-inner0 $folding-inner6 $folding-inner1 $switch$1$case$50 $switch$1$case$51 $folding-inner6 $switch$1$case$53 $switch$1$case$4 $folding-inner0 $switch$1$case$56 $switch$1$case$57 $switch$1$case$56 $switch$1$case$4 $folding-inner0 $switch$1$case$61 $switch$1$case$62 $block$63$break $switch$1$case$4 $folding-inner0 $folding-inner1 $folding-inner1 $folding-inner6 $switch$1$case$69 $switch$1$case$70 $switch$1$case$69 $switch$1$case$70 $switch$1$case$73 $switch$1$case$56 $folding-inner6 $folding-inner6 $folding-inner6 $switch$1$case$61 $switch$1$case$79 $switch$1$case$29 $switch$1$case$81 $block$26$break $block$26$break $block$11$break $block$63$break $block$11$break $block$63$break $switch$1$case$88 $folding-inner3 $switch$1$case$90 $switch$1$case$91 $switch$1$case$25 $switch$1$case$4 $switch$1$case$94 $switch$1$case$95 $block$11$break $block$63$break $block$11$break $block$11$break $switch$1$case$10 $block$63$break $block$63$break $folding-inner3 $switch$1$case$10 $block$63$break $block$26$break $switch$1$case$107 $switch$1$case$108 $folding-inner7 $switch$1$default
-                                            end
-                                            return
-                                           end
-                                           local.get $0
-                                           i32.load
-                                           local.tee $0
-                                           if
+  block $folding-inner9
+   block $folding-inner8
+    block $folding-inner7
+     block $folding-inner6
+      block $folding-inner4
+       block $folding-inner3
+        block $folding-inner2
+         block $folding-inner1
+          block $folding-inner0
+           block $block$61$break
+            block $block$26$break
+             block $block$11$break
+              block $switch$1$default
+               block $switch$1$case$106
+                block $switch$1$case$105
+                 block $switch$1$case$93
+                  block $switch$1$case$92
+                   block $switch$1$case$88
+                    block $switch$1$case$86
+                     block $switch$1$case$79
+                      block $switch$1$case$71
+                       block $switch$1$case$68
+                        block $switch$1$case$67
+                         block $switch$1$case$60
+                          block $switch$1$case$59
+                           block $switch$1$case$55
+                            block $switch$1$case$54
+                             block $switch$1$case$51
+                              block $switch$1$case$49
+                               block $switch$1$case$48
+                                block $switch$1$case$37
+                                 block $switch$1$case$32
+                                  block $switch$1$case$30
+                                   block $switch$1$case$29
+                                    block $switch$1$case$25
+                                     block $switch$1$case$20
+                                      block $switch$1$case$19
+                                       block $switch$1$case$16
+                                        block $switch$1$case$12
+                                         block $switch$1$case$10
+                                          block $switch$1$case$4
+                                           block $switch$1$case$2
                                             local.get $0
-                                            local.get $1
-                                            call $~lib/rt/pure/__visit
+                                            i32.const 8
+                                            i32.sub
+                                            i32.load
+                                            br_table $switch$1$case$2 $switch$1$case$2 $switch$1$case$4 $switch$1$case$2 $switch$1$case$2 $switch$1$case$4 $folding-inner0 $folding-inner1 $switch$1$case$10 $block$11$break $switch$1$case$12 $folding-inner7 $folding-inner7 $folding-inner0 $switch$1$case$16 $switch$1$case$2 $folding-inner0 $switch$1$case$19 $switch$1$case$20 $folding-inner8 $switch$1$case$2 $folding-inner0 $folding-inner0 $switch$1$case$25 $block$26$break $folding-inner0 $switch$1$case$4 $switch$1$case$29 $switch$1$case$30 $folding-inner0 $switch$1$case$32 $folding-inner0 $switch$1$case$4 $switch$1$case$4 $folding-inner7 $switch$1$case$37 $folding-inner1 $folding-inner4 $switch$1$case$2 $switch$1$case$2 $folding-inner4 $folding-inner6 $switch$1$case$2 $folding-inner0 $folding-inner0 $folding-inner7 $switch$1$case$48 $switch$1$case$49 $folding-inner7 $switch$1$case$51 $switch$1$case$4 $folding-inner0 $switch$1$case$54 $switch$1$case$55 $switch$1$case$54 $switch$1$case$4 $folding-inner0 $switch$1$case$59 $switch$1$case$60 $block$61$break $switch$1$case$4 $folding-inner0 $folding-inner1 $folding-inner1 $folding-inner7 $switch$1$case$67 $switch$1$case$68 $switch$1$case$67 $switch$1$case$68 $switch$1$case$71 $switch$1$case$54 $folding-inner7 $folding-inner7 $folding-inner7 $switch$1$case$59 $folding-inner2 $switch$1$case$29 $switch$1$case$79 $block$26$break $block$26$break $block$11$break $block$61$break $block$11$break $block$61$break $switch$1$case$86 $folding-inner4 $switch$1$case$88 $folding-inner2 $switch$1$case$25 $switch$1$case$4 $switch$1$case$92 $switch$1$case$93 $block$11$break $block$61$break $block$11$break $block$11$break $switch$1$case$10 $block$61$break $block$61$break $folding-inner4 $switch$1$case$10 $block$61$break $block$26$break $switch$1$case$105 $switch$1$case$106 $folding-inner8 $folding-inner2 $folding-inner2 $switch$1$default
                                            end
                                            return
                                           end
                                           local.get $0
-                                          i32.load offset=44
-                                          local.tee $2
+                                          i32.load
+                                          local.tee $0
                                           if
-                                           local.get $2
+                                           local.get $0
                                            local.get $1
                                            call $~lib/rt/pure/__visit
                                           end
-                                          local.get $0
-                                          i32.load offset=48
-                                          local.tee $2
-                                          if
-                                           local.get $2
-                                           local.get $1
-                                           call $~lib/rt/pure/__visit
-                                          end
-                                          local.get $0
-                                          i32.load offset=52
-                                          local.tee $2
-                                          if
-                                           local.get $2
-                                           local.get $1
-                                           call $~lib/rt/pure/__visit
-                                          end
-                                          local.get $0
-                                          i32.load offset=56
-                                          local.tee $2
-                                          if
-                                           local.get $2
-                                           local.get $1
-                                           call $~lib/rt/pure/__visit
-                                          end
-                                          br $block$11$break
+                                          return
                                          end
                                          local.get $0
-                                         i32.load offset=24
+                                         i32.load offset=44
                                          local.tee $2
                                          if
                                           local.get $2
@@ -30761,7 +37604,7 @@
                                           call $~lib/rt/pure/__visit
                                          end
                                          local.get $0
-                                         i32.load offset=28
+                                         i32.load offset=48
                                          local.tee $2
                                          if
                                           local.get $2
@@ -30769,7 +37612,7 @@
                                           call $~lib/rt/pure/__visit
                                          end
                                          local.get $0
-                                         i32.load offset=60
+                                         i32.load offset=52
                                          local.tee $2
                                          if
                                           local.get $2
@@ -30777,83 +37620,112 @@
                                           call $~lib/rt/pure/__visit
                                          end
                                          local.get $0
-                                         i32.load offset=64
+                                         i32.load offset=56
                                          local.tee $2
                                          if
                                           local.get $2
                                           local.get $1
                                           call $~lib/rt/pure/__visit
                                          end
-                                         local.get $0
-                                         i32.load offset=68
-                                         local.tee $2
-                                         if
-                                          local.get $2
-                                          local.get $1
-                                          call $~lib/rt/pure/__visit
-                                         end
-                                         local.get $0
-                                         i32.load offset=72
-                                         local.tee $2
-                                         if
-                                          local.get $2
-                                          local.get $1
-                                          call $~lib/rt/pure/__visit
-                                         end
-                                         local.get $0
-                                         i32.load offset=76
-                                         local.tee $2
-                                         if
-                                          local.get $2
-                                          local.get $1
-                                          call $~lib/rt/pure/__visit
-                                         end
-                                         local.get $0
-                                         i32.load offset=80
-                                         local.tee $2
-                                         if
-                                          local.get $2
-                                          local.get $1
-                                          call $~lib/rt/pure/__visit
-                                         end
-                                         local.get $0
-                                         i32.load offset=104
-                                         local.tee $2
-                                         if
-                                          local.get $2
-                                          local.get $1
-                                          call $~lib/rt/pure/__visit
-                                         end
-                                         local.get $0
-                                         i32.load offset=128
-                                         local.tee $2
-                                         if
-                                          local.get $2
-                                          local.get $1
-                                          call $~lib/rt/pure/__visit
-                                         end
-                                         local.get $0
-                                         i32.load offset=184
-                                         local.tee $2
-                                         if
-                                          local.get $2
-                                          local.get $1
-                                          call $~lib/rt/pure/__visit
-                                         end
-                                         local.get $0
-                                         i32.load offset=192
-                                         local.tee $2
-                                         if
-                                          local.get $2
-                                          local.get $1
-                                          call $~lib/rt/pure/__visit
-                                         end
-                                         br $folding-inner6
+                                         br $block$11$break
                                         end
                                         local.get $0
-                                        local.get $1
-                                        call $~lib/map/Map<~lib/string/String,~lib/array/Array<%28assembly/events/event-emitter/EventArgument%29=>void>>#__visit_impl
-                                        return
+                                        i32.load offset=16
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=20
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=52
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=56
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=60
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=64
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=68
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=72
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=96
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=120
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=168
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        local.get $0
+                                        i32.load offset=176
+                                        local.tee $2
+                                        if
+                                         local.get $2
+                                         local.get $1
+                                         call $~lib/rt/pure/__visit
+                                        end
+                                        br $folding-inner7
                                        end
                                        local.get $0
                                        local.get $1
@@ -30861,126 +37733,17 @@
                                        return
                                       end
                                       local.get $0
-                                      i32.load offset=8
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=12
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=16
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=20
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=24
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=28
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=40
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=44
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=48
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=52
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=64
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=84
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=96
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=100
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      local.get $0
-                                      i32.load offset=104
-                                      local.tee $2
-                                      if
-                                       local.get $2
-                                       local.get $1
-                                       call $~lib/rt/pure/__visit
-                                      end
-                                      br $folding-inner6
+                                      local.get $1
+                                      call $~lib/map/Map<~lib/string/String,~lib/array/Array<%28assembly/events/event-emitter/EventArgument%29=>void>>#__visit_impl
+                                      return
+                                     end
+                                     local.get $0
+                                     i32.load offset=8
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
                                      end
                                      local.get $0
                                      i32.load offset=12
@@ -30998,18 +37761,106 @@
                                       local.get $1
                                       call $~lib/rt/pure/__visit
                                      end
-                                     br $folding-inner6
+                                     local.get $0
+                                     i32.load offset=20
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=24
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=28
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=40
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=44
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=48
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=52
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=64
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=84
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=96
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=100
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     local.get $0
+                                     i32.load offset=104
+                                     local.tee $2
+                                     if
+                                      local.get $2
+                                      local.get $1
+                                      call $~lib/rt/pure/__visit
+                                     end
+                                     br $folding-inner7
                                     end
                                     local.get $0
-                                    i32.load
-                                    local.tee $2
-                                    if
-                                     local.get $2
-                                     local.get $1
-                                     call $~lib/rt/pure/__visit
-                                    end
-                                    local.get $0
-                                    i32.load offset=4
+                                    i32.load offset=12
                                     local.tee $2
                                     if
                                      local.get $2
@@ -31024,26 +37875,10 @@
                                      local.get $1
                                      call $~lib/rt/pure/__visit
                                     end
-                                    local.get $0
-                                    i32.load offset=20
-                                    local.tee $2
-                                    if
-                                     local.get $2
-                                     local.get $1
-                                     call $~lib/rt/pure/__visit
-                                    end
-                                    local.get $0
-                                    i32.load offset=28
-                                    local.tee $2
-                                    if
-                                     local.get $2
-                                     local.get $1
-                                     call $~lib/rt/pure/__visit
-                                    end
-                                    br $folding-inner2
+                                    br $folding-inner7
                                    end
                                    local.get $0
-                                   i32.load offset=96
+                                   i32.load
                                    local.tee $2
                                    if
                                     local.get $2
@@ -31051,7 +37886,7 @@
                                     call $~lib/rt/pure/__visit
                                    end
                                    local.get $0
-                                   i32.load offset=100
+                                   i32.load offset=4
                                    local.tee $2
                                    if
                                     local.get $2
@@ -31059,7 +37894,7 @@
                                     call $~lib/rt/pure/__visit
                                    end
                                    local.get $0
-                                   i32.load offset=104
+                                   i32.load offset=16
                                    local.tee $2
                                    if
                                     local.get $2
@@ -31067,7 +37902,7 @@
                                     call $~lib/rt/pure/__visit
                                    end
                                    local.get $0
-                                   i32.load offset=108
+                                   i32.load offset=20
                                    local.tee $2
                                    if
                                     local.get $2
@@ -31075,22 +37910,22 @@
                                     call $~lib/rt/pure/__visit
                                    end
                                    local.get $0
-                                   i32.load offset=120
+                                   i32.load offset=28
                                    local.tee $2
                                    if
                                     local.get $2
                                     local.get $1
                                     call $~lib/rt/pure/__visit
                                    end
-                                   local.get $0
-                                   i32.load offset=124
-                                   local.tee $2
-                                   if
-                                    local.get $2
-                                    local.get $1
-                                    call $~lib/rt/pure/__visit
-                                   end
-                                   br $block$26$break
+                                   br $folding-inner3
+                                  end
+                                  local.get $0
+                                  i32.load offset=92
+                                  local.tee $2
+                                  if
+                                   local.get $2
+                                   local.get $1
+                                   call $~lib/rt/pure/__visit
                                   end
                                   local.get $0
                                   i32.load offset=96
@@ -31117,23 +37952,15 @@
                                    call $~lib/rt/pure/__visit
                                   end
                                   local.get $0
-                                  i32.load offset=108
-                                  local.tee $2
-                                  if
-                                   local.get $2
-                                   local.get $1
-                                   call $~lib/rt/pure/__visit
-                                  end
-                                  local.get $0
-                                  i32.load offset=112
-                                  local.tee $2
-                                  if
-                                   local.get $2
-                                   local.get $1
-                                   call $~lib/rt/pure/__visit
-                                  end
-                                  local.get $0
                                   i32.load offset=116
+                                  local.tee $2
+                                  if
+                                   local.get $2
+                                   local.get $1
+                                   call $~lib/rt/pure/__visit
+                                  end
+                                  local.get $0
+                                  i32.load offset=120
                                   local.tee $2
                                   if
                                    local.get $2
@@ -31143,48 +37970,64 @@
                                   br $block$26$break
                                  end
                                  local.get $0
-                                 i32.load
-                                 local.get $1
-                                 call $~lib/rt/pure/__visit
+                                 i32.load offset=92
+                                 local.tee $2
+                                 if
+                                  local.get $2
+                                  local.get $1
+                                  call $~lib/rt/pure/__visit
+                                 end
                                  local.get $0
-                                 i32.load offset=8
-                                 local.get $1
-                                 call $~lib/rt/pure/__visit
-                                 return
+                                 i32.load offset=96
+                                 local.tee $2
+                                 if
+                                  local.get $2
+                                  local.get $1
+                                  call $~lib/rt/pure/__visit
+                                 end
+                                 local.get $0
+                                 i32.load offset=100
+                                 local.tee $2
+                                 if
+                                  local.get $2
+                                  local.get $1
+                                  call $~lib/rt/pure/__visit
+                                 end
+                                 local.get $0
+                                 i32.load offset=104
+                                 local.tee $2
+                                 if
+                                  local.get $2
+                                  local.get $1
+                                  call $~lib/rt/pure/__visit
+                                 end
+                                 local.get $0
+                                 i32.load offset=108
+                                 local.tee $2
+                                 if
+                                  local.get $2
+                                  local.get $1
+                                  call $~lib/rt/pure/__visit
+                                 end
+                                 local.get $0
+                                 i32.load offset=112
+                                 local.tee $2
+                                 if
+                                  local.get $2
+                                  local.get $1
+                                  call $~lib/rt/pure/__visit
+                                 end
+                                 br $block$26$break
                                 end
                                 local.get $0
                                 i32.load
-                                local.tee $2
-                                if
-                                 local.get $2
-                                 local.get $1
-                                 call $~lib/rt/pure/__visit
-                                end
-                                local.get $0
-                                i32.load offset=4
-                                local.tee $2
-                                if
-                                 local.get $2
-                                 local.get $1
-                                 call $~lib/rt/pure/__visit
-                                end
+                                local.get $1
+                                call $~lib/rt/pure/__visit
                                 local.get $0
                                 i32.load offset=8
-                                local.tee $2
-                                if
-                                 local.get $2
-                                 local.get $1
-                                 call $~lib/rt/pure/__visit
-                                end
-                                local.get $0
-                                i32.load offset=12
-                                local.tee $2
-                                if
-                                 local.get $2
-                                 local.get $1
-                                 call $~lib/rt/pure/__visit
-                                end
-                                br $folding-inner8
+                                local.get $1
+                                call $~lib/rt/pure/__visit
+                                return
                                end
                                local.get $0
                                i32.load
@@ -31194,114 +38037,122 @@
                                 local.get $1
                                 call $~lib/rt/pure/__visit
                                end
-                               br $folding-inner5
+                               local.get $0
+                               i32.load offset=4
+                               local.tee $2
+                               if
+                                local.get $2
+                                local.get $1
+                                call $~lib/rt/pure/__visit
+                               end
+                               local.get $0
+                               i32.load offset=8
+                               local.tee $2
+                               if
+                                local.get $2
+                                local.get $1
+                                call $~lib/rt/pure/__visit
+                               end
+                               local.get $0
+                               i32.load offset=12
+                               local.tee $2
+                               if
+                                local.get $2
+                                local.get $1
+                                call $~lib/rt/pure/__visit
+                               end
+                               br $folding-inner9
                               end
                               local.get $0
                               i32.load
-                              local.get $1
                               local.tee $2
-                              call $~lib/rt/pure/__visit
-                              local.get $0
-                              i32.load offset=8
-                              local.tee $3
-                              local.tee $1
-                              local.get $0
-                              i32.load offset=16
-                              i32.const 4
-                              i32.shl
-                              i32.add
-                              local.set $0
-                              loop $while-continue|0
+                              if
+                               local.get $2
                                local.get $1
-                               local.get $0
-                               i32.lt_u
-                               if
-                                local.get $1
-                                i32.load offset=12
-                                i32.const 1
-                                i32.and
-                                i32.eqz
-                                if
-                                 local.get $1
-                                 i32.load offset=8
-                                 local.get $2
-                                 call $~lib/rt/pure/__visit
-                                end
-                                local.get $1
-                                i32.const 16
-                                i32.add
-                                local.set $1
-                                br $while-continue|0
-                               end
+                               call $~lib/rt/pure/__visit
                               end
-                              local.get $3
-                              local.get $2
-                              call $~lib/rt/pure/__visit
-                              return
+                              br $folding-inner6
                              end
+                             local.get $0
+                             i32.load
+                             local.get $1
+                             local.tee $2
+                             call $~lib/rt/pure/__visit
                              local.get $0
                              i32.load offset=8
-                             local.tee $2
-                             if
-                              local.get $2
-                              local.get $1
-                              call $~lib/rt/pure/__visit
-                             end
+                             local.tee $3
+                             local.tee $1
                              local.get $0
-                             i32.load offset=12
-                             local.tee $2
-                             if
-                              local.get $2
+                             i32.load offset=16
+                             i32.const 4
+                             i32.shl
+                             i32.add
+                             local.set $0
+                             loop $while-continue|0
                               local.get $1
-                              call $~lib/rt/pure/__visit
+                              local.get $0
+                              i32.lt_u
+                              if
+                               local.get $1
+                               i32.load offset=12
+                               i32.const 1
+                               i32.and
+                               i32.eqz
+                               if
+                                local.get $1
+                                i32.load offset=8
+                                local.get $2
+                                call $~lib/rt/pure/__visit
+                               end
+                               local.get $1
+                               i32.const 16
+                               i32.add
+                               local.set $1
+                               br $while-continue|0
+                              end
                              end
-                             br $folding-inner6
+                             local.get $3
+                             local.get $2
+                             call $~lib/rt/pure/__visit
+                             return
                             end
                             local.get $0
-                            i32.load offset=16
+                            i32.load offset=8
                             local.tee $2
                             if
                              local.get $2
                              local.get $1
                              call $~lib/rt/pure/__visit
                             end
-                            br $folding-inner3
+                            local.get $0
+                            i32.load offset=12
+                            local.tee $2
+                            if
+                             local.get $2
+                             local.get $1
+                             call $~lib/rt/pure/__visit
+                            end
+                            br $folding-inner7
                            end
                            local.get $0
-                           i32.load
+                           i32.load offset=16
                            local.tee $2
                            if
                             local.get $2
                             local.get $1
                             call $~lib/rt/pure/__visit
                            end
-                           br $folding-inner3
+                           br $folding-inner4
                           end
                           local.get $0
-                          i32.load offset=8
+                          i32.load
                           local.tee $2
                           if
                            local.get $2
                            local.get $1
                            call $~lib/rt/pure/__visit
                           end
-                          local.get $0
-                          i32.load offset=12
-                          local.tee $2
-                          if
-                           local.get $2
-                           local.get $1
-                           call $~lib/rt/pure/__visit
-                          end
-                          local.get $0
-                          i32.load offset=24
-                          local.tee $0
-                          if
-                           local.get $0
-                           local.get $1
-                           call $~lib/rt/pure/__visit
-                          end
-                          return
+                          br $folding-inner4
                          end
                          local.get $0
                          i32.load offset=8
@@ -31311,7 +38162,23 @@
                           local.get $1
                           call $~lib/rt/pure/__visit
                          end
-                         br $folding-inner6
+                         local.get $0
+                         i32.load offset=12
+                         local.tee $2
+                         if
+                          local.get $2
+                          local.get $1
+                          call $~lib/rt/pure/__visit
+                         end
+                         local.get $0
+                         i32.load offset=24
+                         local.tee $0
+                         if
+                          local.get $0
+                          local.get $1
+                          call $~lib/rt/pure/__visit
+                         end
+                         return
                         end
                         local.get $0
                         i32.load offset=8
@@ -31321,39 +38188,7 @@
                          local.get $1
                          call $~lib/rt/pure/__visit
                         end
-                        local.get $0
-                        i32.load offset=12
-                        local.tee $2
-                        if
-                         local.get $2
-                         local.get $1
-                         call $~lib/rt/pure/__visit
-                        end
-                        local.get $0
-                        i32.load offset=16
-                        local.tee $2
-                        if
-                         local.get $2
-                         local.get $1
-                         call $~lib/rt/pure/__visit
-                        end
-                        local.get $0
-                        i32.load offset=20
-                        local.tee $2
-                        if
-                         local.get $2
-                         local.get $1
-                         call $~lib/rt/pure/__visit
-                        end
-                        local.get $0
-                        i32.load offset=24
-                        local.tee $2
-                        if
-                         local.get $2
-                         local.get $1
-                         call $~lib/rt/pure/__visit
-                        end
-                        br $folding-inner6
+                        br $folding-inner7
                        end
                        local.get $0
                        i32.load offset=8
@@ -31387,13 +38222,49 @@
                         local.get $1
                         call $~lib/rt/pure/__visit
                        end
-                       br $folding-inner6
+                       local.get $0
+                       i32.load offset=24
+                       local.tee $2
+                       if
+                        local.get $2
+                        local.get $1
+                        call $~lib/rt/pure/__visit
+                       end
+                       br $folding-inner7
                       end
                       local.get $0
-                      i32.load offset=4
-                      local.get $1
-                      call $~lib/rt/pure/__visit
-                      return
+                      i32.load offset=8
+                      local.tee $2
+                      if
+                       local.get $2
+                       local.get $1
+                       call $~lib/rt/pure/__visit
+                      end
+                      local.get $0
+                      i32.load offset=12
+                      local.tee $2
+                      if
+                       local.get $2
+                       local.get $1
+                       call $~lib/rt/pure/__visit
+                      end
+                      local.get $0
+                      i32.load offset=16
+                      local.tee $2
+                      if
+                       local.get $2
+                       local.get $1
+                       call $~lib/rt/pure/__visit
+                      end
+                      local.get $0
+                      i32.load offset=20
+                      local.tee $2
+                      if
+                       local.get $2
+                       local.get $1
+                       call $~lib/rt/pure/__visit
+                      end
+                      br $folding-inner7
                      end
                      local.get $0
                      i32.load
@@ -31411,7 +38282,7 @@
                       local.get $1
                       call $~lib/rt/pure/__visit
                      end
-                     br $folding-inner8
+                     br $folding-inner9
                     end
                     local.get $0
                     i32.load offset=20
@@ -31429,7 +38300,15 @@
                      local.get $1
                      call $~lib/rt/pure/__visit
                     end
-                    br $folding-inner5
+                    br $folding-inner6
+                   end
+                   local.get $0
+                   i32.load offset=92
+                   local.tee $2
+                   if
+                    local.get $2
+                    local.get $1
+                    call $~lib/rt/pure/__visit
                    end
                    local.get $0
                    i32.load offset=96
@@ -31455,41 +38334,61 @@
                     local.get $1
                     call $~lib/rt/pure/__visit
                    end
-                   local.get $0
-                   i32.load offset=108
-                   local.tee $2
-                   if
-                    local.get $2
-                    local.get $1
-                    call $~lib/rt/pure/__visit
-                   end
                    br $block$26$break
                   end
                   local.get $0
-                  i32.load offset=4
-                  local.get $1
-                  call $~lib/rt/pure/__visit
-                  return
+                  i32.load offset=44
+                  local.tee $2
+                  if
+                   local.get $2
+                   local.get $1
+                   call $~lib/rt/pure/__visit
+                  end
+                  br $block$11$break
                  end
                  local.get $0
-                 i32.load offset=44
+                 i32.load offset=24
                  local.tee $2
                  if
                   local.get $2
                   local.get $1
                   call $~lib/rt/pure/__visit
                  end
-                 br $block$11$break
+                 br $block$61$break
                 end
                 local.get $0
-                i32.load offset=24
+                i32.load offset=16
                 local.tee $2
                 if
                  local.get $2
                  local.get $1
                  call $~lib/rt/pure/__visit
                 end
-                br $block$63$break
+                local.get $0
+                i32.load offset=20
+                local.tee $2
+                if
+                 local.get $2
+                 local.get $1
+                 call $~lib/rt/pure/__visit
+                end
+                br $folding-inner8
+               end
+               local.get $0
+               i32.load offset=8
+               local.tee $2
+               if
+                local.get $2
+                local.get $1
+                call $~lib/rt/pure/__visit
+               end
+               local.get $0
+               i32.load offset=12
+               local.tee $2
+               if
+                local.get $2
+                local.get $1
+                call $~lib/rt/pure/__visit
                end
                local.get $0
                i32.load offset=16
@@ -31501,132 +38400,104 @@
                end
                local.get $0
                i32.load offset=20
-               local.tee $2
+               local.tee $0
                if
-                local.get $2
+                local.get $0
                 local.get $1
                 call $~lib/rt/pure/__visit
                end
-               br $folding-inner7
+               return
               end
-              local.get $0
-              i32.load offset=8
-              local.tee $2
-              if
-               local.get $2
-               local.get $1
-               call $~lib/rt/pure/__visit
-              end
-              local.get $0
-              i32.load offset=12
-              local.tee $2
-              if
-               local.get $2
-               local.get $1
-               call $~lib/rt/pure/__visit
-              end
-              local.get $0
-              i32.load offset=16
-              local.tee $2
-              if
-               local.get $2
-               local.get $1
-               call $~lib/rt/pure/__visit
-              end
-              local.get $0
-              i32.load offset=20
-              local.tee $0
-              if
-               local.get $0
-               local.get $1
-               call $~lib/rt/pure/__visit
-              end
-              return
+              unreachable
              end
-             unreachable
+             local.get $0
+             i32.load
+             local.tee $2
+             if
+              local.get $2
+              local.get $1
+              call $~lib/rt/pure/__visit
+             end
+             local.get $0
+             i32.load offset=4
+             local.tee $2
+             if
+              local.get $2
+              local.get $1
+              call $~lib/rt/pure/__visit
+             end
+             br $folding-inner3
             end
             local.get $0
+            i32.load offset=12
+            local.tee $2
+            if
+             local.get $2
+             local.get $1
+             call $~lib/rt/pure/__visit
+            end
+            local.get $0
+            i32.load offset=16
+            local.tee $2
+            if
+             local.get $2
+             local.get $1
+             call $~lib/rt/pure/__visit
+            end
+            local.get $0
+            i32.load offset=28
+            local.tee $0
+            if
+             local.get $0
+             local.get $1
+             call $~lib/rt/pure/__visit
+            end
+            return
+           end
+           local.get $0
+           i32.load
+           local.tee $2
+           if
+            local.get $2
+            local.get $1
+            call $~lib/rt/pure/__visit
+           end
+           br $folding-inner9
+          end
+          local.get $0
+          i32.load offset=4
+          local.tee $2
+          local.get $0
+          i32.load offset=12
+          i32.const 2
+          i32.shl
+          i32.add
+          local.set $3
+          loop $while-continue|00
+           local.get $2
+           local.get $3
+           i32.lt_u
+           if
+            local.get $2
             i32.load
-            local.tee $2
+            local.tee $4
             if
-             local.get $2
+             local.get $4
              local.get $1
              call $~lib/rt/pure/__visit
             end
-            local.get $0
-            i32.load offset=4
-            local.tee $2
-            if
-             local.get $2
-             local.get $1
-             call $~lib/rt/pure/__visit
-            end
-            br $folding-inner2
-           end
-           local.get $0
-           i32.load offset=12
-           local.tee $2
-           if
             local.get $2
-            local.get $1
-            call $~lib/rt/pure/__visit
+            i32.const 4
+            i32.add
+            local.set $2
+            br $while-continue|00
            end
-           local.get $0
-           i32.load offset=16
-           local.tee $2
-           if
-            local.get $2
-            local.get $1
-            call $~lib/rt/pure/__visit
-           end
-           local.get $0
-           i32.load offset=28
-           local.tee $0
-           if
-            local.get $0
-            local.get $1
-            call $~lib/rt/pure/__visit
-           end
-           return
           end
           local.get $0
           i32.load
-          local.tee $2
-          if
-           local.get $2
-           local.get $1
-           call $~lib/rt/pure/__visit
-          end
-          br $folding-inner8
-         end
-         local.get $0
-         i32.load offset=4
-         local.tee $2
-         local.get $0
-         i32.load offset=12
-         i32.const 2
-         i32.shl
-         i32.add
-         local.set $3
-         loop $while-continue|01
-          local.get $2
-          local.get $3
-          i32.lt_u
-          if
-           local.get $2
-           i32.load
-           local.tee $4
-           if
-            local.get $4
-            local.get $1
-            call $~lib/rt/pure/__visit
-           end
-           local.get $2
-           i32.const 4
-           i32.add
-           local.set $2
-           br $while-continue|01
-          end
+          local.get $1
+          call $~lib/rt/pure/__visit
+          return
          end
          local.get $0
          i32.load
@@ -31635,7 +38506,7 @@
          return
         end
         local.get $0
-        i32.load
+        i32.load offset=4
         local.get $1
         call $~lib/rt/pure/__visit
         return
@@ -31676,7 +38547,7 @@
       local.get $1
       call $~lib/rt/pure/__visit
      end
-     br $folding-inner7
+     br $folding-inner8
     end
     local.get $0
     i32.load

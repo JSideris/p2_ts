@@ -100,7 +100,7 @@ export default class Equation{
 	invC: f32 = 0;
 	B: f32 = 0;
 	lambda: f32 = 0;
-	index: i64 = -1;
+	index: i32 = -1;
 
 	/**
 	 * Base class for constraint equations.
