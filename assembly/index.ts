@@ -49,7 +49,7 @@ import DistanceEquation from "./equations/distance-equation";
 export {
     AABB,
     AngleLockEquation,
-//     Body,
+    Body,
     Broadphase,
     Capsule,
     Circle,

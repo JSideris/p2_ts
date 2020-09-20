@@ -23,6 +23,18 @@ const integrate_fhMinv: Float32Array = vec2.create();
 const integrate_velodt: Float32Array = vec2.create();
 const _tmp: Float32Array = vec2.create();
 
+const Body_applyForce_forceWorld = vec2.create();
+const Body_applyForce_pointWorld = vec2.create();
+const Body_applyForce_pointLocal = vec2.create();
+
+const Body_applyImpulse_impulseWorld = vec2.create();
+const Body_applyImpulse_pointWorld = vec2.create();
+const Body_applyImpulse_pointLocal = vec2.create();
+
+const adjustCenterOfMass_tmp2 = vec2.create();
+const adjustCenterOfMass_tmp3 = vec2.create();
+const adjustCenterOfMass_tmp4 = vec2.create();
+
 var _idCounter:u32 = 0;
 
 export class BodyOptions{
@@ -45,7 +57,7 @@ export class BodyOptions{
 	gravityScale: f32 = 1;
 	collisionResponse: boolean = true;
 	ccdSpeedThreshold: f32 = -1;
-	ccdIterations: f32 = 10;
+	ccdIterations: i32 = 10;
 }
 
 export class BodyFromPolygonOptions{
@@ -441,7 +453,7 @@ export default class Body extends EventEmitter{
 	 */
 	public islandId: i32 = -1;
 
-	public concavePath: Float32Array[]|null = null;
+	public concavePath: Float32Array[] = [];
 
 	// Should be private, but used by world.
 	_wakeUpAfterNarrowphase: boolean = false;
@@ -570,7 +582,7 @@ export default class Body extends EventEmitter{
 	 * @method updateSolveMassProperties
 	 */
 	updateSolveMassProperties(): void{
-		if(this.sleepState === Body.SLEEPING || this.type === Body.KINEMATIC){
+		if(this.sleepState == Body.SLEEPING || this.type == Body.KINEMATIC){
 			this.invMassSolve = 0;
 			this.invInertiaSolve = 0;
 		} else {
@@ -597,7 +609,7 @@ export default class Body extends EventEmitter{
 	 */
 	getArea(): f32 {
 		let totalArea: f32 = 0;
-		for(let i: u16=0; i<(this.shapes.length as u16); i++){
+		for(let i: i32=0; i < this.shapes.length; i++){
 			totalArea += this.shapes[i].area;
 		}
 		return totalArea;
@@ -652,10 +664,10 @@ export default class Body extends EventEmitter{
 	 */
 	updateBoundingRadius(): void{
 		let shapes:Shape[] = this.shapes,
-			N:u16 = shapes.length as u16,
+			N:i32 = shapes.length,
 			radius:f32 = 0;
 
-		for(let i:u16=0; i!==N; i++){
+		for(let i:i32=0; i < N; i++){
 			let shape:Shape = shapes[i],
 				offset:f32 = vec2.length(shape.position),
 				r:f32 = shape.boundingRadius;
@@ -692,11 +704,11 @@ export default class Body extends EventEmitter{
 	 */
 	addShape(shape: Shape, offset: Float32Array, angle: f32 = 0): void{
 		if(shape.body){
-			throw new Error('A shape can only be added to one body.');
+			throw new Error("A shape can only be added to one body.");
 		}
 		let world = this.world;
 		if(world && world.stepping){
-			throw new Error('A shape cannot be added during step.');
+			throw new Error("A shape cannot be added during step.");
 		}
 		shape.body = this;
 
@@ -725,7 +737,7 @@ export default class Body extends EventEmitter{
 	removeShape(shape: Shape): boolean{
 		let world = this.world;
 		if(world && world.stepping){
-			throw new Error('A shape cannot be removed during step.');
+			throw new Error("A shape cannot be removed during step.");
 		}
 
 		let idx = this.shapes.indexOf(shape);
@@ -831,17 +843,14 @@ export default class Body extends EventEmitter{
 	 *     console.log(body.force); // [0, 1]
 	 *     console.log(body.angularForce); // 1
 	 */
-	applyForceLocal(localForce: Float32Array, localPoint: Float32Array): void{
+	applyForceLocal(localForce: Float32Array, localPoint: Float32Array|null): void{
 		// These 3 lines were originally outside of this function. Not sure why.
-		let Body_applyForce_forceWorld = vec2.create();
-		let Body_applyForce_pointWorld = vec2.create();
-		let Body_applyForce_pointLocal = vec2.create();
 
 		localPoint = localPoint || Body_applyForce_pointLocal;
 		let worldForce = Body_applyForce_forceWorld;
 		let worldPoint = Body_applyForce_pointWorld;
 		this.vectorToWorldFrame(worldForce, localForce);
-		this.vectorToWorldFrame(worldPoint, localPoint);
+		this.vectorToWorldFrame(worldPoint, localPoint!);
 		this.applyForce(worldForce, worldPoint);
 	}
 
@@ -859,7 +868,7 @@ export default class Body extends EventEmitter{
 	applyImpulse(impulseVector: Float32Array, relativePoint: Float32Array): void{
 		let Body_applyImpulse_velo = vec2.create(); // Was originally outside of this function. 
 
-		if(this.type !== Body.DYNAMIC){
+		if(this.type != Body.DYNAMIC){
 			return;
 		}
 
@@ -894,17 +903,14 @@ export default class Body extends EventEmitter{
 	 *     console.log(body.velocity); // [1, 0]
 	 *     console.log(body.angularVelocity); // 1
 	 */
-	applyImpulseLocal(localImpulse: Float32Array, localPoint: Float32Array): void {
+	applyImpulseLocal(localImpulse: Float32Array, localPoint: Float32Array|null): void {
 		// Originally outside of this function.
-		let Body_applyImpulse_impulseWorld = vec2.create();
-		let Body_applyImpulse_pointWorld = vec2.create();
-		let Body_applyImpulse_pointLocal = vec2.create();
 
 		localPoint = localPoint || Body_applyImpulse_pointLocal;
 		let worldImpulse = Body_applyImpulse_impulseWorld;
 		let worldPoint = Body_applyImpulse_pointWorld;
 		this.vectorToWorldFrame(worldImpulse, localImpulse);
-		this.vectorToWorldFrame(worldPoint, localPoint);
+		this.vectorToWorldFrame(worldPoint, localPoint!);
 		this.applyImpulse(worldImpulse, worldPoint);
 	}
 
@@ -988,7 +994,6 @@ export default class Body extends EventEmitter{
 			if(options.removeCollinearPoints != 0){
 				removeCollinearPoints(p, options.removeCollinearPoints);
 			}
-
 		}
 
 		// Check if any line segment intersects the path itself
@@ -1000,16 +1005,28 @@ export default class Body extends EventEmitter{
 
 		// Save this path for later
 		this.concavePath = [];
-		for(let i:u16=0; i<(p.length as u16); i++){
-			this.concavePath[i] = vec2.clone(p[i]);
+		for(let i: i32 = 0; i < p.length; i++){
+			let p2 = new Float32Array(2);
+			p2[0] = p[i][0];
+			p2[1] = p[i][1];
+			this.concavePath.push(p2);
 		}
 
 		// Slow or fast decomp?
-		let convexes: Array<Array<Float32Array>>;
+		let convexes: Float32Array[][] = [];
 		if(options && options.optimalDecomp){
 			convexes = decomp(p);
 		} else {
-			convexes = quickDecomp(p);
+			// Defaults:
+			// polygon: Array<Float32Array>, 
+			// result: Array<Array<Float32Array>> = new Array<Array<Float32Array>>(), 
+			// reflexVertices: Array<Float32Array> = [], 
+			// steinerPoints: Array<Float32Array> = [], 
+			// delta: f32 = 25, 
+			// maxlevel: f32 = 100, 
+			// level: u16 = 0
+
+			convexes = quickDecomp(p, convexes, [], [], 25, 100, 0);
 		}
 
 		let cm = vec2.create();
@@ -1053,17 +1070,13 @@ export default class Body extends EventEmitter{
 	 */
 	adjustCenterOfMass(): void {
 
-		let adjustCenterOfMass_tmp2 = vec2.create(),
-			adjustCenterOfMass_tmp3 = vec2.create(),
-			adjustCenterOfMass_tmp4 = vec2.create();
-
 		let offset_times_area = adjustCenterOfMass_tmp2,
 			sum =               adjustCenterOfMass_tmp3,
 			cm =                adjustCenterOfMass_tmp4,
-			totalArea =         0;
+			totalArea: f32 =         0;
 		vec2.set(sum,0,0);
 
-		for(let i: u16 = 0; i < (this.shapes.length as u16); i++){
+		for(let i: i32 = 0; i < this.shapes.length; i++){
 			let s = this.shapes[i];
 			vec2.scale(offset_times_area, s.position, s.area);
 			vec2.add(sum, sum, offset_times_area);
@@ -1073,7 +1086,7 @@ export default class Body extends EventEmitter{
 		vec2.scale(cm,sum,1/totalArea);
 
 		// Now move all shapes
-		for(let i: u16 = 0; i < (this.shapes.length as u16); i++){
+		for(let i: i32 = 0; i < this.shapes.length; i++){
 			let s = this.shapes[i];
 			vec2.subtract(s.position, s.position, cm);
 		}
@@ -1082,10 +1095,8 @@ export default class Body extends EventEmitter{
 		vec2.add(this.position,this.position,cm);
 
 		// And concave path
-		if(this.concavePath){
-			for(let i: u16 = 0; i<(this.concavePath.length as u16); i++){
-				vec2.subtract(this.concavePath[i], this.concavePath[i], cm);
-			}
+		for(let i: i32 = 0; i < this.concavePath.length; i++){
+			vec2.subtract(this.concavePath[i], this.concavePath[i], cm);
 		}
 
 		this.updateMassProperties();
@@ -1121,7 +1132,7 @@ export default class Body extends EventEmitter{
 	 * @param  {number} dt Current time step
 	 */
 	applyDamping(dt: f32): void {
-		if(this.type === Body.DYNAMIC){ // Only for dynamic bodies
+		if(this.type == Body.DYNAMIC){ // Only for dynamic bodies
 			let v = this.velocity;
 			vec2.scale(v, v, Mathf.pow(1 - this.damping,dt));
 			this.angularVelocity *= Mathf.pow(1 - this.angularDamping,dt);
@@ -1162,7 +1173,7 @@ export default class Body extends EventEmitter{
 	 * @param {number} dt
 	 */
 	sleepTick(time: f32, dontSleep: boolean, dt: f32): void {
-		if(!this.allowSleep || this.type === Body.SLEEPING){
+		if(!this.allowSleep || this.type == Body.SLEEPING){
 			return;
 		}
 
@@ -1200,7 +1211,7 @@ export default class Body extends EventEmitter{
 	 */
 	overlaps(body: Body): boolean{
 		if(!this.world) return false;
-		return this.world.overlapKeeper.bodiesAreOverlapping(this, body);
+		return this.world!.overlapKeeper.bodiesAreOverlapping(this, body);
 	}
 
 	/**

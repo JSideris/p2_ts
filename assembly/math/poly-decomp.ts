@@ -148,8 +148,8 @@ function polygonClear(polygon: Array<Float32Array>): void{
  * @param {Number}  to The end vertex index in "poly". Note that this vertex is NOT included when appending.
  * @return {Array}
  */
-function polygonAppend(polygon: Float32Array[], poly: Float32Array[], from: u16, to: u16): void{
-    for(let i: u16 = from; i < to; i++){
+function polygonAppend(polygon: Float32Array[], poly: Float32Array[], from: i32, to: i32): void{
+    for(let i: i32 = from; i < to; i++){
         polygon.push(poly[i]);
     }
 }
@@ -159,11 +159,11 @@ function polygonAppend(polygon: Float32Array[], poly: Float32Array[], from: u16,
  * @method makeCCW
  */
 export function polygonMakeCCW(polygon: Float32Array[]): boolean{
-    let br: u16 = 0,
+    let br: i32 = 0,
         v: Float32Array[] = polygon;
 
     // find bottom right point
-    for (let i: u16 = 1; i < (polygon.length as u16); ++i) {
+    for (let i: i32 = 1; i < polygon.length; i++) {
         if (v[i][1] < v[br][1] || (v[i][1] === v[br][1] && v[i][0] > v[br][0])) {
             br = i;
         }
@@ -175,7 +175,7 @@ export function polygonMakeCCW(polygon: Float32Array[]): boolean{
         return true;
     } else {
         return false;
-    }
+	}
 }
 
 /**
@@ -272,24 +272,25 @@ function polygonCanSee2(polygon: Float32Array[], a: u32,b:u32):boolean {
  * @param  {Polygon} [targetPoly]   Optional target polygon to save in.
  * @return {Polygon}                The resulting copy.
  */
-function polygonCopy(polygon: Array<Float32Array>, i: u16, j: u16, targetPoly: Float32Array[]|null): Array<Float32Array>{
-    let p: Array<Float32Array> = targetPoly || [];
+function polygonCopy(polygon: Array<Float32Array>, i: i32, j: i32, targetPoly: Float32Array[]|null): Array<Float32Array>{
+	let p: Float32Array[] = [];
+	if(targetPoly) p = targetPoly;
     polygonClear(p);
     if (i < j) {
         // Insert all vertices from i to j
-        for(let k: u16 = i; k <= j; k++){
+        for(let k: i32 = i; k <= j; k++){
             p.push(polygon[k]);
         }
 
     } else {
 
         // Insert vertices 0 to j
-        for(let k: u16 = 0; k <= j; k++){
+        for(let k: i32 = 0; k <= j; k++){
             p.push(polygon[k]);
         }
 
         // Insert vertices i to end
-        for(let k: u16 = i; k < (polygon.length as u16); k++){
+        for(let k: i32 = i; k < polygon.length; k++){
             p.push(polygon[k]);
         }
     }
@@ -337,7 +338,7 @@ function polygonGetCutEdges(polygon: Array<Float32Array>): Array<Array<Float32Ar
  * @method decomp
  * @return {Array} An array or Polygon objects.
  */
-export function polygonDecomp(polygon: Array<Float32Array>): Array<Array<Float32Array>>{
+export function polygonDecomp(polygon: Float32Array[]): Float32Array[][]{
     let edges = polygonGetCutEdges(polygon);
     if(edges.length > 0){
         return polygonSlice(polygon, edges);
@@ -353,7 +354,7 @@ export function polygonDecomp(polygon: Array<Float32Array>): Array<Array<Float32
  * @param {Array} cutEdges A list of edges, as returned by .getCutEdges()
  * @return {Array}
  */
-function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float32Array>>): Array<Array<Float32Array>>{
+function polygonSlice(polygon: Float32Array[], cutEdges: Float32Array[][]): Float32Array[][]{
     if(cutEdges.length === 0){
 		return [polygon];
     }
@@ -361,10 +362,10 @@ function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float3
 
         let polys = [polygon];
 
-        for(let i: u16 = 0; i < (cutEdges.length as u16); i++){
+        for(let i: i32 = 0; i < cutEdges.length; i++){
             let cutEdge = [cutEdges[i]];
             // Cut all polys
-            for(let j: u16 = 0; j < (polys.length as u16); j++){
+            for(let j: i32 = 0; j < polys.length; j++){
                 let poly = polys[j];
                 let result = polygonSlice(poly, cutEdge);
                 if(result){
@@ -385,12 +386,13 @@ function polygonSlice(polygon: Array<Float32Array>, cutEdges: Array<Array<Float3
         let i: i32 = polygon.indexOf(cutEdge[0][0]);
         let j: i32 = polygon.indexOf(cutEdge[0][1]);
 
+		let result: Float32Array[][] = [];
         if(i !== -1 && j !== -1){
-            return [polygonCopy(polygon, i,j,null),
-                    polygonCopy(polygon, j,i,null)];
-        } else {
-            return new Array<Array<Float32Array>>();
-        }
+			result.push(polygonCopy(polygon, i,j,null));
+			result.push(polygonCopy(polygon, j,i,null));
+		} 
+
+		return result;
     }
 }
 
@@ -457,23 +459,24 @@ function getIntersectionPoint(p1: Float32Array, p2: Float32Array, q1: Float32Arr
  */
 export function polygonQuickDecomp(
 	polygon: Array<Float32Array>, 
-	result: Array<Array<Float32Array>> = new Array<Array<Float32Array>>(), 
-	reflexVertices: Array<Float32Array> = [], 
-	steinerPoints: Array<Float32Array> = [], 
-	delta: f32 = 25, 
-	maxlevel: f32 = 100, 
-	level: u16 = 0
-): Array<Array<Float32Array>>{
-	// TODO: should upperInt really be initialized here? It looks like it's overwritten.
-	let upperInt=new Float32Array(2), lowerInt=new Float32Array(2), p=new Float32Array(2); // Points
+	result: Float32Array[][],
+	reflexVertices: Array<Float32Array>,
+	steinerPoints: Array<Float32Array>, 
+	delta: f32, 
+	maxlevel: u16,
+	level: u16
+): Float32Array[][]{
+	let upperInt: Float32Array = new Float32Array(2), 
+		lowerInt: Float32Array = new Float32Array(2), 
+		p: Float32Array = new Float32Array(2); // Points
 	upperInt[0] = 0;
 	upperInt[1] = 0;
 	lowerInt[0] = 0;
 	lowerInt[1] = 0;
 	p[0] = 0;
 	p[1] = 0;
-    let upperDist: f32=0, lowerDist: f32=0, d=0, closestDist: f32=0; // scalars
-    let upperIndex: u16 = 0, lowerIndex: u16 = 0, closestIndex: u16=0; // Integers
+    let upperDist: f32 = 0, lowerDist: f32 = 0, d: f32 = 0, closestDist: f32 = 0; // scalars
+    let upperIndex: i32 = 0, lowerIndex: i32 = 0, closestIndex: i32 = 0; // Integers
     let lowerPoly=new Array<Float32Array>(), upperPoly=new Array<Float32Array>(); // polygons
     let poly = polygon,
         v = polygon;
@@ -488,13 +491,13 @@ export function polygonQuickDecomp(
         return result;
     }
 
-    for (let i: u16 = 0; i < (polygon.length as u16); ++i) {
+    for (let i: i32 = 0; i < polygon.length; i++) {
         if (polygonIsReflex(poly, i)) {
             reflexVertices.push(poly[i]);
             upperDist = lowerDist = Infinity;
 
 
-            for (let j: u16 = 0; j < (polygon.length as u16); ++j) {
+            for (let j: i32 = 0; j < polygon.length; j++) {
                 if (isLeft(polygonAt(poly, i - 1), polygonAt(poly, i), polygonAt(poly, j)) && isRightOn(polygonAt(poly, i - 1), polygonAt(poly, i), polygonAt(poly, j - 1))) { // if line intersects with an edge
                     p = getIntersectionPoint(polygonAt(poly, i - 1), polygonAt(poly, i), polygonAt(poly, j), polygonAt(poly, j - 1)); // find the point of intersection
                     if (isRight(polygonAt(poly, i + 1), polygonAt(poly, i), p)) { // make sure it's inside the poly
@@ -528,7 +531,7 @@ export function polygonQuickDecomp(
 
                 if (i < upperIndex) {
                     //lowerPoly.insert(lowerPoly.end(), poly.begin() + i, poly.begin() + upperIndex + 1);
-                    polygonAppend(lowerPoly, poly, i, upperIndex+1);
+                    polygonAppend(lowerPoly, poly, i, upperIndex + 1);
                     lowerPoly.push(p);
                     upperPoly.push(p);
                     if (lowerIndex !== 0){
@@ -549,7 +552,8 @@ export function polygonQuickDecomp(
                     //upperPoly.insert(upperPoly.end(), poly.begin() + lowerIndex, poly.begin() + i + 1);
                     polygonAppend(upperPoly, poly,lowerIndex,i+1);
                 }
-            } else {
+			} 
+			else {
                 // connect to the closest point within the triangle
                 //console.log("Case 2: Vertex("+i+"), closestIndex("+closestIndex+"), poly.size("+polygon.length+")\n");
 
@@ -562,7 +566,7 @@ export function polygonQuickDecomp(
                     return result;
                 }
 
-                for (let j: u16 = lowerIndex; j <= upperIndex; ++j) {
+                for (let j: i32 = lowerIndex; j <= upperIndex; ++j) {
                     if (
                         isLeftOn(polygonAt(poly, i - 1), polygonAt(poly, i), polygonAt(poly, j)) &&
                         isRightOn(polygonAt(poly, i + 1), polygonAt(poly, i), polygonAt(poly, j))
