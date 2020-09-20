@@ -2,12 +2,12 @@
 
 import vec2 from "../math/vec2";
 
-import Circle from "../shapes/Circle";
-import { CircleOptions } from "../shapes/Circle";
-import Convex from "../shapes/Convex";
-import Shape from "../shapes/Shape";
-import Box from "../shapes/Box";
-import { BoxOptions } from "../shapes/Box";
+import Circle from "../shapes/circle";
+import { CircleOptions } from "../shapes/circle";
+import Convex from "../shapes/convex";
+import Shape from "../shapes/shape";
+import Box from "../shapes/box";
+import { BoxOptions } from "../shapes/box";
 import ContactMaterial from "../material/contact-material";
 import Body from "../objects/body";
 import Equation from "../equations/equation";
@@ -142,11 +142,11 @@ function pointInConvex(worldPoint: Float32Array, convexShape: Convex, convexOffs
 * Check if a point is in a polygon
 */
 function pointInConvexLocal(localPoint: Float32Array, convexShape: Convex): boolean{
-	let r0 = pic_r0,
-		r1 = pic_r1,
-		verts = convexShape.vertices,
-		lastCross = null,
-		numVerts = verts.length;
+	let r0: Float32Array = pic_r0,
+		r1: Float32Array = pic_r1,
+		verts: Float32Array[] = convexShape.vertices,
+		lastCross: f32 = -1,
+		numVerts: i32 = verts.length;
 
 	for(let i: i32 = 0; i < numVerts + 1; i++){
 		let v0 = verts[i % numVerts],
@@ -157,12 +157,12 @@ function pointInConvexLocal(localPoint: Float32Array, convexShape: Convex): bool
 
 		let cross = vec2.crossLength(r0,r1);
 
-		if(lastCross === null){
+		if(lastCross == -1){
 			lastCross = cross;
 		}
 
 		// If we got a different sign of the distance vector, the point is out of the polygon
-		if(cross*lastCross < 0){
+		if(cross * lastCross < 0){
 			return false;
 		}
 		lastCross = cross;
@@ -204,7 +204,7 @@ function findMaxSeparation(maxSeparationOut: Float32Array, poly1: Convex, positi
 		vec2.toLocalFrame(v1, tmp2, position2, angle2);
 
 		// Find deepest point for normal i.
-		let si = Infinity;
+		let si: f32 = Infinity;
 		for (let j = 0; j < count2; ++j)
 		{
 			vec2.subtract(tmp, v2s[j], v1);
@@ -528,7 +528,7 @@ export default class Narrowphase{
 	};
 
 	// Take the average N latest contact point on the plane.
-	createFrictionFromAverage(numContacts: i16): FrictionEquation{
+	createFrictionFromAverage(numContacts: i32): FrictionEquation{
 		let c = this.contactEquations[this.contactEquations.length - 1];
 		let eq = this.createFrictionEquation(c.bodyA!, c.bodyB!, c.shapeA!, c.shapeB!);
 		let bodyA = c.bodyA;
@@ -549,7 +549,7 @@ export default class Narrowphase{
 			eq.contactEquations.push(c);
 		}
 
-		let invNumContacts = 1/numContacts;
+		let invNumContacts: f32 = 1.0/(numContacts as f32);
 		vec2.scale(eq.contactPointA, eq.contactPointA, invNumContacts);
 		vec2.scale(eq.contactPointB, eq.contactPointB, invNumContacts);
 		vec2.normalize(eq.t, eq.t);
@@ -570,7 +570,7 @@ export default class Narrowphase{
 		// 	radiusB?: f32
 		// }
 	): u16{
-		let result = 0;
+		let result: u16 = 0;
 
 		if(shapeA.type > shapeB.type)
 		{
@@ -587,116 +587,181 @@ export default class Narrowphase{
 			offsetA = pTmp;
 		}
 
-		let sa = shapeA;
-		let sb = shapeB;
+		let sa: Shape = shapeA;
+		let sb: Shape = shapeB;
 
 		switch(shapeA.type | shapeB.type){
 			case 0b1:{ // Circle/circle
-				if(sa instanceof Circle && sb instanceof Circle)
-					result = this.circleCircle(bodyA, sa, offsetA, 
-						bodyB, sb, offsetB, 
-						justTest, sa.radius, sb.radius);
+				if(sa instanceof Circle){
+					let sa2 = sa as Circle;
+					if(sb instanceof Circle){
+						let sb2 = sb as Circle;
+						result = this.circleCircle(bodyA, sa2, offsetA, 
+							bodyB, sb2, offsetB, 
+							justTest, sa2.radius, sb2.radius);
+					}
+				}
 				break;
 			}
 			case 0b11:{ // Particle/circle.
-				if(sa instanceof Circle && sb instanceof Particle)
-					result = this.circleParticle(bodyA, sa, offsetA, 
-						bodyB, sb, offsetB, 
-						justTest);
+				if(sa instanceof Circle){
+					let sa2 = sa as Circle;
+					if(sb instanceof Particle){
+						let sb2 = sb as Particle;
+						result = this.circleParticle(bodyA, sa2, offsetA, 
+							bodyB, sb2, offsetB, 
+							justTest);
+					}
+				}
 				break;
 			}
 			case 0b101:{ // Plane/circle.
-				if(sa instanceof Circle && sb instanceof Plane)
-					result = this.circlePlane(bodyA, sa, offsetA, 
-						bodyB, sb, offsetB, bodyB.angle + sb.angle,
-						justTest);
+				if(sa instanceof Circle){
+					let sa2 = sa as Circle;
+					if(sb instanceof Plane){
+						let sb2 = sb as Plane;
+						result = this.circlePlane(bodyA, sa2, offsetA, 
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle,
+							justTest);
+					}
+				}
 				break;
 			}
 			case 0b100001: // Box/circle.
 			case 0b1001:{ // Convex/circle.
-				if(sa instanceof Circle && sb instanceof Convex)
-					result = this.circleConvex(bodyA, sa, offsetA, 
-						bodyB, sb, offsetB, bodyB.angle + sb.angle,
-						justTest, sa.radius);
+				if(sa instanceof Circle){
+					let sa2 = sa as Circle;
+					if(sb instanceof Convex){
+						let sb2 = sb as Convex;
+						result = this.circleConvex(bodyA, sa2, offsetA, 
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle,
+							justTest, sa2.radius);
+					}
+				}
 				break;
 			}
 			case 0b10001:{ // Line/circle.
-				if(sa instanceof Circle && sb instanceof Line)
-					result = this.circleLine(bodyA, sa, offsetA, 
-						bodyB, sb, offsetB, bodyB.angle + sb.angle,
-						justTest, 0, sa.radius);
+				if(sa instanceof Circle){
+					let sa2 = sa as Circle;
+					if(sb instanceof Line){
+						let sb2 = sb as Line;
+						result = this.circleLine(bodyA, sa2, offsetA, 
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle,
+							justTest, 0, sa2.radius);
+					}
+				}
 				break;
 			}
 			case 0b1000001:{ // Capsule/circle.
-				if(sa instanceof Circle && sb instanceof Capsule)
-					result = this.circleCapsule(bodyA, sa, offsetA,
-						bodyB, sb, offsetB, bodyB.angle + sb.angle,
-						justTest);
+				if(sa instanceof Circle){
+					let sa2 = sa as Circle;
+					if(sb instanceof Capsule){
+						let sb2 = sb as Capsule;
+						result = this.circleCapsule(bodyA, sa2, offsetA,
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle,
+							justTest);
+					}
+				}
 				break;
 			}
 			case 0b10000001:{ // Heightfield/circle.
-				if(sa instanceof Circle && sb instanceof Heightfield)
-					result = this.circleHeightfield(bodyA, sa, offsetA,
-						bodyB, sb, offsetB, 
-						justTest, sa.radius);
+				if(sa instanceof Circle){
+					let sa2 = sa as Circle;
+					if(sb instanceof Heightfield){
+						let sb2 = sb as Heightfield;
+						result = this.circleHeightfield(bodyA, sa2, offsetA,
+							bodyB, sb2, offsetB, 
+							justTest, sa2.radius);
+					}
+				}
 				break;
 			}
 			case 0b110:{ // Plane/particle.
 				
-				if(sa instanceof Particle && sb instanceof Plane)
-					result = this.particlePlane(bodyA, sa, offsetA, 
-						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-						justTest);
+				if(sa instanceof Particle){
+					let sa2 = sa as Particle;
+					if(sb instanceof Plane){
+						let sb2 = sb as Plane;
+						result = this.particlePlane(bodyA, sa2, offsetA, 
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle, 
+							justTest);
+					}
+				}
 				break;
 			}
 			case 0b100010: // Box/particle.
 			case 0b1010:{ // Convex/particle.
-				if(sa instanceof Particle && sb instanceof Convex)
-					result = this.particleConvex(bodyA, sa, offsetA, 
-						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-						justTest);
+				if(sa instanceof Particle){
+					let sa2 = sa as Particle;
+					if(sb instanceof Convex){
+						let sb2 = sb as Convex;
+						result = this.particleConvex(bodyA, sa2, offsetA, 
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle, 
+							justTest);
+					}
+				}
 				break;
 			}
 			case 0b1010:{ // Capsule/particle.
-				if(sa instanceof Particle && sb instanceof Capsule){
-					result = this.particleCapsule(bodyA, sa, offsetA, 
-						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-						justTest);
+				if(sa instanceof Particle){
+					let sa2 = sa as Particle;
+					if(sb instanceof Capsule){
+						let sb2 = sb as Capsule;
+						result = this.particleCapsule(bodyA, sa2, offsetA, 
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle, 
+							justTest);
+					}
 				}
 				break;
 			}
 			case 0b100100: // Box/plane.
 			case 0b1100:{ // Convex/plane.
-				if(sa instanceof Plane && sb instanceof Convex){
-					result = this.planeConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-						bodyB, sb, offsetB, bodyB.angle + sb.angle,
-						justTest);
+				if(sa instanceof Plane){
+					let sa2 = sa as Plane;
+					if(sb instanceof Convex){
+						let sb2 = sb as Convex;
+						result = this.planeConvex(bodyA, sa2, offsetA, bodyA.angle + sa.angle,
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle,
+							justTest);
+					}
 				}
 				break;
 			}
 			case 0b10100:{ // Line/plane.
-				if(sa instanceof Plane && sb instanceof Line){
-					result = this.planeLine(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-						bodyB, sb, offsetB, bodyB.angle + sb.angle,
-						justTest);
+				if(sa instanceof Plane){
+					let sa2 = sa as Plane;
+					if(sb instanceof Line){
+						let sb2 = sb as Line;
+						result = this.planeLine(bodyA, sa2, offsetA, bodyA.angle + sa.angle,
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle,
+							justTest);
+					}
 				}
 				break;
 			}
 			case 0b1000100:{ // Capsule/plane.
-				if(sa instanceof Plane && sb instanceof Capsule){
-					result = this.planeCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-						bodyB, sb, offsetB, bodyB.angle + sb.angle,
-						justTest);
+				if(sa instanceof Plane){
+					let sa2 = sa as Plane;
+					if(sb instanceof Capsule){
+						let sb2 = sb as Capsule;
+						result = this.planeCapsule(bodyA, sa2, offsetA, bodyA.angle + sa.angle,
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle,
+							justTest);
+					}
 				}
 				break;
 			}
 			case 0b100000: // Box/box.
 			case 0b101000: // Box/convex.
 			case 0b1000:{ // Convex/convex.
-				if(sa instanceof Convex && sb instanceof Convex){
-					result = this.convexConvex(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-						justTest);
+				if(sa instanceof Convex){
+					let sa2 = sa as Convex;
+					if(sb instanceof Convex){
+						let sb2 = sb as Convex;
+						result = this.convexConvex(bodyA, sa2, offsetA, bodyA.angle + sa.angle,
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle, 
+							justTest);
+					}
 				}
 				break;
 			}
@@ -710,18 +775,26 @@ export default class Narrowphase{
 				break;
 			}
 			case 0b1001000:{ // Capsule/convex.
-				if(sa instanceof Convex && sb instanceof Capsule){
-					result = this.convexCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-						justTest);
+				if(sa instanceof Convex){
+					let sa2 = sa as Convex;
+					if(sb instanceof Capsule){
+						let sb2 = sb as Capsule;
+						result = this.convexCapsule(bodyA, sa2, offsetA, bodyA.angle + sa.angle,
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle, 
+							justTest);
+					}
 				}
 				break;
 			}
 			case 0b10001000:{ // Heightfield/convex.
-				if(sa instanceof Convex && sb instanceof Heightfield){
-					result = this.convexHeightfield(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-						bodyB, sb, offsetB,
-						justTest);
+				if(sa instanceof Convex){
+					let sa2 = sa as Convex;
+					if(sb instanceof Heightfield){
+						let sb2 = sb as Heightfield;
+						result = this.convexHeightfield(bodyA, sa2, offsetA, bodyA.angle + sa.angle,
+							bodyB, sb2, offsetB,
+							justTest);
+					}
 				}
 				break;
 			}
@@ -753,10 +826,14 @@ export default class Narrowphase{
 				break;
 			}
 			case 0b1000000:{ // Capsule/capsule.
-				if(sa instanceof Capsule && sb instanceof Capsule){
-					result = this.capsuleCapsule(bodyA, sa, offsetA, bodyA.angle + sa.angle,
-						bodyB, sb, offsetB, bodyB.angle + sb.angle, 
-						justTest);
+				if(sa instanceof Capsule){
+					let sa2 = sa as Capsule;
+					if(sb instanceof Capsule){
+						let sb2 = sb as Capsule;
+						result = this.capsuleCapsule(bodyA, sa2, offsetA, bodyA.angle + sa.angle,
+							bodyB, sb2, offsetB, bodyB.angle + sb.angle, 
+							justTest);
+					}
 					}
 				break;
 			}
@@ -856,7 +933,7 @@ export default class Narrowphase{
 		capsulePosition: Float32Array,
 		capsuleAngle: f32,
 		justTest: boolean
-	): u32{
+	): u16{
 
 		let convexCapsule_tempRect = new Box(null);
 
@@ -1078,7 +1155,7 @@ export default class Narrowphase{
 			worldNormal = tmp8,
 			worldTangent = tmp9,
 			verts = tmpArray,
-			numContacts = 0;
+			numContacts:u16 = 0;
 
 		// Get start and end points
 		vec2.set(worldVertex0, -lineShape.length/2, 0);
@@ -1168,7 +1245,8 @@ export default class Narrowphase{
 		capsuleAngle: f32,
 		justTest: boolean
 	): u16{
-		return this.circleLine(particleBody,particleShape,particlePosition, capsuleBody,capsuleShape,capsulePosition,capsuleAngle, justTest, capsuleShape.radius, 0);
+		throw "NOT SUPPORTED";
+		//return this.circleLine(particleBody,particleShape,particlePosition, capsuleBody,capsuleShape,capsulePosition,capsuleAngle, justTest, capsuleShape.radius, 0);
 	};
 
 	/**
@@ -1248,7 +1326,7 @@ export default class Narrowphase{
 
 		let radiusSum = circleRadius + lineRadius;
 
-		if(Math.abs(d) < radiusSum){
+		if(Mathf.abs(d) < radiusSum){
 
 			// Now project the circle onto the edge
 			vec2.scale(orthoDist, worldTangent, d);
@@ -1304,7 +1382,7 @@ export default class Narrowphase{
 
 			vec2.subtract(dist, v, circleOffset);
 
-			if(vec2.squaredLength(dist) < Math.pow(radiusSum, 2)){
+			if(vec2.squaredLength(dist) < Mathf.pow(radiusSum, 2)){
 
 				if(justTest){
 					return 1;
@@ -1351,8 +1429,10 @@ export default class Narrowphase{
 	 * @param  {Number} aj
 	 */
 	//Narrowphase.prototype[Shape.CIRCLE | Shape.CAPSULE] =
-	circleCapsule(bi: Body, si: Circle ,xi: Float32Array, bj: Body, sj: Line, xj: Float32Array, aj: f32, justTest: boolean): u16{
-		return this.circleLine(bi,si,xi, bj,sj,xj,aj, justTest, 0, si.radius);
+	// TODO:
+	circleCapsule(bi: Body, si: Circle ,xi: Float32Array, bj: Body, sj: Capsule, xj: Float32Array, aj: f32, justTest: boolean): u16{
+		throw "NOT SUPPORTED!";
+		//return this.circleLine(bi,si,xi, bj,sj,xj,aj, justTest, 0, si.radius);
 	};
 
 	/**
@@ -1384,21 +1464,21 @@ export default class Narrowphase{
 		circleRadius: f32
 	): u16{
 
-		let worldVertex0 = tmp1,
-			worldVertex1 = tmp2,
-			edge = tmp3,
-			edgeUnit = tmp4,
-			normal = tmp5,
-			zero = tmp6,
-			localCirclePosition = tmp7,
-			r = tmp8,
-			dist = tmp10,
-			worldVertex = tmp11,
-			closestEdgeProjectedPoint = tmp13,
-			candidate = tmp14,
-			candidateDist = tmp15,
-			found = -1,
-			minCandidateDistance = Infinity;
+		let worldVertex0: Float32Array = tmp1,
+			worldVertex1: Float32Array = tmp2,
+			edge: Float32Array = tmp3,
+			edgeUnit: Float32Array = tmp4,
+			normal: Float32Array = tmp5,
+			zero: Float32Array = tmp6,
+			localCirclePosition: Float32Array = tmp7,
+			r: Float32Array = tmp8,
+			dist: Float32Array = tmp10,
+			worldVertex: Float32Array = tmp11,
+			closestEdgeProjectedPoint: Float32Array = tmp13,
+			candidate: Float32Array = tmp14,
+			candidateDist: Float32Array = tmp15,
+			found: i32 = -1,
+			minCandidateDistance: f32 = Infinity;
 
 		vec2.set(zero, 0, 0);
 
@@ -1446,7 +1526,7 @@ export default class Narrowphase{
 			if(pointInConvexLocal(candidate,convexShape)){
 
 				vec2.subtract(candidateDist,v0,candidate);
-				let candidateDistance = Math.abs(vec2.dot(candidateDist, n));
+				let candidateDistance = Mathf.abs(vec2.dot(candidateDist, n));
 
 				if(candidateDistance < minCandidateDistance){
 					minCandidateDistance = candidateDistance;
@@ -1624,7 +1704,7 @@ export default class Narrowphase{
 			vec2.subtract(convexToparticle, particleOffset, convexOffset);
 
 			vec2.subtract(candidateDist,worldVertex0,particleOffset);
-			let candidateDistance = Math.abs(vec2.dot(candidateDist,worldTangent));
+			let candidateDistance = Mathf.abs(vec2.dot(candidateDist,worldTangent));
 
 			if(candidateDistance < minCandidateDistance){
 				minCandidateDistance = candidateDistance;
@@ -1760,7 +1840,7 @@ export default class Narrowphase{
 			localPlaneNormal = tmp5,
 			localDist = tmp6;
 
-		let numReported = 0;
+		let numReported: u16 = 0;
 		vec2.rotate(worldNormal, yAxis, planeAngle);
 
 		// Get convex-local plane offset and normal
@@ -2131,14 +2211,14 @@ export default class Narrowphase{
 	): u16{
 		let maxManifoldPoints = 2;
 
-		let totalRadius = 0;
-		let dist = collidePolygons_dist;
+		let totalRadius: f32 = 0;
+		let dist: Float32Array = collidePolygons_dist;
 
-		let tempVec = collidePolygons_tempVec;
-		let tmpVec = collidePolygons_tmpVec;
+		let tempVec: Float32Array = collidePolygons_tempVec;
+		let tmpVec: Float32Array = collidePolygons_tmpVec;
 
-		let edgeA: u32 = findMaxSeparation(tempVec, polyA, positionA, angleA, polyB, positionB, angleB);
-		let separationA = tempVec[0];
+		let edgeA: i32 = findMaxSeparation(tempVec, polyA, positionA, angleA, polyB, positionB, angleB);
+		let separationA: f32 = tempVec[0];
 		if (separationA > totalRadius){
 			return 0;
 		}
@@ -2159,7 +2239,7 @@ export default class Narrowphase{
 		let body1: Body;
 		let body2: Body;
 
-		let edge1: u32;					// reference edge
+		let edge1: i32;					// reference edge
 		let type: u16;
 
 		if (separationB > separationA)
@@ -2195,8 +2275,8 @@ export default class Narrowphase{
 		let count1 = poly1.vertices.length;
 		let vertices1 = poly1.vertices;
 
-		let iv1 = edge1;
-		let iv2 = edge1 + 1 < count1 ? edge1 + 1 : 0;
+		let iv1: i32 = edge1;
+		let iv2: i32 = edge1 + 1 < count1 ? edge1 + 1 : 0;
 
 		let v11 = collidePolygons_v11;
 		let v12 = collidePolygons_v12;
@@ -2249,7 +2329,7 @@ export default class Narrowphase{
 			return 0;
 		}
 
-		let pointCount = 0;
+		let pointCount: u16 = 0;
 		for (let i = 0; i < maxManifoldPoints; ++i)
 		{
 			let separation = vec2.dot(normal, clipPoints2[i]) - frontOffset;
@@ -2304,8 +2384,8 @@ export default class Narrowphase{
 		// Get the index of the points to test against
 		
 		// FIXME: What the hell is going on here. Are these f32s or integers?
-		let idxA: f32 = Mathf.floor( (circlePos[0] - radius - hfPos[0]) / w ),
-			idxB: f32 = Mathf.ceil( (circlePos[0] + radius - hfPos[0]) / w );
+		let idxA: i32 = Mathf.floor( (circlePos[0] - radius - hfPos[0]) / w ) as i32,
+			idxB: i32 = Mathf.ceil( (circlePos[0] + radius - hfPos[0]) / w ) as i32;
 
 		/*if(idxB < 0 || idxA >= data.length)
 			return justTest ? false : 0;*/
@@ -2314,13 +2394,13 @@ export default class Narrowphase{
 			idxA = 0;
 		}
 
-		if(idxB >= (data.length as f32)){
-			idxB = (data.length - 1) as f32;
+		if(idxB >= data.length){
+			idxB = data.length - 1;
 		}
 
 		// Get max and min
-		let max = data[idxA],
-			min = data[idxB];
+		let max: f32 = data[idxA],
+			min: f32 = data[idxB];
 		for(let i: i32 = idxA; i<idxB; i++){
 			if(data[i] < min){
 				min = data[i];
@@ -2352,14 +2432,14 @@ export default class Narrowphase{
 		for(let i: i32 = idxA; i<idxB; i++){
 
 			// Get points
-			vec2.set(v0,     i*w, data[i]  );
-			vec2.set(v1, (i+1)*w, data[i+1]);
+			vec2.set(v0,     (i as f32)*w, data[i]  );
+			vec2.set(v1, ((i as f32)+1.0)*w, data[i+1]);
 			vec2.add(v0,v0,hfPos); // @todo transform circle to local heightfield space instead
 			vec2.add(v1,v1,hfPos);
 
 			// Get normal
 			vec2.subtract(worldNormal, v1, v0);
-			vec2.rotate(worldNormal, worldNormal, Math.PI/2);
+			vec2.rotate(worldNormal, worldNormal, Mathf.PI/2);
 			vec2.normalize(worldNormal,worldNormal);
 
 			// Get point on circle, closest to the edge
@@ -2411,12 +2491,12 @@ export default class Narrowphase{
 			for(let i: i32 = idxA; i<=idxB; i++){
 
 				// Get point
-				vec2.set(v0, i*w, data[i]);
+				vec2.set(v0, (i as f32) * w, data[i]);
 				vec2.add(v0,v0,hfPos);
 
 				vec2.subtract(dist, circlePos, v0);
 
-				if(vec2.squaredLength(dist) < Math.pow(radius, 2)){
+				if(vec2.squaredLength(dist) < Mathf.pow(radius, 2)){
 
 					if(justTest){
 						return 1;
@@ -2468,8 +2548,8 @@ export default class Narrowphase{
 			tileConvex = convexHeightfield_tempConvexShape;
 
 		// Get the index of the points to test against
-		let idxA = Math.floor( (convexBody.aabb.lowerBound[0] - hfPos[0]) / w ),
-			idxB = Math.ceil(  (convexBody.aabb.upperBound[0] - hfPos[0]) / w );
+		let idxA: i32 = Mathf.floor( (convexBody.aabb.lowerBound[0] - hfPos[0]) / w ) as i32,
+			idxB: i32 = Mathf.ceil(  (convexBody.aabb.upperBound[0] - hfPos[0]) / w ) as i32;
 
 		if(idxA < 0){
 			idxA = 0;
@@ -2494,7 +2574,7 @@ export default class Narrowphase{
 			return 0;
 		}
 
-		let numContacts = 0;
+		let numContacts: u16 = 0;
 
 		// Loop over all edges
 		// @todo If possible, construct a convex from several data points (need o check if the points make a convex shape)
@@ -2503,13 +2583,13 @@ export default class Narrowphase{
 		for(let i: i32 = idxA; i<idxB; i++){
 
 			// Get points
-			vec2.set(v0,     i*w, data[i]  );
-			vec2.set(v1, (i+1)*w, data[i+1]);
+			vec2.set(v0, (i as f32)*w, data[i]  );
+			vec2.set(v1, ((i+1) as f32)*w, data[i+1]);
 			vec2.add(v0,v0,hfPos);
 			vec2.add(v1,v1,hfPos);
 
 			// Construct a convex
-			let tileHeight = 100; // todo
+			let tileHeight: f32 = 100.0; // todo
 			vec2.set(tilePos, (v1[0] + v0[0])*0.5, (v1[1] + v0[1] - tileHeight)*0.5);
 
 			vec2.subtract(tileConvex.vertices[0], v1, tilePos);

@@ -4,8 +4,8 @@
 // ,    vec2 = require('../math/vec2')
 // ,    shallowClone = require('../utils/Utils').shallowClone;
 
-import Shape from "./Shape";
-import { ShapeOptions } from "./Shape";
+import Shape from "./shape";
+import { ShapeOptions } from "./shape";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";

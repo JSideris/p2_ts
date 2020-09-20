@@ -4,7 +4,7 @@ import vec2 from "../math/vec2";
 import Body from "../objects/body";
 import AABB from "../collision/aabb";
 import Ray from "../collision/ray";
-import Material from "../material/Material";
+import Material from "../material/material";
 import RaycastResult from "../collision/raycast-result";
 
 export class ShapeOptions{

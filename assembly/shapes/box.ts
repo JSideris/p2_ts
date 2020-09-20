@@ -5,8 +5,8 @@
 // ,   shallowClone = require('../utils/Utils').shallowClone
 // ,   Convex = require('./Convex');
 
-import Convex from "./Convex";
-import { ConvexOptions } from "./Convex";
+import Convex from "./convex";
+import { ConvexOptions } from "./convex";
 import AABB from "../collision/aabb";
 import Shape from "./shape";
 import vec2 from "../math/vec2";

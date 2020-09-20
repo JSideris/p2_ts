@@ -4,8 +4,8 @@
 // ,   shallowClone = require('../utils/Utils').shallowClone
 // ,   copy = require('../math/vec2').copy;
 
-import Shape from "./Shape";
-import { ShapeOptions } from "./Shape";
+import Shape from "./shape";
+import { ShapeOptions } from "./shape";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
@@ -47,7 +47,7 @@ export default class Particle extends Shape{
 	 * @param  {Array}  position
 	 * @param  {Number} angle
 	 */
-	computeAABB(out: AABB, position: Float32Array/*, angle*/): void{
+	computeAABB(out: AABB, position: Float32Array, angle: f32): void{
 		vec2.copy(out.lowerBound, position);
 		vec2.copy(out.upperBound, position);
 	};

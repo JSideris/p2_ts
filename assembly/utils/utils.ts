@@ -15,7 +15,7 @@ class _Utils{
 	 * @param  {Array} b
 	 */
 	appendArray<T>(a:Array<T>,b:Array<T>): void{
-		for (var i = 0, len = b.length; i !== len; ++i) {
+		for (let i = 0, len = b.length; i !== len; ++i) {
 			a.push(b[i]);
 		}
 	}
@@ -28,9 +28,10 @@ class _Utils{
 	 * @param  {Number} index
 	 * @param  {Number} howmany
 	 */
-	splice<T>(array: Array<T>,index: u32,howmany: u32): void{
+	splice<T>(array: Array<T>, index: i32, howmany: i32): void{
 		howmany = howmany || 1;
-		for (var i=index, len=array.length-howmany; i < len; i++){
+		let len: i32 = array.length-howmany;
+		for (let i: i32 = index; i < len; i++){
 			array[i] = array[i + howmany];
 		}
 		array.length = len;
@@ -44,7 +45,7 @@ class _Utils{
 	 * @param  {Number} element
 	 */
 	arrayRemove<T>(array: Array<T>, element: T): void{
-		var idx = array.indexOf(element);
+		let idx = array.indexOf(element);
 		if(idx!==-1){
 			this.splice(array, idx, 1);
 		}
@@ -58,7 +59,7 @@ class _Utils{
 	//  * @param  {object} b
 	//  */
 	// extend(a: any,b: any): void{
-	// 	for(var key in b){
+	// 	for(let key in b){
 	// 		a[key] = b[key];
 	// 	}
 	// }
@@ -70,7 +71,7 @@ class _Utils{
 	//  * @param  {object} obj
 	//  */
 	// shallowClone(obj: any): any{ // Might not be used anymore.
-	// 	var newObj = {};
+	// 	let newObj = {};
 	// 	this.extend(newObj, obj);
 	// 	return newObj;
 	// }
@@ -87,7 +88,7 @@ class _Utils{
 	// defaults(options, defaults){
 	// 	console.warn('Utils.defaults is deprecated.');
 	// 	options = options || {};
-	// 	for(var key in defaults){
+	// 	for(let key in defaults){
 	// 		if(!(key in options)){
 	// 			options[key] = defaults[key];
 	// 		}

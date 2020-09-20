@@ -410,7 +410,7 @@ export default class World extends EventEmitter{
 	 * The default contact material to use, if no contact material was set for the colliding materials.
 	 * @property {ContactMaterial} defaultContactMaterial
 	 */
-	defaultContactMaterial: ContactMaterial;
+	defaultContactMaterial: ContactMaterial|null = null;
 
 	/**
 	 * For keeping track of what time step size we used last step
@@ -539,13 +539,13 @@ export default class World extends EventEmitter{
 		super();
 
 		if(options){
-			if(options.gravity) vec2.copy(this.gravity, options.gravity);
+			if(options.gravity) vec2.copy(this.gravity, options.gravity!);
 			this.islandSplit = options.islandSplit;
 		}
 	
 		this.frictionGravity = vec2.length(this.gravity) || 10;
 		this.broadphase.setWorld(this);
-		this.defaultContactMaterial = new ContactMaterial(this.defaultMaterial,this.defaultMaterial, null);
+		this.defaultContactMaterial = new ContactMaterial(this.defaultMaterial, this.defaultMaterial, null);
 
 		this.addBodyEvent.sapBroadphase = this.broadphase as SAPBroadphase;
 		this.removeBodyEvent.sapBroadphase = this.broadphase as SAPBroadphase;
@@ -1105,9 +1105,9 @@ export default class World extends EventEmitter{
 		this.bodies.push(body);
 		body.world = this;
 
-		addBodyEvent.body = body;
-		this.emit(addBodyEvent);
-		addBodyEvent.body = null;
+		this.addBodyEvent.body = body;
+		this.emit(this.addBodyEvent);
+		this.addBodyEvent.body = null;
 	}
 
 	/**
@@ -1157,10 +1157,10 @@ export default class World extends EventEmitter{
 		}
 
 		// Emit removeBody event
-		removeBodyEvent.body = body;
+		this.removeBodyEvent.body = body;
 		body.resetConstraintVelocity();
-		this.emit(removeBodyEvent);
-		removeBodyEvent.body = null;
+		this.emit(this.removeBodyEvent);
+		this.removeBodyEvent.body = null;
 
 		// Remove disabled body collision pairs that involve body
 		let pairs = this.disabledBodyCollisionPairs;

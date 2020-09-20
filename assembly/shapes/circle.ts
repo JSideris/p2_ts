@@ -4,8 +4,8 @@
 // ,    vec2 = require('../math/vec2')
 // ,    shallowClone = require('../utils/Utils').shallowClone;
 
-import Shape from "./Shape";
-import { ShapeOptions } from "./Shape";
+import Shape from "./shape";
+import { ShapeOptions } from "./shape";
 import AABB from "../collision/aabb";
 import RaycastResult from "../collision/raycast-result";
 import Ray from "../collision/ray";
@@ -77,7 +77,7 @@ export default class Circle extends Shape{
 	 * @param  {Array}  position
 	 * @param  {Number} angle
 	 */
-	computeAABB(out: AABB, position: Float32Array/*, angle: f32*/): void{
+	computeAABB(out: AABB, position: Float32Array, angle: f32): void{
 		var r = this.radius;
 		vec2.set(out.upperBound,  r,  r);
 		vec2.set(out.lowerBound, -r, -r);
@@ -95,7 +95,7 @@ export default class Circle extends Shape{
 	 * @param  {array} position
 	 * @param  {number} angle
 	 */
-	raycast(result: RaycastResult, ray: Ray, position: Float32Array/*, angle: f32*/): void{
+	raycast(result: RaycastResult, ray: Ray, position: Float32Array, angle: f32): void{
 		let from: Float32Array = ray.from,
 			to: Float32Array = ray.to,
 			r: f32 = this.radius;

@@ -1,10 +1,10 @@
 //type i16=number; type i32=number;type i64=number;type u16=number; type u32=number;type u64=number;type f32=number;
 
 export default class UnionFind{
-	id: u32[];
-	sz: u32[];
-	size: u32;
-	count: u32;
+	id: i32[];
+	sz: i32[];
+	size: i32;
+	count: i32;
 
 	/**
 	 * Weighted Quick Union-Find with Path Compression. Based on https://github.com/juzerali/unionfind, but optimized for performance.
@@ -12,7 +12,7 @@ export default class UnionFind{
 	 * @constructor
 	 * @param {number} size
 	 */
-	constructor(size: u32){
+	constructor(size: i32){
 		this.id = [];
 		this.sz = [];
 
@@ -36,11 +36,11 @@ export default class UnionFind{
 	 * @method resize
 	 * @param {number} size
 	 */
-	resize(size: u32): void{
+	resize(size: i32): void{
 		this.count = this.size = size;
 		var sz = this.sz;
 		var id = this.id;
-		for (var i = 0; i < size; i++) {
+		for (let i = 0; i < size; i++) {
 			id[i] = i;
 			sz[i] = 1;
 		}
@@ -51,7 +51,7 @@ export default class UnionFind{
 	 * @method find
 	 * @param {number} p
 	 */
-	find (p: u32): u32 {
+	find (p: i32): i32 {
 		var id = this.id;
 		while(p !== id[p]){
 			id[p] = id[id[p]];
@@ -66,7 +66,7 @@ export default class UnionFind{
 	 * @param {number} p
 	 * @param {number} q
 	 */
-	union(p: u32, q: u32): void{
+	union(p: i32, q: i32): void{
 		var i = this.find(p)
 		,	j = this.find(q);
 
